@@ -1,7 +1,12 @@
 /*
-  Copyright 2005-2007 Adobe Systems Incorporated
-  Distributed under the MIT License (see accompanying file LICENSE_1_0_0.txt
-  or a copy at http://opensource.adobe.com/licenses.html)
+    Copyright 2005-2007 Adobe Systems Incorporated
+
+    Use, modification and distribution are subject to the Boost Software
+   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt).
+
+    See http://opensource.adobe.com/gil for most recent version including
+   documentation.
 */
 
 /*************************************************************************************************/
@@ -133,9 +138,10 @@ public:
     std::size_t element_size =
         sizeof(pixel<typename channel_type<View>::type,
                      layout<typename color_space_type<View>::type>>);
-    std::size_t size_to_allocate = std::max(
-        (std::size_t)view.width(),
-        (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) / element_size);
+    std::size_t size_to_allocate =
+        (std::max)((std::size_t)view.width(),
+                   (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
+                       element_size);
     std::vector<pixel<typename channel_type<View>::type,
                       layout<typename color_space_type<View>::type>>>
         row(size_to_allocate);
@@ -180,9 +186,9 @@ public:
       case 8: {
         std::size_t element_size = sizeof(gray8_pixel_t);
         std::size_t size_to_allocate =
-            std::max((std::size_t)view.width(),
-                     (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
-                         element_size);
+            (std::max)((std::size_t)view.width(),
+                       (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
+                           element_size);
         std::vector<gray8_pixel_t> row(size_to_allocate);
         for (int y = 0; y < view.height(); ++y) {
           io_error_if(TIFFReadScanline(_tp, &row.front(), y) != 1);
@@ -196,9 +202,9 @@ public:
       case 16: {
         std::size_t element_size = sizeof(gray16_pixel_t);
         std::size_t size_to_allocate =
-            std::max((std::size_t)view.width(),
-                     (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
-                         element_size);
+            (std::max)((std::size_t)view.width(),
+                       (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
+                           element_size);
         std::vector<gray16_pixel_t> row(size_to_allocate);
         for (int y = 0; y < view.height(); ++y) {
           io_error_if(TIFFReadScanline(_tp, &row.front(), y) != 1);
@@ -212,9 +218,9 @@ public:
       case 32: {
         std::size_t element_size = sizeof(gray32f_pixel_t);
         std::size_t size_to_allocate =
-            std::max((std::size_t)view.width(),
-                     (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
-                         element_size);
+            (std::max)((std::size_t)view.width(),
+                       (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
+                           element_size);
         std::vector<gray32f_pixel_t> row(size_to_allocate);
         for (int y = 0; y < view.height(); ++y) {
           io_error_if(TIFFReadScanline(_tp, &row.front(), y) != 1);
@@ -236,9 +242,9 @@ public:
       case 8: {
         std::size_t element_size = sizeof(rgb8_pixel_t);
         std::size_t size_to_allocate =
-            std::max((std::size_t)view.width(),
-                     (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
-                         element_size);
+            (std::max)((std::size_t)view.width(),
+                       (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
+                           element_size);
         std::vector<rgb8_pixel_t> row(size_to_allocate);
         for (int y = 0; y < view.height(); ++y) {
           io_error_if(TIFFReadScanline(_tp, &row.front(), y) != 1);
@@ -252,9 +258,9 @@ public:
       case 16: {
         std::size_t element_size = sizeof(rgb16_pixel_t);
         std::size_t size_to_allocate =
-            std::max((std::size_t)view.width(),
-                     (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
-                         element_size);
+            (std::max)((std::size_t)view.width(),
+                       (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
+                           element_size);
         std::vector<rgb16_pixel_t> row(size_to_allocate);
         for (int y = 0; y < view.height(); ++y) {
           io_error_if(TIFFReadScanline(_tp, &row.front(), y) != 1);
@@ -268,9 +274,9 @@ public:
       case 32: {
         std::size_t element_size = sizeof(rgb32f_pixel_t);
         std::size_t size_to_allocate =
-            std::max((std::size_t)view.width(),
-                     (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
-                         element_size);
+            (std::max)((std::size_t)view.width(),
+                       (std::size_t)(TIFFScanlineSize(_tp) + element_size - 1) /
+                           element_size);
         std::vector<rgb32f_pixel_t> row(size_to_allocate);
         for (int y = 0; y < view.height(); ++y) {
           io_error_if(TIFFReadScanline(_tp, &row.front(), y) != 1);
