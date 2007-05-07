@@ -1,9 +1,13 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-    Distributed under the MIT License (see accompanying file LICENSE_1_0_0.txt
-    or a copy at http://opensource.adobe.com/licenses.html)
-*/
 
+    Use, modification and distribution are subject to the Boost Software
+   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt).
+
+    See http://opensource.adobe.com/gil for most recent version including
+   documentation.
+*/
 /*************************************************************************************************/
 
 #ifndef GIL_COLOR_CONVERT_HPP
@@ -167,9 +171,10 @@ template <> struct default_color_converter_impl<rgb_t, cmyk_t> {
     get_color(dst, yellow_t()) = channel_invert(
         channel_convert<T2>(get_color(src, blue_t()))); // y = 1 - b
     get_color(dst, black_t()) =
-        std::min(get_color(dst, cyan_t()),
-                 std::min(get_color(dst, magenta_t()),
-                          get_color(dst, yellow_t()))); // k = min(c, m, y)
+        (std::min)(get_color(dst, cyan_t()),
+                   (std::min)(get_color(dst, magenta_t()),
+                              get_color(dst,
+                                        yellow_t()))); // k = minimum(c, m, y)
     T2 x = channel_traits<T2>::max_value() -
            get_color(dst, black_t()); // x = 1 - k
     if (x > 0.0001f) {
@@ -203,24 +208,24 @@ template <> struct default_color_converter_impl<cmyk_t, rgb_t> {
     get_color(dst, red_t()) =
         channel_convert<typename color_element_type<red_t, P2>::type>(
             channel_invert<T1>(
-                std::min(channel_traits<T1>::max_value(),
-                         T1(get_color(src, cyan_t()) *
-                                channel_invert(get_color(src, black_t())) +
-                            get_color(src, black_t())))));
+                (std::min)(channel_traits<T1>::max_value(),
+                           T1(get_color(src, cyan_t()) *
+                                  channel_invert(get_color(src, black_t())) +
+                              get_color(src, black_t())))));
     get_color(dst, green_t()) =
         channel_convert<typename color_element_type<green_t, P2>::type>(
             channel_invert<T1>(
-                std::min(channel_traits<T1>::max_value(),
-                         T1(get_color(src, magenta_t()) *
-                                channel_invert(get_color(src, black_t())) +
-                            get_color(src, black_t())))));
+                (std::min)(channel_traits<T1>::max_value(),
+                           T1(get_color(src, magenta_t()) *
+                                  channel_invert(get_color(src, black_t())) +
+                              get_color(src, black_t())))));
     get_color(dst, blue_t()) =
         channel_convert<typename color_element_type<blue_t, P2>::type>(
             channel_invert<T1>(
-                std::min(channel_traits<T1>::max_value(),
-                         T1(get_color(src, yellow_t()) *
-                                channel_invert(get_color(src, black_t())) +
-                            get_color(src, black_t())))));
+                (std::min)(channel_traits<T1>::max_value(),
+                           T1(get_color(src, yellow_t()) *
+                                  channel_invert(get_color(src, black_t())) +
+                              get_color(src, black_t())))));
   }
 };
 
