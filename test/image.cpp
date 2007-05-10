@@ -262,6 +262,7 @@ void image_test::view_transformations_test(const View &img_view,
   check_view(subsampled_view(img_view, typename View::point_t(2, 1)),
              prefix + "subsampled");
   check_view(nth_channel_view(img_view, 0), prefix + "0th_channel");
+  check_view(kth_channel_view<0>(img_view), prefix + "0th_channel");
 }
 
 void image_test::virtual_view_test() {
@@ -376,11 +377,7 @@ class checksum_image_mgr : public image_test {
 protected:
   typedef map<string, boost::crc_32_type::value_type> crc_map_t;
   crc_map_t _crc_map;
-  static const string _checksum_ref_file;
 };
-
-const string checksum_image_mgr::_checksum_ref_file =
-    "gil_reference_checksums.txt";
 
 ////////////////////////////////////////////////////
 ///
@@ -389,7 +386,11 @@ const string checksum_image_mgr::_checksum_ref_file =
 ////////////////////////////////////////////////////
 
 class checksum_image_test : public checksum_image_mgr {
+public:
+  checksum_image_test(const char *filename) : _filename(filename) {}
+
 private:
+  const char *_filename;
   virtual void initialize();
   virtual void check_view_impl(const rgb8c_view_t &v, const string &name);
 };
@@ -398,7 +399,7 @@ private:
 void checksum_image_test::initialize() {
   string crc_name;
   boost::crc_32_type::value_type crc_result;
-  fstream checksum_ref(_checksum_ref_file.c_str(), ios::in);
+  fstream checksum_ref(_filename, ios::in);
   while (true) {
     checksum_ref >> crc_name >> std::hex >> crc_result;
     if (checksum_ref.fail())
@@ -429,7 +430,11 @@ void checksum_image_test::check_view_impl(const rgb8c_view_t &img_view,
 ////////////////////////////////////////////////////
 
 class checksum_image_generate : public checksum_image_mgr {
+public:
+  checksum_image_generate(const char *filename) : _filename(filename) {}
+
 private:
+  const char *_filename;
   virtual void check_view_impl(const rgb8c_view_t &img_view,
                                const string &name);
   virtual void finalize();
@@ -446,7 +451,7 @@ void checksum_image_generate::check_view_impl(const rgb8c_view_t &img_view,
 
 // Save the checksums into the reference file
 void checksum_image_generate::finalize() {
-  fstream checksum_ref(_checksum_ref_file.c_str(), ios::out);
+  fstream checksum_ref(_filename, ios::out);
   for (crc_map_t::const_iterator it = _crc_map.begin(); it != _crc_map.end();
        ++it) {
     checksum_ref << it->first << " " << std::hex << it->second << "\r\n";
@@ -474,12 +479,12 @@ const string ref_dir =
 
 #include <boost/gil/extension/io/jpeg_io.hpp>
 
-class file_image_mgr : public image_test {
-protected:
-  static const string _checksum_ref_file;
-};
+class file_image_mgr : public image_test {};
 
 class file_image_test : public file_image_mgr {
+public:
+  file_image_test(const char *) {}
+
 protected:
   void check_view_impl(const boost::gil::rgb8c_view_t &img_view,
                        const string &name) {
@@ -497,6 +502,9 @@ protected:
 };
 
 class file_image_generate : public file_image_mgr {
+public:
+  file_image_generate(const char *) {}
+
 protected:
   void check_view_impl(const boost::gil::rgb8c_view_t &img_view,
                        const string &name) {
@@ -553,8 +561,8 @@ typedef image_generate_t image_mgr_t;
 typedef image_test_t image_mgr_t;
 #endif
 
-void test_image() {
-  image_mgr_t mgr;
+void test_image(const char *ref_checksum) {
+  image_mgr_t mgr(ref_checksum);
 
   mgr.run();
   static_checks();
