@@ -35,6 +35,10 @@ template <int N> struct devicen_color_t {};
 
 template <int N> struct devicen_t;
 
+/// \brief unnamed color space of one channel
+/// \ingroup ColorSpaceModel
+template <> struct devicen_t<1> : public mpl::vector1<devicen_color_t<0>> {};
+
 /// \brief unnamed color space of two channels
 /// \ingroup ColorSpaceModel
 template <>
