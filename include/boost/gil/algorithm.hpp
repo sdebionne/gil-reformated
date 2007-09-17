@@ -14,6 +14,7 @@
 #ifndef GIL_ALGORITHM_HPP
 #define GIL_ALGORITHM_HPP
 
+#include "bit_aligned_pixel_iterator.hpp"
 #include "color_base_algorithm.hpp"
 #include "gil_concept.hpp"
 #include "gil_config.hpp"
@@ -48,8 +49,8 @@ namespace gil {
 // forward declarations
 template <typename ChannelPtr, typename ColorSpace>
 struct planar_pixel_iterator;
-template <typename Iterator> class byte_addressable_step_iterator;
-template <typename StepIterator> class byte_addressable_2d_locator;
+template <typename Iterator> class memory_based_step_iterator;
+template <typename StepIterator> class memory_based_2d_locator;
 
 // a tag denoting incompatible arguments
 struct error_t {};
@@ -287,6 +288,30 @@ struct copier_n<iterator_from_2d<IL>, iterator_from_2d<OL>> {
     }
   }
 };
+
+template <typename SrcIterator, typename DstIterator>
+GIL_FORCEINLINE DstIterator copy_with_2d_iterators(SrcIterator first,
+                                                   SrcIterator last,
+                                                   DstIterator dst) {
+  typedef typename SrcIterator::x_iterator src_x_iterator;
+  typedef typename DstIterator::x_iterator dst_x_iterator;
+
+  typename SrcIterator::difference_type n = last - first;
+
+  if (first.is_1d_traversable()) {
+    if (dst.is_1d_traversable())
+      copier_n<src_x_iterator, dst_x_iterator>()(first.x(), n, dst.x());
+    else
+      copier_n<src_x_iterator, DstIterator>()(first.x(), n, dst);
+  } else {
+    if (dst.is_1d_traversable())
+      copier_n<SrcIterator, dst_x_iterator>()(first, n, dst.x());
+    else
+      copier_n<SrcIterator, DstIterator>()(first, n, dst);
+  }
+  return dst + n;
+}
+
 } // namespace detail
 } // namespace gil
 } // namespace boost
@@ -296,35 +321,12 @@ namespace std {
 /// \brief  std::copy(I1,I1,I2) with I1 and I2 being a iterator_from_2d
 template <typename IL, typename OL>
 GIL_FORCEINLINE boost::gil::iterator_from_2d<OL>
-copy(boost::gil::iterator_from_2d<IL> first,
-     boost::gil::iterator_from_2d<IL> last,
-     boost::gil::iterator_from_2d<OL> dst) {
-  boost::gil::gil_function_requires<boost::gil::PixelLocatorConcept<IL>>();
-  boost::gil::gil_function_requires<
-      boost::gil::MutablePixelLocatorConcept<OL>>();
-  typedef typename boost::gil::iterator_from_2d<IL>::difference_type diff_t;
-  diff_t n = diff_t(last - first);
-  if (first.is_1d_traversable()) {
-    if (dst.is_1d_traversable())
-      boost::gil::detail::copier_n<typename IL::x_iterator,
-                                   typename OL::x_iterator>()(first.x(), n,
-                                                              dst.x());
-    else
-      boost::gil::detail::copier_n<typename IL::x_iterator,
-                                   boost::gil::iterator_from_2d<OL>>()(
-          first.x(), n, dst);
-  } else {
-    if (dst.is_1d_traversable())
-      boost::gil::detail::copier_n<boost::gil::iterator_from_2d<IL>,
-                                   typename OL::x_iterator>()(first, n,
-                                                              dst.x());
-    else
-      boost::gil::detail::copier_n<boost::gil::iterator_from_2d<IL>,
-                                   boost::gil::iterator_from_2d<OL>>()(first, n,
-                                                                       dst);
-  }
-  return dst + n;
+copy1(boost::gil::iterator_from_2d<IL> first,
+      boost::gil::iterator_from_2d<IL> last,
+      boost::gil::iterator_from_2d<OL> dst) {
+  return boost::gil::detail::copy_with_2d_iterators(first, last, dst);
 }
+
 } // namespace std
 
 namespace boost {
@@ -335,9 +337,7 @@ namespace gil {
 template <typename View1, typename View2>
 GIL_FORCEINLINE void copy_pixels(const View1 &src, const View2 &dst) {
   assert(src.dimensions() == dst.dimensions());
-  std::copy(src.begin(), src.end(),
-            dst.begin()); // std::copy will choose the optimal method (see
-                          // stl_override.h)
+  detail::copy_with_2d_iterators(src.begin(), src.end(), dst.begin());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -492,7 +492,8 @@ GIL_FORCEINLINE void fill_pixels(const View &img_view, const Value &val) {
 
 namespace detail {
 
-template <typename It> void destruct_range(It first, It last) {
+template <typename It>
+GIL_FORCEINLINE void destruct_range_impl(It first, It last, mpl::true_) {
   typedef typename std::iterator_traits<It>::value_type value_t;
   if (boost::has_trivial_destructor<value_t>::value)
     return;
@@ -500,6 +501,12 @@ template <typename It> void destruct_range(It first, It last) {
     first->~value_t();
     ++first;
   }
+}
+template <typename It>
+GIL_FORCEINLINE void destruct_range_impl(It first, It last, mpl::false_) {}
+
+template <typename It> GIL_FORCEINLINE void destruct_range(It first, It last) {
+  destruct_range_impl(first, last, typename is_pointer<It>::type());
 }
 
 struct std_destruct_t {
@@ -614,21 +621,28 @@ void uninitialized_fill_pixels(const View &img_view, const Value &val) {
 namespace detail {
 
 template <typename It>
-GIL_FORCEINLINE void default_construct_range(It first, It last) {
+GIL_FORCEINLINE void default_construct_range_impl(It first, It last,
+                                                  mpl::true_) {
   typedef typename std::iterator_traits<It>::value_type value_t;
-  if (boost::is_pointer<It>::value) {
-    It first1 = first;
-    try {
-      while (first != last) {
-        new (first) value_t();
-        ++first;
-      }
-    } catch (...) {
-      destruct_range(first1, first);
-      throw;
+  It first1 = first;
+  try {
+    while (first != last) {
+      new (first) value_t();
+      ++first;
     }
-  } else
-    std::uninitialized_fill(first, last, value_t());
+  } catch (...) {
+    destruct_range(first1, first);
+    throw;
+  }
+}
+
+template <typename It>
+GIL_FORCEINLINE void default_construct_range_impl(It first, It last,
+                                                  mpl::false_) {}
+
+template <typename It>
+GIL_FORCEINLINE void default_construct_range(It first, It last) {
+  default_construct_range_impl(first, last, typename is_pointer<It>::type());
 }
 
 /// uninitialized_default_construct for planar iterators

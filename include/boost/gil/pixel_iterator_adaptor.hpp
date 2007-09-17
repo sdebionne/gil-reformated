@@ -158,44 +158,48 @@ struct channel_type<dereference_iterator_adaptor<I, DFn>>
     : public channel_type<typename DFn::value_type> {};
 
 /////////////////////////////
-//  ByteAdvanceableIteratorConcept
+//  MemoryBasedIteratorConcept
 /////////////////////////////
 
 template <typename Iterator, typename DFn>
-inline typename std::iterator_traits<Iterator>::difference_type
-byte_step(const dereference_iterator_adaptor<Iterator, DFn> &p) {
-  return byte_step(p.base());
-}
+struct byte_to_memunit<dereference_iterator_adaptor<Iterator, DFn>>
+    : public byte_to_memunit<Iterator> {};
 
 template <typename Iterator, typename DFn>
 inline typename std::iterator_traits<Iterator>::difference_type
-byte_distance(const dereference_iterator_adaptor<Iterator, DFn> &p1,
-              const dereference_iterator_adaptor<Iterator, DFn> &p2) {
-  return byte_distance(p1.base(), p2.base());
+memunit_step(const dereference_iterator_adaptor<Iterator, DFn> &p) {
+  return memunit_step(p.base());
 }
 
 template <typename Iterator, typename DFn>
-inline void byte_advance(
-    dereference_iterator_adaptor<Iterator, DFn> &p,
-    typename std::iterator_traits<Iterator>::difference_type byteDiff) {
-  byte_advance(p.base(), byteDiff);
+inline typename std::iterator_traits<Iterator>::difference_type
+memunit_distance(const dereference_iterator_adaptor<Iterator, DFn> &p1,
+                 const dereference_iterator_adaptor<Iterator, DFn> &p2) {
+  return memunit_distance(p1.base(), p2.base());
 }
 
 template <typename Iterator, typename DFn>
-inline dereference_iterator_adaptor<Iterator, DFn> byte_advanced(
+inline void
+memunit_advance(dereference_iterator_adaptor<Iterator, DFn> &p,
+                typename std::iterator_traits<Iterator>::difference_type diff) {
+  memunit_advance(p.base(), diff);
+}
+
+template <typename Iterator, typename DFn>
+inline dereference_iterator_adaptor<Iterator, DFn> memunit_advanced(
     const dereference_iterator_adaptor<Iterator, DFn> &p,
-    typename std::iterator_traits<Iterator>::difference_type byteDiff) {
+    typename std::iterator_traits<Iterator>::difference_type diff) {
   return dereference_iterator_adaptor<Iterator, DFn>(
-      byte_advanced(p.base(), byteDiff), p.deref_fn());
+      memunit_advanced(p.base(), diff), p.deref_fn());
 }
 
 template <typename Iterator, typename DFn>
 inline typename std::iterator_traits<
     dereference_iterator_adaptor<Iterator, DFn>>::reference
-byte_advanced_ref(
+memunit_advanced_ref(
     const dereference_iterator_adaptor<Iterator, DFn> &p,
-    typename std::iterator_traits<Iterator>::difference_type byteDiff) {
-  return *byte_advanced(p, byteDiff);
+    typename std::iterator_traits<Iterator>::difference_type diff) {
+  return *memunit_advanced(p, diff);
 }
 
 /////////////////////////////
@@ -213,7 +217,7 @@ struct dynamic_x_step_type<dereference_iterator_adaptor<Iterator, DFn>> {
 /// invokes the given dereference adaptor upon dereferencing \ingroup
 /// PixelIteratorModelDerefPtr
 template <typename Iterator, typename Deref> struct iterator_add_deref {
-  GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept);
+  GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
 
   typedef dereference_iterator_adaptor<Iterator, Deref> type;
 
@@ -226,7 +230,7 @@ template <typename Iterator, typename Deref> struct iterator_add_deref {
 template <typename Iterator, typename PREV_DEREF, typename Deref>
 struct iterator_add_deref<dereference_iterator_adaptor<Iterator, PREV_DEREF>,
                           Deref> {
-  GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept);
+  //    GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
 
   typedef dereference_iterator_adaptor<Iterator,
                                        deref_compose<Deref, PREV_DEREF>>

@@ -46,13 +46,13 @@ struct planar_pixel_reference;
 /// \defgroup PixelIteratorModelPlanarPtr planar_pixel_iterator
 /// \ingroup PixelIteratorModel
 /// \brief An iterator over planar pixels. Models PixelIteratorConcept,
-/// HomogeneousPixelBasedConcept, ByteAdvanceableIteratorConcept,
+/// HomogeneousPixelBasedConcept, MemoryBasedIteratorConcept,
 /// HasDynamicXStepTypeConcept
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \brief An iterator over planar pixels. Models HomogeneousColorBaseConcept,
 /// PixelIteratorConcept, HomogeneousPixelBasedConcept,
-/// ByteAdvanceableIteratorConcept, HasDynamicXStepTypeConcept
+/// MemoryBasedIteratorConcept, HasDynamicXStepTypeConcept
 ///
 /// Planar pixels have channel data that is not consecutive in memory.
 /// To abstract this we use classes to represent references and pointers to
@@ -138,7 +138,7 @@ public:
   /// class that is convertible to reference We require our own reference
   /// because it is registered in iterator_traits
   reference operator[](difference_type d) const {
-    return byte_advanced_ref(*this, d * sizeof(channel_t));
+    return memunit_advanced_ref(*this, d * sizeof(channel_t));
   }
 
   reference operator->() const { return **this; }
@@ -200,6 +200,23 @@ struct iterator_is_mutable<planar_pixel_iterator<IC, C>>
     : public detail::channel_iterator_is_mutable<IC> {};
 
 /////////////////////////////
+//  ColorBasedConcept
+/////////////////////////////
+
+template <typename IC, typename C, int K>
+struct kth_element_type<planar_pixel_iterator<IC, C>, K> {
+  typedef IC type;
+};
+
+template <typename IC, typename C, int K>
+struct kth_element_reference_type<planar_pixel_iterator<IC, C>, K>
+    : public add_reference<IC> {};
+
+template <typename IC, typename C, int K>
+struct kth_element_const_reference_type<planar_pixel_iterator<IC, C>, K>
+    : public add_reference<typename add_const<IC>::type> {};
+
+/////////////////////////////
 //  HomogeneousPixelBasedConcept
 /////////////////////////////
 
@@ -222,48 +239,46 @@ struct channel_type<planar_pixel_iterator<IC, C>> {
 };
 
 /////////////////////////////
-//  ByteAdvanceableIteratorConcept
+//  MemoryBasedIteratorConcept
 /////////////////////////////
 
 template <typename IC, typename C>
-inline std::ptrdiff_t byte_step(const planar_pixel_iterator<IC, C> &) {
+inline std::ptrdiff_t memunit_step(const planar_pixel_iterator<IC, C> &) {
   return sizeof(typename std::iterator_traits<IC>::value_type);
 }
 
 template <typename IC, typename C>
-inline std::ptrdiff_t byte_distance(const planar_pixel_iterator<IC, C> &p1,
-                                    const planar_pixel_iterator<IC, C> &p2) {
-  return byte_distance(at_c<0>(p1), at_c<0>(p2));
+inline std::ptrdiff_t memunit_distance(const planar_pixel_iterator<IC, C> &p1,
+                                       const planar_pixel_iterator<IC, C> &p2) {
+  return memunit_distance(at_c<0>(p1), at_c<0>(p2));
 }
 
-template <typename IC> struct byte_advance_fn {
-  byte_advance_fn(std::ptrdiff_t byte_diff) : _byte_diff(byte_diff) {}
-  IC operator()(const IC &p) const { return byte_advanced(p, _byte_diff); }
+template <typename IC> struct memunit_advance_fn {
+  memunit_advance_fn(std::ptrdiff_t diff) : _diff(diff) {}
+  IC operator()(const IC &p) const { return memunit_advanced(p, _diff); }
 
-  std::ptrdiff_t _byte_diff;
+  std::ptrdiff_t _diff;
 };
 
 template <typename IC, typename C>
-inline void byte_advance(planar_pixel_iterator<IC, C> &p,
-                         std::ptrdiff_t byte_diff) {
-  static_transform(p, p, byte_advance_fn<IC>(byte_diff));
+inline void memunit_advance(planar_pixel_iterator<IC, C> &p,
+                            std::ptrdiff_t diff) {
+  static_transform(p, p, memunit_advance_fn<IC>(diff));
 }
 
 template <typename IC, typename C>
 inline planar_pixel_iterator<IC, C>
-byte_advanced(const planar_pixel_iterator<IC, C> &p, std::ptrdiff_t byteDiff) {
+memunit_advanced(const planar_pixel_iterator<IC, C> &p, std::ptrdiff_t diff) {
   planar_pixel_iterator<IC, C> ret = p;
-  byte_advance(ret, byteDiff);
+  memunit_advance(ret, diff);
   return ret;
 }
 
-// Advancing a planar pixel iterator by a given number of bytes and taking the
-// reference
 template <typename ChannelPtr, typename ColorSpace>
 inline planar_pixel_reference<
     typename std::iterator_traits<ChannelPtr>::reference, ColorSpace>
-byte_advanced_ref(const planar_pixel_iterator<ChannelPtr, ColorSpace> &ptr,
-                  std::ptrdiff_t diff) {
+memunit_advanced_ref(const planar_pixel_iterator<ChannelPtr, ColorSpace> &ptr,
+                     std::ptrdiff_t diff) {
   return planar_pixel_reference<
       typename std::iterator_traits<ChannelPtr>::reference, ColorSpace>(ptr,
                                                                         diff);
@@ -275,7 +290,7 @@ byte_advanced_ref(const planar_pixel_iterator<ChannelPtr, ColorSpace> &ptr,
 
 template <typename IC, typename C>
 struct dynamic_x_step_type<planar_pixel_iterator<IC, C>> {
-  typedef byte_addressable_step_iterator<planar_pixel_iterator<IC, C>> type;
+  typedef memory_based_step_iterator<planar_pixel_iterator<IC, C>> type;
 };
 
 } // namespace gil

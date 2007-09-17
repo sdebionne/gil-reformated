@@ -184,17 +184,18 @@ protected:
 };
 
 // For subbyte channel references we need to store the bit buffers somewhere
-template <typename ChannelSubbyteRef, typename BitBuffer,
+template <typename ChannelSubbyteRef,
           typename ChannelMutableRef = ChannelSubbyteRef>
 class packed_reference_core {
 protected:
   typedef ChannelSubbyteRef channel_t;
+  typedef typename channel_t::integer_t integer_t;
   channel_t _min_v, _max_v;
 
-  BitBuffer _min_buf, _max_buf;
+  integer_t _min_buf, _max_buf;
 
-  packed_reference_core() : _min_v(_min_buf), _max_v(_max_buf) {
-    ChannelMutableRef b1(_min_buf), b2(_max_buf);
+  packed_reference_core() : _min_v(&_min_buf), _max_v(&_max_buf) {
+    ChannelMutableRef b1(&_min_buf), b2(&_max_buf);
     b1 = channel_traits<channel_t>::min_value();
     b2 = channel_traits<channel_t>::max_value();
 
@@ -202,18 +203,18 @@ protected:
   }
 };
 
-template <typename ChannelSubbyteRef, typename BitBuffer,
+template <typename ChannelSubbyteRef,
           typename ChannelMutableRef = ChannelSubbyteRef>
 class packed_dynamic_reference_core {
 protected:
   typedef ChannelSubbyteRef channel_t;
   channel_t _min_v, _max_v;
 
-  BitBuffer _min_buf, _max_buf;
+  typename channel_t::integer_t _min_buf, _max_buf;
 
   packed_dynamic_reference_core(int first_bit1 = 1, int first_bit2 = 2)
-      : _min_v(_min_buf, first_bit1), _max_v(_max_buf, first_bit2) {
-    ChannelMutableRef b1(_min_buf, 1), b2(_max_buf, 2);
+      : _min_v(&_min_buf, first_bit1), _max_v(&_max_buf, first_bit2) {
+    ChannelMutableRef b1(&_min_buf, 1), b2(&_max_buf, 2);
     b1 = channel_traits<channel_t>::min_value();
     b2 = channel_traits<channel_t>::max_value();
 
@@ -229,30 +230,25 @@ template <typename ChannelRef> void test_channel_reference() {
   do_test<reference_core<ChannelRef>>().test_all();
 }
 
-template <typename ChannelSubbyteRef, typename BitBuffer>
-void test_packed_channel_reference() {
-  do_test<
-      packed_reference_core<ChannelSubbyteRef, BitBuffer, ChannelSubbyteRef>>()
+template <typename ChannelSubbyteRef> void test_packed_channel_reference() {
+  do_test<packed_reference_core<ChannelSubbyteRef, ChannelSubbyteRef>>()
       .test_all();
 }
 
-template <typename ChannelSubbyteRef, typename BitBuffer, typename MutableRef>
+template <typename ChannelSubbyteRef, typename MutableRef>
 void test_const_packed_channel_reference() {
-  do_test<packed_reference_core<ChannelSubbyteRef, BitBuffer, MutableRef>>()
-      .test_all();
+  do_test<packed_reference_core<ChannelSubbyteRef, MutableRef>>().test_all();
 }
 
-template <typename ChannelSubbyteRef, typename BitBuffer>
+template <typename ChannelSubbyteRef>
 void test_packed_dynamic_channel_reference() {
-  do_test<packed_dynamic_reference_core<ChannelSubbyteRef, BitBuffer,
-                                        ChannelSubbyteRef>>()
+  do_test<packed_dynamic_reference_core<ChannelSubbyteRef, ChannelSubbyteRef>>()
       .test_all();
 }
 
-template <typename ChannelSubbyteRef, typename BitBuffer, typename MutableRef>
+template <typename ChannelSubbyteRef, typename MutableRef>
 void test_const_packed_dynamic_channel_reference() {
-  do_test<
-      packed_dynamic_reference_core<ChannelSubbyteRef, BitBuffer, MutableRef>>()
+  do_test<packed_dynamic_reference_core<ChannelSubbyteRef, MutableRef>>()
       .test_all();
 }
 
@@ -339,18 +335,18 @@ void test_packed_channel_reference() {
       channel16_11_5_reference_t;
 
   boost::uint16_t data = 0;
-  channel16_0_5_reference_t channel1(data);
-  channel16_5_6_reference_t channel2(data);
-  channel16_11_5_reference_t channel3(data);
+  channel16_0_5_reference_t channel1(&data);
+  channel16_5_6_reference_t channel2(&data);
+  channel16_11_5_reference_t channel3(&data);
 
   channel1 = channel_traits<channel16_0_5_reference_t>::max_value();
   channel2 = channel_traits<channel16_5_6_reference_t>::max_value();
   channel3 = channel_traits<channel16_11_5_reference_t>::max_value();
   error_if(data != 65535);
 
-  test_packed_channel_reference<channel16_0_5_reference_t, boost::uint16_t>();
-  test_packed_channel_reference<channel16_5_6_reference_t, boost::uint16_t>();
-  test_packed_channel_reference<channel16_11_5_reference_t, boost::uint16_t>();
+  test_packed_channel_reference<channel16_0_5_reference_t>();
+  test_packed_channel_reference<channel16_5_6_reference_t>();
+  test_packed_channel_reference<channel16_11_5_reference_t>();
 }
 
 void test_packed_dynamic_channel_reference() {
@@ -360,17 +356,16 @@ void test_packed_dynamic_channel_reference() {
       channel16_6_reference_t;
 
   boost::uint16_t data = 0;
-  channel16_5_reference_t channel1(data, 0);
-  channel16_6_reference_t channel2(data, 5);
-  channel16_5_reference_t channel3(data, 11);
+  channel16_5_reference_t channel1(&data, 0);
+  channel16_6_reference_t channel2(&data, 5);
+  channel16_5_reference_t channel3(&data, 11);
 
   channel1 = channel_traits<channel16_5_reference_t>::max_value();
   channel2 = channel_traits<channel16_6_reference_t>::max_value();
   channel3 = channel_traits<channel16_5_reference_t>::max_value();
   error_if(data != 65535);
 
-  test_packed_dynamic_channel_reference<channel16_5_reference_t,
-                                        boost::uint16_t>();
+  test_packed_dynamic_channel_reference<channel16_5_reference_t>();
 }
 
 void test_channel() {

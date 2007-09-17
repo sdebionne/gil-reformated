@@ -11,17 +11,26 @@
 // image_test.cpp :
 //
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(                                                               \
+    disable : 4244) // conversion from 'gil::image<V,Alloc>::coord_t' to 'int',
+                    // possible loss of data (visual studio compiler doesn't
+                    // realize that the two types are the same)
+#pragma warning(                                                               \
+    disable : 4503) // decorated name length exceeded, name was truncated
+#endif
+
+#include <boost/crc.hpp>
 #include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/mpl/vector.hpp>
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
-
-#include <boost/crc.hpp>
-#include <fstream>
 
 using namespace boost::gil;
 using namespace std;
@@ -77,7 +86,7 @@ struct my_color_converter {
 // Models a Unary Function
 template <typename P> // Models PixelValueConcept
 struct mandelbrot_fn {
-  typedef point2<ptrdiff_t> point_t;
+  typedef point2<std::ptrdiff_t> point_t;
 
   typedef mandelbrot_fn const_t;
   typedef P value_type;
@@ -135,6 +144,17 @@ template <typename T> void x_gradient(const T &src, const gray8s_view_t &dst) {
   }
 }
 
+// A quick test whether a view is homogeneous
+
+template <typename Pixel> struct pixel_is_homogeneous : public mpl::true_ {};
+
+template <typename P, typename C, typename L>
+struct pixel_is_homogeneous<packed_pixel<P, C, L>> : public mpl::false_ {};
+
+template <typename View>
+struct view_is_homogeneous
+    : public pixel_is_homogeneous<typename View::value_type> {};
+
 ////////////////////////////////////////////////////
 ///
 ///  Tests image view transformations and algorithms
@@ -162,6 +182,13 @@ private:
   template <typename Img> void basic_test(const string &prefix);
   template <typename View>
   void view_transformations_test(const View &img_view, const string &prefix);
+  template <typename View>
+  void homogeneous_view_transformations_test(const View &img_view,
+                                             const string &prefix, mpl::true_);
+  template <typename View>
+  void homogeneous_view_transformations_test(const View &img_view,
+                                             const string &prefix,
+                                             mpl::false_) {}
   template <typename View>
   void histogram_test(const View &img_view, const string &prefix);
   void virtual_view_test();
@@ -233,11 +260,11 @@ template <typename View>
 void image_test::histogram_test(const View &img_view, const string &prefix) {
   //  vector<int> histogram(255,0);
   //  get_hist(cropped,histogram.begin());
-  bits32s histogram[256];
+  unsigned char histogram[256];
   fill(histogram, histogram + 256, 0);
   get_hist(img_view, histogram);
-  gray32sc_view_t hist_view =
-      interleaved_view(256, 1, (const gray32s_pixel_t *)histogram, 256);
+  gray8c_view_t hist_view =
+      interleaved_view(256, 1, (const gray8_pixel_t *)histogram, 256);
   check_view(hist_view, prefix + "histogram");
 }
 
@@ -261,8 +288,16 @@ void image_test::view_transformations_test(const View &img_view,
   check_view(flipped_left_right_view(img_view), prefix + "flipped_lr");
   check_view(subsampled_view(img_view, typename View::point_t(2, 1)),
              prefix + "subsampled");
-  check_view(nth_channel_view(img_view, 0), prefix + "0th_channel");
-  check_view(kth_channel_view<0>(img_view), prefix + "0th_channel");
+  check_view(kth_channel_view<0>(img_view), prefix + "0th_k_channel");
+  homogeneous_view_transformations_test(img_view, prefix,
+                                        view_is_homogeneous<View>());
+}
+
+template <typename View>
+void image_test::homogeneous_view_transformations_test(const View &img_view,
+                                                       const string &prefix,
+                                                       mpl::true_) {
+  check_view(nth_channel_view(img_view, 0), prefix + "0th_n_channel");
 }
 
 void image_test::virtual_view_test() {
@@ -291,21 +326,8 @@ void image_test::virtual_view_test() {
 }
 
 void image_test::packed_image_test() {
-  // define an rgb565 pixel
-  typedef const packed_channel_reference<boost::uint16_t, 0, 5, true>
-      rgb565_channel0_t;
-  typedef const packed_channel_reference<boost::uint16_t, 5, 6, true>
-      rgb565_channel1_t;
-  typedef const packed_channel_reference<boost::uint16_t, 11, 5, true>
-      rgb565_channel2_t;
-
-  typedef heterogeneous_packed_pixel<
-      uint16_t,
-      mpl::vector3<rgb565_channel0_t, rgb565_channel1_t, rgb565_channel2_t>,
-      rgb_layout_t>
-      rgb565_pixel_t;
-
-  typedef image<rgb565_pixel_t, false> rgb565_image_t;
+  typedef packed_image3_type<uint16_t, 5, 6, 5, rgb_layout_t>::type
+      rgb565_image_t;
 
   rgb565_image_t img565(sample_view.dimensions());
   copy_and_convert_pixels(sample_view, view(img565));
@@ -353,6 +375,12 @@ void image_test::run() {
   image_all_test<rgb8_image_t>("rgb8_");
   image_all_test<rgb8_planar_image_t>("planarrgb8_");
   image_all_test<gray8_image_t>("gray8_");
+
+  typedef const bit_aligned_pixel_reference<mpl::vector3_c<int, 1, 2, 1>,
+                                            bgr_layout_t, true>
+      bgr121_ref_t;
+  typedef image<bgr121_ref_t, false> bgr121_image_t;
+  image_all_test<bgr121_image_t>("bgr121_");
 
   // TODO: Remove?
   view_transformations_test(
@@ -545,6 +573,22 @@ void static_checks() {
                                         rgb_layout_t, mpl::false_, use_default,
                                         mpl::false_>::type,
                       rgb8c_step_view_t>::value));
+
+  // test view get raw data (mostly compile-time test)
+  {
+    rgb8_image_t rgb8(100, 100);
+    unsigned char *data = interleaved_view_get_raw_data(view(rgb8));
+    const unsigned char *cdata =
+        interleaved_view_get_raw_data(const_view(rgb8));
+    error_if(data != cdata);
+  }
+
+  {
+    rgb16s_planar_image_t rgb8(100, 100);
+    short *data = planar_view_get_raw_data(view(rgb8), 1);
+    const short *cdata = planar_view_get_raw_data(const_view(rgb8), 1);
+    error_if(data != cdata);
+  }
 }
 
 #ifdef BOOST_GIL_NO_IO
@@ -567,3 +611,7 @@ void test_image(const char *ref_checksum) {
   mgr.run();
   static_checks();
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
