@@ -1,8 +1,14 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-    Distributed under the MIT License (see accompanying file LICENSE_1_0_0.txt
-    or a copy at http://opensource.adobe.com/licenses.html)
+
+    Use, modification and distribution are subject to the Boost Software
+   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt).
+
+    See http://opensource.adobe.com/gil for most recent version including
+   documentation.
 */
+
 /*************************************************************************************************/
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +93,7 @@ public:
   /// custom class that is convertible to reference We require our own reference
   /// because it is registered in iterator_traits
   reference operator[](difference_type d) const {
-    return byte_advanced_ref(*this, d * sizeof(channel_t));
+    return memunit_advanced_ref(*this, d * sizeof(channel_t));
   }
 
   // Put this for every iterator whose reference is a proxy type
@@ -187,7 +193,8 @@ struct channel_type<interleaved_ptr<ChannelPtr, Layout>> {
 /////////////////////////////
 
 template <typename ChannelPtr, typename Layout>
-inline std::ptrdiff_t byte_step(const interleaved_ptr<ChannelPtr, Layout> &) {
+inline std::ptrdiff_t
+memunit_step(const interleaved_ptr<ChannelPtr, Layout> &) {
   return sizeof(typename std::iterator_traits<
                 ChannelPtr>::value_type) * // size of each channel in bytes
          interleaved_ptr<ChannelPtr,
@@ -196,32 +203,32 @@ inline std::ptrdiff_t byte_step(const interleaved_ptr<ChannelPtr, Layout> &) {
 
 template <typename ChannelPtr, typename Layout>
 inline std::ptrdiff_t
-byte_distance(const interleaved_ptr<ChannelPtr, Layout> &p1,
-              const interleaved_ptr<ChannelPtr, Layout> &p2) {
-  return byte_distance(p1.channels(), p2.channels());
+memunit_distance(const interleaved_ptr<ChannelPtr, Layout> &p1,
+                 const interleaved_ptr<ChannelPtr, Layout> &p2) {
+  return memunit_distance(p1.channels(), p2.channels());
 }
 
 template <typename ChannelPtr, typename Layout>
-inline void byte_advance(interleaved_ptr<ChannelPtr, Layout> &p,
-                         std::ptrdiff_t byte_diff) {
-  byte_advance(p.channels(), byte_diff);
+inline void memunit_advance(interleaved_ptr<ChannelPtr, Layout> &p,
+                            std::ptrdiff_t diff) {
+  memunit_advance(p.channels(), diff);
 }
 
 template <typename ChannelPtr, typename Layout>
 inline interleaved_ptr<ChannelPtr, Layout>
-byte_advanced(const interleaved_ptr<ChannelPtr, Layout> &p,
-              std::ptrdiff_t byteDiff) {
+memunit_advanced(const interleaved_ptr<ChannelPtr, Layout> &p,
+                 std::ptrdiff_t diff) {
   interleaved_ptr<ChannelPtr, Layout> ret = p;
-  byte_advance(ret, byteDiff);
+  memunit_advance(ret, diff);
   return ret;
 }
 
 template <typename ChannelPtr, typename Layout>
 inline typename interleaved_ptr<ChannelPtr, Layout>::reference
-byte_advanced_ref(const interleaved_ptr<ChannelPtr, Layout> &p,
-                  std::ptrdiff_t byteDiff) {
+memunit_advanced_ref(const interleaved_ptr<ChannelPtr, Layout> &p,
+                     std::ptrdiff_t diff) {
   interleaved_ptr<ChannelPtr, Layout> ret = p;
-  byte_advance(ret, byteDiff);
+  memunit_advance(ret, diff);
   return *ret;
 }
 
@@ -231,8 +238,7 @@ byte_advanced_ref(const interleaved_ptr<ChannelPtr, Layout> &p,
 
 template <typename ChannelPtr, typename Layout>
 struct dynamic_x_step_type<interleaved_ptr<ChannelPtr, Layout>> {
-  typedef byte_addressable_step_iterator<interleaved_ptr<ChannelPtr, Layout>>
-      type;
+  typedef memory_based_step_iterator<interleaved_ptr<ChannelPtr, Layout>> type;
 };
 
 } // namespace gil

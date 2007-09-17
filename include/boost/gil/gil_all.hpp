@@ -24,6 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include "algorithm.hpp"
+#include "bit_aligned_pixel_iterator.hpp"
 #include "channel_algorithm.hpp"
 #include "color_convert.hpp"
 #include "device_n.hpp"

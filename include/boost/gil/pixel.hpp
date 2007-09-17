@@ -66,6 +66,23 @@ template <typename PixelBased>
 struct num_channels
     : public mpl::size<typename color_space_type<PixelBased>::type> {};
 
+/**
+\addtogroup PixelBasedAlgorithm
+
+Example:
+\code
+BOOST_STATIC_ASSERT((num_channels<rgb8_view_t>::value==3));
+BOOST_STATIC_ASSERT((num_channels<cmyk16_planar_ptr_t>::value==4));
+
+BOOST_STATIC_ASSERT((is_planar<rgb16_planar_image_t>::value));
+BOOST_STATIC_ASSERT((is_same<color_space_type<rgb8_planar_ref_t>::type,
+rgb_t>::value));
+BOOST_STATIC_ASSERT((is_same<channel_mapping_type<cmyk8_pixel_t>::type,
+                             channel_mapping_type<rgba8_pixel_t>::type>::value));
+BOOST_STATIC_ASSERT((is_same<channel_type<bgr8_pixel_t>::type, bits8>::value));
+\endcode
+*/
+
 /// \defgroup ColorBaseModelPixel pixel
 /// \ingroup ColorBaseModel
 /// \brief A homogeneous color base whose element is a channel value. Models
@@ -211,8 +228,34 @@ public:
   }
 };
 
-/// \brief Metafunction predicate that flags pixel as a model of PixelConcept.
-/// Required by PixelConcept \ingroup PixelModelPixel
+/////////////////////////////
+//  ColorBasedConcept
+/////////////////////////////
+
+template <typename ChannelValue, typename Layout, int K>
+struct kth_element_type<pixel<ChannelValue, Layout>, K> {
+  typedef ChannelValue type;
+};
+
+template <typename ChannelValue, typename Layout, int K>
+struct kth_element_reference_type<pixel<ChannelValue, Layout>, K> {
+  typedef typename channel_traits<ChannelValue>::reference type;
+};
+
+template <typename ChannelValue, typename Layout, int K>
+struct kth_element_reference_type<const pixel<ChannelValue, Layout>, K> {
+  typedef typename channel_traits<ChannelValue>::const_reference type;
+};
+
+template <typename ChannelValue, typename Layout, int K>
+struct kth_element_const_reference_type<pixel<ChannelValue, Layout>, K> {
+  typedef typename channel_traits<ChannelValue>::const_reference type;
+};
+
+/////////////////////////////
+//  PixelConcept
+/////////////////////////////
+
 template <typename ChannelValue, typename Layout>
 struct is_pixel<pixel<ChannelValue, Layout>> : public mpl::true_ {};
 

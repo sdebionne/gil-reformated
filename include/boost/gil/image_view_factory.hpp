@@ -36,9 +36,10 @@ fast to construct.
 #include <cassert>
 #include <cstddef>
 
-/// \defgroup ImageViewConstructors Image View Constructors
+/// \defgroup ImageViewConstructors Image View From Raw Data
 /// \ingroup ImageViewAlgorithm
-/// \brief Methods for constructing image views from raw data
+/// \brief Methods for constructing image views from raw data and for getting
+/// raw data from views
 
 /// \defgroup ImageViewTransformations Image View Transformations
 /// \ingroup ImageViewAlgorithm
@@ -85,6 +86,51 @@ interleaved_view(point2<std::size_t> dim, Iterator pixels,
   return RView(dim, typename RView::locator(pixels, rowsize_in_bytes));
 }
 
+/////////////////////////////
+//  interleaved_view_get_raw_data, planar_view_get_raw_data - return pointers to
+//  the raw data (the channels) of a basic homogeneous view.
+/////////////////////////////
+
+namespace detail {
+template <typename View, bool IsMutable> struct channel_pointer_type_impl;
+
+template <typename View> struct channel_pointer_type_impl<View, true> {
+  typedef typename channel_type<View>::type *type;
+};
+template <typename View> struct channel_pointer_type_impl<View, false> {
+  typedef const typename channel_type<View>::type *type;
+};
+
+template <typename View>
+struct channel_pointer_type
+    : public channel_pointer_type_impl<View, view_is_mutable<View>::value> {};
+}; // namespace detail
+
+/// \ingroup ImageViewConstructors
+/// \brief Returns C pointer to the the channels of an interleaved homogeneous
+/// view.
+template <typename HomogeneousView>
+typename detail::channel_pointer_type<HomogeneousView>::type
+interleaved_view_get_raw_data(const HomogeneousView &view) {
+  BOOST_STATIC_ASSERT((!is_planar<HomogeneousView>::value &&
+                       view_is_basic<HomogeneousView>::value));
+  BOOST_STATIC_ASSERT(
+      (boost::is_pointer<typename HomogeneousView::x_iterator>::value));
+
+  return &at_c<0>(view(0, 0));
+}
+
+/// \ingroup ImageViewConstructors
+/// \brief Returns C pointer to the the channels of a given color plane of a
+/// planar homogeneous view.
+template <typename HomogeneousView>
+typename detail::channel_pointer_type<HomogeneousView>::type
+planar_view_get_raw_data(const HomogeneousView &view, int plane_index) {
+  BOOST_STATIC_ASSERT((is_planar<HomogeneousView>::value &&
+                       view_is_basic<HomogeneousView>::value));
+  return dynamic_at_c(view.row_begin(0), plane_index);
+}
+
 /// \defgroup ImageViewTransformationsColorConvert color_converted_view
 /// \ingroup ImageViewTransformations
 /// \brief Color converted view of another view
@@ -98,23 +144,17 @@ template <typename SrcConstRefP, typename DstP,
           typename CC =
               default_color_converter> // const_reference to the source pixel
                                        // and destination pixel value
-                                       class color_convert_deref_fn {
+                                       class color_convert_deref_fn
+    : public deref_base<color_convert_deref_fn<SrcConstRefP, DstP, CC>, DstP,
+                        DstP, const DstP &, SrcConstRefP, DstP, false> {
 private:
   CC _cc; // color-converter
 public:
-  typedef color_convert_deref_fn const_t;
-  typedef DstP value_type;
-  typedef value_type reference; // read-only dereferencing
-  typedef const value_type &const_reference;
-  typedef SrcConstRefP argument_type;
-  typedef reference result_type;
-  BOOST_STATIC_CONSTANT(bool, is_mutable = false);
-
   color_convert_deref_fn() {}
   color_convert_deref_fn(CC cc_in) : _cc(cc_in) {}
 
-  result_type operator()(argument_type srcP) const {
-    result_type dstP;
+  DstP operator()(SrcConstRefP srcP) const {
+    DstP dstP;
     _cc(srcP, dstP);
     return dstP;
   }
@@ -153,7 +193,7 @@ struct color_converted_view_type
     : public detail::_color_converted_view_type<SrcView, CC, DstP,
                                                 typename SrcView::value_type> {
   GIL_CLASS_REQUIRE(DstP, boost::gil,
-                    MutablePixelConcept); // why does it have to be mutable???
+                    MutablePixelConcept) // why does it have to be mutable???
 };
 
 /// \ingroup ImageViewTransformationsColorConvert
@@ -319,8 +359,8 @@ template <typename View> struct __nth_channel_view_basic<View, false> {
     typedef typename iterator_adaptor_get_base<x_iterator_t>::type
         x_iterator_base_t;
     x_iterator_t sit(x_iterator_base_t(&(src(0, 0)[n])),
-                     src.pixels().pix_bytestep());
-    return type(src.dimensions(), locator_t(sit, src.pixels().row_bytes()));
+                     src.pixels().pixel_size());
+    return type(src.dimensions(), locator_t(sit, src.pixels().row_size()));
   }
 };
 
@@ -334,7 +374,7 @@ template <typename View> struct __nth_channel_view_basic<View, true> {
     typedef typename type::x_iterator x_iterator_t;
     return interleaved_view(src.width(), src.height(),
                             (x_iterator_t) & (src(0, 0)[n]),
-                            src.pixels().row_bytes());
+                            src.pixels().row_size());
   }
 };
 
@@ -376,7 +416,7 @@ template <typename SrcP> // SrcP is a reference to PixelConcept (could be pixel
                          // planar_pixel_reference<const T&,L>
                          struct nth_channel_deref_fn {
   BOOST_STATIC_CONSTANT(bool,
-                        is_mutable = is_pixel_reference<SrcP>::value &&
+                        is_mutable = pixel_is_reference<SrcP>::value &&
                                      pixel_reference_is_mutable<SrcP>::value);
 
 private:
@@ -388,7 +428,7 @@ private:
 
 public:
   typedef nth_channel_deref_fn<const_ref_t> const_t;
-  typedef pixel<channel_t, gray_layout_t> value_type;
+  typedef typename pixel_value_type<channel_t, gray_layout_t>::type value_type;
   typedef typename pixel_reference_type<channel_t, gray_layout_t, false,
                                         false>::type const_reference;
   typedef SrcP argument_type;
@@ -427,7 +467,7 @@ public:
 /// and/or step view) then the return view is a single-channel step view.
 template <typename View> struct nth_channel_view_type {
 private:
-  GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept);
+  GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept)
   typedef detail::__nth_channel_view<View, view_is_basic<View>::value> VB;
 
 public:
@@ -457,7 +497,7 @@ template <int K, typename View>
 struct __kth_channel_view_basic<K, View, false> {
 private:
   typedef
-      typename View::value_type::template kth_element_type<K>::type channel_t;
+      typename kth_element_type<typename View::value_type, K>::type channel_t;
 
 public:
   typedef typename view_type<channel_t, gray_layout_t, false, true,
@@ -469,8 +509,8 @@ public:
     typedef typename iterator_adaptor_get_base<x_iterator_t>::type
         x_iterator_base_t;
     x_iterator_t sit(x_iterator_base_t(&at_c<K>(src(0, 0))),
-                     src.pixels().pix_bytestep());
-    return type(src.dimensions(), locator_t(sit, src.pixels().row_bytes()));
+                     src.pixels().pixel_size());
+    return type(src.dimensions(), locator_t(sit, src.pixels().row_size()));
   }
 };
 
@@ -479,7 +519,7 @@ public:
 template <int K, typename View> struct __kth_channel_view_basic<K, View, true> {
 private:
   typedef
-      typename View::value_type::template kth_element_type<K>::type channel_t;
+      typename kth_element_type<typename View::value_type, K>::type channel_t;
 
 public:
   typedef typename view_type<channel_t, gray_layout_t, false, false,
@@ -488,7 +528,7 @@ public:
     typedef typename type::x_iterator x_iterator_t;
     return interleaved_view(src.width(), src.height(),
                             (x_iterator_t)&at_c<K>(src(0, 0)),
-                            src.pixels().row_bytes());
+                            src.pixels().row_size());
   }
 };
 
@@ -530,19 +570,19 @@ template <int K, typename SrcP> // SrcP is a reference to PixelConcept (could be
                                 // planar_pixel_reference<const T&,L>
                                 struct kth_channel_deref_fn {
   BOOST_STATIC_CONSTANT(bool,
-                        is_mutable = is_pixel_reference<SrcP>::value &&
+                        is_mutable = pixel_is_reference<SrcP>::value &&
                                      pixel_reference_is_mutable<SrcP>::value);
 
 private:
   typedef typename remove_reference<SrcP>::type src_pixel_t;
-  typedef typename src_pixel_t::template kth_element_type<K>::type channel_t;
+  typedef typename kth_element_type<src_pixel_t, K>::type channel_t;
   typedef typename src_pixel_t::const_reference const_ref_t;
   typedef typename pixel_reference_type<channel_t, gray_layout_t, false,
                                         is_mutable>::type ref_t;
 
 public:
   typedef kth_channel_deref_fn<K, const_ref_t> const_t;
-  typedef pixel<channel_t, gray_layout_t> value_type;
+  typedef typename pixel_value_type<channel_t, gray_layout_t>::type value_type;
   typedef typename pixel_reference_type<channel_t, gray_layout_t, false,
                                         false>::type const_reference;
   typedef SrcP argument_type;
@@ -579,7 +619,7 @@ public:
 /// and/or step view) then the return view is a single-channel step view.
 template <int K, typename View> struct kth_channel_view_type {
 private:
-  GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept);
+  GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept)
   typedef detail::__kth_channel_view<K, View, view_is_basic<View>::value> VB;
 
 public:
