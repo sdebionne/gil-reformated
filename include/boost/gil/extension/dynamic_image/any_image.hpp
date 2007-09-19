@@ -25,13 +25,11 @@
 #include "../../image.hpp"
 #include "any_image_view.hpp"
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(                                                               \
-    disable : 4244) // conversion from 'std::ptrdiff_t' to 'int', possible loss
-                    // of data. even if we static-assert the two types are the
-                    // same (on visual studio 8)
-#endif
+//#ifdef _MSC_VER
+//#pragma warning(push)
+//#pragma warning(disable : 4244)     // conversion from 'std::ptrdiff_t' to
+//'int', possible loss of data. even if we static-assert the two types are the
+// same (on visual studio 8) #endif
 
 namespace boost {
 namespace gil {
@@ -170,8 +168,8 @@ GIL_FORCEINLINE // Models ImageVectorConcept
 } // namespace gil
 } // namespace boost
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
+//#ifdef _MSC_VER
+//#pragma warning(pop)
+//#endif
 
 #endif

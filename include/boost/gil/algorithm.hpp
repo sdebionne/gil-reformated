@@ -35,13 +35,11 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(                                                               \
-    disable : 4244) // conversion from 'gil::image<V,Alloc>::coord_t' to 'int',
-                    // possible loss of data (visual studio compiler doesn't
-                    // realize that the two types are the same)
-#endif
+//#ifdef _MSC_VER
+//#pragma warning(push)
+//#pragma warning(disable : 4244)     // conversion from
+//'gil::image<V,Alloc>::coord_t' to 'int', possible loss of data (visual studio
+// compiler doesn't realize that the two types are the same) #endif
 
 namespace boost {
 namespace gil {
@@ -1120,8 +1118,8 @@ GIL_FORCEINLINE F transform_pixel_positions(const View1 &src1,
 } // namespace gil
 } // namespace boost
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
+//#ifdef _MSC_VER
+//#pragma warning(pop)
+//#endif
 
 #endif
