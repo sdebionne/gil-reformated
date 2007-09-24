@@ -56,7 +56,8 @@ template <typename T> struct color_space_type;
 template <typename T> struct channel_mapping_type;
 template <typename It> struct is_iterator_adaptor;
 template <typename It> struct iterator_adaptor_get_base;
-template <typename ChannelBitSizes, typename Layout, bool IsMutable>
+template <typename BitField, typename ChannelBitSizes, typename Layout,
+          bool IsMutable>
 struct bit_aligned_pixel_reference;
 
 //////////////////////////////////////////////////
@@ -506,7 +507,13 @@ template <typename ChannelBitSizeVector, typename Layout,
           typename Alloc = std::allocator<unsigned char>>
 struct bit_aligned_image_type {
 private:
-  typedef const bit_aligned_pixel_reference<ChannelBitSizeVector, Layout, true>
+  BOOST_STATIC_CONSTANT(
+      int,
+      bit_size = (mpl::accumulate<ChannelBitSizeVector, mpl::int_<0>,
+                                  mpl::plus<mpl::_1, mpl::_2>>::type::value));
+  typedef typename detail::min_fast_uint<bit_size>::type bitfield_t;
+  typedef const bit_aligned_pixel_reference<bitfield_t, ChannelBitSizeVector,
+                                            Layout, true>
       bit_alignedref_t;
 
 public:
