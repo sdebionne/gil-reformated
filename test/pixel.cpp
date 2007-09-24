@@ -286,11 +286,11 @@ void test_packed_pixel() {
   color_convert(rgb_full, r565);
 
   // Test bit-aligned pixel reference
-  typedef const bit_aligned_pixel_reference<boost::mpl::vector3_c<int, 1, 2, 1>,
-                                            bgr_layout_t, true>
+  typedef const bit_aligned_pixel_reference<
+      boost::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, bgr_layout_t, true>
       bgr121_ref_t;
-  typedef const bit_aligned_pixel_reference<boost::mpl::vector3_c<int, 1, 2, 1>,
-                                            rgb_layout_t, true>
+  typedef const bit_aligned_pixel_reference<
+      boost::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, rgb_layout_t, true>
       rgb121_ref_t;
   typedef rgb121_ref_t::value_type rgb121_pixel_t;
   rgb121_pixel_t p121;
