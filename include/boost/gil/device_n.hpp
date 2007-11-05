@@ -18,13 +18,14 @@
 /// \brief Support for color space of N channels and variants
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
-/// \date 2005-2007 \n Last updated on March 8, 2006
+/// \date 2005-2007 \n Last updated on October 10, 2007
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include "gil_config.hpp"
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/vector_c.hpp>
 #include <boost/type_traits.hpp>
+#include <cstddef>
 
 namespace boost {
 namespace gil {
@@ -76,7 +77,7 @@ template <int N> struct devicen_layout_t : public layout<devicen_t<N>> {};
 template <typename IC>
 inline typename type_from_x_iterator<
     planar_pixel_iterator<IC, devicen_t<2>>>::view_t
-planar_devicen_view(int width, int height, IC c0, IC c1,
+planar_devicen_view(std::size_t width, std::size_t height, IC c0, IC c1,
                     std::ptrdiff_t rowsize_in_bytes) {
   return
       typename type_from_x_iterator<planar_pixel_iterator<IC, devicen_t<2>>>::
@@ -89,7 +90,7 @@ planar_devicen_view(int width, int height, IC c0, IC c1,
 template <typename IC>
 inline typename type_from_x_iterator<
     planar_pixel_iterator<IC, devicen_t<3>>>::view_t
-planar_devicen_view(int width, int height, IC c0, IC c1, IC c2,
+planar_devicen_view(std::size_t width, std::size_t height, IC c0, IC c1, IC c2,
                     std::ptrdiff_t rowsize_in_bytes) {
   return
       typename type_from_x_iterator<planar_pixel_iterator<IC, devicen_t<3>>>::
@@ -103,8 +104,8 @@ planar_devicen_view(int width, int height, IC c0, IC c1, IC c2,
 template <typename IC>
 inline typename type_from_x_iterator<
     planar_pixel_iterator<IC, devicen_t<4>>>::view_t
-planar_devicen_view(int width, int height, IC c0, IC c1, IC c2, IC c3,
-                    std::ptrdiff_t rowsize_in_bytes) {
+planar_devicen_view(std::size_t width, std::size_t height, IC c0, IC c1, IC c2,
+                    IC c3, std::ptrdiff_t rowsize_in_bytes) {
   return
       typename type_from_x_iterator<planar_pixel_iterator<IC, devicen_t<4>>>::
           view_t(width, height,
@@ -117,8 +118,8 @@ planar_devicen_view(int width, int height, IC c0, IC c1, IC c2, IC c3,
 template <typename IC>
 inline typename type_from_x_iterator<
     planar_pixel_iterator<IC, devicen_t<5>>>::view_t
-planar_devicen_view(int width, int height, IC c0, IC c1, IC c2, IC c3, IC c4,
-                    std::ptrdiff_t rowsize_in_bytes) {
+planar_devicen_view(std::size_t width, std::size_t height, IC c0, IC c1, IC c2,
+                    IC c3, IC c4, std::ptrdiff_t rowsize_in_bytes) {
   return
       typename type_from_x_iterator<planar_pixel_iterator<IC, devicen_t<5>>>::
           view_t(width, height,

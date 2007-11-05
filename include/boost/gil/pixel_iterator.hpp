@@ -26,6 +26,7 @@
 #include "gil_concept.hpp"
 #include "gil_config.hpp"
 #include "pixel.hpp"
+#include "utilities.hpp"
 #include <cassert>
 #include <iterator>
 
@@ -148,15 +149,13 @@ inline std::ptrdiff_t memunit_distance(const P *p1, const P *p2) {
           gil_reinterpret_cast_c<const unsigned char *>(p1));
 }
 
-template <typename P> P *memunit_advanced(const P *p, std::ptrdiff_t diff);
-
 template <typename P> inline void memunit_advance(P *&p, std::ptrdiff_t diff) {
   p = (P *)((unsigned char *)(p) + diff);
 }
 
 template <typename P>
 inline P *memunit_advanced(const P *p, std::ptrdiff_t diff) {
-  return (P *)((unsigned char *)(p) + diff);
+  return (P *)((char *)(p) + diff);
 }
 
 //  memunit_advanced_ref

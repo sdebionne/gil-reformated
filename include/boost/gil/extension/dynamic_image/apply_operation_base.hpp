@@ -112,7 +112,7 @@ template <std::size_t N> struct apply_operation_fwd_fn {};
 
 // Create specializations of apply_operation_fn for each N 0..100
 GIL_GENERATE_APPLY_FWD_OPS(99)
-}; // namespace detail
+} // namespace detail
 
 // unary application
 template <typename Types, typename Bits, typename Op>
