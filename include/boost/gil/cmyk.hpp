@@ -19,13 +19,14 @@
 /// \brief Support for CMYK color space and variants
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
-/// \date 2005-2007 \n Last updated on September 18, 2006
+/// \date 2005-2007 \n Last updated on October 10, 2007
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include "gil_config.hpp"
 #include "metafunctions.hpp"
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/vector_c.hpp>
+#include <cstddef>
 
 namespace boost {
 namespace gil {
@@ -56,7 +57,7 @@ typedef layout<cmyk_t> cmyk_layout_t;
 /// \brief from raw CMYK planar data
 template <typename IC>
 inline typename type_from_x_iterator<planar_pixel_iterator<IC, cmyk_t>>::view_t
-planar_cmyk_view(int width, int height, IC c, IC m, IC y, IC k,
+planar_cmyk_view(std::size_t width, std::size_t height, IC c, IC m, IC y, IC k,
                  std::ptrdiff_t rowsize_in_bytes) {
   typedef
       typename type_from_x_iterator<planar_pixel_iterator<IC, cmyk_t>>::view_t
