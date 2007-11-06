@@ -104,7 +104,7 @@ template <typename View> struct channel_pointer_type_impl<View, false> {
 template <typename View>
 struct channel_pointer_type
     : public channel_pointer_type_impl<View, view_is_mutable<View>::value> {};
-}; // namespace detail
+} // namespace detail
 
 /// \ingroup ImageViewConstructors
 /// \brief Returns C pointer to the the channels of an interleaved homogeneous

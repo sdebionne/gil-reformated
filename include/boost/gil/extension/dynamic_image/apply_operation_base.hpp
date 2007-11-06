@@ -29,7 +29,7 @@
 ///        casts the object to its appropriate type and applies the operation
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
-/// \date 2005-2006 \n Last updated on May 4, 2006
+/// \date 2005-2007 \n Last updated on November 6, 2007
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
