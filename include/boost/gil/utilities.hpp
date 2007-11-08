@@ -15,6 +15,7 @@
 #define GIL_UTILITIES_H
 
 #include "gil_config.hpp"
+#include <algorithm>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/mpl/begin.hpp>
@@ -27,6 +28,8 @@
 #include <cmath>
 #include <cstddef>
 #include <functional>
+#include <iterator>
+#include <utility>
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \file
