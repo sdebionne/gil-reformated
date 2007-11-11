@@ -467,7 +467,7 @@ inline void tiff_read_and_convert_view(const char *filename, const View &view) {
 template <typename View, typename CC>
 inline void tiff_read_and_convert_view(const std::string &filename,
                                        const View &view, CC cc) {
-  tiff_read_view(filename.c_str(), view, cc);
+  tiff_read_and_convert_view(filename.c_str(), view, cc);
 }
 
 /// \ingroup TIFF_IO
@@ -476,7 +476,7 @@ inline void tiff_read_and_convert_view(const std::string &filename,
 template <typename View>
 inline void tiff_read_and_convert_view(const std::string &filename,
                                        const View &view) {
-  tiff_read_view(filename.c_str(), view);
+  tiff_read_and_convert_view(filename.c_str(), view);
 }
 
 /// \ingroup TIFF_IO
