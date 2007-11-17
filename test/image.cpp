@@ -323,16 +323,22 @@ void image_test::virtual_view_test() {
   histogram_test(mandel, "virtual_");
 }
 
+// Test alignment and packed images
 void image_test::packed_image_test() {
-  typedef packed_image3_type<boost::uint16_t, 5, 6, 5, rgb_layout_t>::type
-      rgb565_image_t;
+  typedef bit_aligned_image3_type<1, 3, 1, bgr_layout_t>::type bgr131_image_t;
+  typedef bgr131_image_t::value_type bgr131_pixel_t;
+  bgr131_pixel_t fill_val(1, 3, 1);
 
-  rgb565_image_t img565(sample_view.dimensions());
-  copy_and_convert_pixels(sample_view, view(img565));
+  bgr131_image_t bgr131_img(3, 10);
+  fill_pixels(view(bgr131_img), fill_val);
 
-  // TODO: Commented out because there is an error with packed images under
-  // GCC 4.1.2, but not under VC8
-  //    check_view(color_converted_view<rgb8_pixel_t>(const_view(img565)),"packed565");
+  bgr131_image_t bgr131a_img(3, 10, 1);
+  copy_pixels(const_view(bgr131_img), view(bgr131a_img));
+
+  bgr131_image_t bgr131b_img(3, 10, 4);
+  copy_pixels(const_view(bgr131_img), view(bgr131b_img));
+
+  error_if(bgr131_img != bgr131a_img || bgr131a_img != bgr131b_img);
 }
 
 void image_test::dynamic_image_test() {

@@ -304,6 +304,18 @@ private:
 };
 
 namespace detail {
+
+template <std::size_t K> struct static_copy_bytes {
+  void operator()(const unsigned char *from, unsigned char *to) const {
+    *to = *from;
+    static_copy_bytes<K - 1>()(++from, ++to);
+  }
+};
+
+template <> struct static_copy_bytes<0> {
+  void operator()(const unsigned char *from, unsigned char *to) const {}
+};
+
 template <typename Derived, typename BitField, int NumBits, bool Mutable>
 class packed_channel_reference_base {
 protected:
@@ -379,10 +391,28 @@ public:
 
 protected:
   static const integer_t max_val = (1 << NumBits) - 1;
-  const bitfield_t &const_data() const {
+
+#ifdef GIL_NONWORD_POINTER_ALIGNMENT_SUPPORTED
+  const bitfield_t &get_data() const {
     return *static_cast<const bitfield_t *>(_data_ptr);
   }
-  bitfield_t &data() const { return *static_cast<bitfield_t *>(_data_ptr); }
+  void set_data(const bitfield_t &val) const {
+    *static_cast<bitfield_t *>(_data_ptr) = val;
+  }
+#else
+  bitfield_t get_data() const {
+    bitfield_t ret;
+    static_copy_bytes<sizeof(bitfield_t)>()(
+        gil_reinterpret_cast_c<const unsigned char *>(_data_ptr),
+        gil_reinterpret_cast<unsigned char *>(&ret));
+    return ret;
+  }
+  void set_data(const bitfield_t &val) const {
+    static_copy_bytes<sizeof(bitfield_t)>()(
+        gil_reinterpret_cast_c<const unsigned char *>(&val),
+        gil_reinterpret_cast<unsigned char *>(_data_ptr));
+  }
+#endif
 
 private:
   void set(integer_t value) const { // can this be done faster??
@@ -460,7 +490,7 @@ public:
   unsigned first_bit() const { return FirstBit; }
 
   integer_t get() const {
-    return integer_t((this->const_data() & channel_mask) >> FirstBit);
+    return integer_t((this->get_data() & channel_mask) >> FirstBit);
   }
 };
 
@@ -498,11 +528,11 @@ public:
   }
   const packed_channel_reference &
   operator=(const mutable_reference &ref) const {
-    set_from_reference(ref.data());
+    set_from_reference(ref.get_data());
     return *this;
   }
   const packed_channel_reference &operator=(const const_reference &ref) const {
-    set_from_reference(ref.const_data());
+    set_from_reference(ref.get_data());
     return *this;
   }
 
@@ -517,16 +547,16 @@ public:
   unsigned first_bit() const { return FirstBit; }
 
   integer_t get() const {
-    return integer_t((this->const_data() & channel_mask) >> FirstBit);
+    return integer_t((this->get_data() & channel_mask) >> FirstBit);
   }
   void set_unsafe(integer_t value) const {
-    this->data() = (this->const_data() & ~channel_mask) | (value << FirstBit);
+    this->set_data((this->get_data() & ~channel_mask) | (value << FirstBit));
   }
 
 private:
   void set_from_reference(const BitField &other_bits) const {
-    this->data() =
-        (this->const_data() & ~channel_mask) | (other_bits & channel_mask);
+    this->set_data((this->get_data() & ~channel_mask) |
+                   (other_bits & channel_mask));
   }
 };
 
@@ -631,7 +661,7 @@ public:
 
   integer_t get() const {
     const BitField channel_mask = parent_t::max_val << _first_bit;
-    return (this->const_data() & channel_mask) >> _first_bit;
+    return (this->get_data() & channel_mask) >> _first_bit;
   }
 };
 
@@ -693,11 +723,11 @@ public:
 
   integer_t get() const {
     const BitField channel_mask = parent_t::max_val << _first_bit;
-    return (this->const_data() & channel_mask) >> _first_bit;
+    return (this->get_data() & channel_mask) >> _first_bit;
   }
   void set_unsafe(integer_t value) const {
     const BitField channel_mask = parent_t::max_val << _first_bit;
-    this->data() = (this->const_data() & ~channel_mask) | value << _first_bit;
+    this->set_data((this->get_data() & ~channel_mask) | value << _first_bit);
   }
 };
 } // namespace gil

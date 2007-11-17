@@ -511,7 +511,7 @@ private:
       int,
       bit_size = (mpl::accumulate<ChannelBitSizeVector, mpl::int_<0>,
                                   mpl::plus<mpl::_1, mpl::_2>>::type::value));
-  typedef typename detail::min_fast_uint<bit_size>::type bitfield_t;
+  typedef typename detail::min_fast_uint<bit_size + 7>::type bitfield_t;
   typedef const bit_aligned_pixel_reference<bitfield_t, ChannelBitSizeVector,
                                             Layout, true>
       bit_alignedref_t;

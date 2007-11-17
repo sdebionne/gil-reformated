@@ -13,6 +13,7 @@
 
 #include <boost/gil/bit_aligned_pixel_iterator.hpp>
 #include <boost/gil/color_convert.hpp>
+#include <boost/gil/image_view_factory.hpp>
 #include <boost/gil/iterator_from_2d.hpp>
 #include <boost/gil/packed_pixel.hpp>
 #include <boost/gil/pixel_iterator.hpp>
