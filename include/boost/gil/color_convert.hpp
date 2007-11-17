@@ -30,7 +30,6 @@
 #include "color_base_algorithm.hpp"
 #include "gil_config.hpp"
 #include "gray.hpp"
-#include "image_view_factory.hpp"
 #include "metafunctions.hpp"
 #include "pixel.hpp"
 #include "rgb.hpp"
@@ -254,7 +253,7 @@ typename channel_type<Pixel>::type alpha_or_max_impl(const Pixel &p,
   return get_color(p, alpha_t());
 }
 template <typename Pixel>
-typename channel_type<Pixel>::type alpha_or_max_impl(const Pixel &p,
+typename channel_type<Pixel>::type alpha_or_max_impl(const Pixel &,
                                                      mpl::false_) {
   return channel_traits<typename channel_type<Pixel>::type>::max_value();
 }
