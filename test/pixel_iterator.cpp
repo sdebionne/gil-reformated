@@ -327,3 +327,8 @@ from planar pointer
     memunit_advance(rgb8_pptr,-3);
 }
 */
+
+int main(int argc, char *argv[]) {
+  test_pixel_iterator();
+  return 0;
+}
