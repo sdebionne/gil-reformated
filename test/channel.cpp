@@ -19,10 +19,7 @@
 using namespace boost::gil;
 using namespace std;
 
-void error_if(bool condition) {
-  if (condition)
-    throw std::exception();
-}
+void error_if(bool);
 
 bits8 c8_min = channel_traits<bits8>::min_value();
 bits8 c8_max = channel_traits<bits8>::max_value();
@@ -388,6 +385,11 @@ void test_channel() {
   do_test<value_core<channel_value_archetype>>();
   do_test<reference_core<channel_archetype>>();
   do_test<reference_core<const channel_archetype &>>();
+}
+
+int main(int argc, char *argv[]) {
+  test_channel();
+  return 0;
 }
 
 // TODO:
