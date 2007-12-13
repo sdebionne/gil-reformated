@@ -154,8 +154,8 @@ public:
 
 template <typename PixelRef, int Tag = 0>
 class reference_core
-    : value_core<typename boost::remove_reference<PixelRef>::type::value_type,
-                 Tag> {
+    : public value_core<
+          typename boost::remove_reference<PixelRef>::type::value_type, Tag> {
 public:
   typedef PixelRef type;
   typedef typename boost::remove_reference<PixelRef>::type pixel_t;
