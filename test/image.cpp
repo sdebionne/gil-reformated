@@ -25,6 +25,7 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/mpl/vector.hpp>
 #include <fstream>
+#include <ios>
 #include <iostream>
 #include <map>
 #include <string>
