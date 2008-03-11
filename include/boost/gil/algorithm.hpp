@@ -23,15 +23,17 @@
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <cstring>
 #include <iterator>
 #include <memory>
+#include <typeinfo>
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \file
 /// \brief Some basic STL-style algorithms when applied to image views
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on May 6, 2007
+/// \date   2005-2008 \n Last updated on March 12, 2008
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
