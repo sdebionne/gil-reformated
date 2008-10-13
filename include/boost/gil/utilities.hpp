@@ -16,6 +16,7 @@
 
 #include "gil_config.hpp"
 #include <algorithm>
+#include <boost/config/no_tr1/cmath.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/mpl/begin.hpp>
@@ -25,7 +26,6 @@
 #include <boost/mpl/size.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
-#include <cmath>
 #include <cstddef>
 #include <functional>
 #include <iterator>
