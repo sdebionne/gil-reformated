@@ -129,7 +129,8 @@ public:
 // "copy assignment operator").
 // EDG implemented Core Issue 574 starting with EDG Version 3.8. I'm not
 // sure why they did it for a template member function as well.
-#if BOOST_WORKAROUND(__HP_aCC, >= 61700)
+#if BOOST_WORKAROUND(__HP_aCC, >= 61700) ||                                    \
+    BOOST_WORKAROUND(__INTEL_COMPILER, >= 1010)
   const planar_pixel_reference &operator=(const planar_pixel_reference &p) {
     static_copy(p, *this);
     return *this;
