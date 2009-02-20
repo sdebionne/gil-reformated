@@ -22,6 +22,7 @@
 
 #include "../../gil_config.hpp"
 #include "../dynamic_image/any_image.hpp"
+#include "io_error.hpp"
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/size.hpp>
 

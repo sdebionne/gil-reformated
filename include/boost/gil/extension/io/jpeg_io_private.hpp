@@ -23,6 +23,7 @@
 #include "../../gil_all.hpp"
 #include "io_error.hpp"
 #include <boost/static_assert.hpp>
+#include <jpeglib.h>
 #include <stdio.h>
 #include <vector>
 
