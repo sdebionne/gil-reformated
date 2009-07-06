@@ -208,23 +208,23 @@ private:
   }
   template <typename Channel> void assign(const Channel &chan, mpl::false_) {
     check_gray();
-    at_c<0>(*this) = chan;
+    gil::at_c<0>(*this) = chan;
   }
   template <typename Channel>
   bool equal(const Channel &chan, mpl::false_) const {
     check_gray();
-    return at_c<0>(*this) == chan;
+    return gil::at_c<0>(*this) == chan;
   }
 
 public:
   pixel &operator=(channel_t chan) {
     check_gray();
-    at_c<0>(*this) = chan;
+    gil::at_c<0>(*this) = chan;
     return *this;
   }
   bool operator==(channel_t chan) const {
     check_gray();
-    return at_c<0>(*this) == chan;
+    return gil::at_c<0>(*this) == chan;
   }
 };
 
