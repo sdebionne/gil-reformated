@@ -170,6 +170,9 @@ public:
     return type_id<T>() == _index;
   }
 
+  base_t bits() const { return _bits; }
+  std::size_t index() const { return _index; }
+
 private:
   template <typename T> static std::size_t type_id() {
     return detail::type_to_index<Types, T>::value;
