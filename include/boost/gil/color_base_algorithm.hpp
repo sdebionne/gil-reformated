@@ -118,7 +118,7 @@ struct kth_semantic_element_reference_type {
                           K>::type::value));
   typedef
       typename kth_element_reference_type<ColorBase, semantic_index>::type type;
-  static type get(ColorBase &cb) { return at_c<semantic_index>(cb); }
+  static type get(ColorBase &cb) { return gil::at_c<semantic_index>(cb); }
 };
 
 /// \brief Specifies the return type of the constant
@@ -132,7 +132,7 @@ struct kth_semantic_element_const_reference_type {
   typedef
       typename kth_element_const_reference_type<ColorBase, semantic_index>::type
           type;
-  static type get(const ColorBase &cb) { return at_c<semantic_index>(cb); }
+  static type get(const ColorBase &cb) { return gil::at_c<semantic_index>(cb); }
 };
 
 /// \brief A mutable accessor to the K-th semantic element of a color base

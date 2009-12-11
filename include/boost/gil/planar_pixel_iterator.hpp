@@ -145,10 +145,10 @@ public:
 
   // PERFORMANCE_CHECK: Remove?
   bool operator<(const planar_pixel_iterator &ptr) const {
-    return at_c<0>(*this) < at_c<0>(ptr);
+    return gil::at_c<0>(*this) < gil::at_c<0>(ptr);
   }
   bool operator!=(const planar_pixel_iterator &ptr) const {
-    return at_c<0>(*this) != at_c<0>(ptr);
+    return gil::at_c<0>(*this) != gil::at_c<0>(ptr);
   }
 
 private:
@@ -168,10 +168,10 @@ private:
   reference dereference() const { return this->template deref<reference>(); }
 
   ptrdiff_t distance_to(const planar_pixel_iterator &it) const {
-    return at_c<0>(it) - at_c<0>(*this);
+    return gil::at_c<0>(it) - gil::at_c<0>(*this);
   }
   bool equal(const planar_pixel_iterator &it) const {
-    return at_c<0>(*this) == at_c<0>(it);
+    return gil::at_c<0>(*this) == gil::at_c<0>(it);
   }
 };
 

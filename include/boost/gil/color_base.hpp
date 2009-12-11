@@ -219,16 +219,16 @@ public:
 
   template <typename E2, typename L2>
   homogeneous_color_base(const homogeneous_color_base<E2, L2, 3> &c)
-      : _v0(at_c<mapping_transform<Layout, L2, 0>::value>(c)),
-        _v1(at_c<mapping_transform<Layout, L2, 1>::value>(c)),
-        _v2(at_c<mapping_transform<Layout, L2, 2>::value>(c)) {}
+      : _v0(gil::at_c<mapping_transform<Layout, L2, 0>::value>(c)),
+        _v1(gil::at_c<mapping_transform<Layout, L2, 1>::value>(c)),
+        _v2(gil::at_c<mapping_transform<Layout, L2, 2>::value>(c)) {}
 
   // Support for l-value reference proxy copy construction
   template <typename E2, typename L2>
   homogeneous_color_base(homogeneous_color_base<E2, L2, 3> &c)
-      : _v0(at_c<mapping_transform<Layout, L2, 0>::value>(c)),
-        _v1(at_c<mapping_transform<Layout, L2, 1>::value>(c)),
-        _v2(at_c<mapping_transform<Layout, L2, 2>::value>(c)) {}
+      : _v0(gil::at_c<mapping_transform<Layout, L2, 0>::value>(c)),
+        _v1(gil::at_c<mapping_transform<Layout, L2, 1>::value>(c)),
+        _v2(gil::at_c<mapping_transform<Layout, L2, 2>::value>(c)) {}
 
   // Support for planar_pixel_iterator construction and dereferencing
   template <typename P>
