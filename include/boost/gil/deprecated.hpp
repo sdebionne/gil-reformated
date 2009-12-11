@@ -27,6 +27,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
+#include <cstddef>
+
 #define planar_ptr planar_pixel_iterator
 #define planar_ref planar_pixel_reference
 #define membased_2d_locator memory_based_2d_locator

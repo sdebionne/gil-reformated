@@ -23,6 +23,7 @@
 #include "io_error.hpp"
 #include <algorithm>
 #include <boost/static_assert.hpp>
+#include <png.h>
 #include <vector>
 
 namespace boost {
