@@ -639,7 +639,7 @@ template <typename ColorBase> struct ColorBaseConcept {
                                                   num_elements - 1>::type CR;
 
 #if !defined(_MSC_VER) || _MSC_VER > 1310
-    CR cr = at_c<num_elements - 1>(cb);
+    CR cr = gil::at_c<num_elements - 1>(cb);
     ignore_unused_variable_warning(cr);
 #endif
 
@@ -679,8 +679,8 @@ template <typename ColorBase> struct MutableColorBaseConcept {
     typedef typename kth_element_reference_type<ColorBase, 0>::type CR;
 
 #if !defined(_MSC_VER) || _MSC_VER > 1310
-    CR r = at_c<0>(cb);
-    at_c<0>(cb) = r;
+    CR r = gil::at_c<0>(cb);
+    gil::at_c<0>(cb) = r;
 #endif
   }
 

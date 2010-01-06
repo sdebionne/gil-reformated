@@ -97,8 +97,8 @@ struct packed_pixel {
   }
   packed_pixel(int chan0, int chan1) : _bitfield(0) {
     BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value == 2));
-    at_c<0>(*this) = chan0;
-    at_c<1>(*this) = chan1;
+    gil::at_c<0>(*this) = chan0;
+    gil::at_c<1>(*this) = chan1;
   }
   packed_pixel(int chan0, int chan1, int chan2) : _bitfield(0) {
     BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value == 3));
@@ -161,23 +161,23 @@ private:
   }
   template <typename Channel> void assign(const Channel &chan, mpl::false_) {
     check_gray();
-    at_c<0>(*this) = chan;
+    gil::at_c<0>(*this) = chan;
   }
   template <typename Channel>
   bool equal(const Channel &chan, mpl::false_) const {
     check_gray();
-    return at_c<0>(*this) == chan;
+    return gil::at_c<0>(*this) == chan;
   }
 
 public:
   packed_pixel &operator=(int chan) {
     check_gray();
-    at_c<0>(*this) = chan;
+    gil::at_c<0>(*this) = chan;
     return *this;
   }
   bool operator==(int chan) const {
     check_gray();
-    return at_c<0>(*this) == chan;
+    return gil::at_c<0>(*this) == chan;
   }
 };
 
