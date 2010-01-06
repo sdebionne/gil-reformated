@@ -250,7 +250,7 @@ inline std::ptrdiff_t memunit_step(const planar_pixel_iterator<IC, C> &) {
 template <typename IC, typename C>
 inline std::ptrdiff_t memunit_distance(const planar_pixel_iterator<IC, C> &p1,
                                        const planar_pixel_iterator<IC, C> &p2) {
-  return memunit_distance(at_c<0>(p1), at_c<0>(p2));
+  return memunit_distance(gil::at_c<0>(p1), gil::at_c<0>(p2));
 }
 
 template <typename IC> struct memunit_advance_fn {
