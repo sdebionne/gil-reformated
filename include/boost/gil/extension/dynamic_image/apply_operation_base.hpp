@@ -167,7 +167,7 @@ typename Op::result_type GIL_FORCEINLINE apply_operation_base(Bits &bits,
 namespace detail {
 template <typename T2, typename Op> struct reduce_bind1 {
   const T2 &_t2;
-  mutable Op &_op;
+  Op &_op;
 
   typedef typename Op::result_type result_type;
 
@@ -181,7 +181,7 @@ template <typename T2, typename Op> struct reduce_bind1 {
 template <typename Types1, typename Bits1, typename Op> struct reduce_bind2 {
   const Bits1 &_bits1;
   std::size_t _index1;
-  mutable Op &_op;
+  Op &_op;
 
   typedef typename Op::result_type result_type;
 
