@@ -109,6 +109,8 @@ public:
   template <typename T>
   explicit any_image(T &obj, bool do_swap) : parent_t(obj, do_swap) {}
   any_image(const any_image &v) : parent_t((const parent_t &)v) {}
+  template <typename Types>
+  any_image(const any_image<Types> &v) : parent_t((const variant<Types> &)v) {}
 
   template <typename T> any_image &operator=(const T &obj) {
     parent_t::operator=(obj);
@@ -116,6 +118,10 @@ public:
   }
   any_image &operator=(const any_image &v) {
     parent_t::operator=((const parent_t &)v);
+    return *this;
+  }
+  template <typename Types> any_image &operator=(const any_image<Types> &v) {
+    parent_t::operator=((const variant<Types> &)v);
     return *this;
   }
 
