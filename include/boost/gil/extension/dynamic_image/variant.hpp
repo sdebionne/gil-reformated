@@ -27,16 +27,17 @@
 #include "../../utilities.hpp"
 #include <algorithm>
 #include <boost/bind.hpp>
-#include <cassert>
-#include <cstddef>
-#include <typeinfo>
-
 #include <boost/mpl/at.hpp>
+#include <boost/mpl/bool.hpp>
 #include <boost/mpl/fold.hpp>
 #include <boost/mpl/max.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/sizeof.hpp>
 #include <boost/mpl/transform.hpp>
+#include <boost/utility/enable_if.hpp>
+#include <cassert>
+#include <cstddef>
+#include <typeinfo>
 
 namespace boost {
 namespace gil {
@@ -51,6 +52,7 @@ struct destructor_op {
 template <typename T, typename Bits>
 void copy_construct_in_place(const T &t, Bits &bits);
 template <typename Bits> struct copy_construct_in_place_fn;
+template <typename Types> struct type_to_index_fn;
 } // namespace detail
 /**
 \brief Represents a concrete instance of a run-time specified type from a set of
@@ -121,6 +123,14 @@ public:
     if (_index == NUM_TYPES)
       throw std::bad_cast();
     detail::copy_construct_in_place(obj, _bits);
+  }
+
+  template <typename Types2>
+  explicit variant(const variant<Types2> &obj)
+      : _index(apply_operation(obj, detail::type_to_index_fn<Types>())) {
+    if (_index == NUM_TYPES)
+      throw std::bad_cast();
+    apply_operation(obj, detail::copy_construct_in_place_fn<base_t>(_bits));
   }
 
   // When doSwap is true, swaps obj with the contents of the variant. obj will
@@ -219,6 +229,14 @@ template <typename Bits> struct equal_to_fn {
   typedef bool result_type;
   template <typename T> result_type operator()(const T &x) const {
     return x == *gil_reinterpret_cast_c<const T *>(&_dst);
+  }
+};
+
+template <typename Types> struct type_to_index_fn {
+  typedef std::size_t result_type;
+
+  template <typename T> result_type operator()(const T &) const {
+    return detail::type_to_index<Types, T>::value;
   }
 };
 } // namespace detail
