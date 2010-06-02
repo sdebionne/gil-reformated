@@ -65,7 +65,7 @@ struct planar_pixel_iterator
           planar_pixel_iterator<ChannelPtr, ColorSpace>,
           pixel<typename std::iterator_traits<ChannelPtr>::value_type,
                 layout<ColorSpace>>,
-          random_access_traversal_tag,
+          std::random_access_iterator_tag,
           const planar_pixel_reference<
               typename std::iterator_traits<ChannelPtr>::reference,
               ColorSpace>>,
@@ -76,7 +76,7 @@ private:
       planar_pixel_iterator<ChannelPtr, ColorSpace>,
       pixel<typename std::iterator_traits<ChannelPtr>::value_type,
             layout<ColorSpace>>,
-      random_access_traversal_tag,
+      std::random_access_iterator_tag,
       const planar_pixel_reference<
           typename std::iterator_traits<ChannelPtr>::reference, ColorSpace>>
       parent_t;
