@@ -46,15 +46,19 @@ template <typename Iterator, // Models Iterator
           typename DFn> // Models Returns the result of dereferencing a given
                         // iterator of type Iterator
 class dereference_iterator_adaptor
-    : public iterator_adaptor<dereference_iterator_adaptor<Iterator, DFn>,
-                              Iterator, typename DFn::value_type, use_default,
-                              typename DFn::reference, use_default> {
+    : public iterator_adaptor<
+          dereference_iterator_adaptor<Iterator, DFn>, Iterator,
+          typename DFn::value_type,
+          typename std::iterator_traits<Iterator>::iterator_category,
+          typename DFn::reference, use_default> {
   DFn _deref_fn;
 
 public:
-  typedef iterator_adaptor<dereference_iterator_adaptor<Iterator, DFn>,
-                           Iterator, typename DFn::value_type, use_default,
-                           typename DFn::reference, use_default>
+  typedef iterator_adaptor<
+      dereference_iterator_adaptor<Iterator, DFn>, Iterator,
+      typename DFn::value_type,
+      typename std::iterator_traits<Iterator>::iterator_category,
+      typename DFn::reference, use_default>
       parent_t;
   typedef typename DFn::result_type reference;
   typedef

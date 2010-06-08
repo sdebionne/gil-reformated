@@ -54,13 +54,13 @@ namespace gil {
 template <typename Loc2> // Models PixelLocatorConcept
 class iterator_from_2d
     : public iterator_facade<iterator_from_2d<Loc2>, typename Loc2::value_type,
-                             random_access_traversal_tag,
+                             std::random_access_iterator_tag,
                              typename Loc2::reference, typename Loc2::coord_t> {
   GIL_CLASS_REQUIRE(Loc2, boost::gil, PixelLocatorConcept)
 public:
   typedef iterator_facade<iterator_from_2d<Loc2>, typename Loc2::value_type,
-                          random_access_traversal_tag, typename Loc2::reference,
-                          typename Loc2::coord_t>
+                          std::random_access_iterator_tag,
+                          typename Loc2::reference, typename Loc2::coord_t>
       parent_t;
   typedef typename parent_t::reference reference;
   typedef typename parent_t::difference_type difference_type;
