@@ -54,6 +54,8 @@ struct channel_mapping_type<const PixelBased>
     : public channel_mapping_type<PixelBased> {};
 template <typename PixelBased>
 struct channel_type<const PixelBased> : public channel_type<PixelBased> {};
+
+template <typename PixelBased> struct is_planar : mpl::false_ {};
 template <typename PixelBased>
 struct is_planar<const PixelBased> : public is_planar<PixelBased> {};
 
