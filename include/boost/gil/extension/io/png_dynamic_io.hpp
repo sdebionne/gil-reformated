@@ -88,7 +88,7 @@ public:
     png_uint_32 width, height;
     int bit_depth, color_type, interlace_type;
     png_get_IHDR(_png_ptr, _info_ptr, &width, &height, &bit_depth, &color_type,
-                 &interlace_type, int_p_NULL, int_p_NULL);
+                 &interlace_type, NULL, NULL);
     if (!construct_matched(im,
                            png_type_format_checker(bit_depth, color_type))) {
       io_error("png_reader_dynamic::read_image(): no matching image type "
