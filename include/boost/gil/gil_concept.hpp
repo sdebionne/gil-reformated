@@ -275,9 +275,7 @@ template <typename P> struct PointNDConcept {
     LT lt = axis_value<N - 1>(point);
     axis_value<N - 1>(point) = lt;
 
-    value_type v = point[0];
-    ignore_unused_variable_warning(v);
-    point[0] = point[0];
+    //        value_type v=point[0];  ignore_unused_variable_warning(v);
   }
   P point;
 };
@@ -469,11 +467,12 @@ namespace detail {
 // Preconditions: T models ChannelConcept
 template <typename T> struct ChannelIsMutableConcept {
   void constraints() {
-    c = c;
+    c1 = c2;
     using std::swap;
-    swap(c, c);
+    swap(c1, c2);
   }
-  T c;
+  T c1;
+  T c2;
 };
 } // namespace detail
 
@@ -958,8 +957,10 @@ template <typename P> struct MutableHomogeneousPixelConcept {
   void constraints() {
     gil_function_requires<HomogeneousPixelConcept<P>>();
     gil_function_requires<MutableHomogeneousColorBaseConcept<P>>();
-    p[0] = p[0];
+    p[0] = v;
+    v = p[0];
   }
+  typename P::template element_type<P>::type v;
   P p;
 };
 
