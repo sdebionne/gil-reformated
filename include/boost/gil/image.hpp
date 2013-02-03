@@ -22,12 +22,17 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
+#include <cstddef>
+#include <memory>
+
+#include <boost/mpl/arithmetic.hpp>
+#include <boost/mpl/if.hpp>
+#include <boost/type_traits/conditional.hpp>
+
 #include "algorithm.hpp"
 #include "gil_config.hpp"
 #include "image_view.hpp"
 #include "metafunctions.hpp"
-#include <cstddef>
-#include <memory>
 
 namespace boost {
 namespace gil {
@@ -209,6 +214,17 @@ private:
       _alloc.deallocate(_memory, total_allocated_size_in_bytes(dimensions));
   }
 
+  std::size_t is_planar_impl(const std::size_t size_in_units,
+                             const std::size_t channels_in_image,
+                             mpl::true_) const {
+    return size_in_units * channels_in_image;
+  }
+
+  std::size_t is_planar_impl(const std::size_t size_in_units, const std::size_t,
+                             mpl::false_) const {
+    return size_in_units;
+  }
+
   std::size_t total_allocated_size_in_bytes(const point_t &dimensions) const {
 
     typedef typename view_t::x_iterator x_iterator;
@@ -219,11 +235,10 @@ private:
         mpl::eval_if<is_pixel<value_type>, num_channels<view_t>,
                      mpl::int_<1>>::type::value;
 
-    std::size_t size_in_units =
-        get_row_size_in_memunits(dimensions.x) * dimensions.y;
-
-    if (IsPlanar)
-      size_in_units = size_in_units * _channels_in_image;
+    std::size_t size_in_units = is_planar_impl(
+        get_row_size_in_memunits(dimensions.x) * dimensions.y,
+        _channels_in_image,
+        typename boost::conditional<IsPlanar, mpl::true_, mpl::false_>::type());
 
     // return the size rounded up to the nearest byte
     return (size_in_units + byte_to_memunit<x_iterator>::value - 1) /
