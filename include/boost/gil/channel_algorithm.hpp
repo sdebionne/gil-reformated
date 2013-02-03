@@ -61,7 +61,9 @@ struct channel_converter_unsigned_integral_nondivisible;
 
 template <typename UnsignedIntegralChannel>
 struct unsigned_integral_max_value
-    : public mpl::integral_c<UnsignedIntegralChannel, -1> {};
+    : public mpl::integral_c<
+          UnsignedIntegralChannel,
+          std::numeric_limits<UnsignedIntegralChannel>::max()> {};
 
 template <>
 struct unsigned_integral_max_value<uint8_t>
