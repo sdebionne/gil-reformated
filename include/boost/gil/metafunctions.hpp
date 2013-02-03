@@ -35,6 +35,7 @@
 #include <boost/mpl/push_back.hpp>
 #include <boost/mpl/transform.hpp>
 #include <boost/mpl/vector.hpp>
+#include <boost/mpl/vector_c.hpp>
 #include <boost/type_traits.hpp>
 #include <iterator>
 
