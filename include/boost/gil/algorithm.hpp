@@ -14,12 +14,6 @@
 #ifndef GIL_ALGORITHM_HPP
 #define GIL_ALGORITHM_HPP
 
-#include "bit_aligned_pixel_iterator.hpp"
-#include "color_base_algorithm.hpp"
-#include "gil_concept.hpp"
-#include "gil_config.hpp"
-#include "image_view.hpp"
-#include "image_view_factory.hpp"
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
@@ -27,6 +21,17 @@
 #include <iterator>
 #include <memory>
 #include <typeinfo>
+
+#include <boost/mpl/and.hpp>
+#include <boost/mpl/or.hpp>
+#include <boost/utility/enable_if.hpp>
+
+#include "bit_aligned_pixel_iterator.hpp"
+#include "color_base_algorithm.hpp"
+#include "gil_concept.hpp"
+#include "gil_config.hpp"
+#include "image_view.hpp"
+#include "image_view_factory.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \file
@@ -493,20 +498,33 @@ GIL_FORCEINLINE void fill_pixels(const View &img_view, const Value &val) {
 namespace detail {
 
 template <typename It>
-GIL_FORCEINLINE void destruct_range_impl(It first, It last, mpl::true_) {
-  typedef typename std::iterator_traits<It>::value_type value_t;
-  if (boost::has_trivial_destructor<value_t>::value)
-    return;
+GIL_FORCEINLINE void destruct_range_impl(
+    It first, It last,
+    typename enable_if<
+        mpl::and_<is_pointer<It>,
+                  mpl::not_<boost::has_trivial_destructor<
+                      typename std::iterator_traits<It>::value_type>>>>::type
+        * /*ptr*/
+    = 0) {
   while (first != last) {
     first->~value_t();
     ++first;
   }
 }
+
 template <typename It>
-GIL_FORCEINLINE void destruct_range_impl(It, It, mpl::false_) {}
+GIL_FORCEINLINE void destruct_range_impl(
+    It, It,
+    typename enable_if<
+        mpl::or_<mpl::not_<is_pointer<It>>,
+                 boost::has_trivial_destructor<
+                     typename std::iterator_traits<It>::value_type>>>::type
+        * /* ptr */
+    = 0) {}
 
 template <typename It> GIL_FORCEINLINE void destruct_range(It first, It last) {
-  destruct_range_impl(first, last, typename is_pointer<It>::type());
+
+  destruct_range_impl(first, last);
 }
 
 struct std_destruct_t {
@@ -678,31 +696,44 @@ struct has_trivial_pixel_constructor<View, true>
 
 } // namespace detail
 
+namespace detail {
+
+template <typename View, bool B>
+GIL_FORCEINLINE void default_construct_pixels_impl(
+    const View &img_view,
+    boost::enable_if<is_same<mpl::bool_<B>, mpl::false_>> * /* ptr */ = 0) {
+  if (img_view.is_1d_traversable()) {
+    detail::default_construct_aux(img_view.begin().x(), img_view.end().x(),
+                                  is_planar<View>());
+  } else {
+    typename View::y_coord_t y;
+    try {
+      for (y = 0; y < img_view.height(); ++y) {
+        detail::default_construct_aux(img_view.row_begin(y),
+                                      img_view.row_end(y), is_planar<View>());
+      }
+    } catch (...) {
+      for (typename View::y_coord_t y0 = 0; y0 < y; ++y0) {
+        detail::destruct_aux(img_view.row_begin(y0), img_view.row_end(y0),
+                             is_planar<View>());
+      }
+
+      throw;
+    }
+  }
+}
+
+} // namespace detail
+
 /// \ingroup ImageViewSTLAlgorithmsDefaultConstructPixels
 /// \brief Invokes the in-place default constructor on every pixel of the
 /// (uninitialized) view. Does not support planar heterogeneous views. If an
 /// exception is thrown destructs any in-place default-constructed pixels
 template <typename View> void default_construct_pixels(const View &img_view) {
-  if (detail::has_trivial_pixel_constructor<View,
-                                            is_planar<View>::value>::value)
-    return;
 
-  if (img_view.is_1d_traversable())
-    detail::default_construct_aux(img_view.begin().x(), img_view.end().x(),
-                                  is_planar<View>());
-  else {
-    typename View::y_coord_t y;
-    try {
-      for (y = 0; y < img_view.height(); ++y)
-        detail::default_construct_aux(img_view.row_begin(y),
-                                      img_view.row_end(y), is_planar<View>());
-    } catch (...) {
-      for (typename View::y_coord_t y0 = 0; y0 < y; ++y0)
-        detail::destruct_aux(img_view.row_begin(y0), img_view.row_end(y0),
-                             is_planar<View>());
-      throw;
-    }
-  }
+  detail::default_construct_pixels_impl<
+      View, detail::has_trivial_pixel_constructor<
+                View, is_planar<View>::value>::value>(img_view);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
