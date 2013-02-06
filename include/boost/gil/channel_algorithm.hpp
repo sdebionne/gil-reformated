@@ -26,6 +26,7 @@
 
 #include "channel.hpp"
 #include "gil_config.hpp"
+#include <boost/integer_traits.hpp>
 #include <boost/mpl/greater.hpp>
 #include <boost/mpl/integral_c.hpp>
 #include <boost/mpl/less.hpp>
@@ -60,12 +61,10 @@ struct channel_converter_unsigned_integral_nondivisible;
 //////////////////////////////////////
 
 template <typename UnsignedIntegralChannel>
-// struct unsigned_integral_max_value : public
-// mpl::integral_c<UnsignedIntegralChannel,std::numeric_limits<UnsignedIntegralChannel>::max()>
-// {};
 struct unsigned_integral_max_value
-    : public mpl::integral_c<UnsignedIntegralChannel,
-                             UnsignedIntegralChannel(-1)> {};
+    : public mpl::integral_c<
+          UnsignedIntegralChannel,
+          integer_traits<UnsignedIntegralChannel>::const_max> {};
 
 template <>
 struct unsigned_integral_max_value<uint8_t>
@@ -80,7 +79,7 @@ struct unsigned_integral_max_value<uint32_t>
 template <int K>
 struct unsigned_integral_max_value<packed_channel_value<K>>
     : public mpl::integral_c<typename packed_channel_value<K>::integer_t,
-                             (1 << K) - 1> {};
+                             (uint64_t(1) << K) - 1> {};
 
 //////////////////////////////////////
 ////  unsigned_integral_num_bits - given an unsigned integral channel type,
