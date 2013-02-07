@@ -19,13 +19,13 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include <boost/gil/gil_all.hpp>
+#include <boost/gil/image_view_factory.hpp>
 
 namespace boost {
 namespace gil {
 
 template <typename Channel, typename View> struct channel_type_to_index {
-  static const int value = gil::detail::type_to_index<
+  static const int value = detail::type_to_index<
       typename color_space_type<View>::type // color (mpl::vector)
       ,
       Channel         // channel type
