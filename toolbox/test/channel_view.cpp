@@ -3,6 +3,7 @@
 #include <boost/type_traits/is_same.hpp>
 
 #include <boost/gil/extension/toolbox/metafunctions/channel_view.hpp>
+#include <boost/gil/gil_all.hpp>
 
 using namespace boost;
 using namespace gil;
