@@ -28,6 +28,7 @@
 #include "gil_config.hpp"
 #include "utilities.hpp"
 #include <boost/cstdint.hpp>
+#include <boost/integer/integer_mask.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <cassert>
 #include <limits>
@@ -284,9 +285,6 @@ BOOST_STATIC_ASSERT((boost::is_integral<bits4>::value));
 /// \brief The value of a subbyte channel. Models: ChannelValueConcept
 template <int NumBits> class packed_channel_value {
 
-  typedef typename detail::num_value_fn<NumBits>::type num_value_t;
-  static const num_value_t num_values = static_cast<num_value_t>(1) << NumBits;
-
 public:
   typedef typename detail::min_fast_uint<NumBits>::type integer_t;
 
@@ -296,17 +294,19 @@ public:
   typedef value_type *pointer;
   typedef const value_type *const_pointer;
 
-  static value_type min_value() { return value_type(0); }
-  static value_type max_value() { return value_type(num_values - 1); }
+  static value_type min_value() { return 0; }
+  static value_type max_value() { return low_bits_mask_t<NumBits>::sig_bits; }
+
   BOOST_STATIC_CONSTANT(bool, is_mutable = true);
 
   packed_channel_value() {}
+
   packed_channel_value(integer_t v) {
-    _value = static_cast<integer_t>(v % num_values);
+    _value =
+        static_cast<integer_t>(v & low_bits_mask_t<NumBits>::sig_bits_fast);
   }
-  packed_channel_value(const packed_channel_value &v) : _value(v._value) {}
   template <typename Scalar> packed_channel_value(Scalar v) {
-    _value = static_cast<integer_t>(v) % num_values;
+    _value = packed_channel_value(static_cast<integer_t>(v));
   }
 
   static unsigned int num_bits() { return NumBits; }
