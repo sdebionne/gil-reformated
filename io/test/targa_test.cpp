@@ -5,7 +5,7 @@
 
 #include <fstream>
 
-#include <boost/gil/extension/io_new/targa_all.hpp>
+#include <boost/gil/extension/io/targa_all.hpp>
 #include <boost/gil/gil_all.hpp>
 
 #include <boost/filesystem/convenience.hpp>
