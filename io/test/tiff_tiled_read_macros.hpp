@@ -7,7 +7,7 @@
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 
-#include <boost/gil/extension/io_new/tiff_read.hpp>
+#include <boost/gil/extension/io/tiff_read.hpp>
 #include <boost/gil/gil_all.hpp>
 #include <boost/mpl/vector.hpp>
 
