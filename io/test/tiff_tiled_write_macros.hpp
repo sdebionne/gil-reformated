@@ -1,7 +1,7 @@
 #ifndef BOOST_GIL_TIFF_TILED_WRITE_MACROS_HPP
 #define BOOST_GIL_TIFF_TILED_WRITE_MACROS_HPP
 
-#include <boost/gil/extension/io_new/tiff_all.hpp>
+#include <boost/gil/extension/io/tiff_all.hpp>
 #include <boost/gil/gil_all.hpp>
 #include <boost/mpl/vector.hpp>
 

@@ -1,7 +1,7 @@
 //#define BOOST_TEST_MODULE png_old_test_module
 #include <boost/test/unit_test.hpp>
 
-#include <boost/gil/extension/io_new/png_io_old.hpp>
+#include <boost/gil/extension/io/png_io_old.hpp>
 #include <boost/gil/gil_all.hpp>
 
 #include "mandel_view.hpp"

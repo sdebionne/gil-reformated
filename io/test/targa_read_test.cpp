@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/type_traits/is_same.hpp>
 
-#include <boost/gil/extension/io_new/targa_all.hpp>
+#include <boost/gil/extension/io/targa_all.hpp>
 #include <boost/gil/gil_all.hpp>
 
 #include "paths.hpp"

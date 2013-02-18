@@ -1,7 +1,7 @@
 //#define BOOST_TEST_MODULE jpeg_old_test_module
 #include <boost/test/unit_test.hpp>
 
-#include <boost/gil/extension/io_new/jpeg_io_old.hpp>
+#include <boost/gil/extension/io/jpeg_io_old.hpp>
 #include <boost/gil/gil_all.hpp>
 
 #include "mandel_view.hpp"
