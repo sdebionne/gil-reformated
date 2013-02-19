@@ -114,8 +114,6 @@ public:
 
     if (_read_scanline) {
       _reader->read(_buffer, _pos);
-
-      increase_pos();
     } else {
       _skip();
     }
@@ -135,6 +133,8 @@ public:
     }
 
     _read_scanline = true;
+
+    increase_pos();
 
     return (*this);
   }
