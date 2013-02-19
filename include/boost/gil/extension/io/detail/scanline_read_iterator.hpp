@@ -33,6 +33,7 @@ public:
   typedef byte_t *value_type;
   typedef value_type const *pointer;
   typedef value_type const &reference;
+  typedef int difference_type;
 
   /// todo
   // typedef ptrdiff_t difference_type;
