@@ -41,26 +41,30 @@ public:
 public:
   /// Default Constructor, usually used to create an end iterator.
   scanline_read_iterator()
-      : _pos(-1), _read_scanline(true), _reader(NULL), _buffer(NULL) {}
+      : _pos(-1), _read_scanline(true), _skip_scanline(true), _reader(NULL),
+        _buffer(NULL) {}
 
   /// Constructor with preallocated image. Reading starts at first scanline of
   /// source image.
   scanline_read_iterator(Reader &reader, byte_t *buffer)
-      : _pos(0), _read_scanline(true), _reader(&reader), _buffer(buffer) {
+      : _pos(0), _read_scanline(true), _skip_scanline(true), _reader(&reader),
+        _buffer(buffer) {
     init();
   }
 
   /// Constructor with preallocated image. Reading starts at first scanline of
   /// source image.
   scanline_read_iterator(Reader &reader)
-      : _pos(0), _read_scanline(true), _reader(&reader), _buffer(NULL) {
+      : _pos(0), _read_scanline(true), _skip_scanline(true), _reader(&reader),
+        _buffer(NULL) {
     init();
   }
 
   /// Constructor with preallocated image. Reading starts at pos scanline of
   /// source image.
   scanline_read_iterator(std::size_t pos, Reader &reader, byte_t *buffer)
-      : _pos(pos), _read_scanline(true), _reader(&reader), _buffer(buffer) {
+      : _pos(pos), _read_scanline(true), _skip_scanline(true), _reader(&reader),
+        _buffer(buffer) {
     init();
 
     if (this->_pos >= this->_reader->_info._height) {
@@ -102,8 +106,6 @@ public:
   /// Set reader. Do clean up before if necessary.
   void set_buffer(byte_t *buffer) { _buffer = buffer; }
 
-  void skip() const { _read_scanline = false; }
-
   /// Dereference Operator
   reference operator*() {
     if (_reader == NULL) {
@@ -113,12 +115,13 @@ public:
       io_error("Buffer cannot be null for this operation.");
     }
 
-    if (_read_scanline) {
+    if (_read_scanline == true) {
       _reader->read(_buffer, _pos);
-    } else {
-      _skip();
+
+      increase_pos();
     }
 
+    _skip_scanline = false;
     _read_scanline = false;
 
     return _buffer;
@@ -129,13 +132,14 @@ public:
 
   /// Pre-Increment Operator
   scanline_read_iterator<Reader> &operator++() {
-    if (_buffer == NULL) {
-      io_error("Cannot proceed without initializing read buffer.");
+    if (_skip_scanline == true) {
+      _skip();
+
+      increase_pos();
     }
 
+    _skip_scanline = true;
     _read_scanline = true;
-
-    increase_pos();
 
     return (*this);
   }
@@ -175,8 +179,6 @@ private:
   void _skip() {
     if (_reader) {
       _reader->skip(_buffer, _pos);
-
-      increase_pos();
     }
   }
 
@@ -196,6 +198,7 @@ private:
   mutable int _pos;
 
   mutable bool _read_scanline;
+  mutable bool _skip_scanline;
 
   Reader *_reader;
   byte_t *_buffer;
