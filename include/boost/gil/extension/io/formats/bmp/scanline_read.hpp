@@ -29,6 +29,7 @@
 #include <boost/gil/extension/io/detail/io_device.hpp>
 #include <boost/gil/extension/io/detail/reader_base.hpp>
 #include <boost/gil/extension/io/detail/row_buffer_helper.hpp>
+#include <boost/gil/extension/io/detail/scanline_read_iterator.hpp>
 #include <boost/gil/extension/io/detail/typedefs.hpp>
 
 #include "is_allowed.hpp"
@@ -47,7 +48,10 @@ private:
   typedef scanline_reader<Device, bmp_tag> this_t;
 
 public:
-  typedef reader_backend<Device, bmp_tag> backend_t;
+  typedef bmp_tag tag_t;
+  typedef reader_backend<Device, tag_t> backend_t;
+  typedef scanline_reader<Device, tag_t> this_t;
+  typedef scanline_read_iterator<this_t> iterator_t;
 
 public:
   //
@@ -60,8 +64,6 @@ public:
         _pitch(0) {
     initialize();
   }
-
-  void clean_up() {}
 
   /// Read part of image defined by View and return the data.
   void read(byte_t *dst, int pos) {
@@ -86,6 +88,9 @@ public:
   void skip(byte_t *, int) {
     // nothing to do.
   }
+
+  iterator_t begin() { return iterator_t(*this); }
+  iterator_t end() { return iterator_t(*this, this->_info._height); }
 
 private:
   void initialize() {
