@@ -50,7 +50,6 @@
 
 namespace boost {
 namespace gil {
-
 // forward declarations
 template <typename ChannelPtr, typename ColorSpace>
 struct planar_pixel_iterator;
@@ -162,7 +161,6 @@ private:
 /// \brief std::copy for image views
 
 namespace std {
-
 /// \ingroup STLOptimizations
 /// \brief Copy when both src and dst are interleaved and of the same type can
 /// be just memmove
@@ -316,7 +314,6 @@ GIL_FORCEINLINE DstIterator copy_with_2d_iterators(SrcIterator first,
   }
   return dst + n;
 }
-
 } // namespace detail
 } // namespace gil
 } // namespace boost
@@ -331,12 +328,10 @@ copy1(boost::gil::iterator_from_2d<IL> first,
       boost::gil::iterator_from_2d<OL> dst) {
   return boost::gil::detail::copy_with_2d_iterators(first, last, dst);
 }
-
 } // namespace std
 
 namespace boost {
 namespace gil {
-
 /// \ingroup ImageViewSTLAlgorithmsCopyPixels
 /// \brief std::copy for image views
 template <typename View1, typename View2>
@@ -404,7 +399,6 @@ GIL_FORCEINLINE void copy_and_convert_pixels(const View1 &src,
   detail::copy_and_convert_pixels_fn<default_color_converter> ccp;
   ccp(src, dst);
 }
-
 } // namespace gil
 } // namespace boost
 
@@ -451,7 +445,6 @@ void fill(boost::gil::iterator_from_2d<IL> first,
 
 namespace boost {
 namespace gil {
-
 namespace detail {
 /// struct to do std::fill
 struct std_fill_t {
@@ -496,7 +489,6 @@ GIL_FORCEINLINE void fill_pixels(const View &img_view, const Value &val) {
 /// \brief invokes the destructor on every pixel of an image view
 
 namespace detail {
-
 template <typename It>
 GIL_FORCEINLINE void destruct_range_impl(
     It first, It last,
@@ -523,7 +515,6 @@ GIL_FORCEINLINE void destruct_range_impl(
     = 0) {}
 
 template <typename It> GIL_FORCEINLINE void destruct_range(It first, It last) {
-
   destruct_range_impl(first, last);
 }
 
@@ -543,7 +534,6 @@ template <typename It>
 GIL_FORCEINLINE void destruct_aux(It first, It last, mpl::false_) {
   destruct_range(first, last);
 }
-
 } // namespace detail
 
 /// \ingroup ImageViewSTLAlgorithmsDestructPixels
@@ -570,7 +560,6 @@ GIL_FORCEINLINE void destruct_pixels(const View &img_view) {
 /// std::uninitialized_fill for image views
 
 namespace detail {
-
 /// std::uninitialized_fill for planar iterators
 /// If an exception is thrown destructs any in-place copy-constructed objects
 template <typename It, typename P>
@@ -599,7 +588,6 @@ GIL_FORCEINLINE void uninitialized_fill_aux(It first, It last, const P &p,
                                             mpl::false_) {
   std::uninitialized_fill(first, last, p);
 }
-
 } // namespace detail
 
 /// \ingroup ImageViewSTLAlgorithmsUninitializedFillPixels
@@ -637,7 +625,6 @@ void uninitialized_fill_pixels(const View &img_view, const Value &val) {
 /// default constructor on every pixel of an image view
 
 namespace detail {
-
 template <typename It>
 GIL_FORCEINLINE void default_construct_range_impl(It first, It last,
                                                   mpl::true_) {
@@ -693,11 +680,9 @@ template <typename View>
 struct has_trivial_pixel_constructor<View, true>
     : public boost::has_trivial_constructor<typename channel_type<View>::type> {
 };
-
 } // namespace detail
 
 namespace detail {
-
 template <typename View, bool B>
 GIL_FORCEINLINE void default_construct_pixels_impl(
     const View &img_view,
@@ -722,7 +707,6 @@ GIL_FORCEINLINE void default_construct_pixels_impl(
     }
   }
 }
-
 } // namespace detail
 
 /// \ingroup ImageViewSTLAlgorithmsDefaultConstructPixels
@@ -730,7 +714,6 @@ GIL_FORCEINLINE void default_construct_pixels_impl(
 /// (uninitialized) view. Does not support planar heterogeneous views. If an
 /// exception is thrown destructs any in-place default-constructed pixels
 template <typename View> void default_construct_pixels(const View &img_view) {
-
   detail::default_construct_pixels_impl<
       View, detail::has_trivial_pixel_constructor<
                 View, is_planar<View>::value>::value>(img_view);
@@ -747,7 +730,6 @@ template <typename View> void default_construct_pixels(const View &img_view) {
 /// std::uninitialized_copy for image views
 
 namespace detail {
-
 /// std::uninitialized_copy for pairs of planar iterators
 template <typename It1, typename It2>
 GIL_FORCEINLINE void uninitialized_copy_aux(It1 first1, It1 last1, It2 first2,
@@ -885,7 +867,6 @@ template <typename I1, typename I2>
 GIL_FORCEINLINE bool equal_n(I1 i1, std::ptrdiff_t n, I2 i2);
 
 namespace detail {
-
 template <typename I1, typename I2> struct equal_n_fn {
   GIL_FORCEINLINE bool operator()(I1 i1, std::ptrdiff_t n, I2 i2) const {
     return std::equal(i1, i1 + n, i2);
@@ -917,7 +898,7 @@ struct equal_n_fn<planar_pixel_iterator<IC, Cs>,
   GIL_FORCEINLINE bool
   operator()(const planar_pixel_iterator<IC, Cs> i1, std::ptrdiff_t n,
              const planar_pixel_iterator<IC, Cs> i2) const {
-    ptrdiff_t numBytes =
+    std::ptrdiff_t numBytes =
         n * sizeof(typename std::iterator_traits<IC>::value_type);
 
     for (std::ptrdiff_t i = 0; i < mpl::size<Cs>::value; ++i)
@@ -1054,7 +1035,6 @@ GIL_FORCEINLINE bool equal(boost::gil::iterator_from_2d<Loc1> first,
 
 namespace boost {
 namespace gil {
-
 /// \ingroup ImageViewSTLAlgorithmsEqualPixels
 /// \brief std::equal for image views
 template <typename View1, typename View2>
@@ -1148,7 +1128,6 @@ GIL_FORCEINLINE F transform_pixel_positions(const View1 &src1,
   }
   return fun;
 }
-
 } // namespace gil
 } // namespace boost
 

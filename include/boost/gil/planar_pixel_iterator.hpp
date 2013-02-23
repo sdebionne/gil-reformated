@@ -32,7 +32,6 @@
 
 namespace boost {
 namespace gil {
-
 // forward declaration (as this file is included in planar_pixel_reference.hpp)
 template <typename ChannelReference, typename ColorSpace>
 struct planar_pixel_reference;
@@ -160,14 +159,14 @@ private:
   void decrement() {
     static_transform(*this, *this, detail::dec<ChannelPtr>());
   }
-  void advance(ptrdiff_t d) {
+  void advance(std::ptrdiff_t d) {
     static_transform(
         *this, *this,
-        std::bind2nd(detail::plus_asymmetric<ChannelPtr, ptrdiff_t>(), d));
+        std::bind2nd(detail::plus_asymmetric<ChannelPtr, std::ptrdiff_t>(), d));
   }
   reference dereference() const { return this->template deref<reference>(); }
 
-  ptrdiff_t distance_to(const planar_pixel_iterator &it) const {
+  std::ptrdiff_t distance_to(const planar_pixel_iterator &it) const {
     return gil::at_c<0>(it) - gil::at_c<0>(*this);
   }
   bool equal(const planar_pixel_iterator &it) const {
@@ -292,7 +291,6 @@ template <typename IC, typename C>
 struct dynamic_x_step_type<planar_pixel_iterator<IC, C>> {
   typedef memory_based_step_iterator<planar_pixel_iterator<IC, C>> type;
 };
-
 } // namespace gil
 } // namespace boost
 
