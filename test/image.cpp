@@ -389,7 +389,8 @@ void image_test::run() {
 
   // TODO: Remove?
   view_transformations_test(
-      subsampled_view(sample_view, point2<ptrdiff_t>(1, 2)), "subsampled_");
+      subsampled_view(sample_view, point2<std::ptrdiff_t>(1, 2)),
+      "subsampled_");
   view_transformations_test(color_converted_view<gray8_pixel_t>(sample_view),
                             "color_converted_");
 
@@ -618,7 +619,6 @@ void test_image(const char *ref_checksum) {
 }
 
 int main(int argc, char *argv[]) {
-
   const char *local_name = "gil_reference_checksums.txt";
   const char *name_from_status = "../libs/gil/test/gil_reference_checksums.txt";
 

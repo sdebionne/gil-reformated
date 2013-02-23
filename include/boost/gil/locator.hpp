@@ -33,11 +33,10 @@
 
 namespace boost {
 namespace gil {
-
 // forward declarations
-template <typename P> ptrdiff_t memunit_step(const P *);
-template <typename P> P *memunit_advanced(const P *p, ptrdiff_t diff);
-template <typename P> P &memunit_advanced_ref(P *p, ptrdiff_t diff);
+template <typename P> std::ptrdiff_t memunit_step(const P *);
+template <typename P> P *memunit_advanced(const P *p, std::ptrdiff_t diff);
+template <typename P> P &memunit_advanced_ref(P *p, std::ptrdiff_t diff);
 template <typename Iterator, typename D> struct iterator_add_deref;
 template <typename T> class point2;
 namespace detail {
@@ -499,7 +498,6 @@ public:
 template <typename SI> struct dynamic_y_step_type<memory_based_2d_locator<SI>> {
   typedef memory_based_2d_locator<SI> type;
 };
-
 } // namespace gil
 } // namespace boost
 

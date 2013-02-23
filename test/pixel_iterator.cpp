@@ -203,7 +203,6 @@ void invert_pixel1(Pixel& pix) {
 template <typename T> inline void ignore_unused_variable_warning(const T&){}
 
 void test_pixel_iterator() {
-
     rgb8_pixel_t rgb8(1,2,3);
     rgba8_pixel_t rgba8;
 
@@ -251,8 +250,8 @@ ignore_unused_variable_warning(ref);
     ++rgb8StepIt;
     rgb8_ref_t reff=*rgb8StepIt; ignore_unused_variable_warning(reff);
     rgb8StepIt+=10;
-    ptrdiff_t dst=rgb8StepIt2-rgb8StepIt; ignore_unused_variable_warning(dst);
-
+    std::ptrdiff_t dst=rgb8StepIt2-rgb8StepIt;
+ignore_unused_variable_warning(dst);
 
     rgb8_pixel_t val1=ref1;
     rgb8_ptr_t ptr=&ref1;
@@ -293,9 +292,7 @@ ignore_unused_variable_warning(ref);
     //  *pix_img_it_c=rgb8_pixel_t(1,2,3);        // error: assigning though
 const iterator typedef iterator_from_2d<rgb8_loc_t>::difference_type dif_t;
     dif_t dt=0;
-    ptrdiff_t tdt=dt; ignore_unused_variable_warning(tdt);
-
-
+    std::ptrdiff_t tdt=dt; ignore_unused_variable_warning(tdt);
 
     //  memory_based_step_iterator<rgb8_pixel_t> stepIt3Err=stepIt+10;       //
 error: non-const from const iterator
@@ -320,7 +317,6 @@ error: non-const from const iterator
 //    get_color(p,red_t()) = get_color(cp,green_t());           // does not
 compile - cannot assign a non-const pointer to a const pointer. Otherwise you
 will be able to modify the value through it.
-
     }
 //  xy_locator.y()++;
 
@@ -342,7 +338,6 @@ RGB8ConstPlanarPtr;
     RGB8ConstPtr rgb8_const_ptr=NULL;
 ignore_unused_variable_warning(rgb8_const_ptr); rgb8_ptr_t rgb8ptr=&rgb8;
 
-
     rgb8=bgr8_pixel_t(30,20,10);
     rgb8_planar_ptr_t rgb8_pptr=&rgb8;
     ++rgb8_pptr;
@@ -354,7 +349,6 @@ ignore_unused_variable_warning(rgb8_const_ptr); rgb8_ptr_t rgb8ptr=&rgb8;
     r8c=&rgb8;
 
     rgb8_pptr=&rgb8;
-
 
     //  rgb8_const_planar_ptr=&rgb16p;                  // error: incompatible
 bit depth
@@ -374,7 +368,6 @@ reference from const pointer
 planar pointer assert(rgb8planarref_3==rgb8);
     //  RGB8Ref rgb8ref_3=*rgb8_planar_ptr_t; // error: non-planar reference
 from planar pointer
-
 
     const rgb8_pixel_t crgb8=rgb8;
     *rgb8_pptr=rgb8;

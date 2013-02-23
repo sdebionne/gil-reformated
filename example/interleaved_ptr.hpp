@@ -30,7 +30,6 @@
 
 namespace boost {
 namespace gil {
-
 /////////////////////////////////////////////////////////////////////////
 ///
 /// A model of an interleaved pixel iterator. Contains an iterator to the first
@@ -114,9 +113,9 @@ private:
 
   void increment() { _channels += num_channels; }
   void decrement() { _channels -= num_channels; }
-  void advance(ptrdiff_t d) { _channels += num_channels * d; }
+  void advance(std::ptrdiff_t d) { _channels += num_channels * d; }
 
-  ptrdiff_t distance_to(const interleaved_ptr &it) const {
+  std::ptrdiff_t distance_to(const interleaved_ptr &it) const {
     return (it._channels - _channels) / num_channels;
   }
   bool equal(const interleaved_ptr &it) const {
@@ -240,7 +239,6 @@ template <typename ChannelPtr, typename Layout>
 struct dynamic_x_step_type<interleaved_ptr<ChannelPtr, Layout>> {
   typedef memory_based_step_iterator<interleaved_ptr<ChannelPtr, Layout>> type;
 };
-
 } // namespace gil
 } // namespace boost
 
