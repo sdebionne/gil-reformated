@@ -24,7 +24,7 @@ using namespace boost::gil;
 // Models a Unary Function
 template <typename P> // Models PixelValueConcept
 struct mandelbrot_fn {
-  typedef point2<ptrdiff_t> point_t;
+  typedef point2<std::ptrdiff_t> point_t;
 
   typedef mandelbrot_fn const_t;
   typedef P value_type;

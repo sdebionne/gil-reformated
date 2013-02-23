@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(bmp_test)
 #ifdef BOOST_GIL_IO_TEST_ALLOW_READING_IMAGES
 
 BOOST_AUTO_TEST_CASE(old_read_dimensions_test) {
-  point2<ptrdiff_t> dim = bmp_read_dimensions(bmp_filename);
+  point2<std::ptrdiff_t> dim = bmp_read_dimensions(bmp_filename);
 
   BOOST_CHECK_EQUAL(dim.x, 1000);
   BOOST_CHECK_EQUAL(dim.y, 600);
