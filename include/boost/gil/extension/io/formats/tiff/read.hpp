@@ -601,8 +601,6 @@ private:
     std::size_t ret = std::max(
         width, ((scanline_size_in_bytes + element_size - 1) / element_size));
 
-    // assert( this->_scanline_length == ret );
-
     return ret;
   }
 

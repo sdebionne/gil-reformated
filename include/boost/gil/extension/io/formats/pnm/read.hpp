@@ -77,7 +77,7 @@ public:
                 "Image types aren't compatible.");
 
     switch (this->_info._type) {
-      // reading mono text is reading grayscale but with only two values
+    // reading mono text is reading grayscale but with only two values
     case pnm_image_type::mono_asc_t::value:
     case pnm_image_type::gray_asc_t::value: {
       this->_scanline_length = this->_info._width;
