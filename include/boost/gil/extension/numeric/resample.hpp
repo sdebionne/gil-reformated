@@ -1,18 +1,22 @@
 /*
-  Copyright 2005-2007 Adobe Systems Incorporated
-  Distributed under the MIT License (see accompanying file LICENSE_1_0_0.txt
-  or a copy at http://opensource.adobe.com/licenses.html)
+    Copyright 2005-2007 Adobe Systems Incorporated
+
+    Use, modification and distribution are subject to the Boost Software
+   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt).
 */
 
 /*************************************************************************************************/
 
-#ifndef GIL_RESAMPLE_HPP
-#define GIL_RESAMPLE_HPP
+#ifndef BOOST_GIL_EXTENSION_NUMERIC_RESAMPLE_HPP
+#define BOOST_GIL_EXTENSION_NUMERIC_RESAMPLE_HPP
 
-#include "../../extension/dynamic_image/dynamic_image_all.hpp"
-#include "affine.hpp"
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
+
+#include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
+
+#include <boost/gil/extension/numeric/affine.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \file
@@ -21,7 +25,7 @@
 ///        performance
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
-/// \date   2005-2007 \n October 30, 2006
+/// \date   2005-2007 \n
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -166,4 +170,4 @@ void resize_view(const SrcMetaView &src, const DstMetaView &dst,
 } // namespace gil
 } // namespace boost
 
-#endif
+#endif // BOOST_GIL_EXTENSION_NUMERIC_RESAMPLE_HPP
