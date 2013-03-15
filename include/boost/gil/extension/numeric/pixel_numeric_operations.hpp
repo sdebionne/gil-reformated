@@ -1,20 +1,22 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-    Distributed under the MIT License (see accompanying file LICENSE_1_0_0.txt
-    or a copy at http://opensource.adobe.com/licenses.html)
+
+    Use, modification and distribution are subject to the Boost Software
+   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt).
 */
 
 /*************************************************************************************************/
 
-#ifndef GIL_PIXEL_NUMERIC_OPERATIONS_HPP
-#define GIL_PIXEL_NUMERIC_OPERATIONS_HPP
+#ifndef BOOST_GIL_EXTENSION_NUMERIC_PIXEL_NUMERIC_OPERATIONS_HPP
+#define BOOST_GIL_EXTENSION_NUMERIC_PIXEL_NUMERIC_OPERATIONS_HPP
 
 /*!
 /// \file
 /// \brief Structures for pixel-wise numeric operations
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on February 6, 2007
+/// \date   2005-2007 \n
 /// Currently defined structures:
 ///     pixel_plus_t (+), pixel_minus_t (-)
 ///     pixel_multiplies_scalar_t (*), pixel_divides_scalar_t (/)
@@ -22,11 +24,13 @@
 ///     pixel_assigns_t (=)
 */
 
-#include "../../color_base_algorithm.hpp"
-#include "../../gil_config.hpp"
-#include "../../pixel.hpp"
-#include "channel_numeric_operations.hpp"
 #include <functional>
+
+#include <boost/gil/color_base_algorithm.hpp>
+#include <boost/gil/gil_config.hpp>
+#include <boost/gil/pixel.hpp>
+
+#include <boost/gil/extension/numeric/channel_numeric_operations.hpp>
 
 namespace boost {
 namespace gil {
@@ -146,4 +150,4 @@ struct pixel_assigns_t {
 } // namespace gil
 } // namespace boost
 
-#endif
+#endif // BOOST_GIL_EXTENSION_NUMERIC_PIXEL_NUMERIC_OPERATIONS_HPP
