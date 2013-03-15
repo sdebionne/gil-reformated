@@ -1,13 +1,15 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-    Distributed under the MIT License (see accompanying file LICENSE_1_0_0.txt
-    or a copy at http://opensource.adobe.com/licenses.html)
+
+    Use, modification and distribution are subject to the Boost Software
+   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt).
 */
 
 /*************************************************************************************************/
 
-#ifndef GIL_CONVOLVE_HPP
-#define GIL_CONVOLVE_HPP
+#ifndef BOOST_GIL_EXTENSION_NUMERIC_CONVOLVE_HPP
+#define BOOST_GIL_EXTENSION_NUMERIC_CONVOLVE_HPP
 
 /*!
 /// \file
@@ -15,20 +17,20 @@
 ///
 /// \author Hailin Jin and Lubomir Bourdev \n
 ///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on February 6, 2007
+/// \date   2005-2007 \n
 */
 
-#include "../../algorithm.hpp"
-#include "../../gil_config.hpp"
-#include "../../image_view_factory.hpp"
-#include "../../metafunctions.hpp"
-#include "algorithm.hpp"
-#include "pixel_numeric_operations.hpp"
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
 #include <functional>
 #include <vector>
+
+#include <boost/gil/algorithm.hpp>
+#include <boost/gil/gil_config.hpp>
+#include <boost/gil/image_view_factory.hpp>
+#include <boost/gil/metafunctions.hpp>
+#include <pixel_numeric_operations.hpp>
 
 namespace boost {
 namespace gil {
@@ -237,4 +239,4 @@ GIL_FORCEINLINE void convolve_cols_fixed(
 } // namespace gil
 } // namespace boost
 
-#endif
+#endif // BOOST_GIL_EXTENSION_NUMERIC_CONVOLVE_HPP

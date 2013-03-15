@@ -1,16 +1,19 @@
 /*
-  Copyright 2005-2007 Adobe Systems Incorporated
-  Distributed under the MIT License (see accompanying file LICENSE_1_0_0.txt
-  or a copy at http://opensource.adobe.com/licenses.html)
+    Copyright 2005-2007 Adobe Systems Incorporated
+
+    Use, modification and distribution are subject to the Boost Software
+   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt).
 */
 
 /*************************************************************************************************/
 
-#ifndef GIL_SAMPLER_HPP
-#define GIL_SAMPLER_HPP
+#ifndef BOOST_GIL_EXTENSION_NUMERIC_SAMPLER_HPP
+#define BOOST_GIL_EXTENSION_NUMERIC_SAMPLER_HPP
 
-#include "../../extension/dynamic_image/dynamic_image_all.hpp"
-#include "pixel_numeric_operations.hpp"
+#include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
+
+#include <boost/gil/extension/numeric/pixel_numeric_operations.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \file
@@ -19,7 +22,7 @@
 ///        performance
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
-/// \date   2005-2007 \n October 30, 2006
+/// \date   2005-2007 \n
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +54,7 @@ struct nearest_neighbor_sampler {};
 template <typename DstP, typename SrcView, typename F>
 bool sample(nearest_neighbor_sampler, const SrcView &src, const point2<F> &p,
             DstP &result) {
-  point2<int> center(iround(p));
+  typename SrcView::point_t center(iround(p));
   if (center.x >= 0 && center.y >= 0 && center.x < src.width() &&
       center.y < src.height()) {
     result = src(center.x, center.y);
@@ -108,18 +111,54 @@ template <typename DstP, typename SrcView, typename F>
 bool sample(bilinear_sampler, const SrcView &src, const point2<F> &p,
             DstP &result) {
   typedef typename SrcView::value_type SrcP;
-  point2<std::ptrdiff_t> p0(
-      ifloor(p)); // the closest integer coordinate top left from p
+
+  point2<ptrdiff_t> p0(
+      ifloor(p.x),
+      ifloor(p.y)); // the closest integer coordinate top left from p
   point2<F> frac(p.x - p0.x, p.y - p0.y);
-  if (p0.x < 0 || p0.y < 0 || p0.x >= src.width() || p0.y >= src.height())
+
+  if (p0.x < -1 || p0.y < -1 || p0.x >= src.width() || p0.y >= src.height()) {
     return false;
+  }
 
   pixel<F, devicen_layout_t<num_channels<SrcView>::value>> mp(0); // suboptimal
   typename SrcView::xy_locator loc = src.xy_at(p0.x, p0.y);
 
-  if (p0.x + 1 < src.width()) {
-    if (p0.y + 1 < src.height()) {
-      // most common case - inside the image, not on the last row or column
+  if (p0.x == -1) {
+    if (p0.y == -1) {
+      // the top-left corner pixel
+      ++loc.y();
+      detail::add_dst_mul_src<
+          SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
+          loc.x()[1], 1, mp);
+    } else if (p0.y + 1 < src.height()) {
+      // on the first column, but not the top-left nor bottom-left corner pixel
+      detail::add_dst_mul_src<
+          SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
+          loc.x()[1], (1 - frac.y), mp);
+      ++loc.y();
+      detail::add_dst_mul_src<
+          SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
+          loc.x()[1], frac.y, mp);
+    } else {
+      // the bottom-left corner pixel
+      detail::add_dst_mul_src<
+          SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
+          loc.x()[1], 1, mp);
+    }
+  } else if (p0.x + 1 < src.width()) {
+    if (p0.y == -1) {
+      // on the first row, but not the top-left nor top-right corner pixel
+      ++loc.y();
+      detail::add_dst_mul_src<
+          SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
+          *loc, (1 - frac.x), mp);
+      detail::add_dst_mul_src<
+          SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
+          loc.x()[1], frac.x, mp);
+    } else if (p0.y + 1 < src.height()) {
+      // most common case - inside the image, not on the frist nor last
+      // row/column
       detail::add_dst_mul_src<
           SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
           *loc, (1 - frac.x) * (1 - frac.y), mp);
@@ -134,7 +173,7 @@ bool sample(bilinear_sampler, const SrcView &src, const point2<F> &p,
           SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
           loc.x()[1], frac.x * frac.y, mp);
     } else {
-      // on the last row, but not the bottom-right corner pixel
+      // on the last row, but not the bottom-left nor bottom-right corner pixel
       detail::add_dst_mul_src<
           SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
           *loc, (1 - frac.x), mp);
@@ -143,8 +182,14 @@ bool sample(bilinear_sampler, const SrcView &src, const point2<F> &p,
           loc.x()[1], frac.x, mp);
     }
   } else {
-    if (p0.y + 1 < src.height()) {
-      // on the last column, but not the bottom-right corner pixel
+    if (p0.y == -1) {
+      // the top-right corner pixel
+      ++loc.y();
+      detail::add_dst_mul_src<
+          SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
+          *loc, 1, mp);
+    } else if (p0.y + 1 < src.height()) {
+      // on the last column, but not the top-right nor bottom-right corner pixel
       detail::add_dst_mul_src<
           SrcP, F, pixel<F, devicen_layout_t<num_channels<SrcView>::value>>>()(
           *loc, (1 - frac.y), mp);
@@ -165,10 +210,11 @@ bool sample(bilinear_sampler, const SrcView &src, const point2<F> &p,
   cast_pixel(mp, src_result);
 
   color_convert(src_result, result);
+
   return true;
 }
 
 } // namespace gil
 } // namespace boost
 
-#endif
+#endif // BOOST_GIL_EXTENSION_NUMERIC_SAMPLER_HPP
