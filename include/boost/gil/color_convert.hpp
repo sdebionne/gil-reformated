@@ -25,6 +25,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
+#include <functional>
+
+#include <boost/config/suffix.hpp>
+
 #include "channel_algorithm.hpp"
 #include "cmyk.hpp"
 #include "color_base_algorithm.hpp"
@@ -35,7 +39,6 @@
 #include "rgb.hpp"
 #include "rgba.hpp"
 #include "utilities.hpp"
-#include <functional>
 
 namespace boost {
 namespace gil {

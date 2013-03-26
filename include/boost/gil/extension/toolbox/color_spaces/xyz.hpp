@@ -53,7 +53,7 @@ GIL_DEFINE_ALL_TYPEDEFS(32f, xyz);
 /// \note rgb_t is assumed to be sRGB D65
 template <> struct default_color_converter_impl<rgb_t, xyz_t> {
 private:
-  GIL_FORCEINLINE
+  BOOST_FORCEINLINE
   bits32f inverse_companding(bits32f sample) const {
     if (sample > 0.04045f) {
       return powf(((sample + 0.055f) / 1.055f), 2.4f);
@@ -87,7 +87,7 @@ public:
 /// \brief XYZ to RGB
 template <> struct default_color_converter_impl<xyz_t, rgb_t> {
 private:
-  GIL_FORCEINLINE
+  BOOST_FORCEINLINE
   bits32f companding(bits32f sample) const {
     if (sample > 0.0031308f) {
       return (1.055f * powf(sample, 1.f / 2.4f) - 0.055f);

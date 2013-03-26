@@ -25,13 +25,16 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_config.hpp"
-#include "utilities.hpp"
+#include <cassert>
+#include <limits>
+
+#include <boost/config/suffix.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/integer/integer_mask.hpp>
 #include <boost/type_traits/remove_cv.hpp>
-#include <cassert>
-#include <limits>
+
+#include "gil_config.hpp"
+#include "utilities.hpp"
 
 namespace boost {
 namespace gil {
@@ -384,19 +387,19 @@ public:
   }
 
   template <typename Scalar2> const Derived &operator+=(Scalar2 v) const {
-    set(get() + v);
+    set(static_cast<integer_t>(get() + v));
     return derived();
   }
   template <typename Scalar2> const Derived &operator-=(Scalar2 v) const {
-    set(get() - v);
+    set(static_cast<integer_t>(get() - v));
     return derived();
   }
   template <typename Scalar2> const Derived &operator*=(Scalar2 v) const {
-    set(get() * v);
+    set(static_cast<integer_t>(get() * v));
     return derived();
   }
   template <typename Scalar2> const Derived &operator/=(Scalar2 v) const {
-    set(get() / v);
+    set(static_cast<integer_t>(get() / v));
     return derived();
   }
 

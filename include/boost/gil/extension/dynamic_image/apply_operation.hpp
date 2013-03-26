@@ -35,7 +35,7 @@ namespace gil {
 /// \brief Invokes a generic mutable operation (represented as a unary function
 /// object) on a variant
 template <typename Types, typename UnaryOp>
-GIL_FORCEINLINE typename UnaryOp::result_type
+BOOST_FORCEINLINE typename UnaryOp::result_type
 apply_operation(variant<Types> &arg, UnaryOp op) {
   return apply_operation_base<Types>(arg._bits, arg._index, op);
 }
@@ -44,7 +44,7 @@ apply_operation(variant<Types> &arg, UnaryOp op) {
 /// \brief Invokes a generic constant operation (represented as a unary function
 /// object) on a variant
 template <typename Types, typename UnaryOp>
-GIL_FORCEINLINE typename UnaryOp::result_type
+BOOST_FORCEINLINE typename UnaryOp::result_type
 apply_operation(const variant<Types> &arg, UnaryOp op) {
   return apply_operation_basec<Types>(arg._bits, arg._index, op);
 }
@@ -53,7 +53,7 @@ apply_operation(const variant<Types> &arg, UnaryOp op) {
 /// \brief Invokes a generic constant operation (represented as a binary
 /// function object) on two variants
 template <typename Types1, typename Types2, typename BinaryOp>
-GIL_FORCEINLINE typename BinaryOp::result_type
+BOOST_FORCEINLINE typename BinaryOp::result_type
 apply_operation(const variant<Types1> &arg1, const variant<Types2> &arg2,
                 BinaryOp op) {
   return apply_operation_base<Types1, Types2>(arg1._bits, arg1._index,

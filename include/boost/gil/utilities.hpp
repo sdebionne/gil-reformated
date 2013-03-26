@@ -122,53 +122,56 @@ T point2<T>::*const point2<T>::mem_array[point2<T>::num_dimensions] = {
 
 /// \ingroup PointModel
 template <typename T>
-GIL_FORCEINLINE bool operator==(const point2<T> &p1, const point2<T> &p2) {
+BOOST_FORCEINLINE bool operator==(const point2<T> &p1, const point2<T> &p2) {
   return (p1.x == p2.x && p1.y == p2.y);
 }
 /// \ingroup PointModel
 template <typename T>
-GIL_FORCEINLINE bool operator!=(const point2<T> &p1, const point2<T> &p2) {
+BOOST_FORCEINLINE bool operator!=(const point2<T> &p1, const point2<T> &p2) {
   return p1.x != p2.x || p1.y != p2.y;
 }
 /// \ingroup PointModel
 template <typename T>
-GIL_FORCEINLINE point2<T> operator+(const point2<T> &p1, const point2<T> &p2) {
+BOOST_FORCEINLINE point2<T> operator+(const point2<T> &p1,
+                                      const point2<T> &p2) {
   return point2<T>(p1.x + p2.x, p1.y + p2.y);
 }
 /// \ingroup PointModel
-template <typename T> GIL_FORCEINLINE point2<T> operator-(const point2<T> &p) {
+template <typename T>
+BOOST_FORCEINLINE point2<T> operator-(const point2<T> &p) {
   return point2<T>(-p.x, -p.y);
 }
 /// \ingroup PointModel
 template <typename T>
-GIL_FORCEINLINE point2<T> operator-(const point2<T> &p1, const point2<T> &p2) {
+BOOST_FORCEINLINE point2<T> operator-(const point2<T> &p1,
+                                      const point2<T> &p2) {
   return point2<T>(p1.x - p2.x, p1.y - p2.y);
 }
 /// \ingroup PointModel
 template <typename T>
-GIL_FORCEINLINE point2<double> operator/(const point2<T> &p, double t) {
+BOOST_FORCEINLINE point2<double> operator/(const point2<T> &p, double t) {
   return t == 0 ? point2<double>(0, 0) : point2<double>(p.x / t, p.y / t);
 }
 /// \ingroup PointModel
 template <typename T>
-GIL_FORCEINLINE point2<T> operator*(const point2<T> &p, std::ptrdiff_t t) {
+BOOST_FORCEINLINE point2<T> operator*(const point2<T> &p, std::ptrdiff_t t) {
   return point2<T>(p.x * t, p.y * t);
 }
 /// \ingroup PointModel
 template <typename T>
-GIL_FORCEINLINE point2<T> operator*(std::ptrdiff_t t, const point2<T> &p) {
+BOOST_FORCEINLINE point2<T> operator*(std::ptrdiff_t t, const point2<T> &p) {
   return point2<T>(p.x * t, p.y * t);
 }
 
 /// \ingroup PointModel
 template <std::size_t K, typename T>
-GIL_FORCEINLINE const T &axis_value(const point2<T> &p) {
+BOOST_FORCEINLINE const T &axis_value(const point2<T> &p) {
   return p[K];
 }
 
 /// \ingroup PointModel
 template <std::size_t K, typename T>
-GIL_FORCEINLINE T &axis_value(point2<T> &p) {
+BOOST_FORCEINLINE T &axis_value(point2<T> &p) {
   return p[K];
 }
 
@@ -286,12 +289,12 @@ public:
 
 // reinterpret_cast is implementation-defined. Static cast is not.
 template <typename OutPtr, typename In>
-GIL_FORCEINLINE OutPtr gil_reinterpret_cast(In *p) {
+BOOST_FORCEINLINE OutPtr gil_reinterpret_cast(In *p) {
   return static_cast<OutPtr>(static_cast<void *>(p));
 }
 
 template <typename OutPtr, typename In>
-GIL_FORCEINLINE const OutPtr gil_reinterpret_cast_c(const In *p) {
+BOOST_FORCEINLINE const OutPtr gil_reinterpret_cast_c(const In *p) {
   return static_cast<const OutPtr>(static_cast<const void *>(p));
 }
 
