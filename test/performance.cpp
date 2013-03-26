@@ -46,6 +46,8 @@
 #include <ctime>
 #include <iostream>
 
+#include <boost/test/unit_test.hpp>
+
 using namespace boost::gil;
 
 // returns time in milliseconds per call
@@ -475,7 +477,9 @@ void test_transform(std::size_t trials) {
             << std::endl;
 }
 
-int main() {
+BOOST_AUTO_TEST_SUITE(GIL_Tests)
+
+BOOST_AUTO_TEST_CASE(performance_test) {
 #ifdef NDEBUG
   std::size_t num_trials = 1000;
 #else
@@ -568,6 +572,6 @@ int main() {
                  bgr_to_rgb_t<bits8, planar_pixel_reference<bits8, rgb_t>>>(
       num_trials);
   std::cout << std::endl;
-
-  return 0;
 }
+
+BOOST_AUTO_TEST_SUITE_END()

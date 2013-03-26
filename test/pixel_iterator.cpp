@@ -28,6 +28,8 @@
 #include <cassert>
 #include <vector>
 
+#include <boost/test/unit_test.hpp>
+
 using namespace boost::gil;
 using namespace std;
 
@@ -378,7 +380,8 @@ from planar pointer
 }
 */
 
-int main(int argc, char *argv[]) {
-  test_pixel_iterator();
-  return 0;
-}
+BOOST_AUTO_TEST_SUITE(GIL_Tests)
+
+BOOST_AUTO_TEST_CASE(pixel_iterator_test) { test_pixel_iterator(); }
+
+BOOST_AUTO_TEST_SUITE_END()
