@@ -23,14 +23,17 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_concept.hpp"
-#include "gil_config.hpp"
-#include "utilities.hpp"
 #include <algorithm>
+
+#include <boost/config/suffix.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/contains.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/utility/enable_if.hpp>
+
+#include "gil_concept.hpp"
+#include "gil_config.hpp"
+#include "utilities.hpp"
 
 namespace boost {
 namespace gil {
@@ -544,24 +547,24 @@ assert(pixel[2] == 10);
 */
 
 template <typename P>
-GIL_FORCEINLINE typename element_const_reference_type<P>::type
+BOOST_FORCEINLINE typename element_const_reference_type<P>::type
 static_max(const P &p) {
   return detail::min_max_recur<size<P>::value>::max_(p);
 }
 
 template <typename P>
-GIL_FORCEINLINE typename element_reference_type<P>::type static_max(P &p) {
+BOOST_FORCEINLINE typename element_reference_type<P>::type static_max(P &p) {
   return detail::min_max_recur<size<P>::value>::max_(p);
 }
 
 template <typename P>
-GIL_FORCEINLINE typename element_const_reference_type<P>::type
+BOOST_FORCEINLINE typename element_const_reference_type<P>::type
 static_min(const P &p) {
   return detail::min_max_recur<size<P>::value>::min_(p);
 }
 
 template <typename P>
-GIL_FORCEINLINE typename element_reference_type<P>::type static_min(P &p) {
+BOOST_FORCEINLINE typename element_reference_type<P>::type static_min(P &p) {
   return detail::min_max_recur<size<P>::value>::min_(p);
 }
 /// \}
@@ -584,7 +587,7 @@ assert(rgb_red==bgr_red);  // operator== invokes static_equal
 */
 
 template <typename P1, typename P2>
-GIL_FORCEINLINE bool static_equal(const P1 &p1, const P2 &p2) {
+BOOST_FORCEINLINE bool static_equal(const P1 &p1, const P2 &p2) {
   return detail::element_recursion<size<P1>::value>::static_equal(p1, p2);
 }
 
@@ -608,7 +611,7 @@ assert(rgb_red == bgr_red);
 */
 
 template <typename Src, typename Dst>
-GIL_FORCEINLINE void static_copy(const Src &src, Dst &dst) {
+BOOST_FORCEINLINE void static_copy(const Src &src, Dst &dst) {
   detail::element_recursion<size<Dst>::value>::static_copy(src, dst);
 }
 
@@ -628,7 +631,7 @@ assert(p == rgb8_pixel_t(10,10,10));
 \{
 */
 template <typename P, typename V>
-GIL_FORCEINLINE void static_fill(P &p, const V &v) {
+BOOST_FORCEINLINE void static_fill(P &p, const V &v) {
   detail::element_recursion<size<P>::value>::static_fill(p, v);
 }
 /// \}
@@ -653,7 +656,7 @@ assert(p == rgb8_pixel_t(0,1,2));
 */
 
 template <typename P1, typename Op>
-GIL_FORCEINLINE void static_generate(P1 &dst, Op op) {
+BOOST_FORCEINLINE void static_generate(P1 &dst, Op op) {
   detail::element_recursion<size<P1>::value>::static_generate(dst, op);
 }
 /// \}
@@ -685,34 +688,34 @@ assert(result == rgb8_pixel_t(2,4,6));
 
 // static_transform with one source
 template <typename Src, typename Dst, typename Op>
-GIL_FORCEINLINE Op static_transform(Src &src, Dst &dst, Op op) {
+BOOST_FORCEINLINE Op static_transform(Src &src, Dst &dst, Op op) {
   return detail::element_recursion<size<Dst>::value>::static_transform(src, dst,
                                                                        op);
 }
 template <typename Src, typename Dst, typename Op>
-GIL_FORCEINLINE Op static_transform(const Src &src, Dst &dst, Op op) {
+BOOST_FORCEINLINE Op static_transform(const Src &src, Dst &dst, Op op) {
   return detail::element_recursion<size<Dst>::value>::static_transform(src, dst,
                                                                        op);
 }
 // static_transform with two sources
 template <typename P2, typename P3, typename Dst, typename Op>
-GIL_FORCEINLINE Op static_transform(P2 &p2, P3 &p3, Dst &dst, Op op) {
+BOOST_FORCEINLINE Op static_transform(P2 &p2, P3 &p3, Dst &dst, Op op) {
   return detail::element_recursion<size<Dst>::value>::static_transform(p2, p3,
                                                                        dst, op);
 }
 template <typename P2, typename P3, typename Dst, typename Op>
-GIL_FORCEINLINE Op static_transform(P2 &p2, const P3 &p3, Dst &dst, Op op) {
+BOOST_FORCEINLINE Op static_transform(P2 &p2, const P3 &p3, Dst &dst, Op op) {
   return detail::element_recursion<size<Dst>::value>::static_transform(p2, p3,
                                                                        dst, op);
 }
 template <typename P2, typename P3, typename Dst, typename Op>
-GIL_FORCEINLINE Op static_transform(const P2 &p2, P3 &p3, Dst &dst, Op op) {
+BOOST_FORCEINLINE Op static_transform(const P2 &p2, P3 &p3, Dst &dst, Op op) {
   return detail::element_recursion<size<Dst>::value>::static_transform(p2, p3,
                                                                        dst, op);
 }
 template <typename P2, typename P3, typename Dst, typename Op>
-GIL_FORCEINLINE Op static_transform(const P2 &p2, const P3 &p3, Dst &dst,
-                                    Op op) {
+BOOST_FORCEINLINE Op static_transform(const P2 &p2, const P3 &p3, Dst &dst,
+                                      Op op) {
   return detail::element_recursion<size<Dst>::value>::static_transform(p2, p3,
                                                                        dst, op);
 }
@@ -747,73 +750,76 @@ assert(p1 == p2);
 
 // static_for_each with one source
 template <typename P1, typename Op>
-GIL_FORCEINLINE Op static_for_each(P1 &p1, Op op) {
+BOOST_FORCEINLINE Op static_for_each(P1 &p1, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, op);
 }
 template <typename P1, typename Op>
-GIL_FORCEINLINE Op static_for_each(const P1 &p1, Op op) {
+BOOST_FORCEINLINE Op static_for_each(const P1 &p1, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, op);
 }
 // static_for_each with two sources
 template <typename P1, typename P2, typename Op>
-GIL_FORCEINLINE Op static_for_each(P1 &p1, P2 &p2, Op op) {
+BOOST_FORCEINLINE Op static_for_each(P1 &p1, P2 &p2, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2,
                                                                      op);
 }
 template <typename P1, typename P2, typename Op>
-GIL_FORCEINLINE Op static_for_each(P1 &p1, const P2 &p2, Op op) {
+BOOST_FORCEINLINE Op static_for_each(P1 &p1, const P2 &p2, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2,
                                                                      op);
 }
 template <typename P1, typename P2, typename Op>
-GIL_FORCEINLINE Op static_for_each(const P1 &p1, P2 &p2, Op op) {
+BOOST_FORCEINLINE Op static_for_each(const P1 &p1, P2 &p2, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2,
                                                                      op);
 }
 template <typename P1, typename P2, typename Op>
-GIL_FORCEINLINE Op static_for_each(const P1 &p1, const P2 &p2, Op op) {
+BOOST_FORCEINLINE Op static_for_each(const P1 &p1, const P2 &p2, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2,
                                                                      op);
 }
 // static_for_each with three sources
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(P1 &p1, P2 &p2, P3 &p3, Op op) {
+BOOST_FORCEINLINE Op static_for_each(P1 &p1, P2 &p2, P3 &p3, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(P1 &p1, P2 &p2, const P3 &p3, Op op) {
+BOOST_FORCEINLINE Op static_for_each(P1 &p1, P2 &p2, const P3 &p3, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(P1 &p1, const P2 &p2, P3 &p3, Op op) {
+BOOST_FORCEINLINE Op static_for_each(P1 &p1, const P2 &p2, P3 &p3, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(P1 &p1, const P2 &p2, const P3 &p3, Op op) {
+BOOST_FORCEINLINE Op static_for_each(P1 &p1, const P2 &p2, const P3 &p3,
+                                     Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(const P1 &p1, P2 &p2, P3 &p3, Op op) {
+BOOST_FORCEINLINE Op static_for_each(const P1 &p1, P2 &p2, P3 &p3, Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(const P1 &p1, P2 &p2, const P3 &p3, Op op) {
+BOOST_FORCEINLINE Op static_for_each(const P1 &p1, P2 &p2, const P3 &p3,
+                                     Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(const P1 &p1, const P2 &p2, P3 &p3, Op op) {
+BOOST_FORCEINLINE Op static_for_each(const P1 &p1, const P2 &p2, P3 &p3,
+                                     Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }
 template <typename P1, typename P2, typename P3, typename Op>
-GIL_FORCEINLINE Op static_for_each(const P1 &p1, const P2 &p2, const P3 &p3,
-                                   Op op) {
+BOOST_FORCEINLINE Op static_for_each(const P1 &p1, const P2 &p2, const P3 &p3,
+                                     Op op) {
   return detail::element_recursion<size<P1>::value>::static_for_each(p1, p2, p3,
                                                                      op);
 }

@@ -149,7 +149,7 @@ GIL_GENERATE_APPLY_FWD_OPS(99)
 
 // unary application
 template <typename Types, typename Bits, typename Op>
-typename Op::result_type GIL_FORCEINLINE
+typename Op::result_type BOOST_FORCEINLINE
 apply_operation_basec(const Bits &bits, std::size_t index, Op op) {
   return detail::apply_operation_fwd_fn<mpl::size<Types>::value>()
       .template applyc<Types>(bits, index, op);
@@ -157,9 +157,8 @@ apply_operation_basec(const Bits &bits, std::size_t index, Op op) {
 
 // unary application
 template <typename Types, typename Bits, typename Op>
-typename Op::result_type GIL_FORCEINLINE apply_operation_base(Bits &bits,
-                                                              std::size_t index,
-                                                              Op op) {
+typename Op::result_type BOOST_FORCEINLINE
+apply_operation_base(Bits &bits, std::size_t index, Op op) {
   return detail::apply_operation_fwd_fn<mpl::size<Types>::value>()
       .template apply<Types>(bits, index, op);
 }
@@ -173,7 +172,8 @@ template <typename T2, typename Op> struct reduce_bind1 {
 
   reduce_bind1(const T2 &t2, Op &op) : _t2(t2), _op(op) {}
 
-  template <typename T1> GIL_FORCEINLINE result_type operator()(const T1 &t1) {
+  template <typename T1>
+  BOOST_FORCEINLINE result_type operator()(const T1 &t1) {
     return _op(t1, _t2);
   }
 };
@@ -188,7 +188,8 @@ template <typename Types1, typename Bits1, typename Op> struct reduce_bind2 {
   reduce_bind2(const Bits1 &bits1, std::size_t index1, Op &op)
       : _bits1(bits1), _index1(index1), _op(op) {}
 
-  template <typename T2> GIL_FORCEINLINE result_type operator()(const T2 &t2) {
+  template <typename T2>
+  BOOST_FORCEINLINE result_type operator()(const T2 &t2) {
     return apply_operation_basec<Types1>(_bits1, _index1,
                                          reduce_bind1<T2, Op>(t2, _op));
   }
@@ -198,7 +199,7 @@ template <typename Types1, typename Bits1, typename Op> struct reduce_bind2 {
 // Binary application by applying on each dimension separately
 template <typename Types1, typename Types2, typename Bits1, typename Bits2,
           typename Op>
-static typename Op::result_type GIL_FORCEINLINE
+static typename Op::result_type BOOST_FORCEINLINE
 apply_operation_base(const Bits1 &bits1, std::size_t index1, const Bits2 &bits2,
                      std::size_t index2, Op op) {
   return apply_operation_basec<Types2>(

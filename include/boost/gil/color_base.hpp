@@ -23,12 +23,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
+#include <cassert>
+
+#include <boost/config/suffix.hpp>
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/vector_c.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/utility/enable_if.hpp>
-#include <cassert>
 
 #include "gil_concept.hpp"
 #include "gil_config.hpp"

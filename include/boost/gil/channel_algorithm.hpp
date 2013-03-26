@@ -24,13 +24,15 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "channel.hpp"
-#include "gil_config.hpp"
+#include <boost/config/suffix.hpp>
 #include <boost/integer_traits.hpp>
 #include <boost/mpl/greater.hpp>
 #include <boost/mpl/integral_c.hpp>
 #include <boost/mpl/less.hpp>
 #include <boost/type_traits.hpp>
+
+#include "channel.hpp"
+#include "gil_config.hpp"
 
 namespace boost {
 namespace gil {

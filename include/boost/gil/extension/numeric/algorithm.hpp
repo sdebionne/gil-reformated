@@ -88,10 +88,10 @@ template <> struct inner_product_k_t<0> {
 /// static version of std::inner_product
 template <std::size_t Size, class _InputIterator1, class _InputIterator2,
           class _Tp, class _BinaryOperation1, class _BinaryOperation2>
-GIL_FORCEINLINE _Tp inner_product_k(_InputIterator1 __first1,
-                                    _InputIterator2 __first2, _Tp __init,
-                                    _BinaryOperation1 __binary_op1,
-                                    _BinaryOperation2 __binary_op2) {
+BOOST_FORCEINLINE _Tp inner_product_k(_InputIterator1 __first1,
+                                      _InputIterator2 __first2, _Tp __init,
+                                      _BinaryOperation1 __binary_op1,
+                                      _BinaryOperation2 __binary_op2) {
   return detail::inner_product_k_t<Size>::template apply(
       __first1, __first2, __init, __binary_op1, __binary_op2);
 }
