@@ -16,6 +16,13 @@
 #include <boost/gil/gil_config.hpp>
 #include <exception>
 
+#include <boost/test/unit_test.hpp>
+
+#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
+#pragma warning(push)
+#pragma warning(disable : 4512) // assignment operator could not be generated
+#endif
+
 using namespace boost::gil;
 using namespace std;
 
@@ -387,10 +394,11 @@ void test_channel() {
   do_test<reference_core<const channel_archetype &>>();
 }
 
-int main(int argc, char *argv[]) {
-  test_channel();
-  return 0;
-}
+BOOST_AUTO_TEST_SUITE(GIL_Tests)
+
+BOOST_AUTO_TEST_CASE(channel_test) { test_channel(); }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 // TODO:
 // - provide algorithm performance overloads for scoped channel and packed
@@ -401,3 +409,7 @@ int main(int argc, char *argv[]) {
 //      - is channel_convert the same as native?
 //      - is operator++ on bits32f the same as native? How about if operator++
 //      is defined in scoped_channel to do _value++?
+
+#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
+#pragma warning(pop)
+#endif
