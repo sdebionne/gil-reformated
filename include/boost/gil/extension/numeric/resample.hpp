@@ -80,8 +80,8 @@ struct resample_pixels_fn
       : _dst_to_src(dst_to_src), _sampler(sampler) {}
 
   template <typename SrcView, typename DstView>
-  GIL_FORCEINLINE void apply_compatible(const SrcView &src,
-                                        const DstView &dst) const {
+  BOOST_FORCEINLINE void apply_compatible(const SrcView &src,
+                                          const DstView &dst) const {
     resample_pixels(src, dst, _dst_to_src, _sampler);
   }
 };
