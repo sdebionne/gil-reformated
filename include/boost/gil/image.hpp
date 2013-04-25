@@ -158,10 +158,9 @@ public:
     if (old_size >= new_size) {
       destruct_pixels(_view);
 
-      _view =
-          view_t(point_t(width, height),
-                 typename view_t::locator(typename view_t::x_iterator(_memory),
-                                          get_row_size_in_memunits(width)));
+      _view = view_t(
+          dims, typename view_t::locator(typename view_t::x_iterator(_memory),
+                                         get_row_size_in_memunits(dims.x)));
 
       default_construct_pixels(_view);
     } else {
