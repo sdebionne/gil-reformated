@@ -13,7 +13,7 @@
 using namespace boost;
 using namespace gil;
 
-BOOST_AUTO_TEST_SUITE(pixel_bit_size_test)
+BOOST_AUTO_TEST_SUITE(toolbox_tests)
 
 BOOST_AUTO_TEST_CASE(pixel_bit_size_test) {
   typedef bit_aligned_image5_type<16, 16, 16, 8, 8, devicen_layout_t<5>>::type
