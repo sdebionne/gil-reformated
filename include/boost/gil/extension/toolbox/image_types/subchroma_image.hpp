@@ -7,12 +7,12 @@
 
 /*************************************************************************************************/
 
-#ifndef BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBSAMPLED_IMAGE_HPP
-#define BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBSAMPLED_IMAGE_HPP
+#ifndef BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBCHROMA_IMAGE_HPP
+#define BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBCHROMA_IMAGE_HPP
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \file subchroma_image.hpp
-/// \brief Subsampled Image extension
+/// \brief Subchroma Image extension
 /// \author Christian Henning \n
 ///
 /// \date 2013 \n
@@ -104,8 +104,7 @@ template <typename Locator, typename Factors> struct subchroma_image_locator {
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \class subchroma_image_view
 /// \ingroup ImageViewModel PixelBasedModel
-/// \brief A lightweight object that interprets a subsampled image.Models
-/// ImageViewConcept,PixelBasedConcept,HasDynamicXStepTypeConcept,HasDynamicYStepTypeConcept,HasTransposedTypeConcept
+/// \brief A lightweight object that interprets a subchroma image.
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 template <typename Locator, typename Factors = mpl::vector_c<int, 4, 4, 4>>
@@ -129,8 +128,8 @@ public:
         _v_dimensions(v_dimensions), _u_dimensions(u_dimensions) {}
 
   /// copy constructor
-  template <typename Subsampled_View>
-  subchroma_image_view(const Subsampled_View &v) : image_view<locator_t>(v) {}
+  template <typename Subchroma_View>
+  subchroma_image_view(const Subchroma_View &v) : image_view<locator_t>(v) {}
 
   const point_t &v_ssfactors() const {
     return point_t(get_deref_fn().vx_ssfactor(), get_deref_fn().vx_ssfactor());
@@ -201,7 +200,7 @@ template <int J, int a, int b> struct Scaling_Factors {
 /// \brief container interface over image view. Models ImageConcept,
 /// PixelBasedConcept
 ///
-/// A subsampled image holds a bunch of planes which don't need to have the same
+/// A subchroma image holds a bunch of planes which don't need to have the same
 /// resolution.
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -305,15 +304,15 @@ void fill_pixels(const subchroma_image_view<Locator, Factors> &view,
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /// \ingroup ImageViewConstructors
-/// \brief Creates a subsampled view from a raw memory
+/// \brief Creates a subchroma view from a raw memory
 /////////////////////////////////////////////////////////////////////////////////////////
 template <typename Pixel, typename Factors>
 typename subchroma_image<Pixel, Factors>::view_t
-subsampled_view(std::size_t y_width, std::size_t y_height,
-                unsigned char *y_base) {
+subchroma_view(std::size_t y_width, std::size_t y_height,
+               unsigned char *y_base) {
   typedef Scaling_Factors<mpl::at_c<Factors, 0>::type::value,
-                          mpl::at_c<Factors, 0>::type::value,
-                          mpl::at_c<Factors, 0>::type::value>
+                          mpl::at_c<Factors, 1>::type::value,
+                          mpl::at_c<Factors, 2>::type::value>
       scaling_factors_t;
 
   std::size_t y_channel_size = 1;
@@ -374,4 +373,4 @@ subsampled_view(std::size_t y_width, std::size_t y_height,
 } // namespace gil
 } // namespace boost
 
-#endif // BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBSAMPLED_IMAGE_HPP
+#endif // BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBCHROMA_IMAGE_HPP
