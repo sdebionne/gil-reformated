@@ -1,5 +1,5 @@
 /*
-    Copyright 2013 Christian Henning
+    Copyright 2013 Christian Henning and Juan V. Puertos
     Use, modification and distribution are subject to the Boost Software
    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \file subchroma_image.hpp
 /// \brief Subchroma Image extension
-/// \author Christian Henning \n
+/// \author Christian Henning and Juan V. Puertos\n
 ///
 /// \date 2013 \n
 ///
@@ -63,8 +63,8 @@ template <typename Locator, typename Factors> struct subchroma_image_deref_fn {
   /// operator()
   typename result_type operator()(const point_t &p) const {
     typedef Scaling_Factors<mpl::at_c<Factors, 0>::type::value,
-                            mpl::at_c<Factors, 0>::type::value,
-                            mpl::at_c<Factors, 0>::type::value>
+                            mpl::at_c<Factors, 1>::type::value,
+                            mpl::at_c<Factors, 2>::type::value>
         scaling_factors_t;
 
     plane_locator_t y = _y_locator.xy_at(p);
