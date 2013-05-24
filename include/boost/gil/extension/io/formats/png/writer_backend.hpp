@@ -112,7 +112,7 @@ protected:
                  static_cast<png_image_height::type>(view.height()),
                  static_cast<png_bitdepth::type>(png_rw_info_t::_bit_depth),
                  static_cast<png_color_type::type>(png_rw_info_t::_color_type),
-                 _info._interlace_method, _info._compression_method,
+                 _info._interlace_method, _info._compression_type,
                  _info._filter_method);
 
 #ifdef BOOST_GIL_IO_PNG_FLOATING_POINT_SUPPORTED
