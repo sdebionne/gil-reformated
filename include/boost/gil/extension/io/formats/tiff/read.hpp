@@ -665,7 +665,7 @@ public:
       io_error("No matching image type between those of the given any_image "
                "and that of the file");
     } else {
-      init_image(images, this->_settings);
+      this->init_image(images, this->_settings);
 
       detail::dynamic_io_fnobj<detail::tiff_read_is_supported, parent_t> op(
           this);
