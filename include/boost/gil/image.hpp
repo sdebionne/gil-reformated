@@ -101,7 +101,7 @@ public:
     allocate_and_fill(dimensions, p_in);
   }
   image(x_coord_t width, y_coord_t height, const Pixel &p_in,
-        std::size_t alignment, const Alloc alloc_in = Alloc())
+        std::size_t alignment = 0, const Alloc alloc_in = Alloc())
       : _memory(0), _align_in_bytes(alignment), _alloc(alloc_in),
         _allocated_bytes(0) {
     allocate_and_fill(point_t(width, height), p_in);
@@ -157,15 +157,73 @@ public:
     swap(_allocated_bytes, img._allocated_bytes);
   }
 
-  void recreate(const point_t &dims, std::size_t alignment = 0,
-                const Alloc alloc_in = Alloc()) {
+  /////////////////////
+  // recreate
+  /////////////////////
+
+  // without Allocator
+
+  void recreate(const point_t &dims, std::size_t alignment = 0) {
+    if (dims == _view.dimensions() && _align_in_bytes == alignment) {
+      return;
+    }
+
+    _align_in_bytes = alignment;
+
+    if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
+      destruct_pixels(_view);
+
+      create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
+                                                    mpl::false_>::type());
+
+      default_construct_pixels(_view);
+    } else {
+      image tmp(dims, alignment);
+      swap(tmp);
+    }
+  }
+
+  void recreate(x_coord_t width, y_coord_t height, std::size_t alignment = 0) {
+    recreate(point_t(width, height), alignment);
+  }
+
+  void recreate(const point_t &dims, const Pixel &p_in,
+                std::size_t alignment = 0) {
+    if (dims == _view.dimensions() && _align_in_bytes == alignment) {
+      return;
+    }
+
+    _align_in_bytes = alignment;
+
+    if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
+      destruct_pixels(_view);
+
+      create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
+                                                    mpl::false_>::type());
+
+      uninitialized_fill_pixels(_view, p_in);
+    } else {
+      image tmp(dims, p_in, alignment);
+      swap(tmp);
+    }
+  }
+
+  void recreate(x_coord_t width, y_coord_t height, const Pixel &p_in,
+                std::size_t alignment = 0) {
+    recreate(point_t(width, height), p_in, alignment);
+  }
+
+  // with Allocator
+  void recreate(const point_t &dims, std::size_t alignment,
+                const Alloc alloc_in) {
     if (dims == _view.dimensions() && _align_in_bytes == alignment &&
         alloc_in == _alloc) {
       return;
     }
 
-    if (_allocated_bytes >= total_allocated_size_in_bytes(dims) &&
-        _align_in_bytes == alignment && alloc_in == _alloc) {
+    _align_in_bytes = alignment;
+
+    if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
       destruct_pixels(_view);
 
       create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
@@ -178,20 +236,21 @@ public:
     }
   }
 
-  void recreate(x_coord_t width, y_coord_t height, std::size_t alignment = 0,
-                const Alloc alloc_in = Alloc()) {
+  void recreate(x_coord_t width, y_coord_t height, std::size_t alignment,
+                const Alloc alloc_in) {
     recreate(point_t(width, height), alignment, alloc_in);
   }
 
-  void recreate(const point_t &dims, const Pixel &p_in,
-                std::size_t alignment = 0, const Alloc alloc_in = Alloc()) {
+  void recreate(const point_t &dims, const Pixel &p_in, std::size_t alignment,
+                const Alloc alloc_in) {
     if (dims == _view.dimensions() && _align_in_bytes == alignment &&
         alloc_in == _alloc) {
       return;
     }
 
-    if (_allocated_bytes >= total_allocated_size_in_bytes(dims) &&
-        _align_in_bytes == alignment && alloc_in == _alloc) {
+    _align_in_bytes = alignment;
+
+    if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
       destruct_pixels(_view);
 
       create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
@@ -205,7 +264,7 @@ public:
   }
 
   void recreate(x_coord_t width, y_coord_t height, const Pixel &p_in,
-                std::size_t alignment = 0, const Alloc alloc_in = Alloc()) {
+                std::size_t alignment, const Alloc alloc_in) {
     recreate(point_t(width, height), p_in, alignment, alloc_in);
   }
 
@@ -361,9 +420,14 @@ private:
 
   void create_view(const point_t &dims, mpl::false_ // is planar
   ) {
-    _view = view_t(
-        dims, typename view_t::locator(typename view_t::x_iterator(_memory),
-                                       get_row_size_in_memunits(dims.x)));
+    unsigned char *tmp =
+        (_align_in_bytes > 0)
+            ? (unsigned char *)align((std::size_t)_memory, _align_in_bytes)
+            : _memory;
+
+    _view = view_t(dims,
+                   typename view_t::locator(typename view_t::x_iterator(tmp),
+                                            get_row_size_in_memunits(dims.x)));
   }
 };
 
