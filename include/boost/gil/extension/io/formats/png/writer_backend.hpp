@@ -202,6 +202,8 @@ protected:
                    const_cast<png_color_8p>(&_info._sig_bits));
     }
 
+#ifndef BOOST_GIL_IO_PNG_1_4_OR_LOWER
+
 #ifdef BOOST_GIL_IO_PNG_FLOATING_POINT_SUPPORTED
     if (_info._valid_scale_factors) {
       png_set_sCAL(get_struct(), get_info(), this->_info._scale_unit,
@@ -222,6 +224,7 @@ protected:
 
 #endif // BOOST_GIL_IO_PNG_FIXED_POINT_SUPPORTED
 #endif // BOOST_GIL_IO_PNG_FLOATING_POINT_SUPPORTED
+#endif // BOOST_GIL_IO_PNG_1_4_OR_LOWER
 
     if (_info._valid_text) {
       std::vector<png_text> texts(_info._num_text);
