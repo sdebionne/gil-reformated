@@ -440,9 +440,8 @@ subchroma_view(std::size_t y_width, std::size_t y_height,
   std::size_t u_channel_size = 1;
 
   unsigned char *u_base = y_base + (y_width * y_height * y_channel_size);
-  unsigned char *v_base = u_base + (y_width / scaling_factors_t::ss_X) *
-                                       (y_height / scaling_factors_t::ss_Y) *
-                                       u_channel_size;
+  unsigned char *v_base =
+      u_base + (y_width / scaling_factors_t::ss_X) * u_channel_size;
 
   typedef subchroma_image<Pixel, Factors>::plane_view_t plane_view_t;
 
