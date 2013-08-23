@@ -26,8 +26,8 @@
 #include <memory>
 
 #include <boost/mpl/arithmetic.hpp>
+#include <boost/mpl/bool.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/type_traits/conditional.hpp>
 
 #include "algorithm.hpp"
 #include "gil_config.hpp"
@@ -176,8 +176,7 @@ public:
     if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
       destruct_pixels(_view);
 
-      create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
-                                                    mpl::false_>::type());
+      create_view(dims, typename mpl::bool_<IsPlanar>());
 
       default_construct_pixels(_view);
     } else {
@@ -201,8 +200,7 @@ public:
     if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
       destruct_pixels(_view);
 
-      create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
-                                                    mpl::false_>::type());
+      create_view(dims, typename mpl::bool_<IsPlanar>());
 
       uninitialized_fill_pixels(_view, p_in);
     } else {
@@ -229,8 +227,7 @@ public:
     if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
       destruct_pixels(_view);
 
-      create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
-                                                    mpl::false_>::type());
+      create_view(dims, typename mpl::bool_<IsPlanar>());
 
       default_construct_pixels(_view);
     } else {
@@ -256,8 +253,7 @@ public:
     if (_allocated_bytes >= total_allocated_size_in_bytes(dims)) {
       destruct_pixels(_view);
 
-      create_view(dims, typename boost::conditional<IsPlanar, mpl::true_,
-                                                    mpl::false_>::type());
+      create_view(dims, typename mpl::bool_<IsPlanar>());
 
       uninitialized_fill_pixels(_view, p_in);
     } else {
@@ -338,10 +334,9 @@ private:
         mpl::eval_if<is_pixel<value_type>, num_channels<view_t>,
                      mpl::int_<1>>::type::value;
 
-    std::size_t size_in_units = is_planar_impl(
-        get_row_size_in_memunits(dimensions.x) * dimensions.y,
-        _channels_in_image,
-        typename boost::conditional<IsPlanar, mpl::true_, mpl::false_>::type());
+    std::size_t size_in_units =
+        is_planar_impl(get_row_size_in_memunits(dimensions.x) * dimensions.y,
+                       _channels_in_image, typename mpl::bool_<IsPlanar>());
 
     // return the size rounded up to the nearest byte
     return (size_in_units + byte_to_memunit<x_iterator>::value - 1) /
