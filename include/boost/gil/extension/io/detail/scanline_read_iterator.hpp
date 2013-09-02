@@ -38,6 +38,11 @@ template <typename Reader>
 class scanline_read_iterator
     : public boost::iterator_facade<scanline_read_iterator<Reader>, byte_t *,
                                     std::input_iterator_tag> {
+private:
+  typedef boost::iterator_facade<scanline_read_iterator<Reader>, byte_t *,
+                                 std::input_iterator_tag>
+      base_t;
+
 public:
   scanline_read_iterator(Reader &reader, int pos = 0)
       : _pos(pos), _read_scanline(true), _skip_scanline(true), _reader(reader) {
@@ -63,7 +68,7 @@ private:
     return _pos == rhs._pos;
   }
 
-  reference dereference() const {
+  typename base_t::reference dereference() const {
     if (_read_scanline == true) {
       _reader.read(_buffer_start, _pos);
     }
