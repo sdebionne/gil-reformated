@@ -77,7 +77,7 @@ template <> struct default_color_converter_impl<rgb_t, hsv_t> {
       // it doesn't matter what value it has
       hue = 0.f;
     } else {
-      if ((std::abs)(boost::numeric_cast<int>(temp_red - max_color)) <
+      if ((std::abs)(boost::numeric_cast<bits32f>(temp_red - max_color)) <
           0.0001f) {
         hue = (temp_green - temp_blue) / diff;
       } else if (temp_green == max_color) {
