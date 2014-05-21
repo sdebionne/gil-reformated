@@ -30,6 +30,8 @@ extern "C" {
 #include <string>
 #include <vector>
 
+#include <boost/gil/premultiply.hpp>
+
 #include <boost/gil/extension/io/tiff_tags.hpp>
 
 #include <boost/gil/extension/io/detail/base.hpp>
@@ -131,8 +133,12 @@ private:
     typedef typename View::x_iterator x_it_t;
     x_it_t row_it = x_it_t(&(*row.begin()));
 
-    for (typename View::y_coord_t y = 0; y < view.height(); ++y) {
-      std::copy(view.row_begin(y), view.row_end(y), row_it);
+    // @todo: is there an overhead to doing this when there's no
+    // alpha to premultiply by? I'd hope it's optimised out.
+    auto pm_view = premultiply_view<typename View::value_type>(view);
+
+    for (typename View::y_coord_t y = 0; y < pm_view.height(); ++y) {
+      std::copy(pm_view.row_begin(y), pm_view.row_end(y), row_it);
 
       this->_io_dev.write_scaline(row, (uint32)y, 0);
 
@@ -163,8 +169,12 @@ private:
 
     byte_t *row_addr = reinterpret_cast<byte_t *>(&row.front());
 
-    for (typename View::y_coord_t y = 0; y < view.height(); ++y) {
-      std::copy(view.row_begin(y), view.row_end(y), row.begin());
+    // @todo: is there an overhead to doing this when there's no
+    // alpha to premultiply by? I'd hope it's optimised out.
+    auto pm_view = premultiply_view<typename View::value_type>(view);
+
+    for (typename View::y_coord_t y = 0; y < pm_view.height(); ++y) {
+      std::copy(pm_view.row_begin(y), pm_view.row_end(y), row.begin());
 
       this->_io_dev.write_scaline(row_addr, (uint32)y, 0);
 
@@ -187,6 +197,7 @@ private:
     internal_write_tiled_data(view, tw, th, row, row_it);
   }
 
+  // @todo: premultiply
   template <typename View, typename IteratorType>
   void internal_write_tiled_data(const View &view, tiff_tile_width::type tw,
                                  tiff_tile_length::type th, byte_vector_t &row,
