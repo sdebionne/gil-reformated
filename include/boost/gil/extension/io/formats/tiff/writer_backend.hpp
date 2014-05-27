@@ -81,14 +81,13 @@ protected:
     this->_io_dev.template set_property<tiff_samples_per_pixel>(
         samples_per_pixel);
 
-    // The other half of the story is that it needs to be premultiplied on the
-    // way into the file.
-    if (boost::mpl::contains<
-            color_space_t, alpha_t>::value) { // the pixel type includes alpha_t
-      this->_info._extra_sample_value = EXTRASAMPLE_ASSOCALPHA;
-      this->_info._extra_samples = &(this->_info._extra_sample_value);
+    if (mpl::contains<color_space_t, alpha_t>::value) {
+      uint16_t const extra_sample_type[] = {EXTRASAMPLE_ASSOCALPHA};
+      uint16_t const extra_samples_count =
+          sizeof(extra_sample_type) / sizeof(extra_sample_type[0]);
+
       this->_io_dev.template set_property<tiff_extra_samples>(
-          this->_info._extra_samples);
+          extra_samples_count, extra_sample_type);
     }
     // write bits per sample
     // @todo: Settings this value usually requires to write for each sample the
