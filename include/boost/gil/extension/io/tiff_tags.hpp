@@ -46,7 +46,15 @@ struct tiff_tag : format_tag {};
 /// TIFF property base class
 template <typename T, int Value> struct tiff_property_base : property_base<T> {
   /// Tag, needed when reading or writing image properties.
-  static const unsigned int tag = Value;
+  static const ttag_t tag = Value;
+};
+
+// Most tags (properties) just have one value, but some have more.
+// In the usual case we just follow the type in the
+// property_base. Otherwise we specialise this to a longer vector
+// of types.
+template <typename Property> struct tiff_tag_arg_types {
+  typedef typename mpl::vector<typename Property::type> types;
 };
 
 /// baseline tags
@@ -163,8 +171,12 @@ struct tiff_color_map {
 };
 
 /// Defines type for extra samples property.
-struct tiff_extra_samples
-    : tiff_property_base<uint16_t *, TIFFTAG_EXTRASAMPLES> {};
+struct tiff_extra_samples : tiff_property_base<uint16_t, TIFFTAG_EXTRASAMPLES> {
+};
+template <> struct tiff_tag_arg_types<tiff_extra_samples> {
+  typedef typename mpl::vector<typename tiff_extra_samples::type, uint16_t *>
+      types;
+};
 
 /// Defines type for copyright property.
 struct tiff_copyright : tiff_property_base<std::string, TIFFTAG_COPYRIGHT> {};
@@ -288,8 +300,7 @@ template <typename Log> struct image_write_info<tiff_tag, Log> {
         ,
         _compression(COMPRESSION_NONE), _orientation(ORIENTATION_TOPLEFT),
         _planar_configuration(PLANARCONFIG_CONTIG), _is_tiled(false),
-        _tile_width(0), _tile_length(0), _x_resolution(0), _y_resolution(0),
-        _extra_samples(0) {}
+        _tile_width(0), _tile_length(0), _x_resolution(0), _y_resolution(0) {}
 
   /// The color space of the image data.
   tiff_photometric_interpretation::type _photometric_interpretation;
@@ -313,9 +324,6 @@ template <typename Log> struct image_write_info<tiff_tag, Log> {
   tiff_x_resolution::type _x_resolution;
   tiff_y_resolution::type _y_resolution;
 
-  /// Extra Sample type (for alpha)
-  tiff_extra_samples::type _extra_samples;
-  uint16_t _extra_sample_value;
   /// A log to transcript error and warning messages issued by libtiff.
   Log _log;
 };
