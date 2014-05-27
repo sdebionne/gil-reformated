@@ -197,7 +197,6 @@ private:
     internal_write_tiled_data(view, tw, th, row, row_it);
   }
 
-  // @todo: premultiply
   template <typename View, typename IteratorType>
   void internal_write_tiled_data(const View &view, tiff_tile_width::type tw,
                                  tiff_tile_length::type th, byte_vector_t &row,
@@ -212,7 +211,10 @@ private:
               subimage_view(view, static_cast<int>(j), static_cast<int>(i),
                             static_cast<int>(tw), static_cast<int>(th));
 
-          std::copy(tile_subimage_view.begin(), tile_subimage_view.end(), it);
+          auto pm_view =
+              premultiply_view<typename View::value_type>(tile_subimage_view);
+
+          std::copy(pm_view.begin(), pm_view.end(), it);
         } else {
           std::ptrdiff_t width = view.width();
           std::ptrdiff_t height = view.height();
