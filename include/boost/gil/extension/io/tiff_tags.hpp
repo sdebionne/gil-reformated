@@ -133,8 +133,13 @@ struct tiff_x_resolution : tiff_property_base<float, TIFFTAG_XRESOLUTION> {};
 struct tiff_y_resolution : tiff_property_base<float, TIFFTAG_YRESOLUTION> {};
 
 /// Defines type for resolution unit property.
+enum class tiff_resolution_unit_value : std::uint16_t {
+  NONE = RESUNIT_NONE,
+  INCH = RESUNIT_INCH,
+  CENTIMETRE = RESUNIT_CENTIMETER
+};
 struct tiff_resolution_unit
-    : tiff_property_base<uint16_t, TIFFTAG_RESOLUTIONUNIT> {};
+    : tiff_property_base<tiff_resolution_unit_value, TIFFTAG_RESOLUTIONUNIT> {};
 
 /// Defines type for planar configuration property.
 struct tiff_planar_configuration
@@ -232,7 +237,11 @@ template <> struct image_read_info<tiff_tag> {
         _is_tiled(false)
 
         ,
-        _tile_width(0), _tile_length(0) {}
+        _tile_width(0), _tile_length(0)
+
+        ,
+        _x_resolution(0), _y_resolution(0),
+        _resolution_unit(tiff_resolution_unit_value::NONE) {}
 
   /// The number of rows of pixels in the image.
   tiff_image_width::type _width;
@@ -261,6 +270,10 @@ template <> struct image_read_info<tiff_tag> {
   tiff_tile_width::type _tile_width;
   /// Tile length
   tiff_tile_length::type _tile_length;
+
+  tiff_x_resolution::type _x_resolution;
+  tiff_y_resolution::type _y_resolution;
+  tiff_resolution_unit::type _resolution_unit;
 };
 
 /// Read settings for tiff images.
@@ -287,10 +300,10 @@ struct image_read_settings<tiff_tag> : public image_read_settings_base {
   tiff_directory::type _directory;
 };
 
-/// Read settings for tiff images.
+/// Write settings for tiff images.
 ///
-/// The structure can be used for all read_xxx functions, except
-/// read_image_info.
+/// The structure can be used for all write_xxx functions, except
+/// write_image_info.
 template <typename Log> struct image_write_info<tiff_tag, Log> {
   /// Default constructor
   image_write_info()
@@ -300,7 +313,8 @@ template <typename Log> struct image_write_info<tiff_tag, Log> {
         ,
         _compression(COMPRESSION_NONE), _orientation(ORIENTATION_TOPLEFT),
         _planar_configuration(PLANARCONFIG_CONTIG), _is_tiled(false),
-        _tile_width(0), _tile_length(0), _x_resolution(0), _y_resolution(0) {}
+        _tile_width(0), _tile_length(0), _x_resolution(0), _y_resolution(0),
+        _resolution_unit(tiff_resolution_unit_value::NONE) {}
 
   /// The color space of the image data.
   tiff_photometric_interpretation::type _photometric_interpretation;
@@ -323,6 +337,7 @@ template <typename Log> struct image_write_info<tiff_tag, Log> {
   /// x, y resolution
   tiff_x_resolution::type _x_resolution;
   tiff_y_resolution::type _y_resolution;
+  tiff_resolution_unit::type _resolution_unit;
 
   /// A log to transcript error and warning messages issued by libtiff.
   Log _log;
