@@ -504,11 +504,6 @@ BOOST_FORCEINLINE void destruct_range_impl(
     ++first;
   }
 }
-<<<<<<< HEAD
-=======
-template <typename It>
-GIL_FORCEINLINE void destruct_range_impl(It, It, mpl::false_) {}
->>>>>>> 325700ffa2810faea2f41c77eded9992cbc7e91e
 
 template <typename It>
 BOOST_FORCEINLINE void destruct_range_impl(
@@ -648,15 +643,8 @@ BOOST_FORCEINLINE void default_construct_range_impl(It first, It last,
   }
 }
 
-<<<<<<< HEAD
 template <typename It>
-BOOST_FORCEINLINE
-=======
-template <typename It>
-GIL_FORCEINLINE 
->>>>>>> 325700ffa2810faea2f41c77eded9992cbc7e91e
-    void
-    default_construct_range_impl(It, It, mpl::false_) {}
+BOOST_FORCEINLINE void default_construct_range_impl(It, It, mpl::false_) {}
 
 template <typename It>
 BOOST_FORCEINLINE void default_construct_range(It first, It last) {

@@ -133,14 +133,6 @@ public:
     apply_operation(obj, detail::copy_construct_in_place_fn<base_t>(_bits));
   }
 
-  template <typename Types2>
-  explicit variant(const variant<Types2> &obj)
-      : _index(apply_operation(obj, detail::type_to_index_fn<Types>())) {
-    if (_index == NUM_TYPES)
-      throw std::bad_cast();
-    apply_operation(obj, detail::copy_construct_in_place_fn<base_t>(_bits));
-  }
-
   // When doSwap is true, swaps obj with the contents of the variant. obj will
   // contain default-constructed instance after the call
   template <typename T> explicit variant(T &obj, bool do_swap);
@@ -241,19 +233,11 @@ template <typename Bits> struct equal_to_fn {
 };
 
 template <typename Types> struct type_to_index_fn {
-<<<<<<< HEAD
   typedef std::size_t result_type;
 
   template <typename T> result_type operator()(const T &) const {
     return detail::type_to_index<Types, T>::value;
   }
-=======
-  typedef std::size_t result_type;
-
-  template <typename T> result_type operator()(const T &) const {
-    return detail::type_to_index<Types, T>::value;
-  }
->>>>>>> 325700ffa2810faea2f41c77eded9992cbc7e91e
 };
 } // namespace detail
 
