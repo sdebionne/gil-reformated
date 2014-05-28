@@ -166,7 +166,11 @@ apply_operation_base(Bits &bits, std::size_t index, Op op) {
 namespace detail {
 template <typename T2, typename Op> struct reduce_bind1 {
   const T2 &_t2;
+<<<<<<< HEAD
   Op &_op;
+=======
+  Op &_op;
+>>>>>>> 325700ffa2810faea2f41c77eded9992cbc7e91e
 
   typedef typename Op::result_type result_type;
 
@@ -181,7 +185,11 @@ template <typename T2, typename Op> struct reduce_bind1 {
 template <typename Types1, typename Bits1, typename Op> struct reduce_bind2 {
   const Bits1 &_bits1;
   std::size_t _index1;
+<<<<<<< HEAD
   Op &_op;
+=======
+  Op &_op;
+>>>>>>> 325700ffa2810faea2f41c77eded9992cbc7e91e
 
   typedef typename Op::result_type result_type;
 

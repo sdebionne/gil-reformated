@@ -125,10 +125,17 @@ public:
     parent_t::operator=((const parent_t &)v);
     return *this;
   }
+<<<<<<< HEAD
   template <typename Types> any_image &operator=(const any_image<Types> &v) {
     parent_t::operator=((const variant<Types> &)v);
     return *this;
   }
+=======
+  template <typename Types> any_image &operator=(const any_image<Types> &v) {
+    parent_t::operator=((const variant<Types> &)v);
+    return *this;
+  }
+>>>>>>> 325700ffa2810faea2f41c77eded9992cbc7e91e
 
   void recreate(const point_t &dims, unsigned alignment = 1) {
     apply_operation(*this, detail::recreate_image_fnobj(dims, alignment));
