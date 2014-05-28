@@ -46,9 +46,6 @@ namespace gil {
 template <typename Device>
 class scanline_reader<Device, pnm_tag>
     : public reader_backend<Device, pnm_tag> {
-private:
-  typedef scanline_reader<Device, pnm_tag> this_t;
-
 public:
   typedef pnm_tag tag_t;
   typedef reader_backend<Device, tag_t> backend_t;
