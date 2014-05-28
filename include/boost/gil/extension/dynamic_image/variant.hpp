@@ -133,14 +133,6 @@ public:
     apply_operation(obj, detail::copy_construct_in_place_fn<base_t>(_bits));
   }
 
-  template <typename Types2>
-  explicit variant(const variant<Types2> &obj)
-      : _index(apply_operation(obj, detail::type_to_index_fn<Types>())) {
-    if (_index == NUM_TYPES)
-      throw std::bad_cast();
-    apply_operation(obj, detail::copy_construct_in_place_fn<base_t>(_bits));
-  }
-
   // When doSwap is true, swaps obj with the contents of the variant. obj will
   // contain default-constructed instance after the call
   template <typename T> explicit variant(T &obj, bool do_swap);
