@@ -82,12 +82,11 @@ protected:
         samples_per_pixel);
 
     if (mpl::contains<color_space_t, alpha_t>::value) {
-      uint16_t const extra_sample_type[] = {EXTRASAMPLE_ASSOCALPHA};
-      uint16_t const extra_samples_count =
-          sizeof(extra_sample_type) / sizeof(extra_sample_type[0]);
-
+      std::vector<uint16_t> extra_samples{
+          EXTRASAMPLE_ASSOCALPHA}; // @todo: const.
       this->_io_dev.template set_property<tiff_extra_samples>(
-          extra_samples_count, extra_sample_type);
+          typename tiff_extra_samples::type(extra_samples.size(),
+                                            &(extra_samples.front())));
     }
     // write bits per sample
     // @todo: Settings this value usually requires to write for each sample the
@@ -124,6 +123,14 @@ protected:
         this->_info._x_resolution);
     this->_io_dev.template set_property<tiff_y_resolution>(
         this->_info._y_resolution);
+
+    /// Non-baseline tags below here
+
+    // write ICC colour profile, if it's there
+    // http://www.color.org/icc_specs2.xalter
+    if (fusion::at_c<0>(this->_info._icc_profile))
+      this->_io_dev.template set_property<tiff_icc_profile>(
+          this->_info._icc_profile);
   }
 
 public:
