@@ -222,9 +222,9 @@ public:
         this->_info._icc_name.append(icc_name, std::strlen(icc_name));
       }
 
-      if (this->_info._profile_length > 0) {
-        this->_info._profile.append(reinterpret_cast<char *>(profile),
-                                    this->_info._profile_length);
+      if (this->_info._profile_length != 0) {
+        std::copy_n(profile, this->_info._profile_length,
+                    std::back_inserter(this->_info._profile));
       }
     }
 
