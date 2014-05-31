@@ -49,6 +49,11 @@ struct tiff_tag : format_tag {};
 template <typename T, int Value> struct tiff_property_base : property_base<T> {
   /// Tag, needed when reading or writing image properties.
   static const ttag_t tag = Value;
+  /// The list of argument types used in the interface of LibTIFF
+  /// for
+  /// this property:
+  /// http://www.remotesensing.org/libtiff/man/TIFFGetField.3tiff.html
+  /// http://www.remotesensing.org/libtiff/man/TIFFSetField.3tiff.html
   typedef mpl::vector<typename property_base<T>::type> arg_types;
 };
 
@@ -131,8 +136,9 @@ struct tiff_y_resolution : tiff_property_base<float, TIFFTAG_YRESOLUTION> {};
 enum class tiff_resolution_unit_value : std::uint16_t {
   NONE = RESUNIT_NONE,
   INCH = RESUNIT_INCH,
-  CENTIMETRE = RESUNIT_CENTIMETER
+  CENTIMETER = RESUNIT_CENTIMETER
 };
+
 struct tiff_resolution_unit
     : tiff_property_base<tiff_resolution_unit_value, TIFFTAG_RESOLUTIONUNIT> {};
 
@@ -241,7 +247,7 @@ template <> struct image_read_info<tiff_tag> {
         _tile_width(0), _tile_length(0)
 
         ,
-        _x_resolution(0), _y_resolution(0),
+        _x_resolution(1), _y_resolution(1),
         _resolution_unit(tiff_resolution_unit_value::NONE)
 
         ,
@@ -319,7 +325,7 @@ template <typename Log> struct image_write_info<tiff_tag, Log> {
         ,
         _compression(COMPRESSION_NONE), _orientation(ORIENTATION_TOPLEFT),
         _planar_configuration(PLANARCONFIG_CONTIG), _is_tiled(false),
-        _tile_width(0), _tile_length(0), _x_resolution(0), _y_resolution(0),
+        _tile_width(0), _tile_length(0), _x_resolution(1), _y_resolution(1),
         _resolution_unit(tiff_resolution_unit_value::NONE), _icc_profile() {}
 
   /// The color space of the image data.

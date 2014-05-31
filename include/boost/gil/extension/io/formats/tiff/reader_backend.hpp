@@ -19,8 +19,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include <boost/fusion/sequence/intrinsic/at.hpp>
-
 #include <boost/gil/extension/io/tiff_tags.hpp>
 
 namespace boost {
