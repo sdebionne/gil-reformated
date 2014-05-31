@@ -82,8 +82,7 @@ protected:
         samples_per_pixel);
 
     if (mpl::contains<color_space_t, alpha_t>::value) {
-      std::vector<uint16_t> extra_samples{
-          EXTRASAMPLE_ASSOCALPHA}; // @todo: const.
+      std::vector<uint16_t> extra_samples{EXTRASAMPLE_ASSOCALPHA};
       this->_io_dev.template set_property<tiff_extra_samples>(extra_samples);
     }
     // write bits per sample
