@@ -49,6 +49,7 @@ struct tiff_tag : format_tag {};
 template <typename T, int Value> struct tiff_property_base : property_base<T> {
   /// Tag, needed when reading or writing image properties.
   static const ttag_t tag = Value;
+  typedef mpl::vector<typename property_base<T>::type> arg_types;
 };
 
 /// baseline tags
@@ -171,8 +172,9 @@ struct tiff_color_map {
 
 /// Defines type for extra samples property.
 struct tiff_extra_samples
-    : tiff_property_base<fusion::vector2<uint16_t, uint16_t *>,
-                         TIFFTAG_EXTRASAMPLES> {};
+    : tiff_property_base<std::vector<uint16_t>, TIFFTAG_EXTRASAMPLES> {
+  typedef mpl::vector<uint16_t, uint16_t const *> arg_types;
+};
 
 /// Defines type for copyright property.
 struct tiff_copyright : tiff_property_base<std::string, TIFFTAG_COPYRIGHT> {};
@@ -208,8 +210,9 @@ struct tiff_directory : property_base<tdir_t> {
 
 /// Defines type for icc profile property.
 struct tiff_icc_profile
-    : tiff_property_base<fusion::vector2<uint32_t, void const *>,
-                         TIFFTAG_ICCPROFILE> {};
+    : tiff_property_base<std::vector<uint8_t>, TIFFTAG_ICCPROFILE> {
+  typedef mpl::vector<uint32_t, void const *> arg_types;
+};
 
 /// Read information for tiff images.
 ///
@@ -242,7 +245,7 @@ template <> struct image_read_info<tiff_tag> {
         _resolution_unit(tiff_resolution_unit_value::NONE)
 
         ,
-        _icc_profile(0, nullptr) {}
+        _icc_profile() {}
 
   /// The number of rows of pixels in the image.
   tiff_image_width::type _width;
@@ -317,8 +320,7 @@ template <typename Log> struct image_write_info<tiff_tag, Log> {
         _compression(COMPRESSION_NONE), _orientation(ORIENTATION_TOPLEFT),
         _planar_configuration(PLANARCONFIG_CONTIG), _is_tiled(false),
         _tile_width(0), _tile_length(0), _x_resolution(0), _y_resolution(0),
-        _resolution_unit(tiff_resolution_unit_value::NONE),
-        _icc_profile(0, nullptr) {}
+        _resolution_unit(tiff_resolution_unit_value::NONE), _icc_profile() {}
 
   /// The color space of the image data.
   tiff_photometric_interpretation::type _photometric_interpretation;

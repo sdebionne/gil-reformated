@@ -143,13 +143,13 @@ protected:
       png_set_iCCP(get_struct(), get_info(),
                    const_cast<png_charp>(_info._icc_name.c_str()),
                    _info._iccp_compression_type,
-                   reinterpret_cast<png_const_bytep>(_info._profile.c_str()),
+                   reinterpret_cast<png_const_bytep>(&(_info._profile.front())),
                    _info._profile_length);
 #else
       png_set_iCCP(get_struct(), get_info(),
                    const_cast<png_charp>(_info._icc_name.c_str()),
                    _info._iccp_compression_type,
-                   const_cast<png_charp>(_info._profile.c_str()),
+                   const_cast<png_charp>(&(_info._profile.front())),
                    _info._profile_length);
 #endif
     }
