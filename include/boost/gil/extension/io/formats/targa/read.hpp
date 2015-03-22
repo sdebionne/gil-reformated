@@ -91,7 +91,11 @@ public:
         this->_scanline_length =
             this->_info._width * (this->_info._bits_per_pixel / 8);
 
-        read_data<bgr8_view_t>(dst_view);
+        if (this->_info._descriptor & 0x20) {
+          read_data<bgr8_view_t>(flipped_up_down_view(dst_view));
+        } else {
+          read_data<bgr8_view_t>(dst_view);
+        }
 
         break;
       }
@@ -99,7 +103,11 @@ public:
         this->_scanline_length =
             this->_info._width * (this->_info._bits_per_pixel / 8);
 
-        read_data<bgra8_view_t>(dst_view);
+        if (this->_info._descriptor & 0x20) {
+          read_data<bgra8_view_t>(flipped_up_down_view(dst_view));
+        } else {
+          read_data<bgra8_view_t>(dst_view);
+        }
 
         break;
       }
@@ -123,11 +131,19 @@ public:
 
       switch (this->_info._bits_per_pixel) {
       case 24: {
-        read_rle_data<bgr8_view_t>(dst_view);
+        if (this->_info._descriptor & 0x20) {
+          read_rle_data<bgr8_view_t>(flipped_up_down_view(dst_view));
+        } else {
+          read_rle_data<bgr8_view_t>(dst_view);
+        }
         break;
       }
       case 32: {
-        read_rle_data<bgra8_view_t>(dst_view);
+        if (this->_info._descriptor & 0x20) {
+          read_rle_data<bgra8_view_t>(flipped_up_down_view(dst_view));
+        } else {
+          read_rle_data<bgra8_view_t>(dst_view);
+        }
         break;
       }
       default: {
