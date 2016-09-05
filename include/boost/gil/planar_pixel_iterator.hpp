@@ -159,11 +159,20 @@ private:
   void decrement() {
     static_transform(*this, *this, detail::dec<ChannelPtr>());
   }
+#ifdef BOOST_NO_CXX98_BINDERS
+  void advance(std::ptrdiff_t d) {
+    static_transform(
+        *this, *this,
+        std::bind(detail::plus_asymmetric<ChannelPtr, std::ptrdiff_t>(),
+                  std::placeholders::_1, d));
+  }
+#else
   void advance(std::ptrdiff_t d) {
     static_transform(
         *this, *this,
         std::bind2nd(detail::plus_asymmetric<ChannelPtr, std::ptrdiff_t>(), d));
   }
+#endif
   reference dereference() const { return this->template deref<reference>(); }
 
   std::ptrdiff_t distance_to(const planar_pixel_iterator &it) const {
