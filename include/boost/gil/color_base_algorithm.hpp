@@ -25,7 +25,7 @@
 
 #include <algorithm>
 
-#include <boost/config/suffix.hpp>
+#include <boost/config.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/contains.hpp>
 #include <boost/type_traits.hpp>

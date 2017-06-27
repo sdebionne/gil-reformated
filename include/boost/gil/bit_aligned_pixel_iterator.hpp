@@ -26,7 +26,7 @@
 
 #include <functional>
 
-#include <boost/config/suffix.hpp>
+#include <boost/config.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 
 #include "bit_aligned_pixel_reference.hpp"
