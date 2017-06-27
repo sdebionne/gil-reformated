@@ -28,7 +28,7 @@
 #include <cassert>
 #include <limits>
 
-#include <boost/config/suffix.hpp>
+#include <boost/config.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/integer/integer_mask.hpp>
 #include <boost/type_traits/remove_cv.hpp>

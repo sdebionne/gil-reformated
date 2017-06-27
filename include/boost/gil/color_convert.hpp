@@ -27,7 +27,7 @@
 
 #include <functional>
 
-#include <boost/config/suffix.hpp>
+#include <boost/config.hpp>
 
 #include "channel_algorithm.hpp"
 #include "cmyk.hpp"
