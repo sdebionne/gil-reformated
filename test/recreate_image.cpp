@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(recreate_image_test) {
       point2<rgb8_view_t::coord_t>(320, 200));
 
   rgb8_image_t img(640, 480);
-  img.resize(320, 200);
+  img.recreate(320, 200);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
