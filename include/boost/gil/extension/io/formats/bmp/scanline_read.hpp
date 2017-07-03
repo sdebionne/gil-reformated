@@ -267,7 +267,7 @@ private:
       entries = 1 << this->_info._bits_per_pixel;
     }
 
-    this->_palette.resize(entries);
+    this->_palette.resize(entries, rgba8_pixel_t(0, 0, 0, 0));
 
     for (int i = 0; i < entries; ++i) {
       get_color(this->_palette[i], blue_t()) = this->_io_dev.read_uint8();
