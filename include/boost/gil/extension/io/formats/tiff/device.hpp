@@ -50,20 +50,19 @@ namespace detail {
 
 template <int n_args> struct get_property_f {
   template <typename Property>
-  bool operator()(typename Property::type &value, shared_ptr<TIFF> &file);
+  bool call_me(typename Property::type &value, shared_ptr<TIFF> &file);
 };
 
 template <int n_args> struct set_property_f {
   template <typename Property>
-  bool operator()(const typename Property::type &value,
-                  shared_ptr<TIFF> &file) const;
+  bool call_me(const typename Property::type &value,
+               shared_ptr<TIFF> &file) const;
 };
 
 template <> struct get_property_f<1> {
   // For single-valued properties
   template <typename Property>
-  bool operator()(typename Property::type &value,
-                  shared_ptr<TIFF> &file) const {
+  bool call_me(typename Property::type &value, shared_ptr<TIFF> &file) const {
     // @todo: defaulted, really?
     return (1 == TIFFGetFieldDefaulted(file.get(), Property::tag, &value));
   }
@@ -73,7 +72,7 @@ template <> struct get_property_f<2> {
   // Specialisation for multi-valued properties. @todo: add one of
   // these for the three-parameter fields too.
   template <typename Property>
-  bool operator()(typename Property::type &vs, shared_ptr<TIFF> &file) const {
+  bool call_me(typename Property::type &vs, shared_ptr<TIFF> &file) const {
     typename mpl::at<typename Property::arg_types, mpl::int_<0>>::type length;
     typename mpl::at<typename Property::arg_types, mpl::int_<1>>::type pointer;
     if (1 ==
@@ -89,8 +88,8 @@ template <> struct get_property_f<2> {
 template <> struct set_property_f<1> {
   // For single-valued properties
   template <typename Property>
-  inline bool operator()(typename Property::type const &value,
-                         shared_ptr<TIFF> &file) const {
+  inline bool call_me(typename Property::type const &value,
+                      shared_ptr<TIFF> &file) const {
     return (1 == TIFFSetField(file.get(), Property::tag, value));
   }
 };
@@ -103,8 +102,8 @@ template <> struct set_property_f<2> {
   // (e.g. http://www.awaresystems.be/imaging/tiff/tifftags/dotrange.html
   // )
   template <typename Property>
-  inline bool operator()(typename Property::type const &values,
-                         shared_ptr<TIFF> &file) const {
+  inline bool call_me(typename Property::type const &values,
+                      shared_ptr<TIFF> &file) const {
     typename mpl::at<typename Property::arg_types, mpl::int_<0>>::type const
         length = values.size();
     typename mpl::at<typename Property::arg_types, mpl::int_<1>>::type const
@@ -120,17 +119,18 @@ public:
   tiff_device_base() {}
 
   tiff_device_base(TIFF *tiff_file) : _tiff_file(tiff_file, TIFFClose) {}
+
   template <typename Property>
   bool get_property(typename Property::type &value) {
     return get_property_f<mpl::size<typename Property::arg_types>::value>()
-        .template operator()<Property>(value, _tiff_file);
+        .template call_me<Property>(value, _tiff_file);
   }
 
   template <typename Property>
   inline bool set_property(const typename Property::type &value) {
     // http://www.remotesensing.org/libtiff/man/TIFFSetField.3tiff.html
     return set_property_f<mpl::size<typename Property::arg_types>::value>()
-        .template operator()<Property>(value, _tiff_file);
+        .call_me<Property>(value, _tiff_file);
   }
 
   // TIFFIsByteSwapped returns a non-zero value if the image data was in a

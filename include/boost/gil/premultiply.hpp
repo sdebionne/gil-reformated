@@ -31,6 +31,18 @@ template <typename SrcP, typename DstP> struct channel_premultiply {
   DstP &dst_;
 };
 
+namespace detail {
+template <typename SrcP, typename DstP>
+void assign_alpha_if(mpl::true_, SrcP const &src, DstP &dst) {
+  get_color(dst, alpha_t()) = alpha_or_max(src);
+};
+
+template <typename SrcP, typename DstP>
+void assign_alpha_if(mpl::false_, SrcP const &src, DstP &dst){
+    // nothing to do
+};
+} // namespace detail
+
 struct premultiply {
   template <typename SrcP, typename DstP>
   void operator()(const SrcP &src, DstP &dst) const {
@@ -38,10 +50,12 @@ struct premultiply {
     typedef typename color_space_type<DstP>::type dst_colour_space_t;
     typedef typename mpl::remove<src_colour_space_t, alpha_t>::type
         src_colour_channels;
+
+    typedef mpl::bool_<mpl::contains<dst_colour_space_t, alpha_t>::value>
+        has_alpha_t;
     mpl::for_each<src_colour_channels>(
         channel_premultiply<SrcP, DstP>(src, dst));
-    if (mpl::contains<dst_colour_space_t, alpha_t>::value)
-      get_color(dst, alpha_t()) = alpha_or_max(src);
+    detail::assign_alpha_if(has_alpha_t(), src, dst);
   }
 };
 
