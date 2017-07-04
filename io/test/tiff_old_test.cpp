@@ -72,9 +72,7 @@ BOOST_AUTO_TEST_CASE(old_dynamic_image_test) {
   tiff_read_image(tiff_filename.c_str(), runtime_image);
 
 #ifdef BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
-  // tiff_write_view( tiff_out + "old_dynamic_image_test.tif"
-  //               , view( runtime_image )
-  //               );
+  tiff_write_view(tiff_out + "old_dynamic_image_test.tif", view(runtime_image));
 #endif // BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
 }
 
