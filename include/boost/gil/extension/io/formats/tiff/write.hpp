@@ -124,17 +124,18 @@ private:
     }
   }
 
+  //////////////////////////////
+
   template <typename View>
-  void write_data(const View &view, std::size_t row_size_in_bytes,
-                  const mpl::true_ & // bit_aligned
+  void write_bit_aligned_view_to_dev(const View &view,
+                                     const std::size_t row_size_in_bytes,
+                                     const mpl::true_ & // has_alpha
   ) {
     byte_vector_t row(row_size_in_bytes);
 
     typedef typename View::x_iterator x_it_t;
     x_it_t row_it = x_it_t(&(*row.begin()));
 
-    // @todo: is there an overhead to doing this when there's no
-    // alpha to premultiply by? I'd hope it's optimised out.
     auto pm_view = premultiply_view<typename View::value_type>(view);
 
     for (typename View::y_coord_t y = 0; y < pm_view.height(); ++y) {
@@ -144,6 +145,38 @@ private:
 
       // @todo: do optional bit swapping here if you need to...
     }
+  }
+
+  template <typename View>
+  void write_bit_aligned_view_to_dev(const View &view,
+                                     const std::size_t row_size_in_bytes,
+                                     const mpl::false_ & // has_alpha
+  ) {
+    byte_vector_t row(row_size_in_bytes);
+
+    typedef typename View::x_iterator x_it_t;
+    x_it_t row_it = x_it_t(&(*row.begin()));
+
+    for (typename View::y_coord_t y = 0; y < view.height(); ++y) {
+      std::copy(view.row_begin(y), view.row_end(y), row_it);
+
+      this->_io_dev.write_scaline(row, (uint32)y, 0);
+
+      // @todo: do optional bit swapping here if you need to...
+    }
+  }
+
+  /////////////////////////////
+
+  template <typename View>
+  void write_data(const View &view, std::size_t row_size_in_bytes,
+                  const mpl::true_ & // bit_aligned
+  ) {
+    typedef typename color_space_type<View::value_type>::type colour_space_t;
+    typedef mpl::bool_<mpl::contains<colour_space_t, alpha_t>::value>
+        has_alpha_t;
+
+    write_bit_aligned_view_to_dev(view, row_size_in_bytes, has_alpha_t());
   }
 
   template <typename View>
@@ -197,6 +230,26 @@ private:
     internal_write_tiled_data(view, tw, th, row, row_it);
   }
 
+  //////////////////////////////
+
+  template <typename View, typename IteratorType>
+  void write_tiled_view_to_dev(const View &view, IteratorType it,
+                               const mpl::true_ & // has_alpha
+  ) {
+    auto pm_view = premultiply_view<typename View::value_type>(view);
+
+    std::copy(pm_view.begin(), pm_view.end(), it);
+  }
+
+  template <typename View, typename IteratorType>
+  void write_tiled_view_to_dev(const View &view, IteratorType it,
+                               const mpl::false_ & // has_alpha
+  ) {
+    std::copy(view.begin(), view.end(), it);
+  }
+
+  /////////////////////////////
+
   template <typename View, typename IteratorType>
   void internal_write_tiled_data(const View &view, tiff_tile_width::type tw,
                                  tiff_tile_length::type th, byte_vector_t &row,
@@ -211,10 +264,12 @@ private:
               subimage_view(view, static_cast<int>(j), static_cast<int>(i),
                             static_cast<int>(tw), static_cast<int>(th));
 
-          auto pm_view =
-              premultiply_view<typename View::value_type>(tile_subimage_view);
+          typedef
+              typename color_space_type<View::value_type>::type colour_space_t;
+          typedef mpl::bool_<mpl::contains<colour_space_t, alpha_t>::value>
+              has_alpha_t;
 
-          std::copy(pm_view.begin(), pm_view.end(), it);
+          write_tiled_view_to_dev(tile_subimage_view, it, has_alpha_t());
         } else {
           std::ptrdiff_t width = view.width();
           std::ptrdiff_t height = view.height();
