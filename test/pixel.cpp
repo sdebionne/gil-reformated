@@ -8,8 +8,6 @@
     See http://opensource.adobe.com/gil for most recent version including
    documentation.
 */
-// pixel.cpp : Tests GIL pixels.
-//
 
 #include <boost/gil/bit_aligned_pixel_reference.hpp>
 #include <boost/gil/channel_algorithm.hpp>
@@ -25,13 +23,12 @@
 #include <boost/gil/rgba.hpp>
 #include <boost/gil/typedefs.hpp>
 #include <boost/mpl/at.hpp>
+#include <boost/mpl/for_each.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/type_traits.hpp>
 #include <iostream>
 #include <iterator>
-
-#include <boost/test/unit_test.hpp>
 
 // Testing pixel references and values, pixel operations, color conversion
 
@@ -363,8 +360,4 @@ void test_pixel() {
   error_if(g16 != 8);
 }
 
-BOOST_AUTO_TEST_SUITE(GIL_Tests)
-
-BOOST_AUTO_TEST_CASE(pixel_test) { test_pixel(); }
-
-BOOST_AUTO_TEST_SUITE_END()
+int main(int argc, char *argv[]) { test_pixel(); }
