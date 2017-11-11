@@ -8,13 +8,12 @@
     See http://opensource.adobe.com/gil for most recent version including
    documentation.
 */
-// image_test.cpp :
-//
 
 #ifdef _MSC_VER
-//#pragma warning(disable : 4244)     // conversion from
-//'gil::image<V,Alloc>::coord_t' to 'int', possible loss of data (visual studio
-//compiler doesn't realize that the two types are the same)
+#pragma warning(                                                               \
+    disable : 4244) // conversion from 'gil::image<V,Alloc>::coord_t' to 'int',
+                    // possible loss of data (visual studio compiler doesn't
+                    // realize that the two types are the same)
 #pragma warning(                                                               \
     disable : 4503) // decorated name length exceeded, name was truncated
 #endif
@@ -30,8 +29,6 @@
 #include <map>
 #include <string>
 #include <vector>
-
-#include <boost/test/unit_test.hpp>
 
 using namespace boost::gil;
 using namespace std;
@@ -581,29 +578,20 @@ void test_image(const char *ref_checksum) {
   static_checks();
 }
 
-BOOST_AUTO_TEST_SUITE(GIL_Tests)
+int main(int argc, char *argv[]) {
+  const char *local_name = "gil_reference_checksums.txt";
+  const char *name_from_status = "../libs/gil/test/gil_reference_checksums.txt";
 
-BOOST_AUTO_TEST_CASE(image_test) {
-  // const char* local_name = "gil_reference_checksums.txt";
-  // const char* name_from_status =
-  // "../libs/gil/test/gil_reference_checksums.txt";
-
-  // std::ifstream file_is_there(local_name);
-  // if (file_is_there) {
-  //    test_image(local_name);
-  //} else {
-  //    std::ifstream file_is_there(name_from_status);
-  //    if (file_is_there)
-  //        test_image(name_from_status);
-  //    else {
-  //        throw std::runtime_error( "Unable to open
-  //        gil_reference_checksums.txt" );
-  //    }
-  //}
+  std::ifstream file_is_there(local_name);
+  if (file_is_there) {
+    test_image(local_name);
+  } else {
+    std::ifstream file_is_there(name_from_status);
+    if (file_is_there)
+      test_image(name_from_status);
+    else {
+      std::cerr << "Unable to open gil_reference_checksums.txt" << std::endl;
+      return 1;
+    }
+  }
 }
-
-BOOST_AUTO_TEST_SUITE_END()
-
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
-#pragma warning(pop)
-#endif
