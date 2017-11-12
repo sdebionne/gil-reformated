@@ -172,7 +172,8 @@ private:
   void write_data(const View &view, std::size_t row_size_in_bytes,
                   const mpl::true_ & // bit_aligned
   ) {
-    typedef typename color_space_type<View::value_type>::type colour_space_t;
+    typedef typename color_space_type<typename View::value_type>::type
+        colour_space_t;
     typedef mpl::bool_<mpl::contains<colour_space_t, alpha_t>::value>
         has_alpha_t;
 
@@ -264,8 +265,8 @@ private:
               subimage_view(view, static_cast<int>(j), static_cast<int>(i),
                             static_cast<int>(tw), static_cast<int>(th));
 
-          typedef
-              typename color_space_type<View::value_type>::type colour_space_t;
+          typedef typename color_space_type<typename View::value_type>::type
+              colour_space_t;
           typedef mpl::bool_<mpl::contains<colour_space_t, alpha_t>::value>
               has_alpha_t;
 
