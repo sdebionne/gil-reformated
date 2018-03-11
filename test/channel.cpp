@@ -392,7 +392,15 @@ void test_channel() {
   do_test<reference_core<const channel_archetype &>>();
 }
 
-int main(int argc, char *argv[]) { test_channel(); }
+int main(int argc, char *argv[]) {
+  try {
+    test_channel();
+
+    return EXIT_SUCCESS;
+  } catch (...) {
+    return EXIT_FAILURE;
+  }
+}
 
 // TODO:
 // - provide algorithm performance overloads for scoped channel and packed
