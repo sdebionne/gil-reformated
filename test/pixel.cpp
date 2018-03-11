@@ -360,4 +360,12 @@ void test_pixel() {
   error_if(g16 != 8);
 }
 
-int main(int argc, char *argv[]) { test_pixel(); }
+int main(int argc, char *argv[]) {
+  try {
+    test_pixel();
+
+    return EXIT_SUCCESS;
+  } catch (...) {
+    return EXIT_FAILURE;
+  }
+}
