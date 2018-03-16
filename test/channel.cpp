@@ -15,6 +15,7 @@
 #include <boost/gil/gil_concept.hpp>
 #include <boost/gil/gil_config.hpp>
 #include <exception>
+#include <iostream>
 
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
 #pragma warning(push)
@@ -397,6 +398,9 @@ int main(int argc, char *argv[]) {
     test_channel();
 
     return EXIT_SUCCESS;
+  } catch (std::exception const &e) {
+    std::cerr << e.what() << std::endl;
+    return EXIT_FAILURE;
   } catch (...) {
     return EXIT_FAILURE;
   }

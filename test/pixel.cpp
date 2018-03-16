@@ -27,6 +27,7 @@
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/type_traits.hpp>
+#include <exception>
 #include <iostream>
 #include <iterator>
 
@@ -365,6 +366,9 @@ int main(int argc, char *argv[]) {
     test_pixel();
 
     return EXIT_SUCCESS;
+  } catch (std::exception const &e) {
+    std::cerr << e.what() << std::endl;
+    return EXIT_FAILURE;
   } catch (...) {
     return EXIT_FAILURE;
   }
