@@ -172,9 +172,10 @@ view(Index_View iv, Palette_View pv) {
                                  typename Palette_View::locator>
       defer_fn_t;
 
-  return view_t(iv.dimensions(), pv.dimensions().x,
-                view_t::locator(point_t(0, 0), point_t(1, 1),
-                                defer_fn_t(iv.xy_at(0, 0), pv.xy_at(0, 0))));
+  return view_t(
+      iv.dimensions(), pv.dimensions().x,
+      typename view_t::locator(point_t(0, 0), point_t(1, 1),
+                               defer_fn_t(iv.xy_at(0, 0), pv.xy_at(0, 0))));
 }
 
 template <typename Index, typename Pixel,
