@@ -29,6 +29,7 @@
 #include "gil_config.hpp"
 #include "metafunctions.hpp"
 #include "utilities.hpp"
+#include <boost/core/ignore_unused.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/front.hpp>
 #include <boost/type_traits.hpp>
@@ -163,6 +164,7 @@ public:
         typename enable_if_c<is_pixel<Pixel>::value>::type *dummy = 0)
       : parent_t(p) {
     check_compatible<Pixel>();
+    boost::ignore_unused(dummy);
   }
 
   template <typename P> pixel &operator=(const P &p) {

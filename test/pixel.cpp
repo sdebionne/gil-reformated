@@ -9,6 +9,7 @@
    documentation.
 */
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/gil/bit_aligned_pixel_reference.hpp>
 #include <boost/gil/channel_algorithm.hpp>
 #include <boost/gil/cmyk.hpp>
@@ -191,7 +192,7 @@ template <typename Vector, typename Fun, int K> struct for_each_impl {
 };
 
 template <typename Vector, typename Fun> struct for_each_impl<Vector, Fun, -1> {
-  static void apply(Fun fun) {}
+  static void apply(Fun fun) { boost::ignore_unused(fun); }
 };
 
 template <typename Vector, typename Fun> void for_each(Fun fun) {
@@ -361,7 +362,7 @@ void test_pixel() {
   error_if(g16 != 8);
 }
 
-int main(int argc, char *argv[]) {
+int main() {
   try {
     test_pixel();
 
