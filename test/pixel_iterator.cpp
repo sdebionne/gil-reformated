@@ -380,7 +380,7 @@ from planar pointer
 }
 */
 
-int main(int argc, char *argv[]) {
+int main() {
   try {
     test_pixel_iterator();
 

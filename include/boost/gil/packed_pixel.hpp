@@ -25,6 +25,7 @@
 
 #include "gil_config.hpp"
 #include "pixel.hpp"
+#include <boost/core/ignore_unused.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/front.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -94,6 +95,7 @@ struct packed_pixel {
                typename enable_if_c<is_pixel<P>::value>::type *d = 0) {
     check_compatible<P>();
     static_copy(p, *this);
+    boost::ignore_unused(d);
   }
   packed_pixel(int chan0, int chan1) : _bitfield(0) {
     BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value == 2));
