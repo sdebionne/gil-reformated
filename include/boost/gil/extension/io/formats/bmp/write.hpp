@@ -91,7 +91,7 @@ private:
             ///        in this context.
             if( bpp <= 8 )
             {
-                entries = 1 << bpp;
+                entries = 1u << bpp;
             }
     */
 
