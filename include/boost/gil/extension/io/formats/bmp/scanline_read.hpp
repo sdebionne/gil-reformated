@@ -331,7 +331,6 @@ private:
   /// Read 15 or 16 bits image.
   void read_15_bits_row(byte_t *dst) {
     typedef rgb8_view_t dst_view_t;
-    typedef typename dst_view_t::x_iterator it_t;
 
     dst_view_t dst_view =
         interleaved_view(this->_info._width, 1,

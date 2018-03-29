@@ -143,8 +143,8 @@ private:
                       layout<typename color_space_type<View>::type>>>
         buf(src.width());
 
-    typedef typename View::value_type pixel_t;
-    typedef typename view_type_from_pixel<pixel_t>::type view_t;
+    // typedef typename View::value_type pixel_t;
+    // typedef typename view_type_from_pixel< pixel_t >::type view_t;
 
     // view_t row = interleaved_view( src.width()
     //                             , 1
