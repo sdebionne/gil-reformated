@@ -39,7 +39,7 @@ public:
 public:
   reader_backend(const Device &io_dev,
                  const image_read_settings<targa_tag> &settings)
-      : _io_dev(io_dev), _settings(settings), _info(), _scanline_length(0) {
+      : _io_dev(io_dev), _scanline_length(0), _settings(settings), _info() {
     read_header();
 
     if (_settings._dim.x == 0) {
