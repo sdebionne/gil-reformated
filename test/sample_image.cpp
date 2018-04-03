@@ -9,7 +9,7 @@
    documentation.
 */
 
-#include <boost/gil/gil_all.hpp>
+#include <boost/gil.hpp>
 
 unsigned char halfdome[][3174] = {
     {

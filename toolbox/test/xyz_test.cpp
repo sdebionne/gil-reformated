@@ -10,8 +10,8 @@
 /// \author Davide Anastasia <davideanastasia@users.sourceforge.net>
 
 #include <boost/cstdint.hpp>
+#include <boost/gil.hpp>
 #include <boost/gil/extension/toolbox/color_spaces/xyz.hpp>
-#include <boost/gil/gil_all.hpp>
 #include <iostream>
 #include <limits>
 

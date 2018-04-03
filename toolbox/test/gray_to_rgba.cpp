@@ -9,8 +9,8 @@
 
 #include <boost/type_traits/is_same.hpp>
 
+#include <boost/gil.hpp>
 #include <boost/gil/extension/toolbox/color_converters/gray_to_rgba.hpp>
-#include <boost/gil/gil_all.hpp>
 
 using namespace boost;
 using namespace gil;

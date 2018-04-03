@@ -7,9 +7,9 @@
 
 /// \brief Unit test for hsl and hsv color spaces
 
+#include <boost/gil.hpp>
 #include <boost/gil/extension/toolbox/color_spaces/hsl.hpp>
 #include <boost/gil/extension/toolbox/color_spaces/hsv.hpp>
-#include <boost/gil/gil_all.hpp>
 
 #include <boost/test/unit_test.hpp>
 
