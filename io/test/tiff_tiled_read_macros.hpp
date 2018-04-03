@@ -14,8 +14,8 @@
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 
+#include <boost/gil.hpp>
 #include <boost/gil/extension/io/tiff_read.hpp>
-#include <boost/gil/gil_all.hpp>
 #include <boost/mpl/vector.hpp>
 
 #include "paths.hpp"

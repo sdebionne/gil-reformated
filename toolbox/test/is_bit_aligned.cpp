@@ -9,8 +9,8 @@
 
 #include <boost/type_traits/is_same.hpp>
 
+#include <boost/gil.hpp>
 #include <boost/gil/extension/toolbox/metafunctions/is_bit_aligned.hpp>
-#include <boost/gil/gil_all.hpp>
 
 using namespace boost;
 using namespace gil;
