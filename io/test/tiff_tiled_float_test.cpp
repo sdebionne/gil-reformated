@@ -15,7 +15,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "paths.hpp"
-#include <boost/gil/extension/io/tiff_all.hpp>
+#include <boost/gil/extension/io/tiff.hpp>
 
 using namespace std;
 using namespace boost;

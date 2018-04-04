@@ -15,7 +15,7 @@
 #include <boost/preprocessor/tuple/elem.hpp>
 
 #include <boost/gil.hpp>
-#include <boost/gil/extension/io/tiff_read.hpp>
+#include <boost/gil/extension/io/tiff/read.hpp>
 #include <boost/mpl/vector.hpp>
 
 #include "paths.hpp"
