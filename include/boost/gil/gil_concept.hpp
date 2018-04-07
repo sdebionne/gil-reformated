@@ -123,7 +123,7 @@ template <typename T> struct dynamic_y_step_type;
 template <typename T> struct transposed_type;
 
 namespace detail {
-template <typename T> void initialize_it(T &x) {}
+template <typename T> void initialize_it(T &) {}
 } // namespace detail
 
 template <typename T>
@@ -1146,7 +1146,7 @@ template <typename P> struct PixelDereferenceAdaptorArchetype {
   typedef typename add_reference<P>::type reference;
   typedef reference const_reference;
   static const bool is_mutable = false;
-  P operator()(P x) const { throw; }
+  P operator()(P) const { throw; }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
