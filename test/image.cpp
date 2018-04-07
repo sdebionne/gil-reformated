@@ -7,7 +7,7 @@
 
     See http://opensource.adobe.com/gil for most recent version including
    documentation.
-*/
+    */
 
 #ifdef _MSC_VER
 #pragma warning(                                                               \
@@ -27,6 +27,7 @@
 #include <ios>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
