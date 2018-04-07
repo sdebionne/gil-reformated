@@ -102,7 +102,7 @@ public:
 
   // Returns the y distance between two x_iterators given the difference of
   // their x positions
-  y_coord_t y_distance_to(const this_t &it2, x_coord_t xDiff) const {
+  y_coord_t y_distance_to(const this_t &it2, x_coord_t) const {
     return (it2.pos()[1 - IsTransposed] - pos()[1 - IsTransposed]) /
            step()[1 - IsTransposed];
   }
