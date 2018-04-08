@@ -404,7 +404,9 @@ template <> struct channel_convert_to_unsigned<bits8s> {
   typedef bits8s argument_type;
   typedef bits8 result_type;
   typedef bits8 type;
-  type operator()(bits8s val) const { return static_cast<bits8>(val + 128); }
+  type operator()(bits8s val) const {
+    return static_cast<bits8>(static_cast<bits32>(val) + 128u);
+  }
 };
 
 template <> struct channel_convert_to_unsigned<bits16s> {
@@ -412,7 +414,7 @@ template <> struct channel_convert_to_unsigned<bits16s> {
   typedef bits16 result_type;
   typedef bits16 type;
   type operator()(bits16s val) const {
-    return static_cast<bits16>(val + 32768);
+    return static_cast<bits16>(static_cast<bits32>(val) + 32768u);
   }
 };
 
@@ -420,8 +422,8 @@ template <> struct channel_convert_to_unsigned<bits32s> {
   typedef bits32s argument_type;
   typedef bits32 result_type;
   typedef bits32 type;
-  type operator()(bits32s x) const {
-    return static_cast<bits32>(x) + (1u << 31);
+  type operator()(bits32s val) const {
+    return static_cast<bits32>(val) + (1u << 31);
   }
 };
 
@@ -437,7 +439,9 @@ template <> struct channel_convert_from_unsigned<bits8s> {
   typedef bits8 argument_type;
   typedef bits8s result_type;
   typedef bits8s type;
-  type operator()(bits8 val) const { return static_cast<bits8s>(val - 128); }
+  type operator()(bits8 val) const {
+    return static_cast<bits8s>(static_cast<bits32s>(val) - 128);
+  }
 };
 
 template <> struct channel_convert_from_unsigned<bits16s> {
@@ -445,7 +449,7 @@ template <> struct channel_convert_from_unsigned<bits16s> {
   typedef bits16s result_type;
   typedef bits16s type;
   type operator()(bits16 val) const {
-    return static_cast<bits16s>(val - 32768);
+    return static_cast<bits16s>(static_cast<bits32s>(val) - 32768);
   }
 };
 
@@ -453,8 +457,8 @@ template <> struct channel_convert_from_unsigned<bits32s> {
   typedef bits32 argument_type;
   typedef bits32s result_type;
   typedef bits32s type;
-  type operator()(bits32 x) const {
-    return static_cast<bits32s>(x - (1u << 31));
+  type operator()(bits32 val) const {
+    return static_cast<bits32s>(val - (1u << 31));
   }
 };
 
