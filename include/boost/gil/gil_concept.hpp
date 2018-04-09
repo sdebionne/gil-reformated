@@ -88,7 +88,6 @@ template <int K, typename E, typename L, int N>
 typename add_reference<typename add_const<E>::type>::type
 at_c(const detail::homogeneous_color_base<E, L, N> &p);
 
-#if !defined(_MSC_VER) || _MSC_VER > 1310
 template <typename P, typename C, typename L> struct packed_pixel;
 template <int K, typename P, typename C, typename L>
 typename kth_element_reference_type<packed_pixel<P, C, L>, K>::type
@@ -106,7 +105,6 @@ inline
     typename kth_element_reference_type<bit_aligned_pixel_reference<B, C, L, M>,
                                         K>::type
     at_c(const bit_aligned_pixel_reference<B, C, L, M> &p);
-#endif
 
 // Forward-declare semantic_at_c
 template <int K, typename ColorBase>
@@ -651,10 +649,8 @@ template <typename ColorBase> struct ColorBaseConcept {
         typename kth_element_const_reference_type<ColorBase,
                                                   num_elements - 1>::type CR;
 
-#if !defined(_MSC_VER) || _MSC_VER > 1310
     CR cr = gil::at_c<num_elements - 1>(cb);
     ignore_unused_variable_warning(cr);
-#endif
 
     // functions that work for every pixel (no need to require them)
     semantic_at_c<0>(cb);
@@ -691,10 +687,8 @@ template <typename ColorBase> struct MutableColorBaseConcept {
 
     typedef typename kth_element_reference_type<ColorBase, 0>::type CR;
 
-#if !defined(_MSC_VER) || _MSC_VER > 1310
     CR r = gil::at_c<0>(cb);
     gil::at_c<0>(cb) = r;
-#endif
   }
 
   ColorBase cb;
