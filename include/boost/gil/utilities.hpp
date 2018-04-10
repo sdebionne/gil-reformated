@@ -100,8 +100,10 @@ public:
     return *this;
   }
   point2 &operator/=(double t) {
-    x /= t;
-    y /= t;
+    if (t < 0 || 0 < t) {
+      x /= t;
+      y /= t;
+    }
     return *this;
   }
 
@@ -150,7 +152,8 @@ BOOST_FORCEINLINE point2<T> operator-(const point2<T> &p1,
 /// \ingroup PointModel
 template <typename T>
 BOOST_FORCEINLINE point2<double> operator/(const point2<T> &p, double t) {
-  return t == 0 ? point2<double>(0, 0) : point2<double>(p.x / t, p.y / t);
+  return (t < 0 || 0 < t) ? point2<double>(p.x / t, p.y / t)
+                          : point2<double>(0, 0);
 }
 /// \ingroup PointModel
 template <typename T>
