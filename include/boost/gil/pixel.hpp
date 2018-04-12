@@ -82,8 +82,8 @@ BOOST_STATIC_ASSERT((is_same<color_space_type<rgb8_planar_ref_t>::type,
 rgb_t>::value));
 BOOST_STATIC_ASSERT((is_same<channel_mapping_type<cmyk8_pixel_t>::type,
                              channel_mapping_type<rgba8_pixel_t>::type>::value));
-BOOST_STATIC_ASSERT((is_same<channel_type<bgr8_pixel_t>::type, bits8>::value));
-\endcode
+BOOST_STATIC_ASSERT((is_same<channel_type<bgr8_pixel_t>::type,
+uint8_t>::value)); \endcode
 */
 
 /// \defgroup ColorBaseModelPixel pixel

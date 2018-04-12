@@ -15,7 +15,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "tiff_tiled_read_macros.hpp"
-#include <boost/cstdint.hpp>
+#include <cstdint>
 
 BOOST_AUTO_TEST_SUITE(gil_io_tiff_tests)
 

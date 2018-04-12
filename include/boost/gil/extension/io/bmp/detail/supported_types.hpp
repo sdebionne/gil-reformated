@@ -52,15 +52,15 @@ struct bmp_read_support<packed_dynamic_channel_reference<BitField, 4, Mutable>,
   static const bmp_bits_per_pixel::type bpp = 4;
 };
 
-template <> struct bmp_read_support<bits8, gray_t> : read_support_true {
+template <> struct bmp_read_support<uint8_t, gray_t> : read_support_true {
   static const bmp_bits_per_pixel::type bpp = 8;
 };
 
-template <> struct bmp_read_support<bits8, rgb_t> : read_support_true {
+template <> struct bmp_read_support<uint8_t, rgb_t> : read_support_true {
   static const bmp_bits_per_pixel::type bpp = 24;
 };
 
-template <> struct bmp_read_support<bits8, rgba_t> : read_support_true {
+template <> struct bmp_read_support<uint8_t, rgba_t> : read_support_true {
   static const bmp_bits_per_pixel::type bpp = 32;
 };
 
@@ -69,9 +69,9 @@ template <> struct bmp_read_support<bits8, rgba_t> : read_support_true {
 template <typename Channel, typename ColorSpace>
 struct bmp_write_support : write_support_false {};
 
-template <> struct bmp_write_support<bits8, rgb_t> : write_support_true {};
+template <> struct bmp_write_support<uint8_t, rgb_t> : write_support_true {};
 
-template <> struct bmp_write_support<bits8, rgba_t> : write_support_true {};
+template <> struct bmp_write_support<uint8_t, rgba_t> : write_support_true {};
 
 } // namespace detail
 

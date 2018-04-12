@@ -289,10 +289,10 @@ void test_packed_pixel() {
 
   // Test bit-aligned pixel reference
   typedef const bit_aligned_pixel_reference<
-      boost::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, bgr_layout_t, true>
+      std::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, bgr_layout_t, true>
       bgr121_ref_t;
   typedef const bit_aligned_pixel_reference<
-      boost::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, rgb_layout_t, true>
+      std::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, rgb_layout_t, true>
       rgb121_ref_t;
   typedef rgb121_ref_t::value_type rgb121_pixel_t;
   rgb121_pixel_t p121;
@@ -357,7 +357,7 @@ void test_pixel() {
   // Assigning a grayscale channel to a pixel
   gray16_pixel_t g16(34);
   g16 = 8;
-  bits16 g = get_color(g16, gray_color_t());
+  uint16_t g = get_color(g16, gray_color_t());
   error_if(g != 8);
   error_if(g16 != 8);
 }

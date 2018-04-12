@@ -56,38 +56,38 @@ struct png_read_support<packed_dynamic_channel_reference<BitField, 4, Mutable>,
     : read_support_true, png_rw_support_base<4, PNG_COLOR_TYPE_GRAY> {};
 
 template <>
-struct png_read_support<bits8, gray_t>
+struct png_read_support<uint8_t, gray_t>
     : read_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_GRAY> {};
 
 #ifdef BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 template <>
-struct png_read_support<bits8, gray_alpha_t>
+struct png_read_support<uint8_t, gray_alpha_t>
     : read_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_GA> {};
 #endif // BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 
 template <>
-struct png_read_support<bits8, rgb_t>
+struct png_read_support<uint8_t, rgb_t>
     : read_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_RGB> {};
 
 template <>
-struct png_read_support<bits8, rgba_t>
+struct png_read_support<uint8_t, rgba_t>
     : read_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_RGBA> {};
 
 template <>
-struct png_read_support<bits16, gray_t>
+struct png_read_support<uint16_t, gray_t>
     : read_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_GRAY> {};
 
 template <>
-struct png_read_support<bits16, rgb_t>
+struct png_read_support<uint16_t, rgb_t>
     : read_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_RGB> {};
 
 template <>
-struct png_read_support<bits16, rgba_t>
+struct png_read_support<uint16_t, rgba_t>
     : read_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_RGBA> {};
 
 #ifdef BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 template <>
-struct png_read_support<bits16, gray_alpha_t>
+struct png_read_support<uint16_t, gray_alpha_t>
     : read_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_GA> {};
 #endif // BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 
@@ -128,38 +128,38 @@ struct png_write_support<
     : write_support_true, png_rw_support_base<4, PNG_COLOR_TYPE_GRAY> {};
 
 template <>
-struct png_write_support<bits8, gray_t>
+struct png_write_support<uint8_t, gray_t>
     : write_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_GRAY> {};
 
 #ifdef BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 template <>
-struct png_write_support<bits8, gray_alpha_t>
+struct png_write_support<uint8_t, gray_alpha_t>
     : write_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_GA> {};
 #endif // BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 
 template <>
-struct png_write_support<bits8, rgb_t>
+struct png_write_support<uint8_t, rgb_t>
     : write_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_RGB> {};
 
 template <>
-struct png_write_support<bits8, rgba_t>
+struct png_write_support<uint8_t, rgba_t>
     : write_support_true, png_rw_support_base<8, PNG_COLOR_TYPE_RGBA> {};
 
 template <>
-struct png_write_support<bits16, gray_t>
+struct png_write_support<uint16_t, gray_t>
     : write_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_GRAY> {};
 
 template <>
-struct png_write_support<bits16, rgb_t>
+struct png_write_support<uint16_t, rgb_t>
     : write_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_RGB> {};
 
 template <>
-struct png_write_support<bits16, rgba_t>
+struct png_write_support<uint16_t, rgba_t>
     : write_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_RGBA> {};
 
 #ifdef BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 template <>
-struct png_write_support<bits16, gray_alpha_t>
+struct png_write_support<uint16_t, gray_alpha_t>
     : write_support_true, png_rw_support_base<16, PNG_COLOR_TYPE_GA> {};
 #endif // BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 

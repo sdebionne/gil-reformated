@@ -550,8 +550,8 @@ void static_checks() {
       (boost::is_same<derived_view_type<cmyk8c_planar_step_view_t>::type,
                       cmyk8c_planar_step_view_t>::value));
   BOOST_STATIC_ASSERT(
-      (boost::is_same<derived_view_type<cmyk8c_planar_step_view_t, bits16,
-                                        rgb_layout_t>::type,
+      (boost::is_same<derived_view_type<cmyk8c_planar_step_view_t,
+                                        std::uint16_t, rgb_layout_t>::type,
                       rgb16c_planar_step_view_t>::value));
   BOOST_STATIC_ASSERT(
       (boost::is_same<derived_view_type<cmyk8c_planar_step_view_t, use_default,

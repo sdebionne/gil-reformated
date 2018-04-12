@@ -48,13 +48,13 @@ struct pnm_read_support<packed_dynamic_channel_reference<BitField, 1, Mutable>,
                           pnm_image_type::mono_bin_t::value> {};
 
 template <>
-struct pnm_read_support<bits8, gray_t>
+struct pnm_read_support<uint8_t, gray_t>
     : read_support_true,
       pnm_rw_support_base<pnm_image_type::gray_asc_t::value,
                           pnm_image_type::gray_bin_t::value> {};
 
 template <>
-struct pnm_read_support<bits8, rgb_t>
+struct pnm_read_support<uint8_t, rgb_t>
     : read_support_true,
       pnm_rw_support_base<pnm_image_type::color_asc_t::value,
                           pnm_image_type::color_bin_t::value> {};
@@ -72,13 +72,13 @@ struct pnm_write_support<packed_dynamic_channel_reference<BitField, 1, Mutable>,
                           pnm_image_type::mono_bin_t::value> {};
 
 template <>
-struct pnm_write_support<bits8, gray_t>
+struct pnm_write_support<uint8_t, gray_t>
     : write_support_true,
       pnm_rw_support_base<pnm_image_type::gray_asc_t::value,
                           pnm_image_type::gray_bin_t::value> {};
 
 template <>
-struct pnm_write_support<bits8, rgb_t>
+struct pnm_write_support<uint8_t, rgb_t>
     : write_support_true,
       pnm_rw_support_base<pnm_image_type::color_asc_t::value,
                           pnm_image_type::color_bin_t::value> {};

@@ -340,21 +340,21 @@ struct is_adaptable_output_device<FormatTag, TIFF *, void> : mpl::true_ {
 template <typename Channel>
 struct sample_format : public mpl::int_<SAMPLEFORMAT_UINT> {};
 template <>
-struct sample_format<bits8> : public mpl::int_<SAMPLEFORMAT_UINT> {};
+struct sample_format<uint8_t> : public mpl::int_<SAMPLEFORMAT_UINT> {};
 template <>
-struct sample_format<bits16> : public mpl::int_<SAMPLEFORMAT_UINT> {};
+struct sample_format<uint16_t> : public mpl::int_<SAMPLEFORMAT_UINT> {};
 template <>
-struct sample_format<bits32> : public mpl::int_<SAMPLEFORMAT_UINT> {};
+struct sample_format<uint32_t> : public mpl::int_<SAMPLEFORMAT_UINT> {};
 template <>
-struct sample_format<bits32f> : public mpl::int_<SAMPLEFORMAT_IEEEFP> {};
+struct sample_format<float32_t> : public mpl::int_<SAMPLEFORMAT_IEEEFP> {};
 template <>
 struct sample_format<double> : public mpl::int_<SAMPLEFORMAT_IEEEFP> {};
 template <>
-struct sample_format<bits8s> : public mpl::int_<SAMPLEFORMAT_INT> {};
+struct sample_format<int8_t> : public mpl::int_<SAMPLEFORMAT_INT> {};
 template <>
-struct sample_format<bits16s> : public mpl::int_<SAMPLEFORMAT_INT> {};
+struct sample_format<int16_t> : public mpl::int_<SAMPLEFORMAT_INT> {};
 template <>
-struct sample_format<bits32s> : public mpl::int_<SAMPLEFORMAT_INT> {};
+struct sample_format<int32_t> : public mpl::int_<SAMPLEFORMAT_INT> {};
 
 template <typename Channel> struct photometric_interpretation {};
 template <>

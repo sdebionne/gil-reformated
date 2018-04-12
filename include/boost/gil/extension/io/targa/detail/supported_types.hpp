@@ -38,11 +38,11 @@ struct targa_read_support : read_support_false {
   static const targa_depth::type bpp = 0;
 };
 
-template <> struct targa_read_support<bits8, rgb_t> : read_support_true {
+template <> struct targa_read_support<uint8_t, rgb_t> : read_support_true {
   static const targa_depth::type bpp = 24;
 };
 
-template <> struct targa_read_support<bits8, rgba_t> : read_support_true {
+template <> struct targa_read_support<uint8_t, rgba_t> : read_support_true {
   static const targa_depth::type bpp = 32;
 };
 
@@ -51,9 +51,9 @@ template <> struct targa_read_support<bits8, rgba_t> : read_support_true {
 template <typename Channel, typename ColorSpace>
 struct targa_write_support : write_support_false {};
 
-template <> struct targa_write_support<bits8, rgb_t> : write_support_true {};
+template <> struct targa_write_support<uint8_t, rgb_t> : write_support_true {};
 
-template <> struct targa_write_support<bits8, rgba_t> : write_support_true {};
+template <> struct targa_write_support<uint8_t, rgba_t> : write_support_true {};
 
 } // namespace detail
 
