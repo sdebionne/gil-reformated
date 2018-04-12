@@ -36,13 +36,13 @@ namespace detail {
 template <typename Channel, typename ColorSpace>
 struct raw_read_support : read_support_false {};
 
-template <> struct raw_read_support<bits8, gray_t> : read_support_true {};
+template <> struct raw_read_support<uint8_t, gray_t> : read_support_true {};
 
-template <> struct raw_read_support<bits16, gray_t> : read_support_true {};
+template <> struct raw_read_support<uint16_t, gray_t> : read_support_true {};
 
-template <> struct raw_read_support<bits8, rgb_t> : read_support_true {};
+template <> struct raw_read_support<uint8_t, rgb_t> : read_support_true {};
 
-template <> struct raw_read_support<bits16, rgb_t> : read_support_true {};
+template <> struct raw_read_support<uint16_t, rgb_t> : read_support_true {};
 
 // Write support
 

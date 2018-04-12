@@ -26,10 +26,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include <cassert>
+#include <cstdint>
 #include <limits>
 
 #include <boost/config.hpp>
-#include <boost/cstdint.hpp>
 #include <boost/integer/integer_mask.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 
@@ -150,7 +150,7 @@ bits64custom_t;
 // channel_convert its maximum should map to the maximum
 bits64custom_t x = channel_traits<bits64custom_t>::max_value();
 assert(x == 0.5);
-bits16 y = channel_convert<bits16>(x);
+uint16_t y = channel_convert<uint16_t>(x);
 assert(y == 65535);
 \endcode
 */
@@ -228,11 +228,12 @@ private:
   BaseChannelValue _value;
 };
 
-struct float_zero {
-  static float apply() { return 0.0f; }
+template <typename T> struct float_point_zero {
+  static constexpr T apply() { return 0.0f; }
 };
-struct float_one {
-  static float apply() { return 1.0f; }
+
+template <typename T> struct float_point_one {
+  static constexpr T apply() { return 1.0f; }
 };
 
 ///////////////////////////////////////////
@@ -462,7 +463,7 @@ assert(data == 6);                                          // == 3<<1 == 6
 
 template <typename BitField, // A type that holds the bits of the pixel from
                              // which the channel is referenced. Typically an
-                             // integral type, like boost::uint16_t
+                             // integral type, like std::uint16_t
           int FirstBit, int NumBits, // Defines the sequence of bits in the data
                                      // value that contain the channel
           bool Mutable>              // true if the reference is mutable
@@ -470,7 +471,7 @@ class packed_channel_reference;
 
 template <typename BitField, // A type that holds the bits of the pixel from
                              // which the channel is referenced. Typically an
-                             // integral type, like boost::uint16_t
+                             // integral type, like std::uint16_t
           int NumBits,  // Defines the sequence of bits in the data value that
                         // contain the channel
           bool Mutable> // true if the reference is mutable
@@ -801,73 +802,6 @@ swap(const boost::gil::packed_dynamic_channel_reference<BF, NB, M> x,
       BF, NB, M>::value_type>(x, y);
 }
 } // namespace std
-
-namespace boost {
-namespace gil {
-///////////////////////////////////////////
-////
-////  Built-in channel models
-////
-///////////////////////////////////////////
-
-/// \defgroup bits8 bits8
-/// \ingroup ChannelModel
-/// \brief 8-bit unsigned integral channel type (typedef from uint8_t). Models
-/// ChannelValueConcept
-
-/// \ingroup bits8
-typedef uint8_t bits8;
-
-/// \defgroup bits16 bits16
-/// \ingroup ChannelModel
-/// \brief 16-bit unsigned integral channel type (typedef from uint16_t). Models
-/// ChannelValueConcept
-
-/// \ingroup bits16
-typedef uint16_t bits16;
-
-/// \defgroup bits32 bits32
-/// \ingroup ChannelModel
-/// \brief 32-bit unsigned integral channel type  (typedef from uint32_t).
-/// Models ChannelValueConcept
-
-/// \ingroup bits32
-typedef uint32_t bits32;
-
-/// \defgroup bits8s bits8s
-/// \ingroup ChannelModel
-/// \brief 8-bit signed integral channel type (typedef from int8_t). Models
-/// ChannelValueConcept
-
-/// \ingroup bits8s
-typedef int8_t bits8s;
-
-/// \defgroup bits16s bits16s
-/// \ingroup ChannelModel
-/// \brief 16-bit signed integral channel type (typedef from int16_t). Models
-/// ChannelValueConcept
-
-/// \ingroup bits16s
-typedef int16_t bits16s;
-
-/// \defgroup bits32s bits32s
-/// \ingroup ChannelModel
-/// \brief 32-bit signed integral channel type (typedef from int32_t). Models
-/// ChannelValueConcept
-
-/// \ingroup bits32s
-typedef int32_t bits32s;
-
-/// \defgroup bits32f bits32f
-/// \ingroup ChannelModel
-/// \brief 32-bit floating point channel type with range [0.0f ... 1.0f]. Models
-/// ChannelValueConcept
-
-/// \ingroup bits32f
-typedef scoped_channel_value<float, float_zero, float_one> bits32f;
-
-} // namespace gil
-} // namespace boost
 
 namespace boost {
 

@@ -52,7 +52,7 @@ void test_pixel_iterator() {
       MutablePixelLocatorConcept<memory_based_2d_locator<rgb8_step_ptr_t>>>();
 
   typedef const bit_aligned_pixel_reference<
-      boost::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, bgr_layout_t, true>
+      std::uint8_t, boost::mpl::vector3_c<int, 1, 2, 1>, bgr_layout_t, true>
       bgr121_ref_t;
   typedef bit_aligned_pixel_iterator<bgr121_ref_t> bgr121_ptr_t;
 
@@ -71,7 +71,7 @@ void test_pixel_iterator() {
 
   BOOST_STATIC_ASSERT(
       (boost::is_same<
-          iterator_type<bits8, gray_layout_t, false, false, false>::type,
+          iterator_type<uint8_t, gray_layout_t, false, false, false>::type,
           gray8c_ptr_t>::value));
 
   // TEST iterator_is_step
@@ -116,7 +116,7 @@ void test_pixel_iterator() {
 
   // Mutable reference to a BGR232 pixel
   typedef const bit_aligned_pixel_reference<
-      boost::uint8_t, boost::mpl::vector3_c<unsigned, 2, 3, 2>, bgr_layout_t,
+      std::uint8_t, boost::mpl::vector3_c<unsigned, 2, 3, 2>, bgr_layout_t,
       true>
       bgr232_ref_t;
 
@@ -224,7 +224,7 @@ ignore_unused_variable_warning(ref);
 
 //    planarPtr2=&rgba8;
 
-    planar_pixel_reference<bits8&,rgb_t> pxl=*(planarPtr1+5);
+    planar_pixel_reference<uint8_t&,rgb_t> pxl=*(planarPtr1+5);
   rgb8_pixel_t pv2=pxl;
   rgb8_pixel_t pv3=*(planarPtr1+5);
      rgb8_pixel_t pv=planarPtr1[5];

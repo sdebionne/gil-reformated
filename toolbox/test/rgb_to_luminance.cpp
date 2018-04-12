@@ -20,8 +20,6 @@ struct double_one {
   static double apply() { return 1.0; }
 };
 
-typedef scoped_channel_value<double, double_zero, double_one> bits64f;
-
 typedef pixel<double, gray_layout_t> gray64f_pixel_t;
 typedef pixel<double, rgb_layout_t> rgb64f_pixel_t;
 

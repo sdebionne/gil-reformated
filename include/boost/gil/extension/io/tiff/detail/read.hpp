@@ -335,7 +335,7 @@ private:
     int num_colors = channel_traits<channel_t>::max_value();
 
     rgb16_planar_view_t palette = planar_rgb_view(
-        num_colors, 1, red, green, blue, sizeof(bits16) * num_colors);
+        num_colors, 1, red, green, blue, sizeof(uint16_t) * num_colors);
 
     for (typename rgb16_view_t::y_coord_t y = 0; y < dst_view.height(); ++y) {
       typename rgb16_view_t::x_iterator it = dst_view.row_begin(y);
@@ -344,7 +344,7 @@ private:
       typename Indices_View::x_iterator indices_it = indices_view.row_begin(y);
 
       for (; it != end; ++it, ++indices_it) {
-        bits16 i = gil::at_c<0>(*indices_it);
+        uint16_t i = gil::at_c<0>(*indices_it);
 
         *it = palette[i];
       }

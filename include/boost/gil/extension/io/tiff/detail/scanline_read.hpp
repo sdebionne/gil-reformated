@@ -105,7 +105,7 @@ private:
 
         this->_palette =
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
-                            this->_blue, sizeof(bits16) * num_colors);
+                            this->_blue, sizeof(uint16_t) * num_colors);
 
         _read_function = boost::mem_fn(&this_t::read_1_bit_index_image);
 
@@ -120,7 +120,7 @@ private:
 
         this->_palette =
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
-                            this->_blue, sizeof(bits16) * num_colors);
+                            this->_blue, sizeof(uint16_t) * num_colors);
 
         _read_function = boost::mem_fn(&this_t::read_2_bits_index_image);
 
@@ -134,7 +134,7 @@ private:
 
         this->_palette =
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
-                            this->_blue, sizeof(bits16) * num_colors);
+                            this->_blue, sizeof(uint16_t) * num_colors);
 
         _read_function = boost::mem_fn(&this_t::read_4_bits_index_image);
 
@@ -149,7 +149,7 @@ private:
 
         this->_palette =
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
-                            this->_blue, sizeof(bits16) * num_colors);
+                            this->_blue, sizeof(uint16_t) * num_colors);
 
         _read_function = boost::mem_fn(&this_t::read_8_bits_index_image);
 
@@ -164,7 +164,7 @@ private:
 
         this->_palette =
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
-                            this->_blue, sizeof(bits16) * num_colors);
+                            this->_blue, sizeof(uint16_t) * num_colors);
 
         _read_function = boost::mem_fn(&this_t::read_16_bits_index_image);
 
@@ -179,7 +179,7 @@ private:
 
         this->_palette =
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
-                            this->_blue, sizeof(bits16) * num_colors);
+                            this->_blue, sizeof(uint16_t) * num_colors);
 
         _read_function = boost::mem_fn(&this_t::read_24_bits_index_image);
 
@@ -194,7 +194,7 @@ private:
 
         this->_palette =
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
-                            this->_blue, sizeof(bits16) * num_colors);
+                            this->_blue, sizeof(uint16_t) * num_colors);
 
         _read_function = boost::mem_fn(&this_t::read_32_bits_index_image);
 
@@ -345,8 +345,8 @@ private:
 
     for (dst_view_t::x_coord_t i = 0; i < this->_info._width;
          ++i, src_it++, dst_it++) {
-      boost::uint16_t c =
-          static_cast<boost::uint16_t>(get_color(*src_it, gray_color_t()));
+      auto const c =
+          static_cast<std::uint16_t>(get_color(*src_it, gray_color_t()));
       *dst_it = this->_palette[c];
     }
   }

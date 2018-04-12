@@ -40,15 +40,15 @@ struct jpeg_read_support : read_support_false,
                            jpeg_rw_support_base<JCS_UNKNOWN> {};
 
 template <>
-struct jpeg_read_support<bits8, rgb_t> : read_support_true,
-                                         jpeg_rw_support_base<JCS_RGB> {};
+struct jpeg_read_support<uint8_t, rgb_t> : read_support_true,
+                                           jpeg_rw_support_base<JCS_RGB> {};
 
 template <>
-struct jpeg_read_support<bits8, cmyk_t> : read_support_true,
-                                          jpeg_rw_support_base<JCS_CMYK> {};
+struct jpeg_read_support<uint8_t, cmyk_t> : read_support_true,
+                                            jpeg_rw_support_base<JCS_CMYK> {};
 
 template <>
-struct jpeg_read_support<bits8, gray_t>
+struct jpeg_read_support<uint8_t, gray_t>
     : read_support_true, jpeg_rw_support_base<JCS_GRAYSCALE> {};
 
 // Write support
@@ -58,16 +58,16 @@ struct jpeg_write_support : write_support_false,
                             jpeg_rw_support_base<JCS_UNKNOWN> {};
 
 template <>
-struct jpeg_write_support<bits8, gray_t>
+struct jpeg_write_support<uint8_t, gray_t>
     : write_support_true, jpeg_rw_support_base<JCS_GRAYSCALE> {};
 
 template <>
-struct jpeg_write_support<bits8, rgb_t> : write_support_true,
-                                          jpeg_rw_support_base<JCS_RGB> {};
+struct jpeg_write_support<uint8_t, rgb_t> : write_support_true,
+                                            jpeg_rw_support_base<JCS_RGB> {};
 
 template <>
-struct jpeg_write_support<bits8, cmyk_t> : write_support_true,
-                                           jpeg_rw_support_base<JCS_CMYK> {};
+struct jpeg_write_support<uint8_t, cmyk_t> : write_support_true,
+                                             jpeg_rw_support_base<JCS_CMYK> {};
 
 } // namespace detail
 
