@@ -386,7 +386,11 @@ template <> struct channel_converter_unsigned<float32_t, uint32_t> {
     // float32_t
     if (x >= channel_traits<float32_t>::max_value())
       return channel_traits<uint32_t>::max_value();
-    return uint32_t(x * channel_traits<uint32_t>::max_value() + 0.5f);
+
+    auto const max_value = channel_traits<uint32_t>::max_value();
+    auto const result =
+        x * static_cast<float32_t::base_channel_t>(max_value) + 0.5f;
+    return static_cast<uint32_t>(result);
   }
 };
 
