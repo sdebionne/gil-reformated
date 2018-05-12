@@ -25,7 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include <boost/config.hpp>
-#include <boost/integer_traits.hpp>
 #include <boost/mpl/greater.hpp>
 #include <boost/mpl/integral_c.hpp>
 #include <boost/mpl/less.hpp>
@@ -34,6 +33,8 @@
 #include "channel.hpp"
 #include "gil_config.hpp"
 #include "typedefs.hpp"
+
+#include <limits>
 
 namespace boost {
 namespace gil {
@@ -67,7 +68,7 @@ template <typename UnsignedIntegralChannel>
 struct unsigned_integral_max_value
     : public mpl::integral_c<
           UnsignedIntegralChannel,
-          integer_traits<UnsignedIntegralChannel>::const_max> {};
+          std::numeric_limits<UnsignedIntegralChannel>::max()> {};
 
 template <>
 struct unsigned_integral_max_value<uint8_t>
