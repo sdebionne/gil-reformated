@@ -32,6 +32,7 @@
 
 #include "channel.hpp"
 #include "gil_config.hpp"
+#include "promote_integral.hpp"
 #include "typedefs.hpp"
 
 #include <limits>
@@ -625,8 +626,16 @@ assert(inv == 0);
 template <
     typename Channel> // Models ChannelConcept (could be a channel reference)
 inline typename channel_traits<Channel>::value_type channel_invert(Channel x) {
-  return channel_traits<Channel>::max_value() - x +
-         channel_traits<Channel>::min_value();
+
+  using base_t = typename base_channel_type<Channel>::type;
+  using promoted_t = typename promote_integral<base_t>::type;
+  promoted_t const promoted_x = x;
+  promoted_t const promoted_max = channel_traits<Channel>::max_value();
+  promoted_t const promoted_min = channel_traits<Channel>::min_value();
+  promoted_t const promoted_inverted_x =
+      promoted_max - promoted_x + promoted_min;
+  auto const inverted_x = static_cast<base_t>(promoted_inverted_x);
+  return inverted_x;
 }
 
 //#ifdef _MSC_VER
