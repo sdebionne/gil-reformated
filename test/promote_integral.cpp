@@ -18,8 +18,6 @@
 #include <boost/gil/promote_integral.hpp>
 
 #include <boost/config.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/type_traits/is_unsigned.hpp>
 
 #include <algorithm>
 #include <climits>
@@ -39,8 +37,8 @@
 
 namespace bg = boost::gil;
 
-template <typename T, bool Signed = boost::is_fundamental<T>::type::value &&
-                                    !boost::is_unsigned<T>::type::value>
+template <typename T, bool Signed = std::is_fundamental<T>::type::value &&
+                                    !std::is_unsigned<T>::type::value>
 struct absolute_value {
   static inline T apply(T const &t) { return t < 0 ? -t : t; }
 };
@@ -50,7 +48,7 @@ template <typename T> struct absolute_value<T, false> {
 };
 
 template <typename Integral, typename Promoted,
-          bool Signed = !boost::is_unsigned<Promoted>::type::value>
+          bool Signed = !std::is_unsigned<Promoted>::type::value>
 struct test_max_values {
   static inline void apply() {
     Promoted min_value = (std::numeric_limits<Integral>::min)();
@@ -85,9 +83,8 @@ struct test_max_values<Integral, Promoted, false> {
 };
 
 // helper function that returns the bit size of a type
-template <typename T,
-          bool IsFundamental = boost::is_fundamental<T>::type::value>
-struct bit_size_impl : boost::mpl::size_t<0> {};
+template <typename T, bool IsFundamental = std::is_fundamental<T>::type::value>
+struct bit_size_impl : std::integral_constant<std::size_t, 0> {};
 
 template <typename T>
 struct bit_size_impl<T, true>
@@ -103,8 +100,8 @@ template <bool PromoteUnsignedToUnsigned> struct test_promote_integral {
     typedef typename bg::promote_integral<Type, PromoteUnsignedToUnsigned>::type
         promoted_integral_type;
 
-    bool const same_types = boost::is_same<promoted_integral_type,
-                                           ExpectedPromotedType>::type::value;
+    bool const same_types =
+        std::is_same<promoted_integral_type, ExpectedPromotedType>::type::value;
 
     BOOST_CHECK_MESSAGE(
         same_types,
@@ -112,7 +109,7 @@ template <bool PromoteUnsignedToUnsigned> struct test_promote_integral {
                     << "; detected: " << typeid(promoted_integral_type).name()
                     << "; expected: " << typeid(ExpectedPromotedType).name());
 
-    if (!boost::is_same<Type, promoted_integral_type>::type::value) {
+    if (!std::is_same<Type, promoted_integral_type>::type::value) {
       test_max_values<Type, promoted_integral_type>::apply();
     }
 
@@ -145,7 +142,7 @@ template <bool PromoteUnsignedToUnsigned> struct test_promote_integral {
 };
 
 template <typename T, bool PromoteUnsignedToUnsigned = false,
-          bool IsSigned = !boost::is_unsigned<T>::type::value>
+          bool IsSigned = !std::is_unsigned<T>::type::value>
 struct test_promotion {
   static inline void apply(std::string case_id) {
 #ifdef BOOST_GIL_TEST_DEBUG
@@ -176,11 +173,6 @@ struct test_promotion {
 #if defined(BOOST_HAS_LONG_LONG)
     else if (bit_size<boost::long_long_type>() >= min_size) {
       tester::template apply<T, boost::long_long_type>(case_id);
-    }
-#endif
-#if defined(BOOST_HAS_INT128) && defined(BOOST_GEOMETRY_ENABLE_INT128)
-    else if (bit_size<boost::int128_type>() >= min_size) {
-      tester::template apply<T, boost::int128_type>(case_id);
     }
 #endif
     else {
@@ -216,11 +208,6 @@ template <typename T> struct test_promotion<T, true, false> {
 #if defined(BOOST_HAS_LONG_LONG)
     else if (bit_size<boost::ulong_long_type>() >= min_size) {
       tester::template apply<T, boost::ulong_long_type>(case_id);
-    }
-#endif
-#if defined(BOOST_HAS_INT128) && defined(BOOST_GEOMETRY_ENABLE_INT128)
-    else if (bit_size<boost::uint128_type>() >= min_size) {
-      tester::template apply<T, boost::uint128_type>(case_id);
     }
 #endif
     else {
@@ -270,15 +257,6 @@ BOOST_AUTO_TEST_CASE(test_long_long) {
   test_promotion<boost::long_long_type, true>::apply("long long");
   test_promotion<boost::ulong_long_type>::apply("ulong long");
   test_promotion<boost::ulong_long_type, true>::apply("ulong long");
-}
-#endif
-
-#if defined(BOOST_HAS_INT128) && defined(BOOST_GEOMETRY_ENABLE_INT128)
-BOOST_AUTO_TEST_CASE(test_int128) {
-  test_promotion<boost::int128_type>::apply("int128_t");
-  test_promotion<boost::int128_type, true>::apply("int128_t");
-  test_promotion<boost::uint128_type>::apply("uint128_t");
-  test_promotion<boost::uint128_type, true>::apply("uint128_t");
 }
 #endif
 
