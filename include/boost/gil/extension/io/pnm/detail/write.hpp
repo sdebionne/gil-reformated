@@ -19,9 +19,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include <stdlib.h>
-
-#include <boost/lexical_cast.hpp>
+#include <cstdlib>
+#include <string>
 
 #include <boost/gil/extension/io/pnm/tags.hpp>
 
@@ -78,15 +77,15 @@ public:
     // ends.
 
     std::string str("P");
-    str += lexical_cast<std::string>(type) + std::string(" ");
+    str += std::to_string(type) + std::string(" ");
     this->_io_dev.print_line(str);
 
     str.clear();
-    str += lexical_cast<std::string>(width) + std::string(" ");
+    str += std::to_string(width) + std::string(" ");
     this->_io_dev.print_line(str);
 
     str.clear();
-    str += lexical_cast<std::string>(height) + std::string(" ");
+    str += std::to_string(height) + std::string(" ");
     this->_io_dev.print_line(str);
 
     if (type != pnm_image_type::mono_bin_t::value) {
