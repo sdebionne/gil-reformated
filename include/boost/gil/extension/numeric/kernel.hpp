@@ -21,12 +21,12 @@ operations
 */
 
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cstddef>
 #include <memory>
 #include <vector>
 
-#include <boost/array.hpp>
 #include <boost/gil/gil_config.hpp>
 #include <boost/gil/utilities.hpp>
 
@@ -92,8 +92,8 @@ public:
 
 /// \brief static-size kernel
 template <typename T, std::size_t Size>
-class kernel_1d_fixed : public detail::kernel_1d_adaptor<array<T, Size>> {
-  typedef detail::kernel_1d_adaptor<array<T, Size>> parent_t;
+class kernel_1d_fixed : public detail::kernel_1d_adaptor<std::array<T, Size>> {
+  typedef detail::kernel_1d_adaptor<std::array<T, Size>> parent_t;
 
 public:
   kernel_1d_fixed() {}
