@@ -21,7 +21,6 @@
 #include "paths.hpp"
 #include "subimage_test.hpp"
 
-using namespace std;
 using namespace boost;
 using namespace gil;
 using namespace filesystem;
@@ -44,9 +43,9 @@ BOOST_AUTO_TEST_CASE(read_image_info_test) {
   }
 
   {
-    ifstream in(jpeg_filename.c_str(), ios::binary);
+    std::ifstream in(jpeg_filename.c_str(), ios::binary);
 
-    typedef get_reader_backend<ifstream, tag_t>::type backend_t;
+    typedef get_reader_backend<std::ifstream, tag_t>::type backend_t;
 
     backend_t backend = read_image_info(in, tag_t());
 
@@ -86,7 +85,7 @@ BOOST_AUTO_TEST_CASE(read_image_test) {
   }
 
   {
-    ifstream in(jpeg_filename.c_str(), ios::binary);
+    std::ifstream in(jpeg_filename.c_str(), ios::binary);
 
     rgb8_image_t img;
     read_image(in, img, tag_t());
@@ -125,7 +124,7 @@ BOOST_AUTO_TEST_CASE(read_and_convert_image_test) {
   }
 
   {
-    ifstream in(jpeg_filename.c_str(), ios::binary);
+    std::ifstream in(jpeg_filename.c_str(), ios::binary);
 
     rgb8_image_t img;
     read_and_convert_image(in, img, tag_t());
@@ -139,7 +138,7 @@ BOOST_AUTO_TEST_CASE(read_view_test) {
   }
 
   {
-    ifstream in(jpeg_filename.c_str(), ios::binary);
+    std::ifstream in(jpeg_filename.c_str(), ios::binary);
 
     rgb8_image_t img(1000, 600);
     read_view(in, view(img), tag_t());
@@ -159,7 +158,7 @@ BOOST_AUTO_TEST_CASE(read_and_convert_view_test) {
   }
 
   {
-    ifstream in(jpeg_filename.c_str(), ios::binary);
+    std::ifstream in(jpeg_filename.c_str(), ios::binary);
 
     rgb8_image_t img(1000, 600);
     read_and_convert_view(in, view(img), tag_t());
@@ -176,7 +175,7 @@ BOOST_AUTO_TEST_CASE(read_and_convert_view_test) {
 #ifdef BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
 BOOST_AUTO_TEST_CASE(write_view_test) {
   {
-    string filename(jpeg_out + "write_test_string.jpg");
+    std::string filename(jpeg_out + "write_test_string.jpg");
 
     write_view(filename,
                create_mandel_view(320, 240, rgb8_pixel_t(0, 0, 255),
@@ -185,8 +184,8 @@ BOOST_AUTO_TEST_CASE(write_view_test) {
   }
 
   {
-    string filename(jpeg_out + "write_test_ofstream.jpg");
-    ofstream out(filename.c_str(), ios::binary);
+    std::string filename(jpeg_out + "write_test_ofstream.jpg");
+    std::ofstream out(filename.c_str(), ios::binary);
 
     write_view(out,
                create_mandel_view(320, 240, rgb8_pixel_t(0, 0, 255),
@@ -195,8 +194,7 @@ BOOST_AUTO_TEST_CASE(write_view_test) {
   }
 
   {
-    string filename(jpeg_out + "write_test_file.jpg");
-
+    std::string filename(jpeg_out + "write_test_file.jpg");
     FILE *file = fopen(filename.c_str(), "wb");
 
     write_view(file,
@@ -206,7 +204,7 @@ BOOST_AUTO_TEST_CASE(write_view_test) {
   }
 
   {
-    string filename(jpeg_out + "write_test_info.jpg");
+    std::string filename(jpeg_out + "write_test_info.jpg");
     FILE *file = fopen(filename.c_str(), "wb");
 
     image_write_info<jpeg_tag> info;
@@ -220,17 +218,17 @@ BOOST_AUTO_TEST_CASE(write_view_test) {
 
 BOOST_AUTO_TEST_CASE(stream_test) {
   // 1. Read an image.
-  ifstream in(jpeg_filename.c_str(), ios::binary);
+  std::ifstream in(jpeg_filename.c_str(), ios::binary);
 
   rgb8_image_t img;
   read_image(in, img, tag_t());
 
   // 2. Write image to in-memory buffer.
-  stringstream out_buffer(ios_base::in | ios_base::out | ios_base::binary);
+  std::stringstream out_buffer(ios_base::in | ios_base::out | ios_base::binary);
   write_view(out_buffer, view(img), tag_t());
 
   // 3. Copy in-memory buffer to another.
-  stringstream in_buffer(ios_base::in | ios_base::out | ios_base::binary);
+  std::stringstream in_buffer(ios_base::in | ios_base::out | ios_base::binary);
   in_buffer << out_buffer.rdbuf();
 
   // 4. Read in-memory buffer to gil image
@@ -238,20 +236,20 @@ BOOST_AUTO_TEST_CASE(stream_test) {
   read_image(in_buffer, dst, tag_t());
 
   // 5. Write out image.
-  string filename(jpeg_out + "stream_test.jpg");
-  ofstream out(filename.c_str(), ios_base::binary);
+  std::string filename(jpeg_out + "stream_test.jpg");
+  std::ofstream out(filename.c_str(), ios_base::binary);
 #ifdef BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
   write_view(out, view(dst), tag_t());
 #endif // BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
 }
 
 BOOST_AUTO_TEST_CASE(stream_test_2) {
-  filebuf in_buf;
+  std::filebuf in_buf;
   if (!in_buf.open(jpeg_filename.c_str(), ios::in | ios::binary)) {
     BOOST_CHECK(false);
   }
 
-  istream in(&in_buf);
+  std::istream in(&in_buf);
 
   rgb8_image_t img;
   read_image(in, img, tag_t());
