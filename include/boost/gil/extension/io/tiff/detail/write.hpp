@@ -25,7 +25,6 @@ extern "C" {
 }
 
 #include <algorithm>
-#include <boost/shared_ptr.hpp>
 #include <boost/static_assert.hpp>
 #include <string>
 #include <vector>

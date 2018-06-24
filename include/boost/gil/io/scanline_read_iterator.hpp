@@ -20,10 +20,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include <boost/iterator/iterator_facade.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include <boost/gil/io/error.hpp>
+
+#include <memory>
 
 namespace boost {
 namespace gil {
@@ -46,7 +46,7 @@ private:
 public:
   scanline_read_iterator(Reader &reader, int pos = 0)
       : _pos(pos), _read_scanline(true), _skip_scanline(true), _reader(reader) {
-    _buffer = boost::make_shared<buffer_t>(buffer_t(_reader._scanline_length));
+    _buffer = std::make_shared<buffer_t>(buffer_t(_reader._scanline_length));
     _buffer_start = &_buffer->front();
   }
 
@@ -87,8 +87,8 @@ private:
   mutable bool _read_scanline;
   mutable bool _skip_scanline;
 
-  typedef std::vector<byte_t> buffer_t;
-  typedef boost::shared_ptr<buffer_t> buffer_ptr_t;
+  using buffer_t = std::vector<byte_t>;
+  using buffer_ptr_t = std::shared_ptr<buffer_t>;
 
   buffer_ptr_t _buffer;
   mutable byte_t *_buffer_start;
