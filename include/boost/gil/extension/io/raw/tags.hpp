@@ -29,7 +29,7 @@ extern "C" {
 }
 #endif
 
-#include <boost/gil/extension/io/raw/detail/base.hpp>
+#include <boost/gil/io/base.hpp>
 
 namespace boost {
 namespace gil {
