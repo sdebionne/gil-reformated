@@ -138,15 +138,15 @@ public:
   indexed_image_view(const IndexedView &iv)
       : image_view<Locator>(iv), _num_colors(iv._num_colors) {}
 
-  const std::size_t num_colors() const { return _num_colors; }
+  std::size_t num_colors() const { return _num_colors; }
 
   const indices_locator_t &indices() const { return get_deref_fn().indices(); }
   const palette_locator_t &palette() const { return get_deref_fn().palette(); }
 
-  const indices_view_t get_indices_view() const {
+  indices_view_t get_indices_view() const {
     return indices_view_t(this->dimensions(), indices());
   }
-  const palette_view_t get_palette_view() const {
+  palette_view_t get_palette_view() const {
     return palette_view_t(point_t(num_colors(), 1), palette());
   }
 
