@@ -273,7 +273,7 @@ template <typename DstP, typename ViewTypes, typename CC>
 inline // Models MPL Random Access Container of models of ImageViewConcept
     typename color_converted_view_type<any_image_view<ViewTypes>, DstP,
                                        CC>::type
-    color_converted_view(const any_image_view<ViewTypes> &src, CC cc) {
+    color_converted_view(const any_image_view<ViewTypes> &src, CC) {
   return apply_operation(
       src,
       detail::color_converted_view_fn<
@@ -315,7 +315,7 @@ template <typename DstP, typename ViewTypes, typename CC>
 inline // Models MPL Random Access Container of models of ImageViewConcept
     typename color_converted_view_type<any_image_view<ViewTypes>, DstP,
                                        CC>::type
-    any_color_converted_view(const any_image_view<ViewTypes> &src, CC cc) {
+    any_color_converted_view(const any_image_view<ViewTypes> &src, CC) {
   return apply_operation(
       src,
       detail::color_converted_view_fn<

@@ -326,9 +326,7 @@ public:
                                                               : std::ios::end));
   }
 
-  void write(const byte_t *data, std::size_t count) {
-    io_error("Bad io error.");
-  }
+  void write(const byte_t *, std::size_t) { io_error("Bad io error."); }
 
   void flush() {}
 
@@ -343,9 +341,8 @@ template <typename FormatTag> class ostream_device {
 public:
   ostream_device(std::ostream &out) : _out(out) {}
 
-  std::size_t read(byte_t *data, std::size_t count) {
+  std::size_t read(byte_t *, std::size_t) {
     io_error("Bad io error.");
-
     return 0;
   }
 

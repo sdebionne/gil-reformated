@@ -44,7 +44,7 @@ template <typename View> struct dynamic_xy_step_transposed_type;
 namespace detail {
 struct any_type_get_num_channels { // works for both image_view and image
   typedef int result_type;
-  template <typename T> result_type operator()(const T &v) const {
+  template <typename T> result_type operator()(const T &) const {
     return num_channels<T>::value;
   }
 };
