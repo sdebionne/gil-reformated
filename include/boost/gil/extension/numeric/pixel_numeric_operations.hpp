@@ -77,11 +77,11 @@ struct pixel_multiplies_scalar_t {
     PixelR result;
     static_transform(
         p, result,
-        std::bind2nd(
+        std::bind(
             channel_multiplies_scalar_t<typename channel_type<PixelRef>::type,
                                         Scalar,
                                         typename channel_type<PixelR>::type>(),
-            s));
+            std::placeholders::_1, s));
     return result;
   }
 };
@@ -113,11 +113,11 @@ struct pixel_divides_scalar_t {
     PixelR result;
     static_transform(
         p, result,
-        std::bind2nd(
+        std::bind(
             channel_divides_scalar_t<typename channel_type<PixelRef>::type,
                                      Scalar,
                                      typename channel_type<PixelR>::type>(),
-            s));
+            std::placeholders::_1, s));
     return result;
   }
 };
