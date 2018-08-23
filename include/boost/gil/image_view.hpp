@@ -181,7 +181,7 @@ public:
   reference operator()(x_coord_t x, y_coord_t y) const { return _pixels(x, y); }
   template <std::size_t D>
   typename axis<D>::iterator axis_iterator(const point_t &p) const {
-    return _pixels.axis_iterator<D>(p);
+    return _pixels.template axis_iterator<D>(p);
   }
   xy_locator xy_at(x_coord_t x, y_coord_t y) const {
     return _pixels + point_t(x_coord_t(x), y_coord_t(y));
