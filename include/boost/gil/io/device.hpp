@@ -21,6 +21,7 @@
 
 #include <cstdio>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/gil/io/base.hpp>
 #include <boost/utility/enable_if.hpp>
 
@@ -237,6 +238,7 @@ public:
         fwrite(line.c_str(), sizeof(char), line.size(), get());
 
     assert(num_elements == line.size());
+    boost::ignore_unused(num_elements);
   }
 
   int error() { return ferror(get()); }
