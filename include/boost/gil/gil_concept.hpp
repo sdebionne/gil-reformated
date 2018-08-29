@@ -23,14 +23,19 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_config.hpp"
 #include <boost/concept_check.hpp>
+#include <boost/core/ignore_unused.hpp>
 #include <boost/iterator/iterator_concepts.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/utility/enable_if.hpp>
-#include <functional>
+
+#include <cstdint>
+#include <iterator>
+#include <utility>
+
+#include "gil_config.hpp"
 
 namespace boost {
 namespace gil {
@@ -1842,6 +1847,7 @@ template <typename View> struct RandomAccessNDImageViewConcept {
 
     typedef typename View::value_type value_type;
     typedef typename View::reference reference; // result of dereferencing
+    typedef typename View::pointer pointer;
     typedef typename View::difference_type
         difference_type; // result of operator-(1d_iterator,1d_iterator)
     typedef typename View::const_t
@@ -1849,6 +1855,7 @@ template <typename View> struct RandomAccessNDImageViewConcept {
     typedef typename View::point_t point_t; // N-dimensional point
     typedef typename View::locator locator; // N-dimensional locator
     typedef typename View::iterator iterator;
+    typedef typename View::const_iterator const_iterator;
     typedef typename View::reverse_iterator reverse_iterator;
     typedef typename View::size_type size_type;
     static const std::size_t N = View::num_dimensions;
@@ -2009,6 +2016,84 @@ template <typename View> struct RandomAccess2DImageViewConcept {
     yit = view.y_at(xd, yd);
     yit = view.col_begin(xd);
     yit = view.col_end(xd);
+  }
+  View view;
+};
+
+/// \brief GIL view as Collection.
+///
+/// \see https://www.boost.org/libs/utility/Collection.html
+template <typename View> struct CollectionImageViewConcept {
+  void constraints() {
+    using value_type = typename View::value_type;
+    using iterator = typename View::iterator;
+    using const_iterator = typename View::const_iterator;
+    using reference = typename View::reference;
+    using const_reference = typename View::const_reference;
+    using pointer = typename View::pointer;
+    using difference_type = typename View::difference_type;
+    using size_type = typename View::size_type;
+
+    iterator i;
+    i = view1.begin();
+    i = view2.end();
+
+    const_iterator ci;
+    ci = view1.begin();
+    ci = view2.end();
+
+    size_type s;
+    s = view1.size();
+    s = view2.size();
+    boost::ignore_unused(s);
+
+    view1.empty();
+
+    view1.swap(view2);
+  }
+  View view1;
+  View view2;
+};
+
+/// \brief GIL view as ForwardCollection.
+///
+/// \see https://www.boost.org/libs/utility/Collection.html
+template <typename View> struct ForwardCollectionImageViewConcept {
+  void constraints() {
+    gil_function_requires<CollectionImageViewConcept<View>>();
+
+    using reference = typename View::reference;
+    using const_reference = typename View::const_reference;
+
+    reference r = view.front();
+    boost::ignore_unused(r);
+
+    const_reference cr = view.front();
+    boost::ignore_unused(cr);
+  }
+  View view;
+};
+
+/// \brief GIL view as ReversibleCollection.
+///
+/// \see https://www.boost.org/libs/utility/Collection.html
+template <typename View> struct ReversibleCollectionImageViewConcept {
+  void constraints() {
+    gil_function_requires<CollectionImageViewConcept<View>>();
+
+    using reverse_iterator = typename View::reverse_iterator;
+    using reference = typename View::reference;
+    using const_reference = typename View::const_reference;
+
+    reverse_iterator i;
+    i = view.rbegin();
+    i = view.rend();
+
+    reference r = view.back();
+    boost::ignore_unused(r);
+
+    const_reference cr = view.back();
+    boost::ignore_unused(cr);
   }
   View view;
 };
