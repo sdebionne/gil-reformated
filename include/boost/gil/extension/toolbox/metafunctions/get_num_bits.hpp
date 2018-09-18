@@ -22,6 +22,7 @@
 #include <boost/gil/channel.hpp>
 
 #include <boost/mpl/int.hpp>
+#include <boost/mpl/size_t.hpp>
 #include <boost/type_traits/is_class.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -58,7 +59,7 @@ template <typename T>
 struct get_num_bits<
     T,
     typename enable_if<mpl::and_<is_integral<T>, mpl::not_<is_class<T>>>>::type>
-    : mpl::int_<sizeof(T) * 8> {};
+    : mpl::size_t<sizeof(T) * 8> {};
 
 } // namespace gil
 } // namespace boost
