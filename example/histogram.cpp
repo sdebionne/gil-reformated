@@ -17,10 +17,8 @@
 /// \date February 27, 2007
 
 #include <algorithm>
-#include <boost/gil/color_convert.hpp>
-#include <boost/gil/extension/io/jpeg_io.hpp>
-#include <boost/gil/image.hpp>
-#include <boost/gil/typedefs.hpp>
+#include <boost/gil.hpp>
+#include <boost/gil/extension/io/jpeg.hpp>
 #include <fstream>
 
 using namespace boost::gil;
@@ -39,7 +37,7 @@ template <typename V, typename R> void get_hist(const V &img_view, R &hist) {
 
 int main() {
   rgb8_image_t img;
-  jpeg_read_image("test.jpg", img);
+  read_image("test.jpg", img, jpeg_tag());
 
   int histogram[256];
   std::fill(histogram, histogram + 256, 0);
