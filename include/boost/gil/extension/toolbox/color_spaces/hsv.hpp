@@ -85,7 +85,10 @@ template <> struct default_color_converter_impl<rgb_t, hsv_t> {
       if ((std::abs)(boost::numeric_cast<float32_t>(temp_red - max_color)) <
           0.0001f) {
         hue = (temp_green - temp_blue) / diff;
-      } else if (temp_green == max_color) {
+      } else if (temp_green >=
+                 max_color) // means == but >= avoids compiler warning; color is
+                            // never greater than max
+      {
         hue = 2.f + (temp_blue - temp_red) / diff;
       } else {
         hue = 4.f + (temp_red - temp_green) / diff;
