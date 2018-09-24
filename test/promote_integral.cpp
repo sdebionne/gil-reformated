@@ -14,6 +14,8 @@
 //  - Remove support for boost::multiprecision types
 //  - Remove support for 128-bit integer types
 //  - Update and sort includes
+//  - Add explicit conversions to avoid warnings due to implicit integral
+//  promotions
 //
 #include <boost/gil/promote_integral.hpp>
 
@@ -40,7 +42,7 @@ namespace bg = boost::gil;
 template <typename T, bool Signed = std::is_fundamental<T>::type::value &&
                                     !std::is_unsigned<T>::type::value>
 struct absolute_value {
-  static inline T apply(T const &t) { return t < 0 ? -t : t; }
+  static inline T apply(T const &t) { return static_cast<T>(t < 0 ? -t : t); }
 };
 
 template <typename T> struct absolute_value<T, false> {
@@ -55,11 +57,13 @@ struct test_max_values {
     // but to avoid warning: comparing floating point with == is unsafe.
 
     Promoted min_value = (std::numeric_limits<Integral>::min)();
-    min_value *= min_value;
+    // Explicit casts to avoid warning: conversion to short int from int may
+    // alter its value
+    min_value = static_cast<Promoted>(min_value * min_value);
     BOOST_CHECK(absolute_value<Promoted>::apply(min_value) >= min_value);
     BOOST_CHECK(absolute_value<Promoted>::apply(min_value) <= min_value);
     Promoted max_value = (std::numeric_limits<Integral>::max)();
-    max_value *= max_value;
+    max_value = static_cast<Promoted>(max_value * max_value);
     BOOST_CHECK(absolute_value<Promoted>::apply(max_value) >= max_value);
     BOOST_CHECK(absolute_value<Promoted>::apply(max_value) <= max_value);
 
@@ -75,7 +79,7 @@ template <typename Integral, typename Promoted>
 struct test_max_values<Integral, Promoted, false> {
   static inline void apply() {
     Promoted max_value = (std::numeric_limits<Integral>::max)();
-    Promoted max_value_sqr = max_value * max_value;
+    Promoted max_value_sqr = static_cast<Promoted>(max_value * max_value);
     BOOST_CHECK(max_value_sqr < (std::numeric_limits<Promoted>::max)() &&
                 max_value_sqr > max_value);
 
