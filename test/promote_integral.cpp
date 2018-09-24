@@ -51,12 +51,17 @@ template <typename Integral, typename Promoted,
           bool Signed = !std::is_unsigned<Promoted>::type::value>
 struct test_max_values {
   static inline void apply() {
+    // Use >= where value is guaranteed to never be greater than comparator
+    // but to avoid warning: comparing floating point with == is unsafe.
+
     Promoted min_value = (std::numeric_limits<Integral>::min)();
     min_value *= min_value;
-    BOOST_CHECK(absolute_value<Promoted>::apply(min_value) == min_value);
+    BOOST_CHECK(absolute_value<Promoted>::apply(min_value) >= min_value);
+    BOOST_CHECK(absolute_value<Promoted>::apply(min_value) <= min_value);
     Promoted max_value = (std::numeric_limits<Integral>::max)();
     max_value *= max_value;
-    BOOST_CHECK(absolute_value<Promoted>::apply(max_value) == max_value);
+    BOOST_CHECK(absolute_value<Promoted>::apply(max_value) >= max_value);
+    BOOST_CHECK(absolute_value<Promoted>::apply(max_value) <= max_value);
 
 #ifdef BOOST_GIL_TEST_DEBUG
     std::cout << "integral min_value^2: " << min_value << std::endl;
