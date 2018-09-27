@@ -1,29 +1,15 @@
-/*
-    Copyright 2012 Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2012 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_BMP_DETAIL_READ_HPP
 #define BOOST_GIL_EXTENSION_IO_BMP_DETAIL_READ_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Christian Henning \n
-///
-/// \date 2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <vector>
-
-#include <boost/mpl/and.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <boost/gil/extension/io/bmp/detail/is_allowed.hpp>
+#include <boost/gil/extension/io/bmp/detail/reader_backend.hpp>
 
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/bit_operations.hpp>
@@ -33,8 +19,11 @@
 #include <boost/gil/io/row_buffer_helper.hpp>
 #include <boost/gil/io/typedefs.hpp>
 
-#include <boost/gil/extension/io/bmp/detail/is_allowed.hpp>
-#include <boost/gil/extension/io/bmp/detail/reader_backend.hpp>
+#include <boost/mpl/and.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/utility/enable_if.hpp>
+
+#include <vector>
 
 namespace boost {
 namespace gil {

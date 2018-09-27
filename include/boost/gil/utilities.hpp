@@ -1,21 +1,13 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_UTILITIES_HPP
+#define BOOST_GIL_UTILITIES_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_UTILITIES_H
-#define GIL_UTILITIES_H
-
-#include <algorithm>
-#include <boost/config/no_tr1/cmath.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/mpl/begin.hpp>
@@ -25,24 +17,19 @@
 #include <boost/mpl/size.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
+
+#include <algorithm>
+#include <boost/config/no_tr1/cmath.hpp>
 #include <cstddef>
 #include <functional>
 #include <iterator>
 #include <utility>
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief  Various utilities not specific to the image library. Some are
-/// non-standard STL extensions or generic iterator adaptors \author Lubomir
-/// Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on September 18, 2007
-///
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
 namespace boost {
 namespace gil {
+
+/// Various utilities not specific to the image library.
+/// Some are non-standard STL extensions or generic iterator adaptors
 
 /**
 \addtogroup PointModel
@@ -350,8 +337,6 @@ template <typename T> struct identity {
   const T &operator()(const T &val) const { return val; }
 };
 
-/*************************************************************************************************/
-
 /// \brief plus function object whose arguments may be of different type.
 template <typename T1, typename T2> struct plus_asymmetric {
   typedef T1 first_argument_type;
@@ -360,16 +345,12 @@ template <typename T1, typename T2> struct plus_asymmetric {
   T1 operator()(T1 f1, T2 f2) const { return f1 + f2; }
 };
 
-/*************************************************************************************************/
-
 /// \brief operator++ wrapped in a function object
 template <typename T> struct inc {
   typedef T argument_type;
   typedef T result_type;
   T operator()(T x) const { return ++x; }
 };
-
-/*************************************************************************************************/
 
 /// \brief operator-- wrapped in a function object
 template <typename T> struct dec {

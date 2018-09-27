@@ -1,26 +1,16 @@
-/*
-    Copyright 2007-2008 Andreas Pokorny, Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2008 Christian Henning, Andreas Pokorny
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_IO_CONVERSION_POLICIES_HPP
 #define BOOST_GIL_IO_CONVERSION_POLICIES_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Andreas Pokorny, Christian Henning \n
-///
-/// \date   2007-2008 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
+#include <boost/gil/image_view_factory.hpp>
 
 #include <algorithm>
-#include <boost/gil/image_view_factory.hpp>
 #include <iterator>
 
 namespace boost {

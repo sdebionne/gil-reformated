@@ -1,35 +1,18 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ANY_IMAGE_HPP
+#define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ANY_IMAGE_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/extension/dynamic_image/any_image_view.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-/*************************************************************************************************/
+#include <boost/gil/image.hpp>
 
-#ifndef GIL_DYNAMICIMAGE_ANY_IMAGE_HPP
-#define GIL_DYNAMICIMAGE_ANY_IMAGE_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Support for run-time instantiated images and image views
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-///
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "../../image.hpp"
-#include "any_image_view.hpp"
-
-//#ifdef _MSC_VER
-//#pragma warning(push)
-//#pragma warning(disable : 4244)     // conversion from 'std::ptrdiff_t' to
-//'int', possible loss of data. even if we static-assert the two types are the
-//same (on visual studio 8) #endif
+#include <boost/config.hpp>
 
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
 #pragma warning(push)
@@ -182,9 +165,5 @@ BOOST_FORCEINLINE // Models ImageVectorConcept
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
 #pragma warning(pop)
 #endif
-
-//#ifdef _MSC_VER
-//#pragma warning(pop)
-//#endif
 
 #endif

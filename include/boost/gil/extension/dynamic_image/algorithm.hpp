@@ -1,20 +1,17 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ALGORITHM_HPP
+#define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ALGORITHM_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/extension/dynamic_image/any_image.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-/*************************************************************************************************/
+#include <boost/gil/algorithm.hpp>
 
-#ifndef GIL_DYNAMICIMAGE_ALGORITHM_HPP
-#define GIL_DYNAMICIMAGE_ALGORITHM_HPP
-
-#include "../../algorithm.hpp"
-#include "any_image.hpp"
 #include <boost/bind.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////
