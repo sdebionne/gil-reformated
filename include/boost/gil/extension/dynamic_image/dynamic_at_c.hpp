@@ -14,7 +14,6 @@
 #ifndef GIL_DYNAMIC_AT_C_HPP
 #define GIL_DYNAMIC_AT_C_HPP
 
-#include "../../gil_config.hpp"
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/size.hpp>
 #include <cassert>

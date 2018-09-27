@@ -23,7 +23,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_config.hpp"
 #include "pixel.hpp"
 #include "step_iterator.hpp"
 #include <boost/iterator/iterator_facade.hpp>

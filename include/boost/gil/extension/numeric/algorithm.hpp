@@ -24,7 +24,6 @@
 #include <iterator>
 #include <numeric>
 
-#include <boost/gil/gil_config.hpp>
 #include <boost/gil/metafunctions.hpp>
 #include <boost/gil/pixel_iterator.hpp>
 

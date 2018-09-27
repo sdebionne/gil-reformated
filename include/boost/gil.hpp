@@ -13,7 +13,6 @@
 #include <boost/gil/channel_algorithm.hpp>
 #include <boost/gil/color_convert.hpp>
 #include <boost/gil/device_n.hpp>
-#include <boost/gil/gil_config.hpp>
 #include <boost/gil/image.hpp>
 #include <boost/gil/image_view_factory.hpp>
 #include <boost/gil/iterator_from_2d.hpp>

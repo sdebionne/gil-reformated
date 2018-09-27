@@ -30,7 +30,6 @@
 #include "bit_aligned_pixel_iterator.hpp"
 #include "color_base_algorithm.hpp"
 #include "gil_concept.hpp"
-#include "gil_config.hpp"
 #include "image_view.hpp"
 #include "image_view_factory.hpp"
 

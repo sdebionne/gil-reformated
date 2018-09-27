@@ -23,7 +23,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../gil_config.hpp"
 #include "../../utilities.hpp"
 #include <algorithm>
 #include <boost/bind.hpp>

@@ -28,7 +28,6 @@
 #include "channel_algorithm.hpp"
 #include "color_convert.hpp"
 #include "device_n.hpp"
-#include "gil_config.hpp"
 #include "image.hpp"
 #include "image_view_factory.hpp"
 #include "iterator_from_2d.hpp"

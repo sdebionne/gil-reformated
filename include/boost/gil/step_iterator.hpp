@@ -23,7 +23,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_config.hpp"
 #include "pixel_iterator.hpp"
 #include "pixel_iterator_adaptor.hpp"
 #include "utilities.hpp"

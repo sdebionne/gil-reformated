@@ -21,7 +21,6 @@
 /// \date   2005-2007 \n Last updated on October 10, 2007
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_config.hpp"
 #include "planar_pixel_iterator.hpp"
 #include "rgb.hpp"
 #include <boost/mpl/contains.hpp>

@@ -33,7 +33,6 @@
 #include <boost/utility/enable_if.hpp>
 
 #include "gil_concept.hpp"
-#include "gil_config.hpp"
 #include "utilities.hpp"
 
 namespace boost {

@@ -31,7 +31,6 @@
 #include <boost/type_traits.hpp>
 
 #include "channel.hpp"
-#include "gil_config.hpp"
 #include "promote_integral.hpp"
 #include "typedefs.hpp"
 

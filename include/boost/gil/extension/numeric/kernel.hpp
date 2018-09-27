@@ -27,7 +27,6 @@ operations
 #include <memory>
 #include <vector>
 
-#include <boost/gil/gil_config.hpp>
 #include <boost/gil/utilities.hpp>
 
 namespace boost {

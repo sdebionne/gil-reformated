@@ -30,7 +30,6 @@
 #include <boost/mpl/if.hpp>
 
 #include "algorithm.hpp"
-#include "gil_config.hpp"
 #include "image_view.hpp"
 #include "metafunctions.hpp"
 

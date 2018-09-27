@@ -14,7 +14,6 @@
 #ifndef GIL_APPLY_OPERATION_BASE_HPP
 #define GIL_APPLY_OPERATION_BASE_HPP
 
-#include "../../gil_config.hpp"
 #include "../../utilities.hpp"
 #include <boost/mpl/begin.hpp>
 #include <boost/mpl/deref.hpp>
