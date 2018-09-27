@@ -24,7 +24,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include "gil_concept.hpp"
-#include "gil_config.hpp"
 #include "pixel.hpp"
 #include "utilities.hpp"
 #include <cassert>

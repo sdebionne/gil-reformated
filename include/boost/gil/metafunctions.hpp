@@ -26,7 +26,6 @@
 
 #include "channel.hpp"
 #include "gil_concept.hpp"
-#include "gil_config.hpp"
 #include <boost/mpl/accumulate.hpp>
 #include <boost/mpl/back.hpp>
 #include <boost/mpl/bool.hpp>

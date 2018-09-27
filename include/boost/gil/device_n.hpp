@@ -28,7 +28,6 @@
 #include <boost/mpl/vector_c.hpp>
 #include <boost/type_traits.hpp>
 
-#include "gil_config.hpp"
 #include "metafunctions.hpp"
 #include "utilities.hpp"
 

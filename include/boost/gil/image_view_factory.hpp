@@ -30,7 +30,6 @@ fast to construct.
 */
 
 #include "color_convert.hpp"
-#include "gil_config.hpp"
 #include "gray.hpp"
 #include "metafunctions.hpp"
 #include <cassert>

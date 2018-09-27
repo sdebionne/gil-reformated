@@ -13,8 +13,6 @@
 
 #include <boost/gil/channel.hpp>
 #include <boost/gil/channel_algorithm.hpp>
-#include <boost/gil/gil_concept.hpp>
-#include <boost/gil/gil_config.hpp>
 #include <boost/gil/typedefs.hpp>
 #include <cstdint>
 #include <exception>

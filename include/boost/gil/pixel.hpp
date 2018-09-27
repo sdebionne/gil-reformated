@@ -26,7 +26,6 @@
 #include "color_base.hpp"
 #include "color_base_algorithm.hpp"
 #include "gil_concept.hpp"
-#include "gil_config.hpp"
 #include "metafunctions.hpp"
 #include "utilities.hpp"
 #include <boost/core/ignore_unused.hpp>

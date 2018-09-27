@@ -26,7 +26,6 @@
 #include "channel.hpp"
 #include "color_base.hpp"
 #include "gil_concept.hpp"
-#include "gil_config.hpp"
 #include "pixel.hpp"
 #include "planar_pixel_iterator.hpp"
 #include <boost/mpl/range_c.hpp>
