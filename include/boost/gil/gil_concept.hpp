@@ -35,8 +35,6 @@
 #include <iterator>
 #include <utility>
 
-#include "gil_config.hpp"
-
 namespace boost {
 namespace gil {
 

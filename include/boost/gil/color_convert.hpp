@@ -32,7 +32,6 @@
 #include "channel_algorithm.hpp"
 #include "cmyk.hpp"
 #include "color_base_algorithm.hpp"
-#include "gil_config.hpp"
 #include "gray.hpp"
 #include "metafunctions.hpp"
 #include "pixel.hpp"

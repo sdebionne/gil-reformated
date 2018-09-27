@@ -36,7 +36,6 @@
 #include <boost/mpl/vector.hpp>
 
 #include "channel.hpp"
-#include "gil_config.hpp"
 #include "pixel.hpp"
 
 namespace boost {

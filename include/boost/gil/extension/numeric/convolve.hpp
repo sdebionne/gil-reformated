@@ -29,7 +29,6 @@
 #include <boost/gil/algorithm.hpp>
 #include <boost/gil/extension/numeric/algorithm.hpp>
 #include <boost/gil/extension/numeric/pixel_numeric_operations.hpp>
-#include <boost/gil/gil_config.hpp>
 #include <boost/gil/image_view_factory.hpp>
 #include <boost/gil/metafunctions.hpp>
 

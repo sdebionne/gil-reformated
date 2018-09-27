@@ -27,9 +27,6 @@
 
 #include <functional>
 
-#include <boost/gil/channel.hpp>
-#include <boost/gil/gil_config.hpp>
-
 namespace boost {
 namespace gil {
 
