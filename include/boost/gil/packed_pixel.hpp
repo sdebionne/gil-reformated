@@ -23,7 +23,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_config.hpp"
 #include "pixel.hpp"
 #include <boost/core/ignore_unused.hpp>
 #include <boost/mpl/bool.hpp>

@@ -24,7 +24,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 #include "gil_concept.hpp"
-#include "gil_config.hpp"
 #include "pixel_iterator.hpp"
 #include <boost/iterator/iterator_facade.hpp>
 #include <iterator>

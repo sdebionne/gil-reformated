@@ -22,7 +22,6 @@
 /// \date 2005-2007 \n Last updated on October 10, 2007
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#include "gil_config.hpp"
 #include "metafunctions.hpp"
 #include "planar_pixel_iterator.hpp"
 #include <boost/mpl/range_c.hpp>
