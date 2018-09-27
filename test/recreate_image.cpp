@@ -1,16 +1,10 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
-
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-// image_test.cpp :
 //
-
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifdef _MSC_VER
 //#pragma warning(disable : 4244)     // conversion from
 //'gil::image<V,Alloc>::coord_t' to 'int', possible loss of data (visual studio
@@ -23,14 +17,14 @@
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/mpl/vector.hpp>
+#include <boost/test/unit_test.hpp>
+
 #include <fstream>
 #include <ios>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
-
-#include <boost/test/unit_test.hpp>
 
 using namespace boost::gil;
 using namespace std;

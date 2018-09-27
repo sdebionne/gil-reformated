@@ -1,12 +1,12 @@
-/*
-    Copyright 2013 Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-#ifndef BOOST_GIL_IO_UNIT_TEST_MANDEL_HPP
-#define BOOST_GIL_IO_UNIT_TEST_MANDEL_HPP
+//
+// Copyright 2013 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_IO_TEST_MANDEL_HPP
+#define BOOST_GIL_IO_TEST_MANDEL_HPP
 
 #include <boost/gil.hpp>
 
@@ -88,4 +88,4 @@ create_mandel_view(unsigned int width, unsigned int height, const Pixel &in,
       dims, locator_t(point_t(0, 0), point_t(1, 1), deref_t(dims, in, out)));
 }
 
-#endif // BOOST_GIL_IO_UNIT_TEST_MANDEL_HPP
+#endif // BOOST_GIL_IO_TEST_MANDEL_HPP

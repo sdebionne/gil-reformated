@@ -1,35 +1,23 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
-
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_DYNAMIC_AT_C_HPP
-#define GIL_DYNAMIC_AT_C_HPP
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_DYNAMIC_AT_C_HPP
+#define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_DYNAMIC_AT_C_HPP
 
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/size.hpp>
+
 #include <cassert>
 #include <stdexcept>
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Constructs for static-to-dynamic integer convesion
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date 2005-2007 \n Last updated on May 4, 2006
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
 namespace boost {
 namespace gil {
+
+// Constructs for static-to-dynamic integer convesion
 
 #define GIL_AT_C_VALUE(z, N, text) mpl::at_c<IntTypes, S + N>::type::value,
 #define GIL_DYNAMIC_AT_C_LIMIT 226 // size of the maximum vector to handle

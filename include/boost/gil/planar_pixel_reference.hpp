@@ -1,33 +1,19 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_PLANAR_PIXEL_REFERENCE_HPP
+#define BOOST_GIL_PLANAR_PIXEL_REFERENCE_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/channel.hpp>
+#include <boost/gil/color_base.hpp>
+#include <boost/gil/concepts.hpp>
+#include <boost/gil/pixel.hpp>
+#include <boost/gil/planar_pixel_iterator.hpp>
 
-    See http://stlab.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_PLANAR_REF_H
-#define GIL_PLANAR_REF_H
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief planar pixel reference class
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on September 28, 2006
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "channel.hpp"
-#include "color_base.hpp"
-#include "gil_concept.hpp"
-#include "pixel.hpp"
-#include "planar_pixel_iterator.hpp"
 #include <boost/mpl/range_c.hpp>
 
 namespace boost {
@@ -265,6 +251,7 @@ inline void swap(const boost::gil::planar_pixel_reference<CR, CS> x,
   boost::gil::swap_proxy<
       typename boost::gil::planar_pixel_reference<CR, CS>::value_type>(x, y);
 }
+
 } // namespace std
 
 #endif

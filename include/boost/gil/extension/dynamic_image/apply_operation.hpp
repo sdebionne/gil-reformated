@@ -1,32 +1,27 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_APPLY_OPERATION_HPP
+#define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_APPLY_OPERATION_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/extension/dynamic_image/apply_operation_base.hpp>
+#include <boost/gil/extension/dynamic_image/variant.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
+#ifdef BOOST_GIL_DOXYGEN_ONLY
+#undef BOOST_GIL_REDUCE_CODE_BLOAT
+#endif
 
-/*************************************************************************************************/
+// Implements apply_operation for variants.
+// Optionally performs type reduction.
+#ifdef BOOST_GIL_REDUCE_CODE_BLOAT
 
-#ifndef GIL_APPLY_OPERATION_HPP
-#define GIL_APPLY_OPERATION_HPP
+#include <boost/gil/extension/dynamic_image/reduce.hpp>
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Implements apply_operation for variants. Optionally performs type
-/// reduction \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date 2005-2007 \n Last updated on May 4, 2006
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "apply_operation_base.hpp"
-#include "variant.hpp"
-
-#ifndef GIL_REDUCE_CODE_BLOAT
+#else
 
 namespace boost {
 namespace gil {
@@ -63,10 +58,6 @@ apply_operation(const variant<Types1> &arg1, const variant<Types2> &arg2,
 } // namespace gil
 } // namespace boost
 
-#else
-
-#include "reduce.hpp"
-
-#endif
+#endif // defined(BOOST_GIL_REDUCE_CODE_BLOAT)
 
 #endif

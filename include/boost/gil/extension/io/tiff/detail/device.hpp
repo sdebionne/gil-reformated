@@ -1,25 +1,23 @@
-/*
-    Copyright 2007-2008 Andreas Pokorny, Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2008 Andreas Pokorny, Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_TIFF_DETAIL_DEVICE_HPP
 #define BOOST_GIL_EXTENSION_IO_TIFF_DETAIL_DEVICE_HPP
 
-#include <algorithm>
+#include <boost/gil/extension/io/tiff/detail/log.hpp>
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Andreas Pokorny, Christian Henning \n
-///
-/// \date   2007-2008 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
+#include <boost/gil/io/base.hpp>
+#include <boost/gil/io/device.hpp>
+
+#include <boost/mpl/size.hpp>
+#include <boost/utility/enable_if.hpp>
+
+#include <algorithm>
+#include <memory>
 
 // taken from jpegxx -
 // https://bitbucket.org/edd/jpegxx/src/ea2492a1a4a6/src/ijg_headers.hpp
@@ -35,15 +33,6 @@ extern "C" {
 #endif
 
 #include <tiffio.hxx>
-
-#include <boost/mpl/size.hpp>
-#include <boost/utility/enable_if.hpp>
-
-#include <boost/gil/extension/io/tiff/detail/log.hpp>
-#include <boost/gil/io/base.hpp>
-#include <boost/gil/io/device.hpp>
-
-#include <memory>
 
 namespace boost {
 namespace gil {

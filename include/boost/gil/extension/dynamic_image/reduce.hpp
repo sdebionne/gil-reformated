@@ -1,17 +1,23 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_GIL_REDUCE_HPP
+#define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_GIL_REDUCE_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#ifdef BOOST_GIL_DOXYGEN_ONLY
+#undef BOOST_GIL_REDUCE_CODE_BLOAT
+#endif
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-/*************************************************************************************************/
+#ifdef BOOST_GIL_REDUCE_CODE_BLOAT
 
-#ifndef GIL_REDUCE_HPP
-#define GIL_REDUCE_HPP
+#include <boost/gil/extension/dynamic_image/dynamic_at_c.hpp>
+
+#include <boost/gil/metafunctions.hpp>
+#include <boost/gil/typedefs.hpp>
 
 #include <boost/mpl/back.hpp>
 #include <boost/mpl/insert.hpp>
@@ -23,27 +29,14 @@
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/vector_c.hpp>
 
-#include "../../metafunctions.hpp"
-#include "../../typedefs.hpp"
-#include "dynamic_at_c.hpp"
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Constructs for static-to-dynamic integer convesion
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date 2005-2007 \n Last updated on May 4, 2006
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef GIL_REDUCE_CODE_BLOAT
-
 // Max number of cases in the cross-expension of binary operation for it to be
 // reduced as unary
 #define GIL_BINARY_REDUCE_LIMIT 226
 
 namespace boost {
 namespace mpl {
+
+// Constructs for static-to-dynamic integer convesion
 
 ///////////////////////////////////////////////////////
 /// Mapping vector - represents the mapping of one type vector to another
@@ -884,6 +877,6 @@ struct reduce_views_basic<copy_and_convert_pixels_fn<CC>, V1, V2, AreBasic> {
 } // namespace gil
 } // namespace boost
 
-#endif // GIL_REDUCE_CODE_BLOAT
+#endif // defined(BOOST_GIL_REDUCE_CODE_BLOAT)
 
 #endif

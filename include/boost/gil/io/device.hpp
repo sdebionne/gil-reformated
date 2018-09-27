@@ -1,30 +1,19 @@
-/*
-    Copyright 2007-2012 Andreas Pokorny, Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2012 Christian Henning, Andreas Pokorny
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_IO_DEVICE_HPP
 #define BOOST_GIL_IO_DEVICE_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Andreas Pokorny, Christian Henning \n
-///
-/// \date   2007-2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <cstdio>
+#include <boost/gil/io/base.hpp>
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/gil/io/base.hpp>
 #include <boost/utility/enable_if.hpp>
 
+#include <cstdio>
 #include <memory>
 
 namespace boost {

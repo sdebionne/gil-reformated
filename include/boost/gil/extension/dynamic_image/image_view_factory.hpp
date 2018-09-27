@@ -1,33 +1,22 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_IMAGE_VIEW_FACTORY_HPP
+#define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_IMAGE_VIEW_FACTORY_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/extension/dynamic_image/any_image_view.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_DYNAMICIMAGE_IMAGE_VIEWS_HPP
-#define GIL_DYNAMICIMAGE_IMAGE_VIEWS_HPP
-
-/*!
-/// \file
-/// \brief Methods for constructing any image views from other any image views
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on January 31, 2007
-/// Extends image view factory to runtime type-specified views (any_image_view)
-*/
-
-#include "../../image_view_factory.hpp"
-#include "any_image_view.hpp"
+#include <boost/gil/image_view_factory.hpp>
 
 namespace boost {
 namespace gil {
+
+// Methods for constructing any image views from other any image views
+// Extends image view factory to runtime type-specified views (any_image_view)
 
 namespace detail {
 template <typename Result> struct flipped_up_down_view_fn {

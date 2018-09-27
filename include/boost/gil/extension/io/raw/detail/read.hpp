@@ -1,27 +1,17 @@
-/*
-    Copyright 2012 Olivier Tournaire, Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2012 Olivier Tournaire, Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_RAW_DETAIL_READ_HPP
 #define BOOST_GIL_EXTENSION_IO_RAW_DETAIL_READ_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Olivier Tournaire, Christian Henning \n
-///
-/// \date 2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
+#include <boost/gil/extension/io/raw/detail/device.hpp>
+#include <boost/gil/extension/io/raw/detail/is_allowed.hpp>
+#include <boost/gil/extension/io/raw/detail/reader_backend.hpp>
 #include <boost/gil/extension/io/raw/tags.hpp>
-#include <cstdio>
-#include <vector>
 
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/bit_operations.hpp>
@@ -31,9 +21,8 @@
 #include <boost/gil/io/row_buffer_helper.hpp>
 #include <boost/gil/io/typedefs.hpp>
 
-#include <boost/gil/extension/io/raw/detail/device.hpp>
-#include <boost/gil/extension/io/raw/detail/is_allowed.hpp>
-#include <boost/gil/extension/io/raw/detail/reader_backend.hpp>
+#include <cstdio>
+#include <vector>
 
 namespace boost {
 namespace gil {

@@ -1,36 +1,24 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
-
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_NUMERIC_RESAMPLE_HPP
 #define BOOST_GIL_EXTENSION_NUMERIC_RESAMPLE_HPP
+
+#include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
+#include <boost/gil/extension/numeric/affine.hpp>
 
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 
-#include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
-
-#include <boost/gil/extension/numeric/affine.hpp>
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief support for generic image resampling
-///        NOTE: The code is for example use only. It is not optimized for
-///        performance
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
 namespace boost {
 namespace gil {
+
+// Support for generic image resampling
+// NOTE: The code is for example use only. It is not optimized for performance
 
 ///////////////////////////////////////////////////////////////////////////
 ////

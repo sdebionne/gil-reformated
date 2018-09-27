@@ -1,23 +1,31 @@
-/*
-    Copyright 2007-2012 Christian Henning, Lubomir Bourdev
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2012 Christian Henning, Lubomir Bourdev
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_TIFF_DETAIL_SCANLINE_READ_HPP
 #define BOOST_GIL_EXTENSION_IO_TIFF_DETAIL_SCANLINE_READ_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Christian Henning, Lubomir Bourdev \n
-///
-/// \date   2007-2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
+#include <boost/gil/extension/io/tiff/detail/device.hpp>
+#include <boost/gil/extension/io/tiff/detail/is_allowed.hpp>
+#include <boost/gil/extension/io/tiff/detail/reader_backend.hpp>
+
+#include <boost/gil/io/base.hpp>
+#include <boost/gil/io/bit_operations.hpp>
+#include <boost/gil/io/conversion_policies.hpp>
+#include <boost/gil/io/device.hpp>
+#include <boost/gil/io/reader_base.hpp>
+#include <boost/gil/io/row_buffer_helper.hpp>
+#include <boost/gil/io/scanline_read_iterator.hpp>
+
+#include <boost/function.hpp>
+#include <boost/static_assert.hpp>
+
+#include <algorithm>
+#include <string>
+#include <vector>
 
 // taken from jpegxx -
 // https://bitbucket.org/edd/jpegxx/src/ea2492a1a4a6/src/ijg_headers.hpp
@@ -31,25 +39,6 @@ extern "C" {
 #ifndef BOOST_GIL_EXTENSION_IO_TIFF_C_LIB_COMPILED_AS_CPLUSPLUS
 }
 #endif
-
-#include <algorithm>
-#include <string>
-#include <vector>
-
-#include <boost/function.hpp>
-#include <boost/static_assert.hpp>
-
-#include <boost/gil/io/base.hpp>
-#include <boost/gil/io/bit_operations.hpp>
-#include <boost/gil/io/conversion_policies.hpp>
-#include <boost/gil/io/device.hpp>
-#include <boost/gil/io/reader_base.hpp>
-#include <boost/gil/io/row_buffer_helper.hpp>
-#include <boost/gil/io/scanline_read_iterator.hpp>
-
-#include <boost/gil/extension/io/tiff/detail/device.hpp>
-#include <boost/gil/extension/io/tiff/detail/is_allowed.hpp>
-#include <boost/gil/extension/io/tiff/detail/reader_backend.hpp>
 
 namespace boost {
 namespace gil {

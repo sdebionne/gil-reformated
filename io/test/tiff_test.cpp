@@ -1,26 +1,18 @@
-/*
-    Copyright 2013 Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/**************************************************
- *
- * This test file will only test the library's
- * interface. It's more of a compile time test
- * than a runtime test.
- *
- **************************************************/
-
+//
+// Copyright 2013 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #define BOOST_TEST_MODULE tiff_test
-#include <boost/test/unit_test.hpp>
-
-#define BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 #define BOOST_FILESYSTEM_VERSION 3
-#include <boost/filesystem/convenience.hpp>
+#define BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 #include <boost/gil/extension/io/tiff.hpp>
+
+#include <boost/filesystem/convenience.hpp>
+#include <boost/test/unit_test.hpp>
 
 #include <fstream>
 #include <sstream>
@@ -28,6 +20,9 @@
 #include "mandel_view.hpp"
 #include "paths.hpp"
 #include "subimage_test.hpp"
+
+// This test file will only test the library's interface.
+// It's more of a compile time test than a runtime test.
 
 using namespace std;
 using namespace boost;
