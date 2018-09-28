@@ -1,30 +1,21 @@
-/*
-    Copyright 2007-2012 Olivier Tournaire, Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2012 Olivier Tournaire
+// Copyright 2007 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_RAW_DETAIL_DEVICE_HPP
 #define BOOST_GIL_EXTENSION_IO_RAW_DETAIL_DEVICE_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Olivier Tournaire \n
-///
-/// \date   2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <boost/utility/enable_if.hpp>
 
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/device.hpp>
 
+#include <boost/utility/enable_if.hpp>
+
 #include <memory>
+#include <string>
 
 namespace boost {
 namespace gil {

@@ -1,32 +1,20 @@
-/*
-    Copyright 2010-2012 Kenneth Riddile, Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2010-2012 Kenneth Riddile, Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_TARGA_DETAIL_WRITE_HPP
 #define BOOST_GIL_EXTENSION_IO_TARGA_DETAIL_WRITE_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Kenneth Riddile, Christian Henning \n
-///
-/// \date 2010-2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <vector>
+#include <boost/gil/extension/io/targa/detail/writer_backend.hpp>
+#include <boost/gil/extension/io/targa/tags.hpp>
 
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/device.hpp>
 
-#include <boost/gil/extension/io/targa/tags.hpp>
-
-#include <boost/gil/extension/io/targa/detail/writer_backend.hpp>
+#include <vector>
 
 namespace boost {
 namespace gil {

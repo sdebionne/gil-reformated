@@ -1,38 +1,22 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
-
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#include <boost/gil.hpp>
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/gil/bit_aligned_pixel_reference.hpp>
-#include <boost/gil/channel_algorithm.hpp>
-#include <boost/gil/cmyk.hpp>
-#include <boost/gil/color_convert.hpp>
-#include <boost/gil/gil_concept.hpp>
-#include <boost/gil/gray.hpp>
-#include <boost/gil/metafunctions.hpp>
-#include <boost/gil/packed_pixel.hpp>
-#include <boost/gil/pixel.hpp>
-#include <boost/gil/planar_pixel_reference.hpp>
-#include <boost/gil/rgb.hpp>
-#include <boost/gil/rgba.hpp>
-#include <boost/gil/typedefs.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/type_traits.hpp>
+
 #include <exception>
 #include <iostream>
 #include <iterator>
-
-// Testing pixel references and values, pixel operations, color conversion
 
 using namespace boost::gil;
 using std::swap;

@@ -1,23 +1,17 @@
-/*
-    Copyright 2007-2008 Christian Henning, Andreas Pokorny, Lubomir Bourdev
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2008 Christian Henning, Andreas Pokorny, Lubomir Bourdev
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_PNG_TAGS_HPP
 #define BOOST_GIL_EXTENSION_IO_PNG_TAGS_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Christian Henning, Andreas Pokorny, Lubomir Bourdev \n
-///
-/// \date   2007-2008 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
+#include <boost/gil/io/base.hpp>
+
+#include <string>
+#include <vector>
 
 #ifdef BOOST_GIL_IO_PNG_FLOATING_POINT_SUPPORTED
 #ifdef BOOST_GIL_IO_PNG_FIXED_POINT_SUPPORTED
@@ -46,11 +40,6 @@ extern "C" {
 #define BOOST_GIL_IO_PNG_1_4_OR_LOWER
 #endif // PNG_LIBPNG_VER_MAJOR == 1
 #endif // PNG_LIBPNG_VER_MINOR <= 4
-
-#include <string>
-#include <vector>
-
-#include <boost/gil/io/base.hpp>
 
 namespace boost {
 namespace gil {

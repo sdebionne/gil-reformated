@@ -1,35 +1,22 @@
-/*
-    Copyright 2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_TOOLBOX_METAFUNCTIONS_CHANNEL_TYPE_HPP
 #define BOOST_GIL_EXTENSION_TOOLBOX_METAFUNCTIONS_CHANNEL_TYPE_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file channel_type.hpp
-/// \brief channel_type metafunction.
-/// \author Christian Henning, Andreas Pokorny, Lubomir Bourdev \n
-///
-/// \date 2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <boost/utility/enable_if.hpp>
-
-#include <boost/mpl/at.hpp>
+#include <boost/gil/extension/toolbox/dynamic_images.hpp>
+#include <boost/gil/extension/toolbox/metafunctions/get_num_bits.hpp>
+#include <boost/gil/extension/toolbox/metafunctions/is_homogeneous.hpp>
 
 #include <boost/gil/bit_aligned_pixel_reference.hpp>
 #include <boost/gil/channel.hpp>
 
-#include <boost/gil/extension/toolbox/dynamic_images.hpp>
-
-#include <boost/gil/extension/toolbox/metafunctions/get_num_bits.hpp>
-#include <boost/gil/extension/toolbox/metafunctions/is_homogeneous.hpp>
+#include <boost/mpl/at.hpp>
+#include <boost/utility/enable_if.hpp>
 
 namespace boost {
 namespace gil {
@@ -83,4 +70,4 @@ template <> struct channel_type<any_image_pixel_t> {
 } // namespace gil
 } // namespace boost
 
-#endif // BOOST_GIL_EXTENSION_TOOLBOX_METAFUNCTIONS_CHANNEL_TYPE_HPP
+#endif

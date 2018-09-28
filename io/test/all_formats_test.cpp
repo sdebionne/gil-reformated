@@ -1,13 +1,11 @@
-/*
-    Copyright 2013 Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-// Test will include all format's headers and load and write some images.
-// This test is more of a compilation test.
-
+//
+// Copyright 2013 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#define BOOST_TEST_MODULE all_formats_test
 #include <boost/gil/extension/io/bmp.hpp>
 #include <boost/gil/extension/io/jpeg.hpp>
 #include <boost/gil/extension/io/png.hpp>
@@ -15,10 +13,13 @@
 #include <boost/gil/extension/io/targa.hpp>
 #include <boost/gil/extension/io/tiff.hpp>
 
-#define BOOST_TEST_MODULE all_formats_test
-#include "paths.hpp"
 #include <boost/filesystem.hpp>
 #include <boost/test/unit_test.hpp>
+
+#include "paths.hpp"
+
+// Test will include all format's headers and load and write some images.
+// This test is more of a compilation test.
 
 using namespace std;
 using namespace boost::gil;

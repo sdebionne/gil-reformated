@@ -1,12 +1,13 @@
-// Copyright 2005-2007 Adobe Systems Incorporated
-// Copyright 2018 Stefan Seefeld
 //
-// Distributed under the Boost Software License, Version 1.0.
-// (See accompanying file LICENSE_1_0.txt
-// or copy at http://www.boost.org/LICENSE_1_0.txt)
-
-#ifndef boost_gil_hpp_
-#define boost_gil_hpp_
+// Copyright 2018 Stefan Seefeld
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_HPP
+#define BOOST_GIL_HPP
 
 #include <boost/gil/algorithm.hpp>
 #include <boost/gil/bit_aligned_pixel_iterator.hpp>

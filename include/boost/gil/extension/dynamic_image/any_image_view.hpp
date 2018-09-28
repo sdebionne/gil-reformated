@@ -1,31 +1,17 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ANY_IMAGE_VIEW_HPP
+#define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ANY_IMAGE_VIEW_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/extension/dynamic_image/variant.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_DYNAMICIMAGE_ANY_IMAGEVIEW_HPP
-#define GIL_DYNAMICIMAGE_ANY_IMAGEVIEW_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Support for run-time instantiated image view
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-///
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "../../image.hpp"
-#include "../../image_view.hpp"
-#include "variant.hpp"
+#include <boost/gil/image.hpp>
+#include <boost/gil/image_view.hpp>
 
 namespace boost {
 namespace gil {

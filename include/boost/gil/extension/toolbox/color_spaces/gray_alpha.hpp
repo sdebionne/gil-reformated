@@ -1,29 +1,19 @@
-/*
-    Copyright 2012 Andreas Pokorny
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2012 Andreas Pokorny
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_TOOLBOX_COLOR_SPACES_GRAY_ALPHA_HPP
 #define BOOST_GIL_EXTENSION_TOOLBOX_COLOR_SPACES_GRAY_ALPHA_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file gray_alpha.hpp
-/// \brief Support for gray_alpha color space.
-/// \author Andreas Pokorny \n
-///
-/// \date 2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <boost/mpl/contains.hpp>
 
 #include <boost/gil/color_convert.hpp>
 #include <boost/gil/gray.hpp>
 #include <boost/gil/typedefs.hpp>
+
+#include <boost/mpl/contains.hpp>
+#include <boost/mpl/vector.hpp>
 
 namespace boost {
 namespace gil {
@@ -103,4 +93,4 @@ template <> struct default_color_converter_impl<gray_alpha_t, gray_t> {
 } // namespace gil
 } // namespace boost
 
-#endif // BOOST_GIL_EXTENSION_TOOLBOX_COLOR_SPACES_GRAY_ALPHA_HPP
+#endif
