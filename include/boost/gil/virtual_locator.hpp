@@ -1,29 +1,15 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_VIRTUAL_LOCATOR_HPP
+#define BOOST_GIL_VIRTUAL_LOCATOR_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/position_iterator.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_VIRTUAL_LOCATOR_HPP
-#define GIL_VIRTUAL_LOCATOR_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Locator for virtual image views
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on February 12, 2007
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "position_iterator.hpp"
 #include <boost/iterator/iterator_facade.hpp>
 
 namespace boost {

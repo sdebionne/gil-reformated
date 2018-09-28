@@ -1,31 +1,20 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
-
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_NUMERIC_ALGORITHM_HPP
 #define BOOST_GIL_EXTENSION_NUMERIC_ALGORITHM_HPP
 
-/*!
-/// \file
-/// \brief Numeric algorithms
-/// \author Hailin Jin and Lubomir Bourdev \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n
-*/
+#include <boost/gil/metafunctions.hpp>
+#include <boost/gil/pixel_iterator.hpp>
 
 #include <algorithm>
 #include <cassert>
 #include <iterator>
 #include <numeric>
-
-#include <boost/gil/metafunctions.hpp>
-#include <boost/gil/pixel_iterator.hpp>
 
 namespace boost {
 namespace gil {
@@ -182,4 +171,4 @@ inline void view_multiplies_scalar(const SrcView &src, const Scalar &scalar,
 } // namespace gil
 } // namespace boost
 
-#endif // BOOST_GIL_EXTENSION_NUMERIC_ALGORITHM_HPP
+#endif

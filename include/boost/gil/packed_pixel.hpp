@@ -1,37 +1,27 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_PACKED_PIXEL_HPP
+#define BOOST_GIL_PACKED_PIXEL_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/pixel.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_PACKED_PIXEL_H
-#define GIL_PACKED_PIXEL_H
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief A model of a heterogeneous pixel whose channels are bit ranges. For
-/// example 16-bit RGB in '565' format \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2009 \n Last updated on February 20, 2009
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "pixel.hpp"
 #include <boost/core/ignore_unused.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/front.hpp>
 #include <boost/utility/enable_if.hpp>
+
 #include <functional>
 
 namespace boost {
 namespace gil {
+
+/// A model of a heterogeneous pixel whose channels are bit ranges.
+/// For example 16-bit RGB in '565' format.
 
 /// \defgroup ColorBaseModelPackedPixel packed_pixel
 /// \ingroup ColorBaseModel

@@ -1,16 +1,14 @@
-/*
-    Copyright 2013 Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/// \brief Unit test for indexed_image type.
-
-#include <boost/test/unit_test.hpp>
-
+//
+// Copyright 2013 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #include <boost/gil.hpp>
 #include <boost/gil/extension/toolbox/image_types/indexed_image.hpp>
+
+#include <boost/test/unit_test.hpp>
 
 using namespace std;
 using namespace boost;

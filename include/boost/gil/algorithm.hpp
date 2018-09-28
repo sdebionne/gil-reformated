@@ -1,18 +1,23 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_ALGORITHM_HPP
+#define BOOST_GIL_ALGORITHM_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/bit_aligned_pixel_iterator.hpp>
+#include <boost/gil/color_base_algorithm.hpp>
+#include <boost/gil/concepts.hpp>
+#include <boost/gil/image_view.hpp>
+#include <boost/gil/image_view_factory.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_ALGORITHM_HPP
-#define GIL_ALGORITHM_HPP
+#include <boost/config.hpp>
+#include <boost/mpl/and.hpp>
+#include <boost/mpl/or.hpp>
+#include <boost/utility/enable_if.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -22,34 +27,9 @@
 #include <memory>
 #include <typeinfo>
 
-#include <boost/config.hpp>
-#include <boost/mpl/and.hpp>
-#include <boost/mpl/or.hpp>
-#include <boost/utility/enable_if.hpp>
-
-#include "bit_aligned_pixel_iterator.hpp"
-#include "color_base_algorithm.hpp"
-#include "gil_concept.hpp"
-#include "image_view.hpp"
-#include "image_view_factory.hpp"
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Some basic STL-style algorithms when applied to image views
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2008 \n Last updated on March 12, 2008
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-//#ifdef _MSC_VER
-//#pragma warning(push)
-//#pragma warning(disable : 4244)     // conversion from
-//'gil::image<V,Alloc>::coord_t' to 'int', possible loss of data (visual studio
-// compiler doesn't realize that the two types are the same) #endif
-
 namespace boost {
 namespace gil {
+
 // forward declarations
 template <typename ChannelPtr, typename ColorSpace>
 struct planar_pixel_iterator;
@@ -1130,9 +1110,5 @@ BOOST_FORCEINLINE F transform_pixel_positions(const View1 &src1,
 }
 } // namespace gil
 } // namespace boost
-
-//#ifdef _MSC_VER
-//#pragma warning(pop)
-//#endif
 
 #endif

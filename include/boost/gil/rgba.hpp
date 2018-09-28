@@ -1,29 +1,19 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_RGBA_HPP
+#define BOOST_GIL_RGBA_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/planar_pixel_iterator.hpp>
+#include <boost/gil/rgb.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-/*************************************************************************************************/
-
-#ifndef GIL_RGBA_H
-#define GIL_RGBA_H
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Support for RGBA color space and variants
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on October 10, 2007
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "planar_pixel_iterator.hpp"
-#include "rgb.hpp"
 #include <boost/mpl/contains.hpp>
+#include <boost/mpl/vector.hpp>
+
 #include <cstddef>
 
 namespace boost {

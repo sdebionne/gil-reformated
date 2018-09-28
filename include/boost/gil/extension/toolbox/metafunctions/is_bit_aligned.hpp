@@ -1,23 +1,12 @@
-/*
-    Copyright 2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_TOOLBOX_METAFUNCTIONS_IS_BIT_ALIGNED_TYPE_HPP
 #define BOOST_GIL_EXTENSION_TOOLBOX_METAFUNCTIONS_IS_BIT_ALIGNED_TYPE_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file is_bit_aligned.hpp
-/// \brief is_bit_aligned metafunction.
-/// \author Christian Henning, Andreas Pokorny, Lubomir Bourdev \n
-///
-/// \date 2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
 
 #include <boost/gil/bit_aligned_pixel_reference.hpp>
 
@@ -45,4 +34,4 @@ struct is_bit_aligned<const packed_pixel<B, C, L>> : mpl::true_ {};
 } // namespace gil
 } // namespace boost
 
-#endif // BOOST_GIL_EXTENSION_TOOLBOX_METAFUNCTIONS_IS_BIT_ALIGNED_TYPE_HPP
+#endif

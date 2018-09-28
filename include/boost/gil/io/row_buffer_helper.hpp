@@ -1,24 +1,12 @@
-/*
-    Copyright 2007-2008 Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2008 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_IO_ROW_BUFFER_HELPER_HPP
 #define BOOST_GIL_IO_ROW_BUFFER_HELPER_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief  Helper for having one read implementation used for
-///         bit_aligned and byte images.
-/// \author Christian Henning, Andreas Pokorny, Lubomir Bourdev \n
-///
-/// \date   2007-2008 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
 
 #include <boost/gil/extension/toolbox/metafunctions/is_bit_aligned.hpp>
 

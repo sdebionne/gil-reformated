@@ -1,38 +1,26 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_PIXEL_HPP
+#define BOOST_GIL_PIXEL_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/channel.hpp>
+#include <boost/gil/color_base.hpp>
+#include <boost/gil/color_base_algorithm.hpp>
+#include <boost/gil/concepts.hpp>
+#include <boost/gil/metafunctions.hpp>
+#include <boost/gil/utilities.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-/*************************************************************************************************/
-
-#ifndef GIL_PIXEL_H
-#define GIL_PIXEL_H
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief pixel class and related utilities
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on September 28, 2006
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include "channel.hpp"
-#include "color_base.hpp"
-#include "color_base_algorithm.hpp"
-#include "gil_concept.hpp"
-#include "metafunctions.hpp"
-#include "utilities.hpp"
 #include <boost/core/ignore_unused.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/front.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/utility/enable_if.hpp>
+
 #include <functional>
 
 namespace boost {
@@ -292,4 +280,5 @@ template <typename ChannelValue, typename Layout>
 struct has_trivial_constructor<gil::pixel<ChannelValue, Layout>>
     : public has_trivial_constructor<ChannelValue> {};
 } // namespace boost
+
 #endif

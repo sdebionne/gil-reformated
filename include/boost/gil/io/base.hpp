@@ -1,40 +1,28 @@
-/*
-    Copyright 2007-2008 Christian Henning, Andreas Pokorny, Lubomir Bourdev
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2008 Christian Henning, Andreas Pokorny, Lubomir Bourdev
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_IO_BASE_HPP
 #define BOOST_GIL_IO_BASE_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Christian Henning, Andreas Pokorny, Lubomir Bourdev \n
-///
-/// \date   2007-2008 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <istream>
-#include <ostream>
-#include <vector>
-
-#include <boost/bind.hpp>
-#include <boost/type_traits/is_base_of.hpp>
+#include <boost/gil/extension/toolbox/toolbox.hpp>
 
 #include <boost/gil/bit_aligned_pixel_iterator.hpp>
 #include <boost/gil/bit_aligned_pixel_reference.hpp>
 #include <boost/gil/color_convert.hpp>
-#include <boost/gil/utilities.hpp>
-
-#include <boost/gil/extension/toolbox/toolbox.hpp>
-
 #include <boost/gil/io/error.hpp>
 #include <boost/gil/io/typedefs.hpp>
+#include <boost/gil/utilities.hpp>
+
+#include <boost/bind.hpp>
+#include <boost/type_traits/is_base_of.hpp>
+
+#include <istream>
+#include <ostream>
+#include <vector>
 
 namespace boost {
 namespace gil {

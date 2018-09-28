@@ -1,23 +1,12 @@
-/*
-    Copyright 2007-2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_JPEG_TAGS_HPP
 #define BOOST_GIL_EXTENSION_IO_JPEG_TAGS_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief All supported jpeg tags by the gil io extension.
-/// \author Christian Henning, Andreas Pokorny, Lubomir Bourdev \n
-///
-/// \date   2007-2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
 
 // taken from jpegxx -
 // https://bitbucket.org/edd/jpegxx/src/ea2492a1a4a6/src/ijg_headers.hpp
@@ -33,8 +22,7 @@ extern "C" {
 #endif
 #endif
 
-// jpeglib doesn't know about FILE
-#include <stdio.h>
+#include <cstdio> // jpeglib doesn't know about FILE
 
 #include <jerror.h>
 #include <jpeglib.h>

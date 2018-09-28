@@ -1,30 +1,17 @@
-/*
-    Copyright 2012 Christian Henning
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2012 Christian Henning
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_PNM_DETAIL_SCANLINE_READ_HPP
 #define BOOST_GIL_EXTENSION_IO_PNM_DETAIL_SCANLINE_READ_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Christian Henning \n
-///
-/// \date 2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
+#include <boost/gil/extension/io/pnm/detail/is_allowed.hpp>
+#include <boost/gil/extension/io/pnm/detail/reader_backend.hpp>
 
-#include <boost/bind.hpp>
-#include <boost/function.hpp>
-#include <vector>
-
-#include <boost/gil.hpp>
-
+#include <boost/gil.hpp> // FIXME: Include what you use!
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/bit_operations.hpp>
 #include <boost/gil/io/conversion_policies.hpp>
@@ -34,8 +21,10 @@
 #include <boost/gil/io/scanline_read_iterator.hpp>
 #include <boost/gil/io/typedefs.hpp>
 
-#include <boost/gil/extension/io/pnm/detail/is_allowed.hpp>
-#include <boost/gil/extension/io/pnm/detail/reader_backend.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+
+#include <vector>
 
 namespace boost {
 namespace gil {

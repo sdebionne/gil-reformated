@@ -1,33 +1,22 @@
-/*
-    Copyright 2007-2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-*/
-
-/*************************************************************************************************/
-
+//
+// Copyright 2007-2012 Christian Henning, Andreas Pokorny, Lubomir Bourdev
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
 #ifndef BOOST_GIL_EXTENSION_IO_PNG_DETAIL_WRITE_HPP
 #define BOOST_GIL_EXTENSION_IO_PNG_DETAIL_WRITE_HPP
 
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief
-/// \author Christian Henning, Andreas Pokorny, Lubomir Bourdev \n
-///
-/// \date   2007-2012 \n
-///
-////////////////////////////////////////////////////////////////////////////////////////
+#include <boost/gil/extension/io/png/detail/writer_backend.hpp>
+
+#include <boost/gil/io/device.hpp>
+#include <boost/gil/io/row_buffer_helper.hpp>
 
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/equal_to.hpp>
 #include <boost/mpl/less.hpp>
 #include <boost/mpl/not.hpp>
-
-#include <boost/gil/io/device.hpp>
-#include <boost/gil/io/row_buffer_helper.hpp>
-
-#include <boost/gil/extension/io/png/detail/writer_backend.hpp>
 
 namespace boost {
 namespace gil {

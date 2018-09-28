@@ -1,30 +1,15 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_BIT_ALIGNED_PIXEL_REFERENCE_HPP
+#define BOOST_GIL_BIT_ALIGNED_PIXEL_REFERENCE_HPP
 
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-
-    See http://stlab.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_BIT_ALIGNED_PIXEL_REFERENCE_HPP
-#define GIL_BIT_ALIGNED_PIXEL_REFERENCE_HPP
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief A model of a heterogeneous pixel that is not byte aligned. Examples
-/// are bitmap (1-bit pixels) or 6-bit RGB (222) \author Lubomir Bourdev and
-/// Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on September 28, 2006
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-#include <functional>
+#include <boost/gil/channel.hpp>
+#include <boost/gil/pixel.hpp>
 
 #include <boost/config.hpp>
 #include <boost/mpl/accumulate.hpp>
@@ -35,11 +20,13 @@
 #include <boost/mpl/push_back.hpp>
 #include <boost/mpl/vector.hpp>
 
-#include "channel.hpp"
-#include "pixel.hpp"
+#include <functional>
 
 namespace boost {
 namespace gil {
+
+/// A model of a heterogeneous pixel that is not byte aligned.
+/// Examples are bitmap (1-bit pixels) or 6-bit RGB (222).
 
 /////////////////////////////
 //  bit_range
