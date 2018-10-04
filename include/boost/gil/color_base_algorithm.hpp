@@ -255,29 +255,38 @@ namespace detail {
 
 // compile-time recursion for per-element operations on color bases
 template <int N> struct element_recursion {
-  // static_equal
+
+#if defined(BOOST_GCC)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
   template <typename P1, typename P2>
   static bool static_equal(const P1 &p1, const P2 &p2) {
     return element_recursion<N - 1>::static_equal(p1, p2) &&
            semantic_at_c<N - 1>(p1) == semantic_at_c<N - 1>(p2);
   }
-  // static_copy
+
   template <typename P1, typename P2>
   static void static_copy(const P1 &p1, P2 &p2) {
     element_recursion<N - 1>::static_copy(p1, p2);
     semantic_at_c<N - 1>(p2) = semantic_at_c<N - 1>(p1);
   }
-  // static_fill
+
   template <typename P, typename T2> static void static_fill(P &p, T2 v) {
     element_recursion<N - 1>::static_fill(p, v);
     semantic_at_c<N - 1>(p) = v;
   }
-  // static_generate
+
   template <typename Dst, typename Op>
   static void static_generate(Dst &dst, Op op) {
     element_recursion<N - 1>::static_generate(dst, op);
     semantic_at_c<N - 1>(dst) = op();
   }
+#if defined(BOOST_GCC)
+#pragma GCC diagnostic pop
+#endif
+
   // static_for_each with one source
   template <typename P1, typename Op> static Op static_for_each(P1 &p1, Op op) {
     Op op2(element_recursion<N - 1>::static_for_each(p1, op));
