@@ -10,6 +10,7 @@
 
 #include <boost/gil/rgba.hpp>
 
+#include <boost/mpl/for_each.hpp>
 #include <boost/mpl/remove.hpp>
 
 namespace boost {
@@ -32,12 +33,12 @@ namespace detail {
 template <typename SrcP, typename DstP>
 void assign_alpha_if(mpl::true_, SrcP const &src, DstP &dst) {
   get_color(dst, alpha_t()) = alpha_or_max(src);
-};
+}
 
 template <typename SrcP, typename DstP>
-void assign_alpha_if(mpl::false_, SrcP const &src, DstP &dst){
-    // nothing to do
-};
+void assign_alpha_if(mpl::false_, SrcP const &src, DstP &dst) {
+  // nothing to do
+}
 } // namespace detail
 
 struct premultiply {

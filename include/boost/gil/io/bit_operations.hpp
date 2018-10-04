@@ -8,9 +8,13 @@
 #ifndef BOOST_GIL_IO_BIT_OPERATIONS_HPP
 #define BOOST_GIL_IO_BIT_OPERATIONS_HPP
 
+#include <boost/gil/io/typedefs.hpp>
+
 #include <boost/bind.hpp>
+#include <boost/mpl/bool.hpp>
 
 #include <array>
+#include <cstddef>
 
 namespace boost {
 namespace gil {
