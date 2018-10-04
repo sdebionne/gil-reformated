@@ -8,6 +8,8 @@
 #ifndef BOOST_GIL_IO_ERROR_HPP
 #define BOOST_GIL_IO_ERROR_HPP
 
+#include <ios>
+
 namespace boost {
 namespace gil {
 
