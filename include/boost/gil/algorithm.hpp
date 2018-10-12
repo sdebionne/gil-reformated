@@ -414,7 +414,7 @@ void fill(boost::gil::iterator_from_2d<IL> first,
     while (n > 0) {
       std::ptrdiff_t numToDo = std::min<const std::ptrdiff_t>(
           n, (std::ptrdiff_t)(first.width() - first.x_pos()));
-      fill_n(first.x(), numToDo, val);
+      std::fill_n(first.x(), numToDo, val);
       first += numToDo;
       n -= numToDo;
     }
