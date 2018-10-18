@@ -31,203 +31,37 @@ namespace gil {
 /// Various utilities not specific to the image library.
 /// Some are non-standard STL extensions or generic iterator adaptors
 
-/**
-\addtogroup PointModel
-
-Example:
-\code
-point2<std::ptrdiff_t> p(3,2);
-assert((p[0] == p.x) && (p[1] == p.y));
-assert(axis_value<0>(p) == 3);
-assert(axis_value<1>(p) == 2);
-\endcode
-*/
-
-////////////////////////////////////////////////////////////////////////////////////////
-//                           CLASS point2
-///
-/// \brief 2D point both axes of which have the same dimension type
-/// \ingroup PointModel
-/// Models: Point2DConcept
-///
-////////////////////////////////////////////////////////////////////////////////////////
-
-template <typename T> class point2 {
-public:
-  typedef T value_type;
-  template <std::size_t D> struct axis { typedef value_type coord_t; };
-  static const std::size_t num_dimensions = 2;
-
-  point2() : x(0), y(0) {}
-  point2(T newX, T newY) : x(newX), y(newY) {}
-  point2(const point2 &p) : x(p.x), y(p.y) {}
-  ~point2() {}
-
-  point2 &operator=(const point2 &p) {
-    x = p.x;
-    y = p.y;
-    return *this;
-  }
-
-  point2 operator<<(std::ptrdiff_t shift) const {
-    return point2(x << shift, y << shift);
-  }
-  point2 operator>>(std::ptrdiff_t shift) const {
-    return point2(x >> shift, y >> shift);
-  }
-  point2 &operator+=(const point2 &p) {
-    x += p.x;
-    y += p.y;
-    return *this;
-  }
-  point2 &operator-=(const point2 &p) {
-    x -= p.x;
-    y -= p.y;
-    return *this;
-  }
-  point2 &operator/=(double t) {
-    if (t < 0 || 0 < t) {
-      x /= t;
-      y /= t;
-    }
-    return *this;
-  }
-
-  const T &operator[](std::size_t i) const { return this->*mem_array[i]; }
-  T &operator[](std::size_t i) { return this->*mem_array[i]; }
-
-  T x, y;
-
-private:
-  // this static array of pointers to member variables makes operator[] safe and
-  // doesn't seem to exhibit any performance penalty
-  static T point2<T>::*const mem_array[num_dimensions];
-};
-
-template <typename T>
-T point2<T>::*const point2<T>::mem_array[point2<T>::num_dimensions] = {
-    &point2<T>::x, &point2<T>::y};
-
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE bool operator==(const point2<T> &p1, const point2<T> &p2) {
-  return (p1.x == p2.x && p1.y == p2.y);
-}
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE bool operator!=(const point2<T> &p1, const point2<T> &p2) {
-  return p1.x != p2.x || p1.y != p2.y;
-}
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE point2<T> operator+(const point2<T> &p1,
-                                      const point2<T> &p2) {
-  return point2<T>(p1.x + p2.x, p1.y + p2.y);
-}
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE point2<T> operator-(const point2<T> &p) {
-  return point2<T>(-p.x, -p.y);
-}
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE point2<T> operator-(const point2<T> &p1,
-                                      const point2<T> &p2) {
-  return point2<T>(p1.x - p2.x, p1.y - p2.y);
-}
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE point2<double> operator/(const point2<T> &p, double t) {
-  return (t < 0 || 0 < t) ? point2<double>(p.x / t, p.y / t)
-                          : point2<double>(0, 0);
-}
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE point2<T> operator*(const point2<T> &p, std::ptrdiff_t t) {
-  return point2<T>(p.x * t, p.y * t);
-}
-/// \ingroup PointModel
-template <typename T>
-BOOST_FORCEINLINE point2<T> operator*(std::ptrdiff_t t, const point2<T> &p) {
-  return point2<T>(p.x * t, p.y * t);
-}
-
-/// \ingroup PointModel
-template <std::size_t K, typename T>
-BOOST_FORCEINLINE const T &axis_value(const point2<T> &p) {
-  return p[K];
-}
-
-/// \ingroup PointModel
-template <std::size_t K, typename T>
-BOOST_FORCEINLINE T &axis_value(point2<T> &p) {
-  return p[K];
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-///
+////////////////////////////////////////////////////////////////////////////////
 ///  Rounding of real numbers / points to integers / integer points
-///
-////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 inline std::ptrdiff_t iround(float x) {
   return static_cast<std::ptrdiff_t>(x + (x < 0.0f ? -0.5f : 0.5f));
 }
+
 inline std::ptrdiff_t iround(double x) {
   return static_cast<std::ptrdiff_t>(x + (x < 0.0 ? -0.5 : 0.5));
 }
+
 inline std::ptrdiff_t ifloor(float x) {
   return static_cast<std::ptrdiff_t>(std::floor(x));
 }
+
 inline std::ptrdiff_t ifloor(double x) {
   return static_cast<std::ptrdiff_t>(std::floor(x));
 }
+
 inline std::ptrdiff_t iceil(float x) {
   return static_cast<std::ptrdiff_t>(std::ceil(x));
 }
+
 inline std::ptrdiff_t iceil(double x) {
   return static_cast<std::ptrdiff_t>(std::ceil(x));
 }
 
-/**
-\addtogroup PointAlgorithm
-
-Example:
-\code
-assert(iround(point2<double>(3.1, 3.9)) == point2<std::ptrdiff_t>(3,4));
-\endcode
-*/
-
-/// \ingroup PointAlgorithm
-inline point2<std::ptrdiff_t> iround(const point2<float> &p) {
-  return point2<std::ptrdiff_t>(iround(p.x), iround(p.y));
-}
-/// \ingroup PointAlgorithm
-inline point2<std::ptrdiff_t> iround(const point2<double> &p) {
-  return point2<std::ptrdiff_t>(iround(p.x), iround(p.y));
-}
-/// \ingroup PointAlgorithm
-inline point2<std::ptrdiff_t> ifloor(const point2<float> &p) {
-  return point2<std::ptrdiff_t>(ifloor(p.x), ifloor(p.y));
-}
-/// \ingroup PointAlgorithm
-inline point2<std::ptrdiff_t> ifloor(const point2<double> &p) {
-  return point2<std::ptrdiff_t>(ifloor(p.x), ifloor(p.y));
-}
-/// \ingroup PointAlgorithm
-inline point2<std::ptrdiff_t> iceil(const point2<float> &p) {
-  return point2<std::ptrdiff_t>(iceil(p.x), iceil(p.y));
-}
-/// \ingroup PointAlgorithm
-inline point2<std::ptrdiff_t> iceil(const point2<double> &p) {
-  return point2<std::ptrdiff_t>(iceil(p.x), iceil(p.y));
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-///
+////////////////////////////////////////////////////////////////////////////////
 ///  computing size with alignment
-///
-////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 template <typename T> inline T align(T val, std::size_t alignment) {
   return val + (alignment - val % alignment) % alignment;
@@ -267,9 +101,10 @@ public:
   typedef typename D2::argument_type argument_type;
   typedef typename D1::result_type result_type;
 
-  deref_compose() {}
+  deref_compose() = default;
   deref_compose(const D1 &x, const D2 &y) : _fn1(x), _fn2(y) {}
   deref_compose(const deref_compose &dc) : _fn1(dc._fn1), _fn2(dc._fn2) {}
+
   template <typename _D1, typename _D2>
   deref_compose(const deref_compose<_D1, _D2> &dc)
       : _fn1(dc._fn1), _fn2(dc._fn2) {}
@@ -291,11 +126,9 @@ BOOST_FORCEINLINE const OutPtr gil_reinterpret_cast_c(const In *p) {
 
 namespace detail {
 
-////////////////////////////////////////////////////////////////////////////////////////
-///
+////////////////////////////////////////////////////////////////////////////////
 ///  \brief copy_n taken from SGI STL.
-///
-////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 template <class InputIter, class Size, class OutputIter>
 std::pair<InputIter, OutputIter> _copy_n(InputIter first, Size count,
@@ -389,13 +222,13 @@ void swap_proxy(T1 &left, T2 &right) {
 
 /// \brief Run-time detection of whether the underlying architecture is little
 /// endian
-inline bool little_endian() {
+BOOST_FORCEINLINE bool little_endian() {
   short tester = 0x0001;
   return *(char *)&tester != 0;
 }
 /// \brief Run-time detection of whether the underlying architecture is big
 /// endian
-inline bool big_endian() { return !little_endian(); }
+BOOST_FORCEINLINE bool big_endian() { return !little_endian(); }
 
 } // namespace gil
 } // namespace boost
