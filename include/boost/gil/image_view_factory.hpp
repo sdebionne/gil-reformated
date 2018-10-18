@@ -11,6 +11,7 @@
 #include <boost/gil/color_convert.hpp>
 #include <boost/gil/gray.hpp>
 #include <boost/gil/metafunctions.hpp>
+#include <boost/gil/point.hpp>
 
 #include <cassert>
 #include <cstddef>

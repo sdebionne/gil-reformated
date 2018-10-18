@@ -11,6 +11,7 @@
 #include <boost/gil/concepts.hpp>
 #include <boost/gil/locator.hpp>
 #include <boost/gil/pixel_iterator.hpp>
+#include <boost/gil/point.hpp>
 
 #include <boost/iterator/iterator_facade.hpp>
 
