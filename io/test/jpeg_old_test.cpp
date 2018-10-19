@@ -23,8 +23,7 @@ BOOST_AUTO_TEST_SUITE(gil_io_jpeg_tests)
 #ifdef BOOST_GIL_IO_TEST_ALLOW_READING_IMAGES
 
 BOOST_AUTO_TEST_CASE(old_read_dimensions_test) {
-  point2<std::ptrdiff_t> dim = jpeg_read_dimensions(jpeg_filename);
-
+  boost::gil::point_t dim = jpeg_read_dimensions(jpeg_filename);
   BOOST_CHECK_EQUAL(dim.x, 1000);
   BOOST_CHECK_EQUAL(dim.y, 600);
 }

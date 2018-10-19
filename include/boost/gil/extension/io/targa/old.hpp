@@ -18,12 +18,10 @@ namespace gil {
 /// location. Throws std::ios_base::failure if the location does not correspond
 /// to a valid BMP file
 template <typename String>
-inline point2<std::ptrdiff_t> targa_read_dimensions(const String &filename) {
-  typedef typename get_reader_backend<String, targa_tag>::type backend_t;
-
+inline point_t targa_read_dimensions(String const &filename) {
+  using backend_t = typename get_reader_backend<String, targa_tag>::type;
   backend_t backend = read_image_info(filename, targa_tag());
-
-  return point2<std::ptrdiff_t>(backend._info._width, backend._info._height);
+  return {backend._info._width, backend._info._height};
 }
 
 /// \ingroup BMP_IO

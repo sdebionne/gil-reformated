@@ -9,6 +9,7 @@
 #define BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBCHROMA_IMAGE_HPP
 
 #include <boost/gil/image.hpp>
+#include <boost/gil/point.hpp>
 
 #include <boost/mpl/divides.hpp>
 #include <boost/mpl/equal_to.hpp>
@@ -22,8 +23,6 @@
 
 namespace boost {
 namespace gil {
-
-typedef boost::gil::point2<std::ptrdiff_t> point_t;
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \class subchroma_image_deref_fn

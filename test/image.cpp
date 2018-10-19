@@ -88,8 +88,7 @@ struct my_color_converter {
 // Models a Unary Function
 template <typename P> // Models PixelValueConcept
 struct mandelbrot_fn {
-  typedef point2<std::ptrdiff_t> point_t;
-
+  using point_t = boost::gil::point_t;
   typedef mandelbrot_fn const_t;
   typedef P value_type;
   typedef value_type reference;
@@ -112,8 +111,8 @@ struct mandelbrot_fn {
     // (actually make y -1.0..2 so it is asymmetric, so we can verify some view
     // factory methods)
     double t = get_num_iter(
-        point2<double>(p.x / (double)_img_size.x * 3 - 2,
-                       p.y / (double)_img_size.y * 3 - 1.0f)); // 1.5f));
+        point<double>(p.x / (double)_img_size.x * 3 - 2,
+                      p.y / (double)_img_size.y * 3 - 1.0f)); // 1.5f));
     t = pow(t, 0.2);
 
     value_type ret;
@@ -125,10 +124,10 @@ struct mandelbrot_fn {
   }
 
 private:
-  double get_num_iter(const point2<double> &p) const {
-    point2<double> Z(0, 0);
+  double get_num_iter(const point<double> &p) const {
+    point<double> Z(0, 0);
     for (int i = 0; i < MAX_ITER; ++i) {
-      Z = point2<double>(Z.x * Z.x - Z.y * Z.y + p.x, 2 * Z.x * Z.y + p.y);
+      Z = point<double>(Z.x * Z.x - Z.y * Z.y + p.x, 2 * Z.x * Z.y + p.y);
       if (Z.x * Z.x + Z.y * Z.y > 4)
         return i / (double)MAX_ITER;
     }
@@ -391,9 +390,8 @@ void image_test::run() {
   image_all_test<bgr121_image_t>("bgr121_");
 
   // TODO: Remove?
-  view_transformations_test(
-      subsampled_view(sample_view, point2<std::ptrdiff_t>(1, 2)),
-      "subsampled_");
+  view_transformations_test(subsampled_view(sample_view, point_t(1, 2)),
+                            "subsampled_");
   view_transformations_test(color_converted_view<gray8_pixel_t>(sample_view),
                             "color_converted_");
 

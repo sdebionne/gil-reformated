@@ -37,10 +37,10 @@ struct images_get_const_views_t
 
 struct recreate_image_fnobj {
   typedef void result_type;
-  const point2<std::ptrdiff_t> &_dimensions;
+  point<std::ptrdiff_t> const &_dimensions;
   unsigned _alignment;
 
-  recreate_image_fnobj(const point2<std::ptrdiff_t> &dims, unsigned alignment)
+  recreate_image_fnobj(point<std::ptrdiff_t> const &dims, unsigned alignment)
       : _dimensions(dims), _alignment(alignment) {}
   template <typename Image> result_type operator()(Image &img) const {
     img.recreate(_dimensions, _alignment);
@@ -90,7 +90,7 @@ public:
       view_t;
   typedef std::ptrdiff_t x_coord_t;
   typedef std::ptrdiff_t y_coord_t;
-  typedef point2<std::ptrdiff_t> point_t;
+  typedef point<std::ptrdiff_t> point_t;
 
   any_image() : parent_t() {}
   template <typename T> explicit any_image(const T &obj) : parent_t(obj) {}
@@ -116,8 +116,9 @@ public:
   void recreate(const point_t &dims, unsigned alignment = 1) {
     apply_operation(*this, detail::recreate_image_fnobj(dims, alignment));
   }
+
   void recreate(x_coord_t width, y_coord_t height, unsigned alignment = 1) {
-    recreate(point2<std::ptrdiff_t>(width, height), alignment);
+    recreate({width, height}, alignment);
   }
 
   std::size_t num_channels() const {
