@@ -8,7 +8,7 @@
 #ifndef BOOST_GIL_EXTENSION_NUMERIC_AFFINE_HPP
 #define BOOST_GIL_EXTENSION_NUMERIC_AFFINE_HPP
 
-#include <boost/gil/utilities.hpp> // point2
+#include <boost/gil/point.hpp>
 
 namespace boost {
 namespace gil {
@@ -46,13 +46,13 @@ public:
     T s = std::sin(rads);
     return matrix3x2(c, s, -s, c, 0, 0);
   }
-  static matrix3x2 get_translate(const point2<T> &t) {
+  static matrix3x2 get_translate(point<T> const &t) {
     return matrix3x2(1, 0, 0, 1, t.x, t.y);
   }
   static matrix3x2 get_translate(T x, T y) {
     return matrix3x2(1, 0, 0, 1, x, y);
   }
-  static matrix3x2 get_scale(const point2<T> &s) {
+  static matrix3x2 get_scale(point<T> const &s) {
     return matrix3x2(s.x, 0, 0, s.y, 0, 0);
   }
   static matrix3x2 get_scale(T x, T y) { return matrix3x2(x, 0, 0, y, 0, 0); }
@@ -71,9 +71,8 @@ BOOST_FORCEINLINE matrix3x2<T> operator*(const matrix3x2<T> &m1,
 }
 
 template <typename T, typename F>
-BOOST_FORCEINLINE point2<F> operator*(const point2<T> &p,
-                                      const matrix3x2<F> &m) {
-  return point2<F>(m.a * p.x + m.c * p.y + m.e, m.b * p.x + m.d * p.y + m.f);
+BOOST_FORCEINLINE point<F> operator*(point<T> const &p, matrix3x2<F> const &m) {
+  return {m.a * p.x + m.c * p.y + m.e, m.b * p.x + m.d * p.y + m.f};
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -94,12 +93,12 @@ PointNDConcept<result_type>;
 template <typename T> struct mapping_traits;
 
 template <typename F> struct mapping_traits<matrix3x2<F>> {
-  typedef point2<F> result_type;
+  using result_type = point<F>;
 };
 
 template <typename F, typename F2>
-BOOST_FORCEINLINE point2<F> transform(const matrix3x2<F> &mat,
-                                      const point2<F2> &src) {
+BOOST_FORCEINLINE point<F> transform(matrix3x2<F> const &mat,
+                                     point<F2> const &src) {
   return src * mat;
 }
 

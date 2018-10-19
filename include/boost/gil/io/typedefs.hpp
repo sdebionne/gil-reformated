@@ -30,10 +30,8 @@ struct double_one {
   static double apply() { return 1.0; }
 };
 
-typedef unsigned char byte_t;
-typedef std::vector<byte_t> byte_vector_t;
-
-typedef point2<std::ptrdiff_t> point_t;
+using byte_t = unsigned char;
+using byte_vector_t = std::vector<byte_t>;
 
 } // namespace gil
 } // namespace boost

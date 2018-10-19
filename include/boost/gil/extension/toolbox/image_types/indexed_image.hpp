@@ -11,6 +11,7 @@
 #include <boost/gil/extension/toolbox/metafunctions/is_bit_aligned.hpp>
 
 #include <boost/gil/image.hpp>
+#include <boost/gil/point.hpp>
 
 #include <boost/mpl/if.hpp>
 #include <boost/type_traits/is_integral.hpp>
@@ -21,8 +22,6 @@
 
 namespace boost {
 namespace gil {
-
-typedef boost::gil::point2<std::ptrdiff_t> point_t;
 
 template <typename Locator>
 struct get_pixel_type_locator

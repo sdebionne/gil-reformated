@@ -18,12 +18,10 @@ namespace gil {
 /// location. Throws std::ios_base::failure if the location does not correspond
 /// to a valid PNG file
 template <typename String>
-inline point2<std::ptrdiff_t> png_read_dimensions(const String &filename) {
-  typedef typename get_reader_backend<String, png_tag>::type backend_t;
-
+inline point_t png_read_dimensions(String const &filename) {
+  using backend_t = typename get_reader_backend<String, png_tag>::type;
   backend_t backend = read_image_info(filename, png_tag());
-
-  return point2<std::ptrdiff_t>(backend._info._width, backend._info._height);
+  return {backend._info._width, backend._info._height};
 }
 
 /// \ingroup PNG_IO

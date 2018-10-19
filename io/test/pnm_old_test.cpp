@@ -22,12 +22,9 @@ BOOST_AUTO_TEST_SUITE(gil_io_pnm_tests)
 #ifdef BOOST_GIL_IO_TEST_ALLOW_READING_IMAGES
 
 BOOST_AUTO_TEST_CASE(old_read_dimensions_test) {
-  {
-    point2<std::ptrdiff_t> dim = pnm_read_dimensions(pnm_filename);
-
-    BOOST_CHECK_EQUAL(dim.x, 256);
-    BOOST_CHECK_EQUAL(dim.y, 256);
-  }
+  boost::gil::point_t dim = pnm_read_dimensions(pnm_filename);
+  BOOST_CHECK_EQUAL(dim.x, 256);
+  BOOST_CHECK_EQUAL(dim.y, 256);
 }
 
 BOOST_AUTO_TEST_CASE(old_read_image_test) {

@@ -40,7 +40,7 @@ s, const SrcView& src, const S_COORDS& p, DstP result);
 struct nearest_neighbor_sampler {};
 
 template <typename DstP, typename SrcView, typename F>
-bool sample(nearest_neighbor_sampler, const SrcView &src, const point2<F> &p,
+bool sample(nearest_neighbor_sampler, SrcView const &src, point<F> const &p,
             DstP &result) {
   typename SrcView::point_t center(iround(p));
   if (center.x >= 0 && center.y >= 0 && center.x < src.width() &&
@@ -96,14 +96,12 @@ struct add_dst_mul_src {
 struct bilinear_sampler {};
 
 template <typename DstP, typename SrcView, typename F>
-bool sample(bilinear_sampler, const SrcView &src, const point2<F> &p,
+bool sample(bilinear_sampler, SrcView const &src, point<F> const &p,
             DstP &result) {
-  typedef typename SrcView::value_type SrcP;
-
-  point2<ptrdiff_t> p0(
-      ifloor(p.x),
-      ifloor(p.y)); // the closest integer coordinate top left from p
-  point2<F> frac(p.x - p0.x, p.y - p0.y);
+  using SrcP = typename SrcView::value_type;
+  point_t p0(ifloor(p.x),
+             ifloor(p.y)); // the closest integer coordinate top left from p
+  point<F> frac(p.x - p0.x, p.y - p0.y);
 
   if (p0.x < -1 || p0.y < -1 || p0.x >= src.width() || p0.y >= src.height()) {
     return false;
