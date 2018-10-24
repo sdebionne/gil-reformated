@@ -19,7 +19,7 @@
 #include <boost/type_traits.hpp>
 
 #include <algorithm>
-#include <boost/config/no_tr1/cmath.hpp>
+#include <cmath>
 #include <cstddef>
 #include <functional>
 #include <iterator>
