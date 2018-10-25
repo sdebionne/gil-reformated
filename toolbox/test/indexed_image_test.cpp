@@ -32,14 +32,14 @@ BOOST_AUTO_TEST_CASE(index_image_test) {
 #if __cplusplus >= 201103L
     generate_pixels(img.get_indices_view(), []() -> uint8_t {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
+      i = (i == 256) ? 0 : (i + 1);
 
       return gray8_pixel_t(i);
     });
 
     generate_pixels(img.get_palette_view(), []() -> rgb8_pixel_t {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
+      i = (i == 256) ? 0 : (i + 1);
 
       return rgb8_pixel_t(i, i, i);
     });
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(index_image_test) {
     for (image_t::indices_view_t::iterator it = indices.begin();
          it != indices.end(); ++it) {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
+      i = (i == 256) ? 0 : (i + 1);
 
       *it = gray8_pixel_t(i);
     }
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(index_image_test) {
     for (image_t::palette_view_t::iterator it = colors.begin();
          it != colors.end(); ++it) {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
+      i = (i == 256) ? 0 : (i + 1);
 
       *it = rgb8_pixel_t(i, i, i);
     }
@@ -78,14 +78,13 @@ BOOST_AUTO_TEST_CASE(index_image_test) {
 #if __cplusplus >= 201103L
     generate_pixels(img.get_indices_view(), []() -> uint8_t {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
-
+      i = (i == 256) ? 0 : (i + 1);
       return i;
     });
 
     generate_pixels(img.get_palette_view(), []() -> rgb8_pixel_t {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
+      i = (i == 256) ? 0 : (i + 1);
 
       return rgb8_pixel_t(i, i, i);
     });
@@ -94,7 +93,7 @@ BOOST_AUTO_TEST_CASE(index_image_test) {
     for (image_t::indices_view_t::iterator it = indices.begin();
          it != indices.end(); ++it) {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
+      i = (i == 256) ? 0 : (i + 1);
 
       *it = gray8_pixel_t(i);
     }
@@ -103,7 +102,7 @@ BOOST_AUTO_TEST_CASE(index_image_test) {
     for (image_t::palette_view_t::iterator it = colors.begin();
          it != colors.end(); ++it) {
       static uint8_t i = 0;
-      i = (i == 256) ? 0 : ++i;
+      i = (i == 256) ? 0 : (i + 1);
 
       *it = rgb8_pixel_t(i, i, i);
     }
