@@ -10,6 +10,7 @@
 
 #include <boost/gil/rgba.hpp>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/remove.hpp>
 
@@ -20,6 +21,9 @@ template <typename SrcP, typename DstP> struct channel_premultiply {
   channel_premultiply(SrcP const &src, DstP &dst) : src_(src), dst_(dst) {}
 
   template <typename Channel> void operator()(Channel c) const {
+    // FIXME: Is c input paramater not used intentionally? Add comment on
+    // relation between src_ vs c.
+
     // @todo: need to do a “channel_convert” too, in case the channel types
     // aren't the same?
     get_color(dst_, Channel()) =
@@ -38,6 +42,8 @@ void assign_alpha_if(mpl::true_, SrcP const &src, DstP &dst) {
 template <typename SrcP, typename DstP>
 void assign_alpha_if(mpl::false_, SrcP const &src, DstP &dst) {
   // nothing to do
+  boost::ignore_unused(src);
+  boost::ignore_unused(dst);
 }
 } // namespace detail
 
