@@ -12,7 +12,7 @@
 
 #include <boost/gil.hpp> // FIXME: Include what you use!
 
-#include <boost/algorithm/clamp.hpp>
+#include <boost/mpl/identity.hpp>
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/vector_c.hpp>
 
@@ -60,6 +60,21 @@ typedef boost::gil::layout<ycbcr_709__t> ycbcr_709__layout_t;
 GIL_DEFINE_ALL_TYPEDEFS(8, uint8_t, ycbcr_601_)
 GIL_DEFINE_ALL_TYPEDEFS(8, uint8_t, ycbcr_709_)
 
+namespace detail {
+
+// Source:boost/algorithm/clamp.hpp
+template <typename T>
+constexpr T const &clamp(T const &val,
+                         typename boost::mpl::identity<T>::type const &lo,
+                         typename boost::mpl::identity<T>::type const &hi) {
+  // assert ( !p ( hi, lo )); // Can't assert p ( lo, hi ) b/c they might be
+  // equal
+  auto const p = std::less<T>();
+  return p(val, lo) ? lo : p(hi, val) ? hi : val;
+}
+
+} // namespace detail
+
 /*
  * 601 Source: http://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
  * 709 Source: http://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.709_conversion
@@ -88,7 +103,6 @@ private:
   void convert(const Src_Pixel &src, Dst_Pixel &dst,
                mpl::true_ // is 8 bit channel
   ) const {
-    using namespace boost::algorithm;
     using namespace ycbcr_601_color_space;
 
     typedef typename channel_type<Src_Pixel>::type src_channel_t;
@@ -103,10 +117,12 @@ private:
     std::int_fast16_t c = y - 16;
     std::int_fast16_t d = cb - 128;
     std::int_fast16_t e = cr - 128;
-    std::int_fast16_t red = clamp(((298 * c + 409 * e + 128) >> 8), 0, 255);
+    std::int_fast16_t red =
+        detail::clamp(((298 * c + 409 * e + 128) >> 8), 0, 255);
     std::int_fast16_t green =
-        clamp(((298 * c - 100 * d - 208 * e + 128) >> 8), 0, 255);
-    std::int_fast16_t blue = clamp(((298 * c + 516 * d + 128) >> 8), 0, 255);
+        detail::clamp(((298 * c - 100 * d - 208 * e + 128) >> 8), 0, 255);
+    std::int_fast16_t blue =
+        detail::clamp(((298 * c + 516 * d + 128) >> 8), 0, 255);
 
     get_color(dst, red_t()) = (dst_channel_t)red;
     get_color(dst, green_t()) = (dst_channel_t)green;
@@ -117,7 +133,6 @@ private:
   void convert(const Src_Pixel &src, Dst_Pixel &dst,
                mpl::false_ // is 8 bit channel
   ) const {
-    using namespace boost::algorithm;
     using namespace ycbcr_601_color_space;
 
     typedef typename channel_type<Dst_Pixel>::type dst_channel_t;
@@ -126,15 +141,15 @@ private:
     double cb = get_color(src, cb_t());
     double cr = get_color(src, cr_t());
 
-    get_color(dst, red_t()) = (dst_channel_t)clamp(
-        1.6438 * (y - 16.0) + 1.5960 * (cr - 128.0), 0.0, 255.0);
+    get_color(dst, red_t()) = static_cast<dst_channel_t>(
+        detail::clamp(1.6438 * (y - 16.0) + 1.5960 * (cr - 128.0), 0.0, 255.0));
 
-    get_color(dst, green_t()) = (dst_channel_t)clamp(
+    get_color(dst, green_t()) = static_cast<dst_channel_t>(detail::clamp(
         1.6438 * (y - 16.0) - 0.3917 * (cb - 128.0) + 0.8129 * (cr - 128.0),
-        0.0, 255.0);
+        0.0, 255.0));
 
-    get_color(dst, blue_t()) = (dst_channel_t)clamp(
-        1.6438 * (y - 16.0) - 2.0172 * (cb - 128.0), 0.0, 255.0);
+    get_color(dst, blue_t()) = static_cast<dst_channel_t>(
+        detail::clamp(1.6438 * (y - 16.0) - 2.0172 * (cb - 128.0), 0.0, 255.0));
   }
 };
 
