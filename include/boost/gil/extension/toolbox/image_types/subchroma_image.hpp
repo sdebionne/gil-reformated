@@ -52,7 +52,7 @@ template <typename Locator, typename Factors> struct subchroma_image_deref_fn {
       : _y_locator(y_locator), _v_locator(v_locator), _u_locator(u_locator) {}
 
   /// operator()
-  typename result_type operator()(const point_t &p) const {
+  result_type operator()(const point_t &p) const {
     typedef Scaling_Factors<mpl::at_c<Factors, 0>::type::value,
                             mpl::at_c<Factors, 1>::type::value,
                             mpl::at_c<Factors, 2>::type::value>
