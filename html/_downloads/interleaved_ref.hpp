@@ -1,52 +1,37 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
-
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-
-    See http://stlab.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief Example on how to create a new model of a pixel reference
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date 2005-2007 \n Last updated on February 26, 2007
-//////
-////////////////////////////////////////////////////////////////////////////////////////
-
-#ifndef GIL_INTERLEAVED_REF_HPP
-#define GIL_INTERLEAVED_REF_HPP
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_EXAMPLE_INTERLEAVED_REF_HPP
+#define BOOST_GIL_EXAMPLE_INTERLEAVED_REF_HPP
 
 #include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
+
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/vector_c.hpp>
+
+// Example on how to create a new model of a pixel reference
 
 namespace boost {
 namespace gil {
 
-/////////////////////////////////////////////////////////////////////////
-///
-/// A model of an interleaved pixel reference. Holds a pointer to the first
-/// channel MODELS:
-///    MutableHomogeneousPixelConcept
-///       MutableHomogeneousColorBaseConcept
-///           MutableColorBaseConcept
-///           HomogeneousColorBaseConcept
-///               ColorBaseConcept
-///    HomogeneousPixelBasedConcept
-///       PixelBasedConcept
-///
-/// For planar reference proxies to work properly, all of their methods must be
-/// const-qualified and their iterator's reference type must be const-qualified.
-/// Mutability of the reference proxy is part of its type (in this case, depends
-/// on the mutability of ChannelReference)
-/////////////////////////////////////////////////////////////////////////
+// A model of an interleaved pixel reference. Holds a pointer to the first
+// channel MODELS:
+//    MutableHomogeneousPixelConcept
+//       MutableHomogeneousColorBaseConcept
+//           MutableColorBaseConcept
+//           HomogeneousColorBaseConcept
+//               ColorBaseConcept
+//    HomogeneousPixelBasedConcept
+//       PixelBasedConcept
+//
+// For planar reference proxies to work properly, all of their methods must be
+// const-qualified and their iterator's reference type must be const-qualified.
+// Mutability of the reference proxy is part of its type (in this case, depends
+// on the mutability of ChannelReference)
 
 template <
     typename ChannelReference, // Models ChannelConcept. A channel reference,

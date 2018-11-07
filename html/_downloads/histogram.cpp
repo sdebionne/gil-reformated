@@ -1,27 +1,17 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
-
-    Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
-
-    See http://opensource.adobe.com/gil for most recent version including
-   documentation.
-*/
-
-/*************************************************************************************************/
-
-/// \file
-/// \brief Example file to demonstrate a way to compute histogram
-/// \author Lubomir Bourdev and Hailin Jin
-/// \date February 27, 2007
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#include <boost/gil.hpp>
+#include <boost/gil/extension/io/jpeg.hpp>
 
 #include <algorithm>
-#include <boost/gil/color_convert.hpp>
-#include <boost/gil/extension/io/jpeg_io.hpp>
-#include <boost/gil/image.hpp>
-#include <boost/gil/typedefs.hpp>
 #include <fstream>
+
+// Example file to demonstrate a way to compute histogram
 
 using namespace boost::gil;
 
@@ -39,7 +29,7 @@ template <typename V, typename R> void get_hist(const V &img_view, R &hist) {
 
 int main() {
   rgb8_image_t img;
-  jpeg_read_image("test.jpg", img);
+  read_image("test.jpg", img, jpeg_tag());
 
   int histogram[256];
   std::fill(histogram, histogram + 256, 0);
