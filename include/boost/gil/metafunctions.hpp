@@ -196,10 +196,10 @@ struct view_is_step_in_y : public locator_is_step_in_y<typename V::xy_locator> {
 /// native C++ reference \ingroup TypeAnalysis
 template <typename PixelReference>
 struct pixel_reference_is_proxy
-    : public mpl::not_<
-          is_same<typename remove_const_and_reference<PixelReference>::type,
-                  typename remove_const_and_reference<
-                      PixelReference>::type::value_type>> {};
+    : public mpl::not_<is_same<
+          typename detail::remove_const_and_reference<PixelReference>::type,
+          typename detail::remove_const_and_reference<
+              PixelReference>::type::value_type>> {};
 
 /// \brief Given a model of a pixel, determines whether the model represents a
 /// pixel reference (as opposed to pixel value) \ingroup TypeAnalysis
