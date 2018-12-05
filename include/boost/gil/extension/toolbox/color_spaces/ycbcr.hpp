@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright 2013 Juan V. Puertos G-Cluster, Christian Henning
 //
 // Distributed under the Boost Software License, Version 1.0
@@ -155,7 +155,7 @@ private:
 
 /*
  * Source: http://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
- * digital Y′CbCr derived from digital R'dG'dB'd 8 bits per sample, each using
+ * digital Y'CbCr derived from digital R'dG'dB'd 8 bits per sample, each using
  * the full range. with NO footroom wither headroom.
  */
 /**
