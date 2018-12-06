@@ -16,8 +16,7 @@ namespace detail {
 
 template <typename T>
 struct remove_const_and_reference
-    : public ::boost::remove_const<
-          typename ::boost::remove_reference<T>::type> {};
+    : ::boost::remove_const<typename ::boost::remove_reference<T>::type> {};
 
 } // namespace detail
 } // namespace gil

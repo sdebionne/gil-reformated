@@ -61,6 +61,7 @@ template <class TT> struct BidirectionalIteratorIsMutableConcept {
 template <class TT> struct RandomAccessIteratorIsMutableConcept {
   void constraints() {
     gil_function_requires<BidirectionalIteratorIsMutableConcept<TT>>();
+
     typename std::iterator_traits<TT>::difference_type n = 0;
     ignore_unused_variable_warning(n);
     i[n] = *i; // require element access and assignment
@@ -92,9 +93,10 @@ template <typename Iterator> struct PixelIteratorIsMutableConcept {
   void constraints() {
     gil_function_requires<
         detail::RandomAccessIteratorIsMutableConcept<Iterator>>();
-    typedef typename remove_reference<
-        typename std::iterator_traits<Iterator>::reference>::type ref;
-    typedef typename element_type<ref>::type channel_t;
+
+    using ref_t = typename remove_reference<
+        typename std::iterator_traits<Iterator>::reference>::type;
+    using channel_t = typename element_type<ref_t>::type;
     gil_function_requires<detail::ChannelIsMutableConcept<channel_t>>();
   }
 };
@@ -114,7 +116,7 @@ template <typename Iterator> struct PixelIteratorIsMutableConcept {
 /// };
 /// \endcode
 template <typename T> struct HasDynamicXStepTypeConcept {
-  void constraints() { typedef typename dynamic_x_step_type<T>::type type; }
+  void constraints() { using type = typename dynamic_x_step_type<T>::type; }
 };
 
 /// \ingroup PixelLocatorConcept
@@ -127,7 +129,7 @@ template <typename T> struct HasDynamicXStepTypeConcept {
 /// };
 /// \endcode
 template <typename T> struct HasDynamicYStepTypeConcept {
-  void constraints() { typedef typename dynamic_y_step_type<T>::type type; }
+  void constraints() { using type = typename dynamic_y_step_type<T>::type; }
 };
 
 /// \ingroup PixelLocatorConcept
@@ -140,7 +142,7 @@ template <typename T> struct HasDynamicYStepTypeConcept {
 /// };
 /// \endcode
 template <typename T> struct HasTransposedTypeConcept {
-  void constraints() { typedef typename transposed_type<T>::type type; }
+  void constraints() { using type = typename transposed_type<T>::type; }
 };
 
 /// \defgroup PixelIteratorConceptPixelIterator PixelIteratorConcept
@@ -178,12 +180,12 @@ template <typename Iterator> struct PixelIteratorConcept {
         boost_concepts::RandomAccessTraversalConcept<Iterator>>();
     gil_function_requires<PixelBasedConcept<Iterator>>();
 
-    typedef typename std::iterator_traits<Iterator>::value_type value_type;
+    using value_type = typename std::iterator_traits<Iterator>::value_type;
     gil_function_requires<PixelValueConcept<value_type>>();
 
-    typedef typename const_iterator_type<Iterator>::type const_t;
-    static const bool is_mut = iterator_is_mutable<Iterator>::type::value;
-    ignore_unused_variable_warning(is_mut);
+    using const_t = typename const_iterator_type<Iterator>::type;
+    static bool const is_mutable = iterator_is_mutable<Iterator>::type::value;
+    ignore_unused_variable_warning(is_mutable);
 
     // immutable iterator must be constructible from (possibly mutable) iterator
     const_t const_it(it);
@@ -195,7 +197,7 @@ template <typename Iterator> struct PixelIteratorConcept {
   void check_base(mpl::false_) {}
 
   void check_base(mpl::true_) {
-    typedef typename iterator_adaptor_get_base<Iterator>::type base_t;
+    using base_t = typename iterator_adaptor_get_base<Iterator>::type;
     gil_function_requires<PixelIteratorConcept<base_t>>();
   }
 
@@ -320,11 +322,11 @@ template <typename Iterator> struct IteratorAdaptorConcept {
   void constraints() {
     gil_function_requires<boost_concepts::ForwardTraversalConcept<Iterator>>();
 
-    typedef typename iterator_adaptor_get_base<Iterator>::type base_t;
+    using base_t = typename iterator_adaptor_get_base<Iterator>::type;
     gil_function_requires<boost_concepts::ForwardTraversalConcept<base_t>>();
 
     BOOST_STATIC_ASSERT(is_iterator_adaptor<Iterator>::value);
-    typedef typename iterator_adaptor_rebind<Iterator, void *>::type rebind_t;
+    using rebind_t = typename iterator_adaptor_rebind<Iterator, void *>::type;
 
     base_t base = it.base();
     ignore_unused_variable_warning(base);
