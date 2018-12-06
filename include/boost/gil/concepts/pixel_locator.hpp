@@ -99,28 +99,31 @@ template <typename Loc> struct RandomAccessNDLocatorConcept {
   void constraints() {
     gil_function_requires<Regular<Loc>>();
 
-    typedef typename Loc::value_type value_type;
-    typedef typename Loc::reference reference; // result of dereferencing
-    typedef typename Loc::difference_type
-        difference_type; // result of operator-(pixel_locator, pixel_locator)
-    typedef typename Loc::cached_location_t
-        cached_location_t; // type used to store relative location (to allow for
-                           // more efficient repeated access)
-    typedef typename Loc::const_t
-        const_t; // same as this type, but over const values
-    typedef typename Loc::point_t point_t; // same as difference_type
-    static const std::size_t N = Loc::num_dimensions;
+    using value_type = typename Loc::value_type;
+    using reference = typename Loc::reference; // result of dereferencing
+    using difference_type =
+        typename Loc::difference_type; // result of operator-(pixel_locator,
+                                       // pixel_locator)
+    using cached_location_t =
+        typename Loc::cached_location_t; // type used to store relative location
+                                         // (to allow for more efficient
+                                         // repeated access)
+    using const_t =
+        typename Loc::const_t; // same as this type, but over const values
+    using point_t = typename Loc::point_t; // same as difference_type
+
+    static std::size_t const N = Loc::num_dimensions;
     ignore_unused_variable_warning(N);
 
-    typedef typename Loc::template axis<0>::iterator first_it_type;
-    typedef typename Loc::template axis<N - 1>::iterator last_it_type;
+    using first_it_type = typename Loc::template axis<0>::iterator;
+    using last_it_type = typename Loc::template axis<N - 1>::iterator;
     gil_function_requires<
         boost_concepts::RandomAccessTraversalConcept<first_it_type>>();
     gil_function_requires<
         boost_concepts::RandomAccessTraversalConcept<last_it_type>>();
 
-    // point_t must be an N-dimensional point, each dimension of which must have
-    // the same type as difference_type of the corresponding iterator
+    // point_t must be an N-dimensional point, each dimension of which must
+    // have the same type as difference_type of the corresponding iterator
     gil_function_requires<PointNDConcept<point_t>>();
     BOOST_STATIC_ASSERT(point_t::num_dimensions == N);
     BOOST_STATIC_ASSERT(
@@ -149,10 +152,10 @@ template <typename Loc> struct RandomAccessNDLocatorConcept {
     last_it_type li = loc.template axis_iterator<N - 1>();
     li = loc.template axis_iterator<N - 1>(d);
 
-    typedef PixelDereferenceAdaptorArchetype<typename Loc::value_type> deref_t;
-    typedef typename Loc::template add_deref<deref_t>::type dtype;
-    // gil_function_requires<RandomAccessNDLocatorConcept<dtype>>();    //
-    // infinite recursion
+    using deref_t = PixelDereferenceAdaptorArchetype<typename Loc::value_type>;
+    using dtype = typename Loc::template add_deref<deref_t>::type;
+    // TODO: infinite recursion - FIXME?
+    // gil_function_requires<RandomAccessNDLocatorConcept<dtype>>();
   }
   Loc loc;
 };
@@ -202,17 +205,17 @@ template <typename Loc> struct RandomAccess2DLocatorConcept {
     gil_function_requires<RandomAccessNDLocatorConcept<Loc>>();
     BOOST_STATIC_ASSERT(Loc::num_dimensions == 2);
 
-    typedef typename dynamic_x_step_type<Loc>::type dynamic_x_step_t;
-    typedef typename dynamic_y_step_type<Loc>::type dynamic_y_step_t;
-    typedef typename transposed_type<Loc>::type transposed_t;
+    using dynamic_x_step_t = typename dynamic_x_step_type<Loc>::type;
+    using dynamic_y_step_t = typename dynamic_y_step_type<Loc>::type;
+    using transposed_t = typename transposed_type<Loc>::type;
 
-    typedef typename Loc::cached_location_t cached_location_t;
+    using cached_location_t = typename Loc::cached_location_t;
     gil_function_requires<Point2DConcept<typename Loc::point_t>>();
 
-    typedef typename Loc::x_iterator x_iterator;
-    typedef typename Loc::y_iterator y_iterator;
-    typedef typename Loc::x_coord_t x_coord_t;
-    typedef typename Loc::y_coord_t y_coord_t;
+    using x_iterator = typename Loc::x_iterator;
+    using y_iterator = typename Loc::y_iterator;
+    using x_coord_t = typename Loc::x_coord_t;
+    using y_coord_t = typename Loc::y_coord_t;
 
     x_coord_t xd = 0;
     ignore_unused_variable_warning(xd);
@@ -226,13 +229,13 @@ template <typename Loc> struct RandomAccess2DLocatorConcept {
     dynamic_x_step_t loc2(dynamic_x_step_t(), yd);
     dynamic_x_step_t loc3(dynamic_x_step_t(), xd, yd);
 
-    typedef typename dynamic_y_step_type<
-        typename dynamic_x_step_type<transposed_t>::type>::type
-        dynamic_xy_step_transposed_t;
+    using dynamic_xy_step_transposed_t = typename dynamic_y_step_type<
+        typename dynamic_x_step_type<transposed_t>::type>::type;
     dynamic_xy_step_transposed_t loc4(loc, xd, yd, true);
 
     bool is_contiguous = loc.is_1d_traversable(xd);
     ignore_unused_variable_warning(is_contiguous);
+
     loc.y_distance_to(loc, xd);
 
     loc = loc.xy_at(d);
@@ -270,7 +273,7 @@ template <typename Loc> struct PixelLocatorConcept {
     gil_function_requires<RandomAccess2DLocatorConcept<Loc>>();
     gil_function_requires<PixelIteratorConcept<typename Loc::x_iterator>>();
     gil_function_requires<PixelIteratorConcept<typename Loc::y_iterator>>();
-    typedef typename Loc::coord_t coord_t;
+    using coord_t = typename Loc::coord_t;
     BOOST_STATIC_ASSERT(
         (is_same<typename Loc::x_coord_t, typename Loc::y_coord_t>::value));
   }
