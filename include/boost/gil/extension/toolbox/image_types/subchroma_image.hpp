@@ -9,8 +9,11 @@
 #define BOOST_GIL_EXTENSION_TOOLBOX_IMAGE_TYPES_SUBCHROMA_IMAGE_HPP
 
 #include <boost/gil/image.hpp>
+#include <boost/gil/image_view.hpp>
 #include <boost/gil/point.hpp>
+#include <boost/gil/virtual_locator.hpp>
 
+#include <boost/mpl/at.hpp>
 #include <boost/mpl/divides.hpp>
 #include <boost/mpl/equal_to.hpp>
 #include <boost/mpl/if.hpp>
@@ -23,6 +26,36 @@
 
 namespace boost {
 namespace gil {
+
+namespace detail {
+
+template <int J, int A, int B> struct scaling_factors {
+  BOOST_STATIC_ASSERT((mpl::equal_to<mpl::int_<J>, mpl::int_<4>>::type::value));
+
+  BOOST_STATIC_ASSERT(
+      (mpl::or_<
+          mpl::equal_to<mpl::int_<A>, mpl::int_<4>>,
+          mpl::or_<mpl::equal_to<mpl::int_<A>, mpl::int_<2>>,
+                   mpl::equal_to<mpl::int_<A>, mpl::int_<1>>>>::type::value));
+
+  BOOST_STATIC_ASSERT(
+      (mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<4>>,
+                mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<2>>,
+                         mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<1>>,
+                                  mpl::equal_to<mpl::int_<B>, mpl::int_<0>>>>>::
+           type::value));
+
+  BOOST_STATIC_CONSTANT(
+      int, ss_X = (mpl::divides<mpl::int_<J>, mpl::int_<A>>::type::value));
+
+  BOOST_STATIC_CONSTANT(
+      int,
+      ss_Y = (mpl::if_<mpl::equal_to<mpl::int_<B>, mpl::int_<0>>, mpl::int_<2>,
+                       mpl::if_<mpl::equal_to<mpl::int_<A>, mpl::int_<B>>,
+                                mpl::int_<1>, mpl::int_<4>>>::type::value));
+};
+
+} // namespace detail
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \class subchroma_image_deref_fn
@@ -53,9 +86,9 @@ template <typename Locator, typename Factors> struct subchroma_image_deref_fn {
 
   /// operator()
   result_type operator()(const point_t &p) const {
-    typedef Scaling_Factors<mpl::at_c<Factors, 0>::type::value,
-                            mpl::at_c<Factors, 1>::type::value,
-                            mpl::at_c<Factors, 2>::type::value>
+    typedef detail::scaling_factors<mpl::at_c<Factors, 0>::type::value,
+                                    mpl::at_c<Factors, 1>::type::value,
+                                    mpl::at_c<Factors, 2>::type::value>
         scaling_factors_t;
 
     plane_locator_t y = _y_locator.xy_at(p);
@@ -154,7 +187,7 @@ struct transposed_type<subchroma_image_locator<Locator, Factors>> {
 template <typename Locator, typename Factors = mpl::vector_c<int, 4, 4, 4>>
 class subchroma_image_view : public image_view<Locator> {
 public:
-  typedef typename Locator locator;
+  typedef Locator locator;
   typedef typename locator::deref_fn_t deref_fn_t;
   typedef typename deref_fn_t::plane_locator_t plane_locator_t;
 
@@ -204,9 +237,6 @@ private:
   const deref_fn_t &get_deref_fn() const { return this->pixels().deref_fn(); }
 
 private:
-  template <typename Locator, typename Factors>
-  friend class subchroma_image_view;
-
   point_t _y_dimensions;
   point_t _v_dimensions;
   point_t _u_dimensions;
@@ -259,34 +289,6 @@ struct transposed_type<subchroma_image_view<Locator, Factors>> {
   typedef image_view<typename transposed_type<Locator>::type> type;
 };
 
-/////////////////////////////////////////////////////////////
-template <int J, int a, int b> struct Scaling_Factors {
-  BOOST_STATIC_ASSERT((mpl::equal_to<mpl::int_<J>, mpl::int_<4>>::type::value));
-
-  BOOST_STATIC_ASSERT(
-      (mpl::or_<
-          mpl::equal_to<mpl::int_<a>, mpl::int_<4>>,
-          mpl::or_<mpl::equal_to<mpl::int_<a>, mpl::int_<2>>,
-                   mpl::equal_to<mpl::int_<a>, mpl::int_<1>>>>::type::value));
-
-  BOOST_STATIC_ASSERT(
-      (mpl::or_<mpl::equal_to<mpl::int_<b>, mpl::int_<4>>,
-                mpl::or_<mpl::equal_to<mpl::int_<b>, mpl::int_<2>>,
-                         mpl::or_<mpl::equal_to<mpl::int_<b>, mpl::int_<1>>,
-                                  mpl::equal_to<mpl::int_<b>, mpl::int_<0>>>>>::
-           type::value));
-
-  BOOST_STATIC_CONSTANT(
-      int, ss_X = (mpl::divides<mpl::int_<J>, mpl::int_<a>>::type::value));
-
-  BOOST_STATIC_CONSTANT(
-      int,
-      ss_Y =
-          (mpl::if_<mpl::equal_to<mpl::int_<b>, mpl::int_<0>>, mpl::int_<2>,
-                    mpl::if_<mpl::equal_to<mpl::int_<a>, mpl::int_<b>>,
-                             mpl::int_<1>, mpl::int_<4>>::type>::type::value));
-};
-
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \ingroup ImageModel PixelBasedModel
 /// \brief container interface over image view. Models ImageConcept,
@@ -299,9 +301,14 @@ template <int J, int a, int b> struct Scaling_Factors {
 template <typename Pixel, typename Factors = mpl::vector_c<int, 4, 4, 4>,
           typename Allocator = std::allocator<unsigned char>>
 class subchroma_image
-    : public Scaling_Factors<mpl::at_c<Factors, 0>::type::value,
-                             mpl::at_c<Factors, 1>::type::value,
-                             mpl::at_c<Factors, 2>::type::value> {
+    : public detail::scaling_factors<mpl::at_c<Factors, 0>::type::value,
+                                     mpl::at_c<Factors, 1>::type::value,
+                                     mpl::at_c<Factors, 2>::type::value> {
+
+private:
+  using parent_t = detail::scaling_factors<mpl::at_c<Factors, 0>::type::value,
+                                           mpl::at_c<Factors, 1>::type::value,
+                                           mpl::at_c<Factors, 2>::type::value>;
 
 public:
   typedef typename channel_type<Pixel>::type channel_t;
@@ -328,8 +335,10 @@ public:
   /// constructor
   subchroma_image(const x_coord_t y_width, const y_coord_t y_height)
       : _y_plane(y_width, y_height, 0, Allocator()),
-        _v_plane(y_width / ss_X, y_height / ss_Y, 0, Allocator()),
-        _u_plane(y_width / ss_X, y_height / ss_Y, 0, Allocator()) {
+        _v_plane(y_width / parent_t::ss_X, y_height / parent_t::ss_Y, 0,
+                 Allocator()),
+        _u_plane(y_width / parent_t::ss_X, y_height / parent_t::ss_Y, 0,
+                 Allocator()) {
     init();
   }
 
@@ -422,9 +431,9 @@ template <typename Pixel, typename Factors>
 typename subchroma_image<Pixel, Factors>::view_t
 subchroma_view(std::size_t y_width, std::size_t y_height,
                unsigned char *y_base) {
-  typedef Scaling_Factors<mpl::at_c<Factors, 0>::type::value,
-                          mpl::at_c<Factors, 1>::type::value,
-                          mpl::at_c<Factors, 2>::type::value>
+  typedef detail::scaling_factors<mpl::at_c<Factors, 0>::type::value,
+                                  mpl::at_c<Factors, 1>::type::value,
+                                  mpl::at_c<Factors, 2>::type::value>
       scaling_factors_t;
 
   std::size_t y_channel_size = 1;
@@ -434,24 +443,24 @@ subchroma_view(std::size_t y_width, std::size_t y_height,
   unsigned char *v_base =
       u_base + (y_width / scaling_factors_t::ss_X) * u_channel_size;
 
-  typedef subchroma_image<Pixel, Factors>::plane_view_t plane_view_t;
+  typedef typename subchroma_image<Pixel, Factors>::plane_view_t plane_view_t;
 
   plane_view_t y_plane = interleaved_view(
-      y_width, y_height, (plane_view_t::value_type *)y_base // pixels
+      y_width, y_height, (typename plane_view_t::value_type *)y_base // pixels
       ,
       y_width // rowsize_in_bytes
   );
 
   plane_view_t v_plane = interleaved_view(
       y_width / scaling_factors_t::ss_X, y_height / scaling_factors_t::ss_Y,
-      (plane_view_t::value_type *)v_base // pixels
+      (typename plane_view_t::value_type *)v_base // pixels
       ,
       y_width // rowsize_in_bytes
   );
 
   plane_view_t u_plane = interleaved_view(
       y_width / scaling_factors_t::ss_X, y_height / scaling_factors_t::ss_Y,
-      (plane_view_t::value_type *)u_base // pixels
+      (typename plane_view_t::value_type *)u_base // pixels
       ,
       y_width // rowsize_in_bytes
   );
@@ -463,7 +472,7 @@ subchroma_view(std::size_t y_width, std::size_t y_height,
   defer_fn_t deref_fn(y_plane.xy_at(0, 0), v_plane.xy_at(0, 0),
                       u_plane.xy_at(0, 0));
 
-  typedef subchroma_image<Pixel, Factors>::locator_t locator_t;
+  typedef typename subchroma_image<Pixel, Factors>::locator_t locator_t;
 
   locator_t locator(point_t(0, 0) // p
                     ,
@@ -471,7 +480,7 @@ subchroma_view(std::size_t y_width, std::size_t y_height,
                     ,
                     deref_fn);
 
-  typedef subchroma_image<Pixel, Factors>::view_t view_t;
+  typedef typename subchroma_image<Pixel, Factors>::view_t view_t;
 
   return view_t(point_t(y_width, y_height),
                 point_t(y_width / scaling_factors_t::ss_X,
