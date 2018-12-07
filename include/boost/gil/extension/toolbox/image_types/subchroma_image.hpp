@@ -51,8 +51,9 @@ template <int J, int A, int B> struct scaling_factors {
   BOOST_STATIC_CONSTANT(
       int,
       ss_Y = (mpl::if_<mpl::equal_to<mpl::int_<B>, mpl::int_<0>>, mpl::int_<2>,
-                       mpl::if_<mpl::equal_to<mpl::int_<A>, mpl::int_<B>>,
-                                mpl::int_<1>, mpl::int_<4>>>::type::value));
+                       typename mpl::if_<
+                           mpl::equal_to<mpl::int_<A>, mpl::int_<B>>,
+                           mpl::int_<1>, mpl::int_<4>>::type>::type::value));
 };
 
 } // namespace detail

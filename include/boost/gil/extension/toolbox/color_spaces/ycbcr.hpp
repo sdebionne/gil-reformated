@@ -13,6 +13,7 @@
 #include <boost/gil.hpp> // FIXME: Include what you use!
 #include <boost/gil/color_convert.hpp>
 
+#include <boost/config.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/vector_c.hpp>
@@ -65,9 +66,9 @@ namespace detail {
 
 // Source:boost/algorithm/clamp.hpp
 template <typename T>
-constexpr T const &clamp(T const &val,
-                         typename boost::mpl::identity<T>::type const &lo,
-                         typename boost::mpl::identity<T>::type const &hi) {
+BOOST_CXX14_CONSTEXPR T const &
+clamp(T const &val, typename boost::mpl::identity<T>::type const &lo,
+      typename boost::mpl::identity<T>::type const &hi) {
   // assert ( !p ( hi, lo )); // Can't assert p ( lo, hi ) b/c they might be
   // equal
   auto const p = std::less<T>();
