@@ -11,6 +11,7 @@
 #include <boost/gil/extension/toolbox/color_spaces/xyz.hpp>
 
 #include <boost/gil.hpp> // FIXME: Include what you use, not everything, even in extensions!
+#include <boost/gil/color_convert.hpp>
 
 #include <boost/mpl/vector.hpp>
 
