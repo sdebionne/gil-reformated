@@ -8,6 +8,7 @@
 #ifndef BOOST_GIL_EXTENSION_IO_JPEG_DETAIL_READER_BACKEND_HPP
 #define BOOST_GIL_EXTENSION_IO_JPEG_DETAIL_READER_BACKEND_HPP
 
+#include <boost/gil/extension/io/jpeg/detail/base.hpp>
 #include <boost/gil/extension/io/jpeg/tags.hpp>
 
 #include <csetjmp>
