@@ -77,7 +77,7 @@ public:
     get()->client_data = this;
 
     // Error exit handler: does not return to caller.
-    _jerr.error_exit = &writer<Device, jpeg_tag>::error_exit;
+    _jerr.error_exit = &writer_backend<Device, jpeg_tag>::error_exit;
 
     // Fire exception in case of error.
     if (setjmp(_mark)) {
@@ -87,12 +87,12 @@ public:
     _dest._jdest.free_in_buffer = sizeof(buffer);
     _dest._jdest.next_output_byte = buffer;
     _dest._jdest.init_destination = reinterpret_cast<void (*)(j_compress_ptr)>(
-        &writer<Device, jpeg_tag>::init_device);
+        &writer_backend<Device, jpeg_tag>::init_device);
     _dest._jdest.empty_output_buffer =
         reinterpret_cast<boolean (*)(j_compress_ptr)>(
-            &writer<Device, jpeg_tag>::empty_buffer);
+            &writer_backend<Device, jpeg_tag>::empty_buffer);
     _dest._jdest.term_destination = reinterpret_cast<void (*)(j_compress_ptr)>(
-        &writer<Device, jpeg_tag>::close_device);
+        &writer_backend<Device, jpeg_tag>::close_device);
     _dest._this = this;
 
     jpeg_create_compress(get());
@@ -124,7 +124,7 @@ protected:
 
     dest->_this->_io_dev.write(dest->_this->buffer, buffer_size);
 
-    writer<Device, jpeg_tag>::init_device(cinfo);
+    writer_backend<Device, jpeg_tag>::init_device(cinfo);
     return static_cast<boolean>(TRUE);
   }
 
@@ -140,8 +140,9 @@ protected:
   void raise_error() { io_error("Cannot write jpeg file."); }
 
   static void error_exit(j_common_ptr cinfo) {
-    writer<Device, jpeg_tag> *mgr =
-        reinterpret_cast<writer<Device, jpeg_tag> *>(cinfo->client_data);
+    writer_backend<Device, jpeg_tag> *mgr =
+        reinterpret_cast<writer_backend<Device, jpeg_tag> *>(
+            cinfo->client_data);
 
     longjmp(mgr->_mark, 1);
   }
