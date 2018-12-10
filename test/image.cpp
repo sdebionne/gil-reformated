@@ -430,8 +430,8 @@ public:
 
 private:
   const char *_filename;
-  virtual void initialize();
-  virtual void check_view_impl(const rgb8c_view_t &v, const string &name);
+  void initialize() override;
+  void check_view_impl(const rgb8c_view_t &v, const string &name) override;
 };
 
 // Load the checksums from the reference file and create the start image
@@ -487,9 +487,9 @@ public:
 
 private:
   const char *_filename;
-  virtual void check_view_impl(const rgb8c_view_t &img_view,
-                               const string &name);
-  virtual void finalize();
+  void check_view_impl(const rgb8c_view_t &img_view,
+                       const string &name) override;
+  void finalize() override;
 };
 
 // Add the checksum of the given view to the map of checksums
