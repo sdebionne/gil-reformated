@@ -21,7 +21,7 @@ inline typename get_reader_backend<String, FormatTag>::type make_reader_backend(
     const String &file_name, const image_read_settings<FormatTag> &settings,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef typename get_read_device<String, FormatTag>::type device_t;
 
   device_t device(detail::convert_to_native_string(file_name),
@@ -61,7 +61,7 @@ inline typename get_reader_backend<Device, FormatTag>::type make_reader_backend(
     typename enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
                   is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef typename get_read_device<Device, FormatTag>::type device_t;
 
   device_t device(io_dev);

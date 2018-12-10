@@ -17,7 +17,7 @@ namespace gil {
 namespace detail {
 
 struct png_ptr_wrapper {
-  png_ptr_wrapper() : _struct(NULL), _info(NULL) {}
+  png_ptr_wrapper() : _struct(nullptr), _info(nullptr) {}
 
   png_structp _struct;
   png_infop _info;
@@ -53,10 +53,10 @@ private:
     if (png_ptr) {
       assert(png_ptr->_struct && png_ptr->_info);
 
-      png_destroy_read_struct(&png_ptr->_struct, &png_ptr->_info, NULL);
+      png_destroy_read_struct(&png_ptr->_struct, &png_ptr->_info, nullptr);
 
       delete png_ptr;
-      png_ptr = NULL;
+      png_ptr = nullptr;
     }
   }
 
@@ -67,7 +67,7 @@ private:
       png_destroy_write_struct(&png_ptr->_struct, &png_ptr->_info);
 
       delete png_ptr;
-      png_ptr = NULL;
+      png_ptr = nullptr;
     }
   }
 

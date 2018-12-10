@@ -491,7 +491,7 @@ BOOST_FORCEINLINE void destruct_range_impl(
                  boost::has_trivial_destructor<
                      typename std::iterator_traits<It>::value_type>>>::type
         * /* ptr */
-    = 0) {}
+    = nullptr) {}
 
 template <typename It>
 BOOST_FORCEINLINE void destruct_range(It first, It last) {
@@ -666,7 +666,8 @@ namespace detail {
 template <typename View, bool B>
 BOOST_FORCEINLINE void default_construct_pixels_impl(
     const View &img_view,
-    boost::enable_if<is_same<mpl::bool_<B>, mpl::false_>> * /* ptr */ = 0) {
+    boost::enable_if<is_same<mpl::bool_<B>, mpl::false_>> * /* ptr */ =
+        nullptr) {
   if (img_view.is_1d_traversable()) {
     detail::default_construct_aux(img_view.begin().x(), img_view.end().x(),
                                   is_planar<View>());

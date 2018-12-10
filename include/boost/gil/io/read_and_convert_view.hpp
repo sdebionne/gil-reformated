@@ -36,7 +36,7 @@ inline void read_and_convert_view(
         mpl::and_<detail::is_reader<Reader>,
                   is_format_tag<typename Reader::format_tag_t>>>::type
         * /* ptr */
-    = 0) {
+    = nullptr) {
   reader.check_image_size(view.dimensions());
 
   reader.init_view(view, reader._settings);
@@ -200,7 +200,7 @@ inline void read_and_convert_view(
     typename enable_if<mpl::and_<is_format_tag<FormatTag>,
                                  detail::is_supported_path_spec<String>>>::type
         * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef typename get_reader<
       String, FormatTag,
       detail::read_and_convert<default_color_converter>>::type reader_t;
@@ -221,7 +221,7 @@ inline void read_and_convert_view(
     Device &device, const View &view, const FormatTag &tag,
     typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef typename get_reader<
       Device, FormatTag,
       detail::read_and_convert<default_color_converter>>::type reader_t;

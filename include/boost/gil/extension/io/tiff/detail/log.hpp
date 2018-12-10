@@ -20,8 +20,8 @@ namespace gil {
 class tiff_no_log {
 public:
   tiff_no_log() {
-    TIFFSetErrorHandler(NULL);
-    TIFFSetWarningHandler(NULL);
+    TIFFSetErrorHandler(nullptr);
+    TIFFSetWarningHandler(nullptr);
   }
 };
 

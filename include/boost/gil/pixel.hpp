@@ -148,7 +148,7 @@ public:
   // Construct from another compatible pixel type
   template <typename Pixel>
   pixel(const Pixel &p,
-        typename enable_if_c<is_pixel<Pixel>::value>::type *dummy = 0)
+        typename enable_if_c<is_pixel<Pixel>::value>::type *dummy = nullptr)
       : parent_t(p) {
     check_compatible<Pixel>();
     boost::ignore_unused(dummy);

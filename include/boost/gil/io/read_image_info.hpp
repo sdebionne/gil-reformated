@@ -33,7 +33,7 @@ inline typename get_reader_backend<Device, FormatTag>::type read_image_info(
     typename enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
                   is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   return make_reader_backend(file, settings);
 }
 
@@ -48,7 +48,7 @@ inline typename get_reader_backend<Device, FormatTag>::type read_image_info(
     typename enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
                   is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   return read_image_info(file, image_read_settings<FormatTag>());
 }
 
@@ -63,7 +63,7 @@ inline typename get_reader_backend<String, FormatTag>::type read_image_info(
     typename enable_if<mpl::and_<is_format_tag<FormatTag>,
                                  detail::is_supported_path_spec<String>>>::type
         * /* ptr */
-    = 0) {
+    = nullptr) {
   return make_reader_backend(file_name, settings);
 }
 
@@ -78,7 +78,7 @@ inline typename get_reader_backend<String, FormatTag>::type read_image_info(
     typename enable_if<mpl::and_<is_format_tag<FormatTag>,
                                  detail::is_supported_path_spec<String>>>::type
         * /* ptr */
-    = 0) {
+    = nullptr) {
   return read_image_info(file_name, image_read_settings<FormatTag>());
 }
 

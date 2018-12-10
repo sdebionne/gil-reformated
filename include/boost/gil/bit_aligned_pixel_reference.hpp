@@ -49,7 +49,7 @@ private:
                          // 0<=_bit_offset<=7
 
 public:
-  bit_range() : _current_byte(NULL), _bit_offset(0) {}
+  bit_range() : _current_byte(nullptr), _bit_offset(0) {}
   bit_range(byte_t *current_byte, int bit_offset)
       : _current_byte(current_byte), _bit_offset(bit_offset) {
     assert(bit_offset >= 0 && bit_offset < 8);

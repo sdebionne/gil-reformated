@@ -126,8 +126,9 @@ private:
   }
 
   template <typename Info>
-  void set_swap(
-      typename enable_if<is_equal_to_sixteen<Info>>::type * /* ptr */ = 0) {
+  void
+  set_swap(typename enable_if<is_equal_to_sixteen<Info>>::type * /* ptr */ =
+               nullptr) {
     png_set_swap(this->get_struct());
   }
 
@@ -136,7 +137,7 @@ private:
       typename enable_if<mpl::and_<mpl::not_<is_less_than_eight<Info>>,
                                    mpl::not_<is_equal_to_sixteen<Info>>>>::type
           * /* ptr */
-      = 0) {}
+      = nullptr) {}
 };
 
 ///
