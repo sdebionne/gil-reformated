@@ -21,7 +21,7 @@ make_dynamic_image_reader(
     const String &file_name, const image_read_settings<FormatTag> &settings,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typename get_read_device<String, FormatTag>::type device(
       detail::convert_to_native_string(file_name),
       typename detail::file_stream_device<FormatTag>::read_tag());
@@ -76,7 +76,7 @@ make_dynamic_image_reader(
     const String &file_name, const FormatTag &,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   return make_dynamic_image_reader(file_name, image_read_settings<FormatTag>());
 }
 

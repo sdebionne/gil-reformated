@@ -250,7 +250,7 @@ public:
   file_stream_device(std::string const &file_name, read_tag) {
     TIFF *tiff;
 
-    io_error_if((tiff = TIFFOpen(file_name.c_str(), "r")) == NULL,
+    io_error_if((tiff = TIFFOpen(file_name.c_str(), "r")) == nullptr,
                 "file_stream_device: failed to open file");
 
     _tiff_file = tiff_file_t(tiff, TIFFClose);
@@ -259,7 +259,7 @@ public:
   file_stream_device(std::string const &file_name, write_tag) {
     TIFF *tiff;
 
-    io_error_if((tiff = TIFFOpen(file_name.c_str(), "w")) == NULL,
+    io_error_if((tiff = TIFFOpen(file_name.c_str(), "w")) == nullptr,
                 "file_stream_device: failed to open file");
 
     _tiff_file = tiff_file_t(tiff, TIFFClose);
@@ -278,7 +278,7 @@ public:
   ostream_device(std::ostream &out) : _out(out) {
     TIFF *tiff;
 
-    io_error_if((tiff = TIFFStreamOpen("", &_out)) == NULL,
+    io_error_if((tiff = TIFFStreamOpen("", &_out)) == nullptr,
                 "ostream_device: failed to stream");
 
     _tiff_file = tiff_file_t(tiff, TIFFClose);
@@ -301,7 +301,7 @@ public:
   istream_device(std::istream &in) : _in(in) {
     TIFF *tiff;
 
-    io_error_if((tiff = TIFFStreamOpen("", &_in)) == NULL,
+    io_error_if((tiff = TIFFStreamOpen("", &_in)) == nullptr,
                 "istream_device: failed to stream");
 
     _tiff_file = tiff_file_t(tiff, TIFFClose);

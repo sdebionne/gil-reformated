@@ -34,7 +34,7 @@ public:
         _scanline_length(0)
 
         ,
-        _red(NULL), _green(NULL), _blue(NULL) {
+        _red(nullptr), _green(nullptr), _blue(nullptr) {
     init_multipage_read(settings);
 
     read_header();

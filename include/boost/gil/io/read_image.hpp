@@ -36,7 +36,7 @@ inline void read_image(
         detail::is_reader<Reader>, is_format_tag<typename Reader::format_tag_t>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           typename Reader::format_tag_t>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   reader.init_image(img, reader._settings);
 
   reader.apply(view(img));
@@ -76,7 +76,7 @@ inline void read_image(
         detail::is_read_device<FormatTag, Device>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef
       typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type
           reader_t;
@@ -99,7 +99,7 @@ inline void read_image(
         detail::is_supported_path_spec<String>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef
       typename get_reader<String, FormatTag, detail::read_and_no_convert>::type
           reader_t;
@@ -123,7 +123,7 @@ inline void read_image(
         detail::is_supported_path_spec<String>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef
       typename get_reader<String, FormatTag, detail::read_and_no_convert>::type
           reader_t;
@@ -142,7 +142,7 @@ read_image(Reader &reader, any_image<Images> &images,
                mpl::and_<detail::is_dynamic_image_reader<Reader>,
                          is_format_tag<typename Reader::format_tag_t>>>::type
                * /* ptr */
-           = 0) {
+           = nullptr) {
   reader.apply(images);
 }
 
@@ -214,7 +214,7 @@ inline void read_image(
     const String &file_name, any_image<Images> &images, const FormatTag &tag,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef typename get_dynamic_image_reader<String, FormatTag>::type reader_t;
 
   reader_t reader = make_dynamic_image_reader(file_name, tag);

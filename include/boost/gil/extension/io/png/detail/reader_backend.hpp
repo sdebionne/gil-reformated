@@ -74,14 +74,14 @@ public:
     // the compiler header file version, so that we know if the application
     // was compiled with a compatible version of the library.  REQUIRED
     get()->_struct =
-        png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL // user_error_ptr
+        png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr // user_error_ptr
                                ,
-                               NULL // user_error_fn
+                               nullptr // user_error_fn
                                ,
-                               NULL // user_warning_fn
+                               nullptr // user_warning_fn
         );
 
-    io_error_if(get()->_struct == NULL,
+    io_error_if(get()->_struct == nullptr,
                 "png_reader: fail to call png_create_write_struct()");
 
     png_uint_32 user_chunk_data[4];
@@ -95,8 +95,8 @@ public:
     // Allocate/initialize the memory for image information.  REQUIRED.
     get()->_info = png_create_info_struct(get_struct());
 
-    if (get_info() == NULL) {
-      png_destroy_read_struct(&get()->_struct, NULL, NULL);
+    if (get_info() == nullptr) {
+      png_destroy_read_struct(&get()->_struct, nullptr, nullptr);
 
       io_error("png_reader: fail to call png_create_info_struct()");
     }
@@ -106,7 +106,7 @@ public:
     // set up your own error handlers in the png_create_read_struct() earlier.
     if (setjmp(png_jmpbuf(get_struct()))) {
       // free all of the memory associated with the png_ptr and info_ptr
-      png_destroy_read_struct(&get()->_struct, &get()->_info, NULL);
+      png_destroy_read_struct(&get()->_struct, &get()->_info, nullptr);
 
       io_error("png is invalid");
     }
@@ -121,9 +121,11 @@ public:
 
     // Set up a callback which implements user defined transformation.
     // @todo
-    png_set_read_user_transform_fn(get_struct(), png_user_transform_ptr(NULL));
+    png_set_read_user_transform_fn(get_struct(),
+                                   png_user_transform_ptr(nullptr));
 
-    png_set_keep_unknown_chunks(get_struct(), PNG_HANDLE_CHUNK_ALWAYS, NULL, 0);
+    png_set_keep_unknown_chunks(get_struct(), PNG_HANDLE_CHUNK_ALWAYS, nullptr,
+                                0);
 
     // Make sure we read the signature.
     // @todo make it an option
@@ -191,8 +193,8 @@ public:
     // get the embedded ICC profile data
     if (this->_settings._read_icc_profile) {
 #if PNG_LIBPNG_VER_MINOR >= 5
-      png_charp icc_name = png_charp(NULL);
-      png_bytep profile = png_bytep(NULL);
+      png_charp icc_name = png_charp(nullptr);
+      png_bytep profile = png_bytep(nullptr);
 
       this->_info._valid_icc_profile =
           png_get_iCCP(get_struct(), get_info(), &icc_name,
@@ -225,7 +227,7 @@ public:
 
     // get image palette information from png_info structure
     if (this->_settings._read_palette) {
-      png_colorp palette = png_colorp(NULL);
+      png_colorp palette = png_colorp(nullptr);
 
       this->_info._valid_palette = png_get_PLTE(
           get_struct(), get_info(), &palette, &this->_info._num_palette);
@@ -239,7 +241,7 @@ public:
 
     // get background color
     if (this->_settings._read_background) {
-      png_color_16p background = png_color_16p(NULL);
+      png_color_16p background = png_color_16p(nullptr);
 
       this->_info._valid_background =
           png_get_bKGD(get_struct(), get_info(), &background);
@@ -250,7 +252,7 @@ public:
 
     // get the histogram
     if (this->_settings._read_histogram) {
-      png_uint_16p histogram = png_uint_16p(NULL);
+      png_uint_16p histogram = png_uint_16p(nullptr);
 
       this->_info._valid_histogram =
           png_get_hIST(get_struct(), get_info(), &histogram);
@@ -259,7 +261,7 @@ public:
         // the number of values is set by the number of colors inside
         // the palette.
         if (this->_settings._read_palette == false) {
-          png_colorp palette = png_colorp(NULL);
+          png_colorp palette = png_colorp(nullptr);
           png_get_PLTE(get_struct(), get_info(), &palette,
                        &this->_info._num_palette);
         }
@@ -278,9 +280,9 @@ public:
 
     // get pixel calibration settings
     if (this->_settings._read_pixel_calibration) {
-      png_charp purpose = png_charp(NULL);
-      png_charp units = png_charp(NULL);
-      png_charpp params = png_charpp(NULL);
+      png_charp purpose = png_charp(nullptr);
+      png_charp units = png_charp(nullptr);
+      png_charpp params = png_charpp(nullptr);
 
       this->_info._valid_pixel_calibration =
           png_get_pCAL(get_struct(), get_info(), &purpose, &this->_info._X0,
@@ -318,7 +320,7 @@ public:
 
     // get number of significant bits for each color channel
     if (this->_settings._read_number_of_significant_bits) {
-      png_color_8p sig_bits = png_color_8p(NULL);
+      png_color_8p sig_bits = png_color_8p(nullptr);
 
       this->_info._valid_significant_bits =
           png_get_sBIT(get_struct(), get_info(), &sig_bits);
@@ -348,8 +350,8 @@ public:
     }
 #else
     if (this->_settings._read_scale_factors) {
-      png_charp scale_width = NULL;
-      png_charp scale_height = NULL;
+      png_charp scale_width = nullptr;
+      png_charp scale_height = nullptr;
 
       if (this->_info._valid_scale_factors =
               png_get_sCAL_s(get_struct(), get_info(), &this->_info._scale_unit,
@@ -371,7 +373,7 @@ public:
 
     // get comments information from png_info structure
     if (this->_settings._read_comments) {
-      png_textp text = png_textp(NULL);
+      png_textp text = png_textp(nullptr);
 
       this->_info._valid_text =
           png_get_text(get_struct(), get_info(), &text, &this->_info._num_text);
@@ -392,7 +394,7 @@ public:
 
     // get last modification time
     if (this->_settings._read_last_modification_time) {
-      png_timep mod_time = png_timep(NULL);
+      png_timep mod_time = png_timep(nullptr);
       this->_info._valid_modification_time =
           png_get_tIME(get_struct(), get_info(), &mod_time);
       if (mod_time) {
@@ -402,8 +404,8 @@ public:
 
     // get transparency data
     if (this->_settings._read_transparency_data) {
-      png_bytep trans = png_bytep(NULL);
-      png_color_16p trans_values = png_color_16p(NULL);
+      png_bytep trans = png_bytep(nullptr);
+      png_color_16p trans_values = png_color_16p(nullptr);
 
       this->_info._valid_transparency_factors =
           png_get_tRNS(get_struct(), get_info(), &trans,

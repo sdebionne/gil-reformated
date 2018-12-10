@@ -21,7 +21,7 @@ make_dynamic_image_writer(
     const String &file_name, const image_write_info<FormatTag> &info,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typename get_write_device<String, FormatTag>::type device(
       detail::convert_to_native_string(file_name),
       typename detail::file_stream_device<FormatTag>::write_tag());
@@ -76,7 +76,7 @@ make_dynamic_image_writer(
     const String &file_name, const FormatTag &,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   return make_dynamic_image_writer(file_name, image_write_info<FormatTag>());
 }
 

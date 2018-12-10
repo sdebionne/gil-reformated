@@ -37,7 +37,7 @@ read_view(Reader reader, const View &view,
               typename is_read_supported<typename get_pixel_type<View>::type,
                                          typename Reader::format_tag_t>::type>::
                                  type>::type * /* ptr */
-          = 0) {
+          = nullptr) {
   reader.check_image_size(view.dimensions());
 
   reader.init_view(view, reader._settings);
@@ -82,7 +82,7 @@ inline void read_view(
         detail::is_read_device<FormatTag, Device>,
         typename is_read_supported<typename get_pixel_type<View>::type,
                                    FormatTag>::type>::type>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef
       typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type
           reader_t;
@@ -130,7 +130,7 @@ inline void read_view(
         typename is_format_tag<FormatTag>::type,
         typename is_read_supported<typename get_pixel_type<View>::type,
                                    FormatTag>::type>::type>::type * /* ptr */
-    = 0) {
+    = nullptr) {
   typedef
       typename get_reader<String, FormatTag, detail::read_and_no_convert>::type
           reader_t;

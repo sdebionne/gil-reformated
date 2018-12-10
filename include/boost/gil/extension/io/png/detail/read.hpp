@@ -194,7 +194,7 @@ public:
     }
 
     // read rest of file, and get additional chunks in info_ptr
-    png_read_end(this->get_struct(), NULL);
+    png_read_end(this->get_struct(), nullptr);
   }
 
 private:
@@ -223,12 +223,12 @@ private:
         // skip lines if necessary
         for (std::ptrdiff_t y = 0; y < this->_settings._top_left.y; ++y) {
           // Read the image using the "sparkle" effect.
-          png_read_rows(this->get_struct(), &row_ptr, NULL, 1);
+          png_read_rows(this->get_struct(), &row_ptr, nullptr, 1);
         }
 
         for (std::ptrdiff_t y = 0; y < this->_settings._dim.y; ++y) {
           // Read the image using the "sparkle" effect.
-          png_read_rows(this->get_struct(), &row_ptr, NULL, 1);
+          png_read_rows(this->get_struct(), &row_ptr, nullptr, 1);
 
           it_t first = buffer.begin() + this->_settings._top_left.x;
           it_t last = first + this->_settings._dim.x; // one after last element
@@ -242,12 +242,12 @@ private:
             this->_settings._top_left.y - this->_settings._dim.y;
         for (std::ptrdiff_t y = 0; y < remaining_rows; ++y) {
           // Read the image using the "sparkle" effect.
-          png_read_rows(this->get_struct(), &row_ptr, NULL, 1);
+          png_read_rows(this->get_struct(), &row_ptr, nullptr, 1);
         }
       } else {
         for (int y = 0; y < view.height(); ++y) {
           // Read the image using the "sparkle" effect.
-          png_read_rows(this->get_struct(), &row_ptr, NULL, 1);
+          png_read_rows(this->get_struct(), &row_ptr, nullptr, 1);
         }
       }
     }
