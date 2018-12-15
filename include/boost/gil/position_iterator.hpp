@@ -37,14 +37,13 @@ struct position_iterator
           position_iterator<Deref, Dim>, typename Deref::value_type,
           std::random_access_iterator_tag, typename Deref::reference,
           typename Deref::argument_type::template axis<Dim>::coord_t> {
-  typedef iterator_facade<
+  using parent_t = iterator_facade<
       position_iterator<Deref, Dim>, typename Deref::value_type,
       std::random_access_iterator_tag, typename Deref::reference,
-      typename Deref::argument_type::template axis<Dim>::coord_t>
-      parent_t;
-  typedef typename parent_t::difference_type difference_type;
-  typedef typename parent_t::reference reference;
-  typedef typename Deref::argument_type point_t;
+      typename Deref::argument_type::template axis<Dim>::coord_t>;
+  using difference_type = typename parent_t::difference_type;
+  using reference = typename parent_t::reference;
+  using point_t = typename Deref::argument_type;
 
   position_iterator() {}
   position_iterator(const point_t &p, const point_t &step, const Deref &d)
@@ -95,7 +94,7 @@ private:
 
 template <typename Deref, int Dim>
 struct const_iterator_type<position_iterator<Deref, Dim>> {
-  typedef position_iterator<typename Deref::const_t, Dim> type;
+  using type = position_iterator<typename Deref::const_t, Dim>;
 };
 
 template <typename Deref, int Dim>
@@ -127,7 +126,7 @@ struct channel_type<position_iterator<Deref, Dim>>
 
 template <typename Deref, int Dim>
 struct dynamic_x_step_type<position_iterator<Deref, Dim>> {
-  typedef position_iterator<Deref, Dim> type;
+  using type = position_iterator<Deref, Dim>;
 };
 
 } // namespace gil

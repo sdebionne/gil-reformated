@@ -48,14 +48,14 @@ class iterator_from_2d
                              typename Loc2::reference, typename Loc2::coord_t> {
   GIL_CLASS_REQUIRE(Loc2, boost::gil, PixelLocatorConcept)
 public:
-  typedef iterator_facade<iterator_from_2d<Loc2>, typename Loc2::value_type,
-                          std::random_access_iterator_tag,
-                          typename Loc2::reference, typename Loc2::coord_t>
-      parent_t;
-  typedef typename parent_t::reference reference;
-  typedef typename parent_t::difference_type difference_type;
-  typedef typename Loc2::x_iterator x_iterator;
-  typedef typename Loc2::point_t point_t;
+  using parent_t =
+      iterator_facade<iterator_from_2d<Loc2>, typename Loc2::value_type,
+                      std::random_access_iterator_tag, typename Loc2::reference,
+                      typename Loc2::coord_t>;
+  using reference = typename parent_t::reference;
+  using difference_type = typename parent_t::difference_type;
+  using x_iterator = typename Loc2::x_iterator;
+  using point_t = typename Loc2::point_t;
 
   std::ptrdiff_t width() const {
     return _width;
@@ -143,7 +143,7 @@ private:
 
 template <typename Loc> // Models PixelLocatorConcept
 struct const_iterator_type<iterator_from_2d<Loc>> {
-  typedef iterator_from_2d<typename Loc::const_t> type;
+  using type = iterator_from_2d<typename Loc::const_t>;
 };
 
 template <typename Loc> // Models PixelLocatorConcept
@@ -155,7 +155,7 @@ struct iterator_is_mutable<iterator_from_2d<Loc>>
 /////////////////////////////
 
 template <typename Loc> struct dynamic_x_step_type<iterator_from_2d<Loc>> {
-  typedef iterator_from_2d<typename dynamic_x_step_type<Loc>::type> type;
+  using type = iterator_from_2d<typename dynamic_x_step_type<Loc>::type>;
 };
 
 /////////////////////////////

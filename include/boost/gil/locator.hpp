@@ -40,7 +40,7 @@ template <typename T> struct num_channels;
 
 // The type of a locator or a view that has X and Y swapped. By default it is
 // the same
-template <typename T> struct transposed_type { typedef T type; };
+template <typename T> struct transposed_type { using type = T; };
 
 /// \class pixel_2d_locator_base
 /// \brief base class for models of PixelLocatorConcept
@@ -65,17 +65,17 @@ template <typename T> struct transposed_type { typedef T type; };
 /// two locators cannot be computed without knowledge of the X position within
 /// the image.
 ///
-/// This base class provides most of the methods and typedefs needed to create a
-/// model of a locator. GIL provides two locator models as subclasses of \p
-/// pixel_2d_locator_base. A memory-based locator, \p memory_based_2d_locator
-/// and a virtual locator, \p virtual_2d_locator. The minimum functionality a
-/// subclass must provide is this: \code class my_locator : public
-/// pixel_2d_locator_base<my_locator, ..., ...> {  // supply the types for
-/// x-iterator and y-iterator
-///        typedef ... const_t;                      // read-only locator
+/// This base class provides most of the methods and type aliases needed to
+/// create a model of a locator. GIL provides two locator models as subclasses
+/// of \p pixel_2d_locator_base. A memory-based locator, \p
+/// memory_based_2d_locator and a virtual locator, \p virtual_2d_locator. The
+/// minimum functionality a subclass must provide is this: \code class
+/// my_locator : public pixel_2d_locator_base<my_locator, ..., ...> {  // supply
+/// the types for x-iterator and y-iterator
+///        using const_t = ...;                      // read-only locator
 ///
 ///        template <typename Deref> struct add_deref {
-///            typedef ... type;                     // locator that invokes the
+///            using type = ...;                     // locator that invokes the
 ///            Deref dereference object upon pixel access static type make(const
 ///            my_locator& loc, const Deref& d);
 ///        };
@@ -116,27 +116,28 @@ template <typename Loc, typename XIterator,
                               // Y-iterator
 class pixel_2d_locator_base {
 public:
-  typedef XIterator x_iterator;
-  typedef YIterator y_iterator;
+  using x_iterator = XIterator;
+  using y_iterator = YIterator;
 
-  // typedefs required by ConstRandomAccessNDLocatorConcept
+  // aliasesrequired by ConstRandomAccessNDLocatorConcept
   static const std::size_t num_dimensions = 2;
-  typedef typename std::iterator_traits<x_iterator>::value_type value_type;
-  typedef typename std::iterator_traits<x_iterator>::reference
-      reference; // result of dereferencing
-  typedef typename std::iterator_traits<x_iterator>::difference_type
-      coord_t; // 1D difference type (same for all dimensions)
-  typedef point<coord_t>
-      difference_type; // result of operator-(locator,locator)
-  typedef difference_type point_t;
+  using value_type = typename std::iterator_traits<x_iterator>::value_type;
+  using reference =
+      typename std::iterator_traits<x_iterator>::reference; // result of
+                                                            // dereferencing
+  using coord_t = typename std::iterator_traits<x_iterator>::
+      difference_type; // 1D difference type (same for all dimensions)
+  using difference_type =
+      point<coord_t>; // result of operator-(locator,locator)
+  using point_t = difference_type;
   template <std::size_t D> struct axis {
-    typedef typename detail::locator_axis<D, Loc>::coord_t coord_t;
-    typedef typename detail::locator_axis<D, Loc>::iterator iterator;
+    using coord_t = typename detail::locator_axis<D, Loc>::coord_t;
+    using iterator = typename detail::locator_axis<D, Loc>::iterator;
   };
 
-  // typedefs required by ConstRandomAccess2DLocatorConcept
-  typedef typename point_t::template axis<0>::coord_t x_coord_t;
-  typedef typename point_t::template axis<1>::coord_t y_coord_t;
+  // aliases required by ConstRandomAccess2DLocatorConcept
+  using x_coord_t = typename point_t::template axis<0>::coord_t;
+  using y_coord_t = typename point_t::template axis<1>::coord_t;
 
   bool operator!=(const Loc &p) const { return !(concrete() == p); }
 
@@ -208,7 +209,7 @@ public:
 
   // Some locators can cache 2D coordinates for faster subsequent access. By
   // default there is no caching
-  typedef difference_type cached_location_t;
+  using cached_location_t = difference_type;
   cached_location_t cache_location(const difference_type &d) const { return d; }
   cached_location_t cache_location(x_coord_t dx, y_coord_t dy) const {
     return difference_type(dx, dy);
@@ -224,11 +225,11 @@ private:
 // helper classes for each axis of pixel_2d_locator_base
 namespace detail {
 template <typename Loc> class locator_axis<0, Loc> {
-  typedef typename Loc::point_t point_t;
+  using point_t = typename Loc::point_t;
 
 public:
-  typedef typename point_t::template axis<0>::coord_t coord_t;
-  typedef typename Loc::x_iterator iterator;
+  using coord_t = typename point_t::template axis<0>::coord_t;
+  using iterator = typename Loc::x_iterator;
 
   inline iterator &operator()(Loc &loc) const { return loc.x(); }
   inline iterator const &operator()(const Loc &loc) const { return loc.x(); }
@@ -241,11 +242,11 @@ public:
 };
 
 template <typename Loc> class locator_axis<1, Loc> {
-  typedef typename Loc::point_t point_t;
+  using point_t = typename Loc::point_t;
 
 public:
-  typedef typename point_t::template axis<1>::coord_t coord_t;
-  typedef typename Loc::y_iterator iterator;
+  using coord_t = typename point_t::template axis<1>::coord_t;
+  using iterator = typename Loc::y_iterator;
 
   inline iterator &operator()(Loc &loc) const { return loc.y(); }
   inline iterator const &operator()(const Loc &loc) const { return loc.y(); }
@@ -307,29 +308,26 @@ class memory_based_2d_locator
           memory_based_2d_locator<StepIterator>,
           typename iterator_adaptor_get_base<StepIterator>::type,
           StepIterator> {
-  typedef memory_based_2d_locator<StepIterator> this_t;
+  using this_t = memory_based_2d_locator<StepIterator>;
   GIL_CLASS_REQUIRE(StepIterator, boost::gil, StepIteratorConcept)
 public:
-  typedef pixel_2d_locator_base<
+  using parent_t = pixel_2d_locator_base<
       memory_based_2d_locator<StepIterator>,
-      typename iterator_adaptor_get_base<StepIterator>::type, StepIterator>
-      parent_t;
-  typedef memory_based_2d_locator<
-      typename const_iterator_type<StepIterator>::type>
-      const_t; // same as this type, but over const values
+      typename iterator_adaptor_get_base<StepIterator>::type, StepIterator>;
+  using const_t = memory_based_2d_locator<typename const_iterator_type<
+      StepIterator>::type>; // same as this type, but over const values
 
-  typedef typename parent_t::coord_t coord_t;
-  typedef typename parent_t::x_coord_t x_coord_t;
-  typedef typename parent_t::y_coord_t y_coord_t;
-  typedef typename parent_t::x_iterator x_iterator;
-  typedef typename parent_t::y_iterator y_iterator;
-  typedef typename parent_t::difference_type difference_type;
-  typedef typename parent_t::reference reference;
+  using coord_t = typename parent_t::coord_t;
+  using x_coord_t = typename parent_t::x_coord_t;
+  using y_coord_t = typename parent_t::y_coord_t;
+  using x_iterator = typename parent_t::x_iterator;
+  using y_iterator = typename parent_t::y_iterator;
+  using difference_type = typename parent_t::difference_type;
+  using reference = typename parent_t::reference;
 
   template <typename Deref> struct add_deref {
-    typedef memory_based_2d_locator<
-        typename iterator_add_deref<StepIterator, Deref>::type>
-        type;
+    using type = memory_based_2d_locator<
+        typename iterator_add_deref<StepIterator, Deref>::type>;
     static type make(const memory_based_2d_locator<StepIterator> &loc,
                      const Deref &nderef) {
       return type(
@@ -394,9 +392,9 @@ public:
   }
 
   // Memory-based locators can have 1D caching of 2D relative coordinates
-  typedef std::ptrdiff_t
-      cached_location_t; // type used to store relative location (to allow for
-                         // more efficient repeated access)
+  using cached_location_t =
+      std::ptrdiff_t; // type used to store relative location (to allow for more
+                      // efficient repeated access)
   cached_location_t cache_location(const difference_type &d) const {
     return offset(d.x, d.y);
   }
@@ -467,14 +465,14 @@ struct channel_type<memory_based_2d_locator<SI>>
 // it to have a step in x
 template <typename SI> struct dynamic_x_step_type<memory_based_2d_locator<SI>> {
 private:
-  typedef typename iterator_adaptor_get_base<SI>::type base_iterator_t;
-  typedef
-      typename dynamic_x_step_type<base_iterator_t>::type base_iterator_step_t;
-  typedef typename iterator_adaptor_rebind<SI, base_iterator_step_t>::type
-      dynamic_step_base_t;
+  using base_iterator_t = typename iterator_adaptor_get_base<SI>::type;
+  using base_iterator_step_t =
+      typename dynamic_x_step_type<base_iterator_t>::type;
+  using dynamic_step_base_t =
+      typename iterator_adaptor_rebind<SI, base_iterator_step_t>::type;
 
 public:
-  typedef memory_based_2d_locator<dynamic_step_base_t> type;
+  using type = memory_based_2d_locator<dynamic_step_base_t>;
 };
 
 /////////////////////////////
@@ -482,7 +480,7 @@ public:
 /////////////////////////////
 
 template <typename SI> struct dynamic_y_step_type<memory_based_2d_locator<SI>> {
-  typedef memory_based_2d_locator<SI> type;
+  using type = memory_based_2d_locator<SI>;
 };
 } // namespace gil
 } // namespace boost

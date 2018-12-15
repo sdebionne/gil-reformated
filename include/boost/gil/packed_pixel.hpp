@@ -37,8 +37,8 @@ non-byte-aligned channels. Models PixelValueConcept
 
 Example:
 \code
-typedef packed_pixel_type<uint16_t, mpl::vector3_c<unsigned,5,6,5>,
-rgb_layout_t>::type rgb565_pixel_t;
+using rgb565_pixel_t = packed_pixel_type<uint16_t,
+mpl::vector3_c<unsigned,5,6,5>, rgb_layout_t>::type;
 BOOST_STATIC_ASSERT((sizeof(rgb565_pixel_t)==2));
 
 rgb565_pixel_t r565;
@@ -64,10 +64,10 @@ template <typename BitField, // A type that holds the bits of the pixel.
 struct packed_pixel {
   BitField _bitfield;
 
-  typedef Layout layout_t;
-  typedef packed_pixel value_type;
-  typedef value_type &reference;
-  typedef const value_type &const_reference;
+  using layout_t = Layout;
+  using value_type = packed_pixel<BitField, ChannelRefVec, Layout>;
+  using reference = value_type &;
+  using const_reference = value_type const &;
 
   BOOST_STATIC_CONSTANT(
       bool,
@@ -187,8 +187,8 @@ struct kth_element_reference_type<packed_pixel<BitField, ChannelRefVec, Layout>,
 template <typename BitField, typename ChannelRefVec, typename Layout, int K>
 struct kth_element_const_reference_type<
     packed_pixel<BitField, ChannelRefVec, Layout>, K> {
-  typedef typename channel_traits<
-      typename mpl::at_c<ChannelRefVec, K>::type>::const_reference type;
+  using type = typename channel_traits<
+      typename mpl::at_c<ChannelRefVec, K>::type>::const_reference;
 };
 
 template <int K, typename P, typename C, typename L>
@@ -222,12 +222,12 @@ struct is_pixel<packed_pixel<BitField, ChannelRefVec, Layout>>
 
 template <typename P, typename C, typename Layout>
 struct color_space_type<packed_pixel<P, C, Layout>> {
-  typedef typename Layout::color_space_t type;
+  using type = typename Layout::color_space_t;
 };
 
 template <typename P, typename C, typename Layout>
 struct channel_mapping_type<packed_pixel<P, C, Layout>> {
-  typedef typename Layout::channel_mapping_t type;
+  using type = typename Layout::channel_mapping_t;
 };
 
 template <typename P, typename C, typename Layout>

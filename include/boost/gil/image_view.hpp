@@ -54,46 +54,49 @@ namespace gil {
 template <typename Loc> // Models 2D Pixel Locator
 class image_view {
 public:
-  // typedefs required by ConstRandomAccessNDImageViewConcept
+  // aliases required by ConstRandomAccessNDImageViewConcept
   static const std::size_t num_dimensions = 2;
-  typedef typename Loc::value_type value_type;
-  typedef typename Loc::reference reference; // result of dereferencing
-  typedef typename Loc::coord_t
-      coord_t; // 1D difference type (same for all dimensions)
-  typedef coord_t
-      difference_type; // result of operator-(1d_iterator,1d_iterator)
-  typedef typename Loc::point_t point_t;
-  typedef Loc locator;
-  typedef image_view<typename Loc::const_t>
-      const_t; // same as this type, but over const values
+  using value_type = typename Loc::value_type;
+  using reference = typename Loc::reference; // result of dereferencing
+  using coord_t =
+      typename Loc::coord_t; // 1D difference type (same for all dimensions)
+  using difference_type =
+      coord_t; // result of operator-(1d_iterator,1d_iterator)
+  using point_t = typename Loc::point_t;
+  using locator = Loc;
+  using const_t = image_view<typename Loc::const_t>; // same as this type, but
+                                                     // over const values
   template <std::size_t D> struct axis {
-    typedef typename Loc::template axis<D>::coord_t
-        coord_t; // difference_type along each dimension
-    typedef typename Loc::template axis<D>::iterator
-        iterator; // 1D iterator type along each dimension
+    using coord_t =
+        typename Loc::template axis<D>::coord_t; // difference_type along each
+                                                 // dimension
+    using iterator =
+        typename Loc::template axis<D>::iterator; // 1D iterator type along each
+                                                  // dimension
   };
-  typedef iterator_from_2d<Loc> iterator; // 1D iterator type for each pixel
+  using iterator = iterator_from_2d<Loc>; // 1D iterator type for each pixel
                                           // left-to-right inside top-to-bottom
-  typedef typename const_t::iterator
-      const_iterator; // may be used to examine, but not to modify values
-  typedef typename const_t::reference
-      const_reference; // behaves as a const reference
-  typedef typename std::iterator_traits<iterator>::pointer
-      pointer; // behaves as a pointer to the value type
-  typedef std::reverse_iterator<iterator> reverse_iterator;
-  typedef std::size_t size_type;
+  using const_iterator = typename const_t::iterator; // may be used to examine,
+                                                     // but not to modify values
+  using const_reference =
+      typename const_t::reference; // behaves as a const reference
+  using pointer =
+      typename std::iterator_traits<iterator>::pointer; // behaves as a pointer
+                                                        // to the value type
+  using reverse_iterator = std::reverse_iterator<iterator>;
+  using size_type = std::size_t;
 
-  // typedefs required by ConstRandomAccess2DImageViewConcept
-  typedef locator xy_locator;
-  typedef
-      typename xy_locator::x_iterator x_iterator; // pixel iterator along a row
-  typedef typename xy_locator::y_iterator
-      y_iterator; // pixel iterator along a column
-  typedef typename xy_locator::x_coord_t x_coord_t;
-  typedef typename xy_locator::y_coord_t y_coord_t;
+  // aliases required by ConstRandomAccess2DImageViewConcept
+  using xy_locator = locator;
+  using x_iterator =
+      typename xy_locator::x_iterator; // pixel iterator along a row
+  using y_iterator =
+      typename xy_locator::y_iterator; // pixel iterator along a column
+  using x_coord_t = typename xy_locator::x_coord_t;
+  using y_coord_t = typename xy_locator::y_coord_t;
 
   template <typename Deref> struct add_deref {
-    typedef image_view<typename Loc::template add_deref<Deref>::type> type;
+    using type = image_view<typename Loc::template add_deref<Deref>::type>;
     static type make(const image_view<Loc> &iv, const Deref &d) {
       return type(iv.dimensions(),
                   Loc::template add_deref<Deref>::make(iv.pixels(), d));
@@ -252,7 +255,7 @@ template <typename L> struct is_planar<image_view<L>> : public is_planar<L> {};
 /////////////////////////////
 
 template <typename L> struct dynamic_x_step_type<image_view<L>> {
-  typedef image_view<typename dynamic_x_step_type<L>::type> type;
+  using type = image_view<typename dynamic_x_step_type<L>::type>;
 };
 
 /////////////////////////////
@@ -260,7 +263,7 @@ template <typename L> struct dynamic_x_step_type<image_view<L>> {
 /////////////////////////////
 
 template <typename L> struct dynamic_y_step_type<image_view<L>> {
-  typedef image_view<typename dynamic_y_step_type<L>::type> type;
+  using type = image_view<typename dynamic_y_step_type<L>::type>;
 };
 
 /////////////////////////////
@@ -268,7 +271,7 @@ template <typename L> struct dynamic_y_step_type<image_view<L>> {
 /////////////////////////////
 
 template <typename L> struct transposed_type<image_view<L>> {
-  typedef image_view<typename transposed_type<L>::type> type;
+  using type = image_view<typename transposed_type<L>::type>;
 };
 
 } // namespace gil
