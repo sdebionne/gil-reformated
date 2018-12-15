@@ -68,13 +68,12 @@ access their elements.
 Example:
 \code
 // 16-bit BGR pixel, 4 bits for the blue, 3 bits for the green, 2 bits for the
-red channel and 7 unused bits typedef packed_pixel_type<uint16_t,
-mpl::vector3_c<unsigned,4,3,2>, bgr_layout_t>::type bgr432_pixel_t;
+red channel and 7 unused bits using bgr432_pixel_t = packed_pixel_type<uint16_t,
+mpl::vector3_c<unsigned,4,3,2>, bgr_layout_t>::type;
 
 // A reference to its red channel. Although the red channel is the third, its
-semantic index is 0 in the RGB color space typedef
-kth_semantic_element_reference_type<bgr432_pixel_t, 0>::type
-red_channel_reference_t;
+semantic index is 0 in the RGB color space using red_channel_reference_t =
+kth_semantic_element_reference_type<bgr432_pixel_t, 0>::type;
 
 // Initialize the pixel to black
 bgr432_pixel_t red_pixel(0,0,0);
@@ -92,7 +91,7 @@ template <typename ColorBase, int K> struct kth_semantic_element_type {
       int, semantic_index =
                (mpl::at_c<typename ColorBase::layout_t::channel_mapping_t,
                           K>::type::value));
-  typedef typename kth_element_type<ColorBase, semantic_index>::type type;
+  using type = typename kth_element_type<ColorBase, semantic_index>::type;
 };
 
 /// \brief Specifies the return type of the mutable
@@ -103,8 +102,8 @@ struct kth_semantic_element_reference_type {
       int, semantic_index =
                (mpl::at_c<typename ColorBase::layout_t::channel_mapping_t,
                           K>::type::value));
-  typedef
-      typename kth_element_reference_type<ColorBase, semantic_index>::type type;
+  using type =
+      typename kth_element_reference_type<ColorBase, semantic_index>::type;
   static type get(ColorBase &cb) { return gil::at_c<semantic_index>(cb); }
 };
 
@@ -116,9 +115,8 @@ struct kth_semantic_element_const_reference_type {
       int, semantic_index =
                (mpl::at_c<typename ColorBase::layout_t::channel_mapping_t,
                           K>::type::value));
-  typedef
-      typename kth_element_const_reference_type<ColorBase, semantic_index>::type
-          type;
+  using type = typename kth_element_const_reference_type<ColorBase,
+                                                         semantic_index>::type;
   static type get(const ColorBase &cb) { return gil::at_c<semantic_index>(cb); }
 };
 
@@ -161,7 +159,7 @@ void set_red_to_max(Pixel& pixel) {
     boost::function_requires<MutablePixelConcept<Pixel> >();
     BOOST_STATIC_ASSERT((contains_color<Pixel, red_t>::value));
 
-    typedef typename color_element_type<Pixel, red_t>::type red_channel_t;
+    using red_channel_t = typename color_element_type<Pixel, red_t>::type;
     get_color(pixel, red_t()) = channel_traits<red_channel_t>::max_value();
 }
 \endcode
@@ -230,7 +228,7 @@ homogeneous color bases
 
 Example:
 \code
-typedef element_type<rgb8c_planar_ptr_t>::type element_t;
+using element_t = element_type<rgb8c_planar_ptr_t>::type;
 BOOST_STATIC_ASSERT((boost::is_same<element_t, const uint8_t*>::value));
 \endcode
 */
@@ -666,7 +664,7 @@ typename T2> Result operator()(T1 f1, T2 f2) const { return f1+f2; }
 
 template <typename Pixel1, typename Pixel2, typename Pixel3>
 void sum_channels(const Pixel1& p1, const Pixel2& p2, Pixel3& result) {
-    typedef typename channel_type<Pixel3>::type result_channel_t;
+    using result_channel_t = typename channel_type<Pixel3>::type;
     static_transform(p1,p2,result,my_plus<result_channel_t>());
 }
 

@@ -83,7 +83,7 @@ private:
   Element _v0;
 
 public:
-  typedef Layout layout_t;
+  using layout_t = Layout;
   typename element_reference_type<homogeneous_color_base>::type
   at(mpl::int_<0>) {
     return _v0;
@@ -113,7 +113,7 @@ private:
   Element _v0, _v1;
 
 public:
-  typedef Layout layout_t;
+  using layout_t = Layout;
   typename element_reference_type<homogeneous_color_base>::type
   at(mpl::int_<0>) {
     return _v0;
@@ -177,7 +177,7 @@ private:
   Element _v0, _v1, _v2;
 
 public:
-  typedef Layout layout_t;
+  using layout_t = Layout;
   typename element_reference_type<homogeneous_color_base>::type
   at(mpl::int_<0>) {
     return _v0;
@@ -259,7 +259,7 @@ private:
   Element _v0, _v1, _v2, _v3;
 
 public:
-  typedef Layout layout_t;
+  using layout_t = Layout;
   typename element_reference_type<homogeneous_color_base>::type
   at(mpl::int_<0>) {
     return _v0;
@@ -354,7 +354,7 @@ private:
   Element _v0, _v1, _v2, _v3, _v4;
 
 public:
-  typedef Layout layout_t;
+  using layout_t = Layout;
   typename element_reference_type<homogeneous_color_base>::type
   at(mpl::int_<0>) {
     return _v0;
@@ -518,7 +518,7 @@ dynamic_at_c(const homogeneous_color_base<const Element &, Layout, K> &cb,
 template <typename Element, typename Layout, int K1, int K>
 struct kth_element_type<detail::homogeneous_color_base<Element, Layout, K1>,
                         K> {
-  typedef Element type;
+  using type = Element;
 };
 
 template <typename Element, typename Layout, int K1, int K>

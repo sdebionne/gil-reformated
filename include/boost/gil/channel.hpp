@@ -78,11 +78,11 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
 
   // channel traits for custom class
   template <typename T> struct channel_traits_impl<T, true> {
-    typedef typename T::value_type value_type;
-    typedef typename T::reference reference;
-    typedef typename T::pointer pointer;
-    typedef typename T::const_reference const_reference;
-    typedef typename T::const_pointer const_pointer;
+    using value_type = typename T::value_type;
+    using reference = typename T::reference;
+    using pointer = typename T::pointer;
+    using const_reference = typename T::const_reference;
+    using const_pointer = typename T::const_pointer;
     BOOST_STATIC_CONSTANT(bool, is_mutable = T::is_mutable);
     static value_type min_value() { return T::min_value(); }
     static value_type max_value() { return T::max_value(); }
@@ -91,11 +91,11 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   // channel traits implementation for built-in integral or floating point
   // channel type
   template <typename T> struct channel_traits_impl<T, false> {
-    typedef T value_type;
-    typedef T &reference;
-    typedef T *pointer;
-    typedef const T &const_reference;
-    typedef T const *const_pointer;
+    using value_type = T;
+    using reference = T &;
+    using pointer = T *;
+    using const_reference = T const &;
+    using const_pointer = T const *;
     BOOST_STATIC_CONSTANT(bool, is_mutable = true);
     static value_type min_value() { return (std::numeric_limits<T>::min)(); }
     static value_type max_value() { return (std::numeric_limits<T>::max)(); }
@@ -106,8 +106,8 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   template <typename T>
   struct channel_traits_impl<const T, false>
       : public channel_traits_impl<T, false> {
-    typedef const T &reference;
-    typedef const T *pointer;
+    using reference = const T &;
+    using pointer = const T *;
     BOOST_STATIC_CONSTANT(bool, is_mutable = false);
   };
   } // namespace detail
@@ -118,11 +118,11 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   \code
   template <typename Channel>
   struct channel_traits {
-      typedef ... value_type;
-      typedef ... reference;
-      typedef ... pointer;
-      typedef ... const_reference;
-      typedef ... const_pointer;
+      using value_type = ...;
+      using reference = ...;
+      using pointer = ...;
+      using const_reference = ...;
+      using const_pointer = ...;
 
       static const bool is_mutable;
       static value_type min_value();
@@ -140,9 +140,9 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
 
   // Channel traits for constant C++ reference type
   template <typename T>
-  struct channel_traits<const T &> : public channel_traits<T> {
-    typedef typename channel_traits<T>::const_reference reference;
-    typedef typename channel_traits<T>::const_pointer pointer;
+  struct channel_traits<T const &> : public channel_traits<T> {
+    using reference = typename channel_traits<T>::const_reference;
+    using pointer = typename channel_traits<T>::const_pointer;
     BOOST_STATIC_CONSTANT(bool, is_mutable = false);
   };
 
@@ -163,8 +163,8 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   // Create a double channel with range [-0.5 .. 0.5]
   struct double_minus_half  { static double apply() { return -0.5; } };
   struct double_plus_half   { static double apply() { return  0.5; } };
-  typedef scoped_channel_value<double, double_minus_half, double_plus_half>
-  bits64custom_t;
+  using bits64custom_t = scoped_channel_value<double, double_minus_half,
+  double_plus_half>;
 
   // channel_convert its maximum should map to the maximum
   bits64custom_t x = channel_traits<bits64custom_t>::max_value();
@@ -183,15 +183,15 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
             typename MaxVal> // classes with a static apply() function returning
                              // the minimum/maximum channel values
                              struct scoped_channel_value {
-    typedef scoped_channel_value value_type;
-    typedef value_type &reference;
-    typedef value_type *pointer;
-    typedef const value_type &const_reference;
-    typedef const value_type *const_pointer;
+    using value_type = scoped_channel_value<BaseChannelValue, MinVal, MaxVal>;
+    using reference = value_type &;
+    using pointer = value_type *;
+    using const_reference = value_type const &;
+    using const_pointer = value_type const *;
     BOOST_STATIC_CONSTANT(
         bool, is_mutable = channel_traits<BaseChannelValue>::is_mutable);
 
-    typedef BaseChannelValue base_channel_t;
+    using base_channel_t = BaseChannelValue;
 
     static value_type min_value() { return MinVal::apply(); }
     static value_type max_value() { return MaxVal::apply(); }
@@ -296,7 +296,7 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   \brief Represents the value of an unsigned integral channel operating over a
   bit range. Models: ChannelValueConcept Example: \code
   // A 4-bit unsigned integral channel.
-  typedef packed_channel_value<4> bits4;
+  using bits4 = packed_channel_value<4>;
 
   assert(channel_traits<bits4>::min_value()==0);
   assert(channel_traits<bits4>::max_value()==15);
@@ -310,13 +310,13 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   template <int NumBits> class packed_channel_value {
 
   public:
-    typedef typename detail::min_fast_uint<NumBits>::type integer_t;
+    using integer_t = typename detail::min_fast_uint<NumBits>::type;
 
-    typedef packed_channel_value value_type;
-    typedef value_type &reference;
-    typedef const value_type &const_reference;
-    typedef value_type *pointer;
-    typedef const value_type *const_pointer;
+    using value_type = packed_channel_value<NumBits>;
+    using reference = value_type &;
+    using const_reference = value_type const &;
+    using pointer = value_type *;
+    using const_pointer = value_type const *;
 
     static value_type min_value() { return 0; }
     static value_type max_value() { return low_bits_mask_t<NumBits>::sig_bits; }
@@ -357,15 +357,15 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   template <typename Derived, typename BitField, int NumBits, bool Mutable>
   class packed_channel_reference_base {
   protected:
-    typedef typename mpl::if_c<Mutable, void *, const void *>::type data_ptr_t;
+    using data_ptr_t = typename mpl::if_c<Mutable, void *, const void *>::type;
 
   public:
     data_ptr_t _data_ptr; // void* pointer to the first byte of the bit range
 
-    typedef packed_channel_value<NumBits> value_type;
-    typedef const Derived reference;
-    typedef value_type *pointer;
-    typedef const value_type *const_pointer;
+    using value_type = packed_channel_value<NumBits>;
+    using reference = const Derived;
+    using pointer = value_type *;
+    using const_pointer = const value_type *;
     BOOST_STATIC_CONSTANT(int, num_bits = NumBits);
     BOOST_STATIC_CONSTANT(bool, is_mutable = Mutable);
 
@@ -376,8 +376,8 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
       return channel_traits<value_type>::max_value();
     }
 
-    typedef BitField bitfield_t;
-    typedef typename value_type::integer_t integer_t;
+    using bitfield_t = BitField;
+    using integer_t = typename value_type::integer_t;
 
     packed_channel_reference_base(data_ptr_t data_ptr) : _data_ptr(data_ptr) {}
     packed_channel_reference_base(const packed_channel_reference_base &ref)
@@ -428,8 +428,8 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     data_ptr_t operator&() const { return _data_ptr; }
 
   protected:
-    typedef typename detail::num_value_fn<NumBits>::type num_value_t;
-    typedef typename detail::max_value_fn<NumBits>::type max_value_t;
+    using num_value_t = typename detail::num_value_fn<NumBits>::type;
+    using max_value_t = typename detail::max_value_fn<NumBits>::type;
 
     static const num_value_t num_values = static_cast<num_value_t>(1)
                                           << NumBits;
@@ -475,7 +475,7 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   \brief Represents a reference proxy to a channel operating over a bit range
   whose offset is fixed at compile time. Models ChannelConcept Example: \code
   // Reference to a 2-bit channel starting at bit 1 (i.e. the second bit)
-  typedef const packed_channel_reference<uint16_t,1,2,true> bits2_1_ref_t;
+  using bits2_1_ref_t = packed_channel_reference<uint16_t,1,2,true> const;
 
   uint16_t data=0;
   bits2_1_ref_t channel_ref(&data);
@@ -508,10 +508,9 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
       : public detail::packed_channel_reference_base<
             packed_channel_reference<BitField, FirstBit, NumBits, false>,
             BitField, NumBits, false> {
-    typedef detail::packed_channel_reference_base<
+    using parent_t = detail::packed_channel_reference_base<
         packed_channel_reference<BitField, FirstBit, NumBits, false>, BitField,
-        NumBits, false>
-        parent_t;
+        NumBits, false>;
     friend class packed_channel_reference<BitField, FirstBit, NumBits, true>;
 
     static const BitField channel_mask =
@@ -520,11 +519,11 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     void operator=(const packed_channel_reference &);
 
   public:
-    typedef const packed_channel_reference<BitField, FirstBit, NumBits, false>
-        const_reference;
-    typedef const packed_channel_reference<BitField, FirstBit, NumBits, true>
-        mutable_reference;
-    typedef typename parent_t::integer_t integer_t;
+    using const_reference =
+        packed_channel_reference<BitField, FirstBit, NumBits, false> const;
+    using mutable_reference =
+        packed_channel_reference<BitField, FirstBit, NumBits, true> const;
+    using integer_t = typename parent_t::integer_t;
 
     explicit packed_channel_reference(const void *data_ptr)
         : parent_t(data_ptr) {}
@@ -548,21 +547,20 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
       : public detail::packed_channel_reference_base<
             packed_channel_reference<BitField, FirstBit, NumBits, true>,
             BitField, NumBits, true> {
-    typedef detail::packed_channel_reference_base<
+    using parent_t = detail::packed_channel_reference_base<
         packed_channel_reference<BitField, FirstBit, NumBits, true>, BitField,
-        NumBits, true>
-        parent_t;
+        NumBits, true>;
     friend class packed_channel_reference<BitField, FirstBit, NumBits, false>;
 
     static const BitField channel_mask =
         static_cast<BitField>(parent_t::max_val) << FirstBit;
 
   public:
-    typedef const packed_channel_reference<BitField, FirstBit, NumBits, false>
-        const_reference;
-    typedef const packed_channel_reference<BitField, FirstBit, NumBits, true>
-        mutable_reference;
-    typedef typename parent_t::integer_t integer_t;
+    using const_reference =
+        packed_channel_reference<BitField, FirstBit, NumBits, false> const;
+    using mutable_reference =
+        packed_channel_reference<BitField, FirstBit, NumBits, true> const;
+    using integer_t = typename parent_t::integer_t;
 
     explicit packed_channel_reference(void *data_ptr) : parent_t(data_ptr) {}
     packed_channel_reference(const packed_channel_reference &ref)
@@ -663,8 +661,8 @@ whose offset is specified at run time. Models ChannelConcept
 Example:
 \code
 // Reference to a 2-bit channel whose offset is specified at construction time
-typedef const packed_dynamic_channel_reference<uint8_t,2,true>
-bits2_dynamic_ref_t;
+using bits2_dynamic_ref_t = packed_dynamic_channel_reference<uint8_t,2,true>
+const;
 
 uint16_t data=0;
 bits2_dynamic_ref_t channel_ref(&data,1);
@@ -683,10 +681,9 @@ class packed_dynamic_channel_reference<BitField, NumBits, false>
     : public detail::packed_channel_reference_base<
           packed_dynamic_channel_reference<BitField, NumBits, false>, BitField,
           NumBits, false> {
-  typedef detail::packed_channel_reference_base<
+  using parent_t = detail::packed_channel_reference_base<
       packed_dynamic_channel_reference<BitField, NumBits, false>, BitField,
-      NumBits, false>
-      parent_t;
+      NumBits, false>;
   friend class packed_dynamic_channel_reference<BitField, NumBits, true>;
 
   unsigned _first_bit; // 0..7
@@ -694,11 +691,11 @@ class packed_dynamic_channel_reference<BitField, NumBits, false>
   void operator=(const packed_dynamic_channel_reference &);
 
 public:
-  typedef const packed_dynamic_channel_reference<BitField, NumBits, false>
-      const_reference;
-  typedef const packed_dynamic_channel_reference<BitField, NumBits, true>
-      mutable_reference;
-  typedef typename parent_t::integer_t integer_t;
+  using const_reference =
+      packed_dynamic_channel_reference<BitField, NumBits, false> const;
+  using mutable_reference =
+      packed_dynamic_channel_reference<BitField, NumBits, true> const;
+  using integer_t = typename parent_t::integer_t;
 
   packed_dynamic_channel_reference(const void *data_ptr, unsigned first_bit)
       : parent_t(data_ptr), _first_bit(first_bit) {}
@@ -727,20 +724,19 @@ class packed_dynamic_channel_reference<BitField, NumBits, true>
     : public detail::packed_channel_reference_base<
           packed_dynamic_channel_reference<BitField, NumBits, true>, BitField,
           NumBits, true> {
-  typedef detail::packed_channel_reference_base<
+  using parent_t = detail::packed_channel_reference_base<
       packed_dynamic_channel_reference<BitField, NumBits, true>, BitField,
-      NumBits, true>
-      parent_t;
+      NumBits, true>;
   friend class packed_dynamic_channel_reference<BitField, NumBits, false>;
 
   unsigned _first_bit;
 
 public:
-  typedef const packed_dynamic_channel_reference<BitField, NumBits, false>
-      const_reference;
-  typedef const packed_dynamic_channel_reference<BitField, NumBits, true>
-      mutable_reference;
-  typedef typename parent_t::integer_t integer_t;
+  using const_reference =
+      packed_dynamic_channel_reference<BitField, NumBits, false> const;
+  using mutable_reference =
+      packed_dynamic_channel_reference<BitField, NumBits, true> const;
+  using integer_t = typename parent_t::integer_t;
 
   packed_dynamic_channel_reference(void *data_ptr, unsigned first_bit)
       : parent_t(data_ptr), _first_bit(first_bit) {}
@@ -852,25 +848,25 @@ struct is_integral<gil::scoped_channel_value<BaseChannelValue, MinVal, MaxVal>>
 // larger to smaller channel types.
 namespace boost {
 namespace gil {
-template <typename T> struct base_channel_type_impl { typedef T type; };
+template <typename T> struct base_channel_type_impl { using type = T; };
 
 template <int N> struct base_channel_type_impl<packed_channel_value<N>> {
-  typedef typename packed_channel_value<N>::integer_t type;
+  using type = typename packed_channel_value<N>::integer_t;
 };
 
 template <typename B, int F, int N, bool M>
 struct base_channel_type_impl<packed_channel_reference<B, F, N, M>> {
-  typedef typename packed_channel_reference<B, F, N, M>::integer_t type;
+  using type = typename packed_channel_reference<B, F, N, M>::integer_t;
 };
 
 template <typename B, int N, bool M>
 struct base_channel_type_impl<packed_dynamic_channel_reference<B, N, M>> {
-  typedef typename packed_dynamic_channel_reference<B, N, M>::integer_t type;
+  using type = typename packed_dynamic_channel_reference<B, N, M>::integer_t;
 };
 
 template <typename ChannelValue, typename MinV, typename MaxV>
 struct base_channel_type_impl<scoped_channel_value<ChannelValue, MinV, MaxV>> {
-  typedef ChannelValue type;
+  using type = ChannelValue;
 };
 
 template <typename T>

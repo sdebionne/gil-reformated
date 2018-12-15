@@ -130,7 +130,7 @@ template <typename T> struct Regular {
 /// \ingroup BasicConcepts
 ///
 template <typename T> struct Metafunction {
-  void constraints() { typedef typename T::type type; }
+  void constraints() { using type = typename T::type; }
 };
 
 /// \brief Concept of types equivalence requirement.

@@ -43,10 +43,10 @@ template <typename It> struct const_iterator_type;
 // The default implementation when the iterator is a C pointer is to use the
 // standard constness semantics
 template <typename T> struct const_iterator_type<T *> {
-  typedef const T *type;
+  using type = T const *;
 };
-template <typename T> struct const_iterator_type<const T *> {
-  typedef const T *type;
+template <typename T> struct const_iterator_type<T const *> {
+  using type = T const *;
 };
 
 /// \brief Metafunction predicate returning whether the given iterator allows
@@ -73,12 +73,12 @@ struct iterator_is_mutable<const T *> : public mpl::false_ {};
 
 /// \ingroup PixelIteratorModelInterleavedPtr
 template <typename Pixel> struct dynamic_x_step_type<Pixel *> {
-  typedef memory_based_step_iterator<Pixel *> type;
+  using type = memory_based_step_iterator<Pixel *>;
 };
 
 /// \ingroup PixelIteratorModelInterleavedPtr
 template <typename Pixel> struct dynamic_x_step_type<const Pixel *> {
-  typedef memory_based_step_iterator<const Pixel *> type;
+  using type = memory_based_step_iterator<const Pixel *>;
 };
 
 /////////////////////////////

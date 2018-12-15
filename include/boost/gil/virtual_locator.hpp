@@ -27,27 +27,27 @@ template <typename Deref,
     : public pixel_2d_locator_base<virtual_2d_locator<Deref, IsTransposed>,
                                    position_iterator<Deref, IsTransposed>,
                                    position_iterator<Deref, 1 - IsTransposed>> {
-  typedef virtual_2d_locator<Deref, IsTransposed> this_t;
+  using this_t = virtual_2d_locator<Deref, IsTransposed>;
 
 public:
-  typedef pixel_2d_locator_base<virtual_2d_locator<Deref, IsTransposed>,
-                                position_iterator<Deref, IsTransposed>,
-                                position_iterator<Deref, 1 - IsTransposed>>
-      parent_t;
-  typedef virtual_2d_locator<typename Deref::const_t, IsTransposed> const_t;
+  using parent_t =
+      pixel_2d_locator_base<virtual_2d_locator<Deref, IsTransposed>,
+                            position_iterator<Deref, IsTransposed>,
+                            position_iterator<Deref, 1 - IsTransposed>>;
+  using const_t = virtual_2d_locator<typename Deref::const_t, IsTransposed>;
 
-  typedef Deref deref_fn_t;
-  typedef typename parent_t::point_t point_t;
+  using deref_fn_t = Deref;
+  using point_t = typename parent_t::point_t;
 
-  typedef typename parent_t::coord_t coord_t;
-  typedef typename parent_t::x_coord_t x_coord_t;
-  typedef typename parent_t::y_coord_t y_coord_t;
-  typedef typename parent_t::x_iterator x_iterator;
-  typedef typename parent_t::y_iterator y_iterator;
+  using coord_t = typename parent_t::coord_t;
+  using x_coord_t = typename parent_t::x_coord_t;
+  using y_coord_t = typename parent_t::y_coord_t;
+  using x_iterator = typename parent_t::x_iterator;
+  using y_iterator = typename parent_t::y_iterator;
 
   template <typename NewDeref> struct add_deref {
-    typedef virtual_2d_locator<deref_compose<NewDeref, Deref>, IsTransposed>
-        type;
+    using type =
+        virtual_2d_locator<deref_compose<NewDeref, Deref>, IsTransposed>;
     static type make(const virtual_2d_locator<Deref, IsTransposed> &loc,
                      const NewDeref &nderef) {
       return type(loc.pos(), loc.step(),
@@ -135,7 +135,7 @@ struct is_planar<virtual_2d_locator<D, TR>>
 
 template <typename D, bool TR>
 struct dynamic_x_step_type<virtual_2d_locator<D, TR>> {
-  typedef virtual_2d_locator<D, TR> type;
+  using type = virtual_2d_locator<D, TR>;
 };
 
 /////////////////////////////
@@ -144,7 +144,7 @@ struct dynamic_x_step_type<virtual_2d_locator<D, TR>> {
 
 template <typename D, bool TR>
 struct dynamic_y_step_type<virtual_2d_locator<D, TR>> {
-  typedef virtual_2d_locator<D, TR> type;
+  using type = virtual_2d_locator<D, TR>;
 };
 
 /////////////////////////////
@@ -153,7 +153,7 @@ struct dynamic_y_step_type<virtual_2d_locator<D, TR>> {
 
 template <typename D, bool IsTransposed>
 struct transposed_type<virtual_2d_locator<D, IsTransposed>> {
-  typedef virtual_2d_locator<D, 1 - IsTransposed> type;
+  using type = virtual_2d_locator<D, 1 - IsTransposed>;
 };
 
 } // namespace gil

@@ -40,16 +40,15 @@ template <typename Iterator, // Models Iterator
   DFn _deref_fn;
 
 public:
-  typedef iterator_adaptor<
+  using parent_t = iterator_adaptor<
       dereference_iterator_adaptor<Iterator, DFn>, Iterator,
       typename DFn::value_type,
       typename std::iterator_traits<Iterator>::iterator_category,
-      typename DFn::reference, use_default>
-      parent_t;
-  typedef typename DFn::result_type reference;
-  typedef
-      typename std::iterator_traits<Iterator>::difference_type difference_type;
-  typedef DFn dereference_fn;
+      typename DFn::reference, use_default>;
+  using reference = typename DFn::result_type;
+  using difference_type =
+      typename std::iterator_traits<Iterator>::difference_type;
+  using dereference_fn = DFn;
 
   dereference_iterator_adaptor() {}
   template <typename Iterator1>
@@ -103,9 +102,9 @@ private:
 
 template <typename I, typename DFn>
 struct const_iterator_type<dereference_iterator_adaptor<I, DFn>> {
-  typedef dereference_iterator_adaptor<typename const_iterator_type<I>::type,
-                                       typename DFn::const_t>
-      type;
+  using type =
+      dereference_iterator_adaptor<typename const_iterator_type<I>::type,
+                                   typename DFn::const_t>;
 };
 
 template <typename I, typename DFn>
@@ -118,13 +117,13 @@ struct is_iterator_adaptor<dereference_iterator_adaptor<I, DFn>>
 
 template <typename I, typename DFn>
 struct iterator_adaptor_get_base<dereference_iterator_adaptor<I, DFn>> {
-  typedef I type;
+  using type = I;
 };
 
 template <typename I, typename DFn, typename NewBaseIterator>
 struct iterator_adaptor_rebind<dereference_iterator_adaptor<I, DFn>,
                                NewBaseIterator> {
-  typedef dereference_iterator_adaptor<NewBaseIterator, DFn> type;
+  using type = dereference_iterator_adaptor<NewBaseIterator, DFn>;
 };
 
 /////////////////////////////
@@ -198,9 +197,9 @@ memunit_advanced_ref(
 
 template <typename Iterator, typename DFn>
 struct dynamic_x_step_type<dereference_iterator_adaptor<Iterator, DFn>> {
-  typedef dereference_iterator_adaptor<
-      typename dynamic_x_step_type<Iterator>::type, DFn>
-      type;
+  using type =
+      dereference_iterator_adaptor<typename dynamic_x_step_type<Iterator>::type,
+                                   DFn>;
 };
 
 /// \brief Returns the type (and creates an instance) of an iterator that
@@ -209,7 +208,7 @@ struct dynamic_x_step_type<dereference_iterator_adaptor<Iterator, DFn>> {
 template <typename Iterator, typename Deref> struct iterator_add_deref {
   GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
 
-  typedef dereference_iterator_adaptor<Iterator, Deref> type;
+  using type = dereference_iterator_adaptor<Iterator, Deref>;
 
   static type make(const Iterator &it, const Deref &d) { return type(it, d); }
 };
@@ -222,9 +221,8 @@ struct iterator_add_deref<dereference_iterator_adaptor<Iterator, PREV_DEREF>,
                           Deref> {
   //    GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
 
-  typedef dereference_iterator_adaptor<Iterator,
-                                       deref_compose<Deref, PREV_DEREF>>
-      type;
+  using type =
+      dereference_iterator_adaptor<Iterator, deref_compose<Deref, PREV_DEREF>>;
 
   static type make(const dereference_iterator_adaptor<Iterator, PREV_DEREF> &it,
                    const Deref &d) {
