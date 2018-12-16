@@ -22,7 +22,7 @@ namespace boost {
 namespace gil {
 
 /// \brief Returns the reference proxy associated with a type that has a \p
-/// "reference" member typedef.
+/// "reference" member type alias.
 ///
 /// The reference proxy is the reference type, but with stripped-out C++
 /// reference. It models PixelConcept
@@ -93,13 +93,11 @@ inline DstIterator correlate_pixels_n(SrcIterator src_begin,
                                       SrcIterator src_end,
                                       KernelIterator ker_begin,
                                       Integer ker_size, DstIterator dst_begin) {
-  typedef typename pixel_proxy<
-      typename std::iterator_traits<SrcIterator>::value_type>::type
-      PIXEL_SRC_REF;
-  typedef typename pixel_proxy<
-      typename std::iterator_traits<DstIterator>::value_type>::type
-      PIXEL_DST_REF;
-  typedef typename std::iterator_traits<KernelIterator>::value_type kernel_type;
+  using PIXEL_SRC_REF = typename pixel_proxy<
+      typename std::iterator_traits<SrcIterator>::value_type>::type;
+  using PIXEL_DST_REF = typename pixel_proxy<
+      typename std::iterator_traits<DstIterator>::value_type>::type;
+  using kernel_type = typename std::iterator_traits<KernelIterator>::value_type;
   PixelAccum acc_zero;
   pixel_zeros_t<PixelAccum>()(acc_zero);
   while (src_begin != src_end) {
@@ -121,13 +119,11 @@ template <std::size_t Size, typename PixelAccum, typename SrcIterator,
 inline DstIterator
 correlate_pixels_k(SrcIterator src_begin, SrcIterator src_end,
                    KernelIterator ker_begin, DstIterator dst_begin) {
-  typedef typename pixel_proxy<
-      typename std::iterator_traits<SrcIterator>::value_type>::type
-      PIXEL_SRC_REF;
-  typedef typename pixel_proxy<
-      typename std::iterator_traits<DstIterator>::value_type>::type
-      PIXEL_DST_REF;
-  typedef typename std::iterator_traits<KernelIterator>::value_type kernel_type;
+  using PIXEL_SRC_REF = typename pixel_proxy<
+      typename std::iterator_traits<SrcIterator>::value_type>::type;
+  using PIXEL_DST_REF = typename pixel_proxy<
+      typename std::iterator_traits<DstIterator>::value_type>::type;
+  using kernel_type = typename std::iterator_traits<KernelIterator>::value_type;
   PixelAccum acc_zero;
   pixel_zeros_t<PixelAccum>()(acc_zero);
   while (src_begin != src_end) {
@@ -150,10 +146,10 @@ template <typename PixelAccum, typename SrcView, typename Scalar,
 inline void view_multiplies_scalar(const SrcView &src, const Scalar &scalar,
                                    const DstView &dst) {
   assert(src.dimensions() == dst.dimensions());
-  typedef
-      typename pixel_proxy<typename SrcView::value_type>::type PIXEL_SRC_REF;
-  typedef
-      typename pixel_proxy<typename DstView::value_type>::type PIXEL_DST_REF;
+  using PIXEL_SRC_REF =
+      typename pixel_proxy<typename SrcView::value_type>::type;
+  using PIXEL_DST_REF =
+      typename pixel_proxy<typename DstView::value_type>::type;
   int height = src.height();
   for (int rr = 0; rr < height; ++rr) {
     typename SrcView::x_iterator it_src = src.row_begin(rr);

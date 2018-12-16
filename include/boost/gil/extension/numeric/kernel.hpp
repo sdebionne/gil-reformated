@@ -65,7 +65,7 @@ public:
 /// \brief variable-size kernel
 template <typename T, typename Alloc = std::allocator<T>>
 class kernel_1d : public detail::kernel_1d_adaptor<std::vector<T, Alloc>> {
-  typedef detail::kernel_1d_adaptor<std::vector<T, Alloc>> parent_t;
+  using parent_t = detail::kernel_1d_adaptor<std::vector<T, Alloc>>;
 
 public:
   kernel_1d() {}
@@ -82,7 +82,7 @@ public:
 /// \brief static-size kernel
 template <typename T, std::size_t Size>
 class kernel_1d_fixed : public detail::kernel_1d_adaptor<std::array<T, Size>> {
-  typedef detail::kernel_1d_adaptor<std::array<T, Size>> parent_t;
+  using parent_t = detail::kernel_1d_adaptor<std::array<T, Size>>;
 
 public:
   kernel_1d_fixed() {}
