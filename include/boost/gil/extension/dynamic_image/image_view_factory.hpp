@@ -21,44 +21,44 @@ namespace gil {
 
 namespace detail {
 template <typename Result> struct flipped_up_down_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   template <typename View> result_type operator()(const View &src) const {
     return result_type(flipped_up_down_view(src));
   }
 };
 template <typename Result> struct flipped_left_right_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   template <typename View> result_type operator()(const View &src) const {
     return result_type(flipped_left_right_view(src));
   }
 };
 template <typename Result> struct rotated90cw_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   template <typename View> result_type operator()(const View &src) const {
     return result_type(rotated90cw_view(src));
   }
 };
 template <typename Result> struct rotated90ccw_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   template <typename View> result_type operator()(const View &src) const {
     return result_type(rotated90ccw_view(src));
   }
 };
 template <typename Result> struct tranposed_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   template <typename View> result_type operator()(const View &src) const {
     return result_type(tranposed_view(src));
   }
 };
 template <typename Result> struct rotated180_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   template <typename View> result_type operator()(const View &src) const {
     return result_type(rotated180_view(src));
   }
 };
 
 template <typename Result> struct subimage_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   subimage_view_fn(point_t const &topleft, point_t const &dimensions)
       : _topleft(topleft), _size2(dimensions) {}
 
@@ -71,7 +71,7 @@ template <typename Result> struct subimage_view_fn {
 };
 
 template <typename Result> struct subsampled_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   subsampled_view_fn(point_t const &step) : _step(step) {}
 
   template <typename View> result_type operator()(const View &src) const {
@@ -82,7 +82,7 @@ template <typename Result> struct subsampled_view_fn {
 };
 
 template <typename Result> struct nth_channel_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   nth_channel_view_fn(int n) : _n(n) {}
   int _n;
   template <typename View> result_type operator()(const View &src) const {
@@ -91,7 +91,7 @@ template <typename Result> struct nth_channel_view_fn {
 };
 template <typename DstP, typename Result, typename CC = default_color_converter>
 struct color_converted_view_fn {
-  typedef Result result_type;
+  using result_type = Result;
   color_converted_view_fn(CC cc = CC()) : _cc(cc) {}
 
   template <typename View> result_type operator()(const View &src) const {
@@ -213,7 +213,7 @@ inline auto subsampled_view(any_image_view<ViewTypes> const &src, int xStep,
 
 namespace detail {
 template <typename View> struct get_nthchannel_type {
-  typedef typename nth_channel_view_type<View>::type type;
+  using type = typename nth_channel_view_type<View>::type;
 };
 template <typename Views>
 struct views_get_nthchannel_type
@@ -225,9 +225,8 @@ struct views_get_nthchannel_type
 /// image view over a single channel of the source view
 template <typename ViewTypes>
 struct nth_channel_view_type<any_image_view<ViewTypes>> {
-  typedef any_image_view<
-      typename detail::views_get_nthchannel_type<ViewTypes>::type>
-      type;
+  using type = any_image_view<
+      typename detail::views_get_nthchannel_type<ViewTypes>::type>;
 };
 
 /// \ingroup ImageViewTransformationsNthChannel
@@ -254,9 +253,8 @@ struct views_get_ccv_type
 /// given pixel type with user specified color converter
 template <typename ViewTypes, typename DstP, typename CC>
 struct color_converted_view_type<any_image_view<ViewTypes>, DstP, CC> {
-  typedef any_image_view<
-      typename detail::views_get_ccv_type<ViewTypes, DstP, CC>::type>
-      type;
+  using type = any_image_view<
+      typename detail::views_get_ccv_type<ViewTypes, DstP, CC>::type>;
 };
 
 /// \ingroup ImageViewTransformationsColorConvert
@@ -279,9 +277,8 @@ inline // Models MPL Random Access Container of models of ImageViewConcept
 /// given pixel type with the default coor converter
 template <typename ViewTypes, typename DstP>
 struct color_converted_view_type<any_image_view<ViewTypes>, DstP> {
-  typedef any_image_view<typename detail::views_get_ccv_type<
-      ViewTypes, DstP, default_color_converter>::type>
-      type;
+  using type = any_image_view<typename detail::views_get_ccv_type<
+      ViewTypes, DstP, default_color_converter>::type>;
 };
 
 /// \ingroup ImageViewTransformationsColorConvert
