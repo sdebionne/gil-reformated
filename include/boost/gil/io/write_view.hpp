@@ -54,7 +54,7 @@ inline void write_view(
         typename is_write_supported<typename get_pixel_type<View>::type,
                                     FormatTag>::type>::type>::type * /* ptr */
     = nullptr) {
-  typedef typename get_writer<Device, FormatTag>::type writer_t;
+  using writer_t = typename get_writer<Device, FormatTag>::type;
 
   writer_t writer = make_writer(device, tag);
 
@@ -70,7 +70,7 @@ inline void write_view(
         typename is_write_supported<typename get_pixel_type<View>::type,
                                     FormatTag>::type>::type>::type * /* ptr */
     = nullptr) {
-  typedef typename get_writer<String, FormatTag>::type writer_t;
+  using writer_t = typename get_writer<String, FormatTag>::type;
 
   writer_t writer = make_writer(file_name, tag);
 
@@ -88,7 +88,7 @@ inline void write_view(
         typename is_write_supported<typename get_pixel_type<View>::type,
                                     FormatTag>::type>::type>::type * /* ptr */
     = nullptr) {
-  typedef typename get_writer<Device, FormatTag>::type writer_t;
+  using writer_t = typename get_writer<Device, FormatTag>::type;
 
   writer_t writer = make_writer(device, info);
 
@@ -105,7 +105,7 @@ inline void write_view(
         typename is_write_supported<typename get_pixel_type<View>::type,
                                     FormatTag>::type>::type>::type * /* ptr */
     = nullptr) {
-  typedef typename get_writer<String, FormatTag>::type writer_t;
+  using writer_t = typename get_writer<String, FormatTag>::type;
 
   writer_t writer = make_writer(file_name, info);
 
@@ -136,7 +136,7 @@ write_view(Device &device, const any_image_view<Views> &views,
                typename detail::is_write_device<FormatTag, Device>::type,
                typename is_format_tag<FormatTag>::type>::type>::type * /* ptr */
            = 0) {
-  typedef typename get_dynamic_image_writer<Device, FormatTag>::type writer_t;
+  using writer_t = typename get_dynamic_image_writer<Device, FormatTag>::type;
 
   writer_t writer = make_dynamic_image_writer(device, tag);
 
@@ -151,7 +151,7 @@ write_view(const String &file_name, const any_image_view<Views> &views,
                typename detail::is_supported_path_spec<String>::type,
                typename is_format_tag<FormatTag>::type>::type>::type * /* ptr */
            = nullptr) {
-  typedef typename get_dynamic_image_writer<String, FormatTag>::type writer_t;
+  using writer_t = typename get_dynamic_image_writer<String, FormatTag>::type;
 
   writer_t writer = make_dynamic_image_writer(file_name, tag);
 
@@ -168,7 +168,7 @@ write_view(Device &device, const any_image_view<Views> &views,
                typename detail::is_write_device<FormatTag, Device>::type,
                typename is_format_tag<FormatTag>::type>::type>::type * /* ptr */
            = 0) {
-  typedef typename get_dynamic_image_writer<Device, FormatTag>::type writer_t;
+  using writer_t = typename get_dynamic_image_writer<Device, FormatTag>::type;
 
   writer_t writer = make_dynamic_image_writer(device, info);
 
@@ -183,7 +183,7 @@ write_view(const String &file_name, const any_image_view<Views> &views,
                typename detail::is_supported_path_spec<String>::type,
                typename is_format_tag<FormatTag>::type>::type>::type * /* ptr */
            = nullptr) {
-  typedef typename get_dynamic_image_writer<String, FormatTag>::type writer_t;
+  using writer_t = typename get_dynamic_image_writer<String, FormatTag>::type;
 
   writer_t writer = make_dynamic_image_writer(file_name, info);
 

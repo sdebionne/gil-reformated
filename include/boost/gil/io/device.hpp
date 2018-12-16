@@ -44,7 +44,7 @@ template <> struct buff_item<void> { static const unsigned int size = 1; };
  */
 template <typename FormatTag> class file_stream_device {
 public:
-  typedef FormatTag format_tag_t;
+  using format_tag_t = FormatTag;
 
 public:
   /// Used to overload the constructor.
@@ -409,12 +409,12 @@ struct is_adaptable_input_device<
     FormatTag, T,
     typename enable_if<mpl::or_<is_base_and_derived<std::istream, T>,
                                 is_same<std::istream, T>>>::type> : mpl::true_ {
-  typedef istream_device<FormatTag> device_type;
+  using device_type = istream_device<FormatTag>;
 };
 
 template <typename FormatTag>
 struct is_adaptable_input_device<FormatTag, FILE *, void> : mpl::true_ {
-  typedef file_stream_device<FormatTag> device_type;
+  using device_type = file_stream_device<FormatTag>;
 };
 
 ///
@@ -449,12 +449,12 @@ struct is_adaptable_output_device<
     FormatTag, T,
     typename enable_if<mpl::or_<is_base_and_derived<std::ostream, T>,
                                 is_same<std::ostream, T>>>::type> : mpl::true_ {
-  typedef ostream_device<FormatTag> device_type;
+  using device_type = ostream_device<FormatTag>;
 };
 
 template <typename FormatTag>
 struct is_adaptable_output_device<FormatTag, FILE *, void> : mpl::true_ {
-  typedef file_stream_device<FormatTag> device_type;
+  using device_type = file_stream_device<FormatTag>;
 };
 
 ///

@@ -22,7 +22,7 @@ inline typename get_reader_backend<String, FormatTag>::type make_reader_backend(
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = nullptr) {
-  typedef typename get_read_device<String, FormatTag>::type device_t;
+  using device_t = typename get_read_device<String, FormatTag>::type;
 
   device_t device(detail::convert_to_native_string(file_name),
                   typename detail::file_stream_device<FormatTag>::read_tag());
@@ -34,14 +34,14 @@ template <typename FormatTag>
 inline typename get_reader_backend<std::wstring, FormatTag>::type
 make_reader_backend(const std::wstring &file_name,
                     const image_read_settings<FormatTag> &settings) {
-  typedef typename get_read_device<std::wstring, FormatTag>::type device_t;
+  using device_t = typename get_read_device<std::wstring, FormatTag>::type;
 
   const char *str = detail::convert_to_native_string(file_name);
 
   device_t device(str,
                   typename detail::file_stream_device<FormatTag>::read_tag());
 
-  delete[] str;
+  delete[] str; // TODO: RAII
 
   return reader_backend<device_t, FormatTag>(device, settings);
 }
@@ -62,8 +62,7 @@ inline typename get_reader_backend<Device, FormatTag>::type make_reader_backend(
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
                   is_format_tag<FormatTag>>>::type * /* ptr */
     = nullptr) {
-  typedef typename get_read_device<Device, FormatTag>::type device_t;
-
+  using device_t = typename get_read_device<Device, FormatTag>::type;
   device_t device(io_dev);
 
   return reader_backend<device_t, FormatTag>(device, settings);

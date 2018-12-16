@@ -56,9 +56,9 @@ inline void read_and_convert_image(
     typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = 0) {
-  typedef typename get_reader<Device, FormatTag,
-                              detail::read_and_convert<ColorConverter>>::type
-      reader_t;
+  using reader_t =
+      typename get_reader<Device, FormatTag,
+                          detail::read_and_convert<ColorConverter>>::type;
 
   reader_t reader = make_reader(device, settings,
                                 detail::read_and_convert<ColorConverter>(cc));
@@ -81,9 +81,9 @@ inline void read_and_convert_image(
                                  detail::is_supported_path_spec<String>>>::type
         * /* ptr */
     = 0) {
-  typedef typename get_reader<String, FormatTag,
-                              detail::read_and_convert<ColorConverter>>::type
-      reader_t;
+  using reader_t =
+      typename get_reader<String, FormatTag,
+                          detail::read_and_convert<ColorConverter>>::type;
 
   reader_t reader = make_reader(file_name, settings,
                                 detail::read_and_convert<ColorConverter>(cc));
@@ -106,9 +106,9 @@ inline void read_and_convert_image(
                                  detail::is_supported_path_spec<String>>>::type
         * /* ptr */
     = 0) {
-  typedef typename get_reader<String, FormatTag,
-                              detail::read_and_convert<ColorConverter>>::type
-      reader_t;
+  using reader_t =
+      typename get_reader<String, FormatTag,
+                          detail::read_and_convert<ColorConverter>>::type;
 
   reader_t reader =
       make_reader(file_name, tag, detail::read_and_convert<ColorConverter>(cc));
@@ -129,9 +129,9 @@ inline void read_and_convert_image(
     typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = 0) {
-  typedef typename get_reader<Device, FormatTag,
-                              detail::read_and_convert<ColorConverter>>::type
-      reader_t;
+  using reader_t =
+      typename get_reader<Device, FormatTag,
+                          detail::read_and_convert<ColorConverter>>::type;
 
   reader_t reader =
       make_reader(device, tag, detail::read_and_convert<ColorConverter>(cc));
@@ -152,9 +152,9 @@ inline void read_and_convert_image(
                                  detail::is_supported_path_spec<String>>>::type
         * /* ptr */
     = 0) {
-  typedef typename get_reader<
+  using reader_t = typename get_reader<
       String, FormatTag,
-      detail::read_and_convert<default_color_converter>>::type reader_t;
+      detail::read_and_convert<default_color_converter>>::type;
 
   reader_t reader = make_reader(
       file_name, settings, detail::read_and_convert<default_color_converter>());
@@ -173,9 +173,9 @@ inline void read_and_convert_image(
     typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = 0) {
-  typedef typename get_reader<
+  using reader_t = typename get_reader<
       Device, FormatTag,
-      detail::read_and_convert<default_color_converter>>::type reader_t;
+      detail::read_and_convert<default_color_converter>>::type;
 
   reader_t reader = make_reader(
       device, settings, detail::read_and_convert<default_color_converter>());
@@ -195,9 +195,9 @@ inline void read_and_convert_image(
                                  detail::is_supported_path_spec<String>>>::type
         * /* ptr */
     = nullptr) {
-  typedef typename get_reader<
+  using reader_t = typename get_reader<
       String, FormatTag,
-      detail::read_and_convert<default_color_converter>>::type reader_t;
+      detail::read_and_convert<default_color_converter>>::type;
 
   reader_t reader = make_reader(
       file_name, tag, detail::read_and_convert<default_color_converter>());
@@ -216,9 +216,9 @@ inline void read_and_convert_image(
     typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = nullptr) {
-  typedef typename get_reader<
+  using reader_t = typename get_reader<
       Device, FormatTag,
-      detail::read_and_convert<default_color_converter>>::type reader_t;
+      detail::read_and_convert<default_color_converter>>::type;
 
   reader_t reader = make_reader(
       device, tag, detail::read_and_convert<default_color_converter>());

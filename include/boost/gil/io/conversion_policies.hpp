@@ -20,7 +20,7 @@ namespace detail {
 
 struct read_and_no_convert {
 public:
-  typedef void *color_converter_type;
+  using color_converter_type = void *;
 
   template <typename InIterator, typename OutIterator>
   void
@@ -52,7 +52,7 @@ public:
 
 template <typename CC> struct read_and_convert {
 public:
-  typedef CC color_converter_type;
+  using color_converter_type = default_color_converter;
   CC _cc;
 
   read_and_convert() {}
@@ -61,12 +61,11 @@ public:
 
   template <typename InIterator, typename OutIterator>
   void read(const InIterator &begin, const InIterator &end, OutIterator out) {
-    typedef color_convert_deref_fn<
+    using deref_t = color_convert_deref_fn<
         typename std::iterator_traits<InIterator>::reference,
         typename std::iterator_traits<OutIterator>::value_type // reference?
         ,
-        CC>
-        deref_t;
+        CC>;
 
     std::transform(begin, end, out, deref_t(_cc));
   }

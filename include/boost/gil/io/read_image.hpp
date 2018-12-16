@@ -55,9 +55,8 @@ inline void read_image(
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>>::type * /* ptr */
     = 0) {
-  typedef
-      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file, settings, detail::read_and_no_convert());
 
@@ -77,9 +76,8 @@ inline void read_image(
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>>::type * /* ptr */
     = nullptr) {
-  typedef
-      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file, tag, detail::read_and_no_convert());
 
@@ -100,9 +98,8 @@ inline void read_image(
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>>::type * /* ptr */
     = nullptr) {
-  typedef
-      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader =
       make_reader(file_name, settings, detail::read_and_no_convert());
@@ -124,9 +121,8 @@ inline void read_image(
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>>::type * /* ptr */
     = nullptr) {
-  typedef
-      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file_name, tag, detail::read_and_no_convert());
 
@@ -158,7 +154,7 @@ inline void read_image(
     typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = 0) {
-  typedef typename get_dynamic_image_reader<Device, FormatTag>::type reader_t;
+  using reader_t = typename get_dynamic_image_reader<Device, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file, settings);
 
@@ -177,7 +173,7 @@ inline void read_image(
     typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = 0) {
-  typedef typename get_dynamic_image_reader<Device, FormatTag>::type reader_t;
+  using reader_t = typename get_dynamic_image_reader<Device, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file, tag);
 
@@ -196,7 +192,7 @@ inline void read_image(
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = 0) {
-  typedef typename get_dynamic_image_reader<String, FormatTag>::type reader_t;
+  using reader_t = typename get_dynamic_image_reader<String, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file_name, settings);
 
@@ -215,7 +211,7 @@ inline void read_image(
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type * /* ptr */
     = nullptr) {
-  typedef typename get_dynamic_image_reader<String, FormatTag>::type reader_t;
+  using reader_t = typename get_dynamic_image_reader<String, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file_name, tag);
 

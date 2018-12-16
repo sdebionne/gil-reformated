@@ -22,9 +22,8 @@ struct get_writer<
     String, FormatTag,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type> {
-  typedef typename get_write_device<String, FormatTag>::type device_t;
-
-  typedef writer<device_t, FormatTag> type;
+  using device_t = typename get_write_device<String, FormatTag>::type;
+  using type = writer<device_t, FormatTag>;
 };
 
 template <typename Device, typename FormatTag>
@@ -32,9 +31,8 @@ struct get_writer<Device, FormatTag,
                   typename enable_if<mpl::and_<
                       detail::is_adaptable_output_device<FormatTag, Device>,
                       is_format_tag<FormatTag>>>::type> {
-  typedef typename get_write_device<Device, FormatTag>::type device_t;
-
-  typedef writer<device_t, FormatTag> type;
+  using device_t = typename get_write_device<Device, FormatTag>::type;
+  using type = writer<device_t, FormatTag>;
 };
 
 /// \brief Helper metafunction to generate dynamic image writer type.
@@ -46,9 +44,8 @@ struct get_dynamic_image_writer<
     String, FormatTag,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type> {
-  typedef typename get_write_device<String, FormatTag>::type device_t;
-
-  typedef dynamic_image_writer<device_t, FormatTag> type;
+  using device_t = typename get_write_device<String, FormatTag>::type;
+  using type = dynamic_image_writer<device_t, FormatTag>;
 };
 
 template <typename Device, typename FormatTag>
@@ -56,9 +53,8 @@ struct get_dynamic_image_writer<
     Device, FormatTag,
     typename enable_if<mpl::and_<detail::is_write_device<FormatTag, Device>,
                                  is_format_tag<FormatTag>>>::type> {
-  typedef typename get_write_device<Device, FormatTag>::type device_t;
-
-  typedef dynamic_image_writer<device_t, FormatTag> type;
+  using device_t = typename get_write_device<Device, FormatTag>::type;
+  using type = dynamic_image_writer<device_t, FormatTag>;
 };
 
 } // namespace gil

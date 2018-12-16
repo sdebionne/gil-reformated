@@ -25,9 +25,8 @@ struct get_read_device<Device, FormatTag,
                        typename enable_if<mpl::and_<
                            detail::is_adaptable_input_device<FormatTag, Device>,
                            is_format_tag<FormatTag>>>::type> {
-  typedef
-      typename detail::is_adaptable_input_device<FormatTag, Device>::device_type
-          type;
+  using type = typename detail::is_adaptable_input_device<FormatTag,
+                                                          Device>::device_type;
 };
 
 template <typename String, typename FormatTag>
@@ -35,7 +34,7 @@ struct get_read_device<
     String, FormatTag,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type> {
-  typedef detail::file_stream_device<FormatTag> type;
+  using type = detail::file_stream_device<FormatTag>;
 };
 
 } // namespace gil

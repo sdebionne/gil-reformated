@@ -29,7 +29,7 @@ namespace gil {
 
 struct format_tag {};
 
-template <typename Property> struct property_base { typedef Property type; };
+template <typename Property> struct property_base { using type = Property; };
 
 template <typename FormatTag>
 struct is_format_tag : is_base_and_derived<format_tag, FormatTag> {};
@@ -64,7 +64,7 @@ template <typename Pixel, typename FormatTag> struct is_write_supported {};
 
 namespace detail {
 
-template <typename Property> struct property_base { typedef Property type; };
+template <typename Property> struct property_base { using type = Property; };
 
 } // namespace detail
 
