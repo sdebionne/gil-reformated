@@ -31,9 +31,8 @@ class scanline_read_iterator
     : public boost::iterator_facade<scanline_read_iterator<Reader>, byte_t *,
                                     std::input_iterator_tag> {
 private:
-  typedef boost::iterator_facade<scanline_read_iterator<Reader>, byte_t *,
-                                 std::input_iterator_tag>
-      base_t;
+  using base_t = boost::iterator_facade<scanline_read_iterator<Reader>,
+                                        byte_t *, std::input_iterator_tag>;
 
 public:
   scanline_read_iterator(Reader &reader, int pos = 0)

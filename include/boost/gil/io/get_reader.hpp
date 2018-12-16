@@ -23,9 +23,8 @@ struct get_reader<
     String, FormatTag, ConversionPolicy,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type> {
-  typedef typename get_read_device<String, FormatTag>::type device_t;
-
-  typedef reader<device_t, FormatTag, ConversionPolicy> type;
+  using device_t = typename get_read_device<String, FormatTag>::type;
+  using type = reader<device_t, FormatTag, ConversionPolicy>;
 };
 
 template <typename Device, typename FormatTag, typename ConversionPolicy>
@@ -33,9 +32,8 @@ struct get_reader<Device, FormatTag, ConversionPolicy,
                   typename enable_if<mpl::and_<
                       detail::is_adaptable_input_device<FormatTag, Device>,
                       is_format_tag<FormatTag>>>::type> {
-  typedef typename get_read_device<Device, FormatTag>::type device_t;
-
-  typedef reader<device_t, FormatTag, ConversionPolicy> type;
+  using device_t = typename get_read_device<Device, FormatTag>::type;
+  using type = reader<device_t, FormatTag, ConversionPolicy>;
 };
 
 /// \brief Helper metafunction to generate dynamic image reader type.
@@ -47,9 +45,8 @@ struct get_dynamic_image_reader<
     String, FormatTag,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type> {
-  typedef typename get_read_device<String, FormatTag>::type device_t;
-
-  typedef dynamic_image_reader<device_t, FormatTag> type;
+  using device_t = typename get_read_device<String, FormatTag>::type;
+  using type = dynamic_image_reader<device_t, FormatTag>;
 };
 
 template <typename Device, typename FormatTag>
@@ -58,9 +55,8 @@ struct get_dynamic_image_reader<
     typename enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
                   is_format_tag<FormatTag>>>::type> {
-  typedef typename get_read_device<Device, FormatTag>::type device_t;
-
-  typedef dynamic_image_reader<device_t, FormatTag> type;
+  using device_t = typename get_read_device<Device, FormatTag>::type;
+  using type = dynamic_image_reader<device_t, FormatTag>;
 };
 
 /////////////////////////////////////////////////////////////
@@ -74,9 +70,8 @@ struct get_reader_backend<
     String, FormatTag,
     typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
                                  is_format_tag<FormatTag>>>::type> {
-  typedef typename get_read_device<String, FormatTag>::type device_t;
-
-  typedef reader_backend<device_t, FormatTag> type;
+  using device_t = typename get_read_device<String, FormatTag>::type;
+  using type = reader_backend<device_t, FormatTag>;
 };
 
 template <typename Device, typename FormatTag>
@@ -85,16 +80,14 @@ struct get_reader_backend<
     typename enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
                   is_format_tag<FormatTag>>>::type> {
-  typedef typename get_read_device<Device, FormatTag>::type device_t;
-
-  typedef reader_backend<device_t, FormatTag> type;
+  using device_t = typename get_read_device<Device, FormatTag>::type;
+  using type = reader_backend<device_t, FormatTag>;
 };
 
 /// \brief Helper metafunction to generate image scanline_reader type.
 template <typename T, typename FormatTag> struct get_scanline_reader {
-  typedef typename get_read_device<T, FormatTag>::type device_t;
-
-  typedef scanline_reader<device_t, FormatTag> type;
+  using device_t = typename get_read_device<T, FormatTag>::type;
+  using type = scanline_reader<device_t, FormatTag>;
 };
 
 } // namespace gil

@@ -26,9 +26,9 @@ namespace gil {
 namespace detail {
 
 template <typename Pixel, typename DummyT = void> struct row_buffer_helper {
-  typedef Pixel element_t;
-  typedef std::vector<element_t> buffer_t;
-  typedef typename buffer_t::iterator iterator_t;
+  using element_t = Pixel;
+  using buffer_t = std::vector<element_t>;
+  using iterator_t = typename buffer_t::iterator;
 
   row_buffer_helper(std::size_t width, bool) : _row_buffer(width) {}
 
@@ -46,10 +46,10 @@ private:
 template <typename Pixel>
 struct row_buffer_helper<
     Pixel, typename enable_if<typename is_bit_aligned<Pixel>::type>::type> {
-  typedef byte_t element_t;
-  typedef std::vector<element_t> buffer_t;
-  typedef Pixel pixel_type;
-  typedef bit_aligned_pixel_iterator<pixel_type> iterator_t;
+  using element_t = byte_t;
+  using buffer_t = std::vector<element_t>;
+  using pixel_type = Pixel;
+  using iterator_t = bit_aligned_pixel_iterator<pixel_type>;
 
   row_buffer_helper(std::size_t width, bool in_bytes)
       : _c((width * pixel_bit_size<pixel_type>::value) >> 3)
@@ -91,10 +91,10 @@ struct row_buffer_helper<Pixel,
                          typename boost::enable_if<typename mpl::and_<
                              typename is_bit_aligned<Pixel>::type,
                              typename is_homogeneous<Pixel>::type>::type>> {
-  typedef byte_t element_t;
-  typedef std::vector<element_t> buffer_t;
-  typedef Pixel pixel_type;
-  typedef bit_aligned_pixel_iterator<pixel_type> iterator_t;
+  using element_t = byte_t;
+  using buffer_t = std::vector<element_t>;
+  using pixel_type = Pixel;
+  using iterator_t = bit_aligned_pixel_iterator<pixel_type>;
 
   row_buffer_helper(std::size_t width, bool in_bytes)
       : _c((width * num_channels<pixel_type>::type::value *

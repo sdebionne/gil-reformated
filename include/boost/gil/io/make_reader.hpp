@@ -41,7 +41,7 @@ make_reader(const std::wstring &file_name,
   typename get_read_device<std::wstring, FormatTag>::type device(
       str, typename detail::file_stream_device<FormatTag>::read_tag());
 
-  delete[] str;
+  delete[] str; // TODO: RAII
 
   return typename get_reader<std::wstring, FormatTag, ConversionPolicy>::type(
       device, settings);

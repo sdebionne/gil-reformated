@@ -60,9 +60,8 @@ inline void read_view(
         typename is_read_supported<typename get_pixel_type<View>::type,
                                    FormatTag>::type>::type>::type * /* ptr */
     = 0) {
-  typedef
-      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file, settings, detail::read_and_no_convert());
 
@@ -83,9 +82,8 @@ inline void read_view(
         typename is_read_supported<typename get_pixel_type<View>::type,
                                    FormatTag>::type>::type>::type * /* ptr */
     = nullptr) {
-  typedef
-      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file, tag, detail::read_and_no_convert());
 
@@ -107,9 +105,8 @@ inline void read_view(
         typename is_read_supported<typename get_pixel_type<View>::type,
                                    FormatTag>::type>::type>::type * /* ptr */
     = 0) {
-  typedef
-      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader =
       make_reader(file_name, settings, detail::read_and_no_convert());
@@ -131,9 +128,8 @@ inline void read_view(
         typename is_read_supported<typename get_pixel_type<View>::type,
                                    FormatTag>::type>::type>::type * /* ptr */
     = nullptr) {
-  typedef
-      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type
-          reader_t;
+  using reader_t =
+      typename get_reader<String, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file_name, tag, detail::read_and_no_convert());
 
