@@ -19,7 +19,7 @@ namespace gil {
 
 namespace detail {
 template <typename View> struct get_const_t {
-  typedef typename View::const_t type;
+  using type = typename View::const_t;
 };
 template <typename Views>
 struct views_get_const_t : public mpl::transform<Views, get_const_t<mpl::_1>> {
@@ -32,7 +32,7 @@ namespace detail {
 
 // works for both image_view and image
 struct any_type_get_num_channels {
-  typedef int result_type;
+  using result_type = int;
   template <typename T> result_type operator()(const T &) const {
     return num_channels<T>::value;
   }
@@ -58,12 +58,12 @@ struct any_type_get_dimensions {
 /// Represents a view whose type (color space, layout, planar/interleaved
 /// organization, etc) can be specified at run time. It is the runtime
 /// equivalent of \p image_view. Some of the requirements of ImageViewConcept,
-/// such as the \p value_type typedef cannot be fulfilled, since the language
-/// does not allow runtime type specification. Other requirements, such as
-/// access to the pixels, would be inefficient to provide. Thus \p
-/// any_image_view does not fully model ImageViewConcept. However, many
-/// algorithms provide overloads taking runtime specified views and thus in many
-/// cases \p any_image_view can be used in places taking a view.
+/// such as the \p value_type alias cannot be fulfilled, since the language does
+/// not allow runtime type specification. Other requirements, such as access to
+/// the pixels, would be inefficient to provide. Thus \p any_image_view does not
+/// fully model ImageViewConcept. However, many algorithms provide overloads
+/// taking runtime specified views and thus in many cases \p any_image_view can
+/// be used in places taking a view.
 ///
 /// To perform an algorithm on any_image_view, put the algorithm in a function
 /// object and invoke it by calling \p apply_operation(runtime_view,
@@ -71,15 +71,14 @@ struct any_type_get_dimensions {
 ////////////////////////////////////////////////////////////////////////////////////////
 template <typename ImageViewTypes>
 class any_image_view : public variant<ImageViewTypes> {
-  typedef variant<ImageViewTypes> parent_t;
+  using parent_t = variant<ImageViewTypes>;
 
 public:
-  typedef any_image_view<
-      typename detail::views_get_const_t<ImageViewTypes>::type>
-      const_t;
-  typedef std::ptrdiff_t x_coord_t;
-  typedef std::ptrdiff_t y_coord_t;
-  typedef point<std::ptrdiff_t> point_t;
+  using const_t =
+      any_image_view<typename detail::views_get_const_t<ImageViewTypes>::type>;
+  using x_coord_t = std::ptrdiff_t;
+  using y_coord_t = std::ptrdiff_t;
+  using point_t = point<std::ptrdiff_t>;
 
   any_image_view() : parent_t() {}
   template <typename T> explicit any_image_view(const T &obj) : parent_t(obj) {}
@@ -118,9 +117,8 @@ public:
 
 template <typename IVTypes>
 struct dynamic_x_step_type<any_image_view<IVTypes>> {
-  typedef any_image_view<
-      typename mpl::transform<IVTypes, dynamic_x_step_type<mpl::_1>>::type>
-      type;
+  using type = any_image_view<
+      typename mpl::transform<IVTypes, dynamic_x_step_type<mpl::_1>>::type>;
 };
 
 /////////////////////////////
@@ -129,23 +127,20 @@ struct dynamic_x_step_type<any_image_view<IVTypes>> {
 
 template <typename IVTypes>
 struct dynamic_y_step_type<any_image_view<IVTypes>> {
-  typedef any_image_view<
-      typename mpl::transform<IVTypes, dynamic_y_step_type<mpl::_1>>::type>
-      type;
+  using type = any_image_view<
+      typename mpl::transform<IVTypes, dynamic_y_step_type<mpl::_1>>::type>;
 };
 
 template <typename IVTypes>
 struct dynamic_xy_step_type<any_image_view<IVTypes>> {
-  typedef any_image_view<
-      typename mpl::transform<IVTypes, dynamic_xy_step_type<mpl::_1>>::type>
-      type;
+  using type = any_image_view<
+      typename mpl::transform<IVTypes, dynamic_xy_step_type<mpl::_1>>::type>;
 };
 
 template <typename IVTypes>
 struct dynamic_xy_step_transposed_type<any_image_view<IVTypes>> {
-  typedef any_image_view<typename mpl::transform<
-      IVTypes, dynamic_xy_step_transposed_type<mpl::_1>>::type>
-      type;
+  using type = any_image_view<typename mpl::transform<
+      IVTypes, dynamic_xy_step_transposed_type<mpl::_1>>::type>;
 };
 
 } // namespace gil

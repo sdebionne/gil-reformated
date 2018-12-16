@@ -23,20 +23,20 @@ namespace boost {
 namespace gil {
 
 namespace detail {
-template <typename T> struct get_view_t { typedef typename T::view_t type; };
+template <typename T> struct get_view_t { using type = typename T::view_t; };
 template <typename Images>
 struct images_get_views_t : public mpl::transform<Images, get_view_t<mpl::_1>> {
 };
 
 template <typename T> struct get_const_view_t {
-  typedef typename T::const_view_t type;
+  using type = typename T::const_view_t;
 };
 template <typename Images>
 struct images_get_const_views_t
     : public mpl::transform<Images, get_const_view_t<mpl::_1>> {};
 
 struct recreate_image_fnobj {
-  typedef void result_type;
+  using result_type = void;
   point<std::ptrdiff_t> const &_dimensions;
   unsigned _alignment;
 
@@ -49,7 +49,7 @@ struct recreate_image_fnobj {
 
 template <typename AnyView> // Models AnyViewConcept
 struct any_image_get_view {
-  typedef AnyView result_type;
+  using result_type = AnyView;
   template <typename Image> result_type operator()(Image &img) const {
     return result_type(view(img));
   }
@@ -57,7 +57,7 @@ struct any_image_get_view {
 
 template <typename AnyConstView> // Models AnyConstViewConcept
 struct any_image_get_const_view {
-  typedef AnyConstView result_type;
+  using result_type = AnyConstView;
   template <typename Image> result_type operator()(const Image &img) const {
     return result_type(const_view(img));
   }
@@ -72,7 +72,7 @@ struct any_image_get_const_view {
 /// Represents an image whose type (color space, layout, planar/interleaved
 /// organization, etc) can be specified at run time. It is the runtime
 /// equivalent of \p image. Some of the requirements of ImageConcept, such as
-/// the \p value_type typedef cannot be fulfilled, since the language does not
+/// the \p value_type alias cannot be fulfilled, since the language does not
 /// allow runtime type specification. Other requirements, such as access to the
 /// pixels, would be inefficient to provide. Thus \p any_image does not fully
 /// model ImageConcept. In particular, its \p view and \p const_view methods
@@ -80,17 +80,16 @@ struct any_image_get_const_view {
 /// \p any_image_view for more.
 ////////////////////////////////////////////////////////////////////////////////////////
 template <typename ImageTypes> class any_image : public variant<ImageTypes> {
-  typedef variant<ImageTypes> parent_t;
+  using parent_t = variant<ImageTypes>;
 
 public:
-  typedef any_image_view<
-      typename detail::images_get_const_views_t<ImageTypes>::type>
-      const_view_t;
-  typedef any_image_view<typename detail::images_get_views_t<ImageTypes>::type>
-      view_t;
-  typedef std::ptrdiff_t x_coord_t;
-  typedef std::ptrdiff_t y_coord_t;
-  typedef point<std::ptrdiff_t> point_t;
+  using const_view_t = any_image_view<
+      typename detail::images_get_const_views_t<ImageTypes>::type>;
+  using view_t =
+      any_image_view<typename detail::images_get_views_t<ImageTypes>::type>;
+  using x_coord_t = std::ptrdiff_t;
+  using y_coord_t = std::ptrdiff_t;
+  using point_t = point<std::ptrdiff_t>;
 
   any_image() : parent_t() {}
   template <typename T> explicit any_image(const T &obj) : parent_t(obj) {}
