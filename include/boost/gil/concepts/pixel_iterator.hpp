@@ -116,7 +116,10 @@ template <typename Iterator> struct PixelIteratorIsMutableConcept {
 /// };
 /// \endcode
 template <typename T> struct HasDynamicXStepTypeConcept {
-  void constraints() { using type = typename dynamic_x_step_type<T>::type; }
+  void constraints() {
+    using type = typename dynamic_x_step_type<T>::type;
+    ignore_unused_variable_warning(type{});
+  }
 };
 
 /// \ingroup PixelLocatorConcept
@@ -129,7 +132,10 @@ template <typename T> struct HasDynamicXStepTypeConcept {
 /// };
 /// \endcode
 template <typename T> struct HasDynamicYStepTypeConcept {
-  void constraints() { using type = typename dynamic_y_step_type<T>::type; }
+  void constraints() {
+    using type = typename dynamic_y_step_type<T>::type;
+    ignore_unused_variable_warning(type{});
+  }
 };
 
 /// \ingroup PixelLocatorConcept
@@ -142,7 +148,10 @@ template <typename T> struct HasDynamicYStepTypeConcept {
 /// };
 /// \endcode
 template <typename T> struct HasTransposedTypeConcept {
-  void constraints() { using type = typename transposed_type<T>::type; }
+  void constraints() {
+    using type = typename transposed_type<T>::type;
+    ignore_unused_variable_warning(type{});
+  }
 };
 
 /// \defgroup PixelIteratorConceptPixelIterator PixelIteratorConcept
