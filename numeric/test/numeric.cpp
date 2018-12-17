@@ -37,7 +37,7 @@ namespace gil {
 template <typename T> struct mapping_traits;
 
 template <class F, class I> struct mapping_traits<TestMapFn<F, I>> {
-  typedef typename TestMapFn<F, I>::result_type result_type;
+  using result_type = typename TestMapFn<F, I>::result_type;
 };
 
 template <class F, class I>

@@ -55,7 +55,7 @@ template <typename View, bool IsPlanar>
 std::size_t
 total_allocated_size_in_bytes(const typename View::point_t &dimensions) {
 
-  typedef typename View::x_iterator x_iterator;
+  using x_iterator = typename View::x_iterator;
 
   // when value_type is a non-pixel, like int or float, num_channels< ... >
   // doesn't work.
