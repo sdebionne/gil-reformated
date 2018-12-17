@@ -21,8 +21,8 @@ namespace gil {
 /// \brief Accumulates the all channel size.
 ///
 /// \code
-/// typedef bit_aligned_image5_type< 16, 16, 16, 8, 8, devicen_layout_t< 5 >
-/// >::type image_t; const int size =
+/// using image_t = bit_aligned_image5_type<16, 16, 16, 8, 8,
+/// devicen_layout_t<5>>::type; const int size =
 /// pixel_bit_size<image_t::view_t::reference>::value; \endcode
 template <typename PixelRef> struct pixel_bit_size : mpl::int_<0> {};
 
