@@ -27,9 +27,8 @@ struct channel_view_type
                                    View> {
   static const int index = channel_type_to_index<Channel, View>::value;
 
-  typedef kth_channel_view_type<index, View> parent_t;
-
-  typedef typename parent_t::type type;
+  using parent_t = kth_channel_view_type<index, View>;
+  using type = typename parent_t::type;
 
   static type make(const View &src) { return parent_t::make(src); }
 };
