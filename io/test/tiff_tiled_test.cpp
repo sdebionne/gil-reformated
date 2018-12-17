@@ -15,7 +15,7 @@ using namespace std;
 using namespace boost;
 using namespace gil;
 
-typedef tiff_tag tag_t;
+using tag_t = tiff_tag;
 
 BOOST_AUTO_TEST_SUITE(gil_io_tiff_tests)
 
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_SUITE(gil_io_tiff_tests)
 
 BOOST_AUTO_TEST_CASE(read_tile_infos_test) {
   {
-    typedef get_reader_backend<const std::string, tag_t>::type backend_t;
+    using backend_t = get_reader_backend<std::string const, tag_t>::type;
 
     backend_t backend = read_image_info(
         tiff_in_GM + "tiger-minisblack-float-tile-16.tif", tag_t());
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(read_tile_infos_test) {
   }
 
   {
-    typedef get_reader_backend<const std::string, tag_t>::type backend_t;
+    using backend_t = get_reader_backend<std::string const, tag_t>::type;
 
     backend_t backend =
         read_image_info(tiff_in_GM + "tiger-minisblack-tile-08.tif", tag_t());
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(read_tile_infos_test) {
   }
 
   {
-    typedef get_reader_backend<const std::string, tag_t>::type backend_t;
+    using backend_t = get_reader_backend<std::string const, tag_t>::type;
 
     backend_t backend =
         read_image_info(tiff_in_GM + "tiger-palette-tile-08.tif", tag_t());
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(read_tile_infos_test) {
   }
 
   {
-    typedef get_reader_backend<const std::string, tag_t>::type backend_t;
+    using backend_t = get_reader_backend<std::string const, tag_t>::type;
 
     backend_t backend =
         read_image_info(tiff_in_GM + "tiger-rgb-tile-contig-08.tif", tag_t());
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(read_tile_infos_test) {
   }
 
   {
-    typedef get_reader_backend<const std::string, tag_t>::type backend_t;
+    using backend_t = get_reader_backend<std::string const, tag_t>::type;
 
     backend_t backend =
         read_image_info(tiff_in_GM + "tiger-rgb-tile-planar-08.tif", tag_t());

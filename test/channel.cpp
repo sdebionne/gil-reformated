@@ -39,8 +39,8 @@ auto c32f_min = channel_traits<float32_t>::min_value();
 auto c32f_max = channel_traits<float32_t>::max_value();
 
 template <typename ChannelTestCore> struct do_test : public ChannelTestCore {
-  typedef typename ChannelTestCore::channel_t channel_t;
-  typedef typename channel_traits<channel_t>::value_type channel_value_t;
+  using channel_t = typename ChannelTestCore::channel_t;
+  using channel_value_t = typename channel_traits<channel_t>::value_type;
 
   do_test() : ChannelTestCore() {
     error_if(this->_min_v != channel_traits<channel_t>::min_value());
@@ -156,8 +156,9 @@ template <typename ChannelTestCore> struct do_test : public ChannelTestCore {
 // For channel values simply initialize the value directly
 template <typename ChannelValue> class value_core {
 protected:
-  typedef ChannelValue channel_t;
-  channel_t _min_v, _max_v;
+  using channel_t = ChannelValue;
+  channel_t _min_v;
+  channel_t _max_v;
 
   value_core()
       : _min_v(channel_traits<ChannelValue>::min_value()),
@@ -170,11 +171,12 @@ protected:
 template <typename ChannelRef>
 class reference_core
     : public value_core<typename channel_traits<ChannelRef>::value_type> {
-  typedef value_core<typename channel_traits<ChannelRef>::value_type> parent_t;
+  using parent_t = value_core<typename channel_traits<ChannelRef>::value_type>;
 
 protected:
-  typedef ChannelRef channel_t;
-  channel_t _min_v, _max_v;
+  using channel_t = ChannelRef;
+  channel_t _min_v;
+  channel_t _max_v;
 
   reference_core()
       : parent_t(), _min_v(parent_t::_min_v), _max_v(parent_t::_max_v) {
@@ -187,8 +189,8 @@ template <typename ChannelSubbyteRef,
           typename ChannelMutableRef = ChannelSubbyteRef>
 class packed_reference_core {
 protected:
-  typedef ChannelSubbyteRef channel_t;
-  typedef typename channel_t::integer_t integer_t;
+  using channel_t = ChannelSubbyteRef;
+  using integer_t = typename channel_t::integer_t;
   channel_t _min_v, _max_v;
 
   integer_t _min_buf, _max_buf;
@@ -206,7 +208,7 @@ template <typename ChannelSubbyteRef,
           typename ChannelMutableRef = ChannelSubbyteRef>
 class packed_dynamic_reference_core {
 protected:
-  typedef ChannelSubbyteRef channel_t;
+  using channel_t = ChannelSubbyteRef;
   channel_t _min_v, _max_v;
 
   typename channel_t::integer_t _min_buf, _max_buf;
@@ -297,11 +299,11 @@ struct channel_archetype {
     return *this;
   }
 
-  typedef channel_value_archetype value_type;
-  typedef channel_archetype reference;
-  typedef const channel_archetype const_reference;
-  typedef channel_value_archetype *pointer;
-  typedef const channel_value_archetype *const_pointer;
+  using value_type = channel_value_archetype;
+  using reference = channel_archetype;
+  using const_reference = channel_archetype const;
+  using pointer = channel_value_archetype *;
+  using const_pointer = channel_value_archetype const *;
   BOOST_STATIC_CONSTANT(bool, is_mutable = true);
 
   static value_type min_value();
@@ -326,12 +328,12 @@ channel_value_archetype channel_archetype::max_value() {
 }
 
 void test_packed_channel_reference() {
-  typedef packed_channel_reference<std::uint16_t, 0, 5, true>
-      channel16_0_5_reference_t;
-  typedef packed_channel_reference<std::uint16_t, 5, 6, true>
-      channel16_5_6_reference_t;
-  typedef packed_channel_reference<std::uint16_t, 11, 5, true>
-      channel16_11_5_reference_t;
+  using channel16_0_5_reference_t =
+      packed_channel_reference<std::uint16_t, 0, 5, true>;
+  using channel16_5_6_reference_t =
+      packed_channel_reference<std::uint16_t, 5, 6, true>;
+  using channel16_11_5_reference_t =
+      packed_channel_reference<std::uint16_t, 11, 5, true>;
 
   std::uint16_t data = 0;
   channel16_0_5_reference_t channel1(&data);
@@ -349,10 +351,10 @@ void test_packed_channel_reference() {
 }
 
 void test_packed_dynamic_channel_reference() {
-  typedef packed_dynamic_channel_reference<std::uint16_t, 5, true>
-      channel16_5_reference_t;
-  typedef packed_dynamic_channel_reference<std::uint16_t, 6, true>
-      channel16_6_reference_t;
+  using channel16_5_reference_t =
+      packed_dynamic_channel_reference<std::uint16_t, 5, true>;
+  using channel16_6_reference_t =
+      packed_dynamic_channel_reference<std::uint16_t, 6, true>;
 
   std::uint16_t data = 0;
   channel16_5_reference_t channel1(&data, 0);
