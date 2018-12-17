@@ -22,7 +22,7 @@ struct any_image_channel_t {};
 struct any_image_color_space_t {};
 
 template <> struct color_space_type<any_image_pixel_t> {
-  typedef any_image_color_space_t type;
+  using type = any_image_color_space_t;
 };
 
 } // namespace gil

@@ -25,7 +25,7 @@ struct get_pixel_type
 
 template <typename ImageViewTypes>
 struct get_pixel_type<any_image_view<ImageViewTypes>> {
-  typedef any_image_pixel_t type;
+  using type = any_image_pixel_t;
 };
 
 } // namespace gil

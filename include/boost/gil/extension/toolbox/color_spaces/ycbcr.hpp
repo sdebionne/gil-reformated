@@ -45,18 +45,18 @@ struct cr_t {};
 /// \}
 
 /// \ingroup ColorSpaceModel
-typedef boost::mpl::vector3<ycbcr_601_color_space::y_t,
-                            ycbcr_601_color_space::cb_t,
-                            ycbcr_601_color_space::cr_t>
-    ycbcr_601__t;
-typedef boost::mpl::vector3<ycbcr_709_color_space::y_t,
-                            ycbcr_709_color_space::cb_t,
-                            ycbcr_709_color_space::cr_t>
-    ycbcr_709__t;
+using ycbcr_601__t =
+    boost::mpl::vector3<ycbcr_601_color_space::y_t, ycbcr_601_color_space::cb_t,
+                        ycbcr_601_color_space::cr_t>;
+
+/// \ingroup ColorSpaceModel
+using ycbcr_709__t =
+    boost::mpl::vector3<ycbcr_709_color_space::y_t, ycbcr_709_color_space::cb_t,
+                        ycbcr_709_color_space::cr_t>;
 
 /// \ingroup LayoutModel
-typedef boost::gil::layout<ycbcr_601__t> ycbcr_601__layout_t;
-typedef boost::gil::layout<ycbcr_709__t> ycbcr_709__layout_t;
+using ycbcr_601__layout_t = boost::gil::layout<ycbcr_601__t>;
+using ycbcr_709__layout_t = boost::gil::layout<ycbcr_709__t>;
 
 // The channel depth is ALWAYS 8bits ofr YCbCr!
 GIL_DEFINE_ALL_TYPEDEFS(8, uint8_t, ycbcr_601_)
@@ -92,7 +92,7 @@ template <> struct default_color_converter_impl<ycbcr_601__t, rgb_t> {
   // want to cast to uint8_t or anything here.
   template <typename SRCP, typename DSTP>
   void operator()(const SRCP &src, DSTP &dst) const {
-    typedef typename channel_type<DSTP>::type dst_channel_t;
+    using dst_channel_t = typename channel_type<DSTP>::type;
     convert(
         src, dst,
         typename boost::is_same<typename mpl::int_<sizeof(dst_channel_t)>::type,
@@ -107,8 +107,8 @@ private:
   ) const {
     using namespace ycbcr_601_color_space;
 
-    typedef typename channel_type<Src_Pixel>::type src_channel_t;
-    typedef typename channel_type<Dst_Pixel>::type dst_channel_t;
+    using src_channel_t = typename channel_type<Src_Pixel>::type;
+    using dst_channel_t = typename channel_type<Dst_Pixel>::type;
 
     src_channel_t y = channel_convert<src_channel_t>(get_color(src, y_t()));
     src_channel_t cb = channel_convert<src_channel_t>(get_color(src, cb_t()));
@@ -137,7 +137,7 @@ private:
   ) const {
     using namespace ycbcr_601_color_space;
 
-    typedef typename channel_type<Dst_Pixel>::type dst_channel_t;
+    using dst_channel_t = typename channel_type<Dst_Pixel>::type;
 
     double y = get_color(src, y_t());
     double cb = get_color(src, cb_t());
@@ -168,8 +168,8 @@ template <> struct default_color_converter_impl<rgb_t, ycbcr_601__t> {
   void operator()(const SRCP &src, DSTP &dst) const {
     using namespace ycbcr_601_color_space;
 
-    typedef typename channel_type<SRCP>::type src_channel_t;
-    typedef typename channel_type<DSTP>::type dst_channel_t;
+    using src_channel_t = typename channel_type<SRCP>::type;
+    using dst_channel_t = typename channel_type<DSTP>::type;
 
     src_channel_t red = channel_convert<src_channel_t>(get_color(src, red_t()));
     src_channel_t green =
@@ -195,8 +195,8 @@ template <> struct default_color_converter_impl<rgb_t, ycbcr_709__t> {
   void operator()(const SRCP &src, DSTP &dst) const {
     using namespace ycbcr_709_color_space;
 
-    typedef typename channel_type<SRCP>::type src_channel_t;
-    typedef typename channel_type<DSTP>::type dst_channel_t;
+    using src_channel_t = typename channel_type<SRCP>::type;
+    using dst_channel_t = typename channel_type<DSTP>::type;
 
     src_channel_t red = channel_convert<src_channel_t>(get_color(src, red_t()));
     src_channel_t green =
@@ -222,8 +222,8 @@ template <> struct default_color_converter_impl<ycbcr_709__t, rgb_t> {
   void operator()(const SRCP &src, DSTP &dst) const {
     using namespace ycbcr_709_color_space;
 
-    typedef typename channel_type<SRCP>::type src_channel_t;
-    typedef typename channel_type<DSTP>::type dst_channel_t;
+    using src_channel_t = typename channel_type<SRCP>::type;
+    using dst_channel_t = typename channel_type<DSTP>::type;
 
     src_channel_t y = channel_convert<src_channel_t>(get_color(src, y_t()));
     src_channel_t cb_clipped =
