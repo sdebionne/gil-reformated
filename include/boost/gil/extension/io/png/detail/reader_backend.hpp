@@ -29,10 +29,8 @@ template <typename Device>
 struct reader_backend<Device, png_tag>
     : public detail::png_struct_info_wrapper {
 public:
-  typedef png_tag format_tag_t;
-
-public:
-  typedef reader_backend<Device, png_tag> this_t;
+  using format_tag_t = png_tag;
+  using this_t = reader_backend<Device, png_tag>;
 
 public:
   reader_backend(const Device &io_dev,

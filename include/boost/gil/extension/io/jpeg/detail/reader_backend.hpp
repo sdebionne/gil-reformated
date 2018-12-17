@@ -70,7 +70,7 @@ template <typename Device>
 struct reader_backend<Device, jpeg_tag>
     : public jpeg_io_base, public detail::jpeg_decompress_wrapper {
 public:
-  typedef jpeg_tag format_tag_t;
+  using format_tag_t = jpeg_tag;
 
 public:
   //

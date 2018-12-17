@@ -39,14 +39,12 @@ class reader<Device, targa_tag, ConversionPolicy>
     : public reader_base<targa_tag, ConversionPolicy>,
       public reader_backend<Device, targa_tag> {
 private:
-  typedef reader<Device, targa_tag, ConversionPolicy> this_t;
-
-  typedef typename ConversionPolicy::color_converter_type cc_t;
-
-public:
-  typedef reader_backend<Device, targa_tag> backend_t;
+  using this_t = reader<Device, targa_tag, ConversionPolicy>;
+  using cc_t = typename ConversionPolicy::color_converter_type;
 
 public:
+  using backend_t = reader_backend<Device, targa_tag>;
+
   reader(const Device &io_dev, const image_read_settings<targa_tag> &settings)
       : reader_base<targa_tag, ConversionPolicy>(),
         backend_t(io_dev, settings) {}
@@ -57,9 +55,8 @@ public:
         backend_t(io_dev, settings) {}
 
   template <typename View> void apply(const View &dst_view) {
-    typedef
-        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type
-            is_read_and_convert_t;
+    using is_read_and_convert_t =
+        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type;
 
     io_error_if(!detail::is_allowed<View>(this->_info, is_read_and_convert_t()),
                 "Image types aren't compatible.");
@@ -274,7 +271,7 @@ struct targa_read_is_supported {
 template <typename Device>
 class dynamic_image_reader<Device, targa_tag>
     : public reader<Device, targa_tag, detail::read_and_no_convert> {
-  typedef reader<Device, targa_tag, detail::read_and_no_convert> parent_t;
+  using parent_t = reader<Device, targa_tag, detail::read_and_no_convert>;
 
 public:
   dynamic_image_reader(const Device &io_dev,

@@ -34,10 +34,10 @@ template <typename Device>
 class scanline_reader<Device, bmp_tag>
     : public reader_backend<Device, bmp_tag> {
 public:
-  typedef bmp_tag tag_t;
-  typedef reader_backend<Device, tag_t> backend_t;
-  typedef scanline_reader<Device, tag_t> this_t;
-  typedef scanline_read_iterator<this_t> iterator_t;
+  using tag_t = bmp_tag;
+  using backend_t = reader_backend<Device, tag_t>;
+  using this_t = scanline_reader<Device, tag_t>;
+  using iterator_t = scanline_read_iterator<this_t>;
 
 public:
   //
@@ -273,8 +273,8 @@ private:
   }
 
   template <typename View> void read_bit_row(byte_t *dst) {
-    typedef View src_view_t;
-    typedef rgba8_image_t::view_t dst_view_t;
+    using src_view_t = View;
+    using dst_view_t = rgba8_image_t::view_t;
 
     src_view_t src_view = interleaved_view(
         this->_info._width, 1,
@@ -319,7 +319,7 @@ private:
 
   /// Read 15 or 16 bits image.
   void read_15_bits_row(byte_t *dst) {
-    typedef rgb8_view_t dst_view_t;
+    using dst_view_t = rgb8_view_t;
 
     dst_view_t dst_view =
         interleaved_view(this->_info._width, 1,

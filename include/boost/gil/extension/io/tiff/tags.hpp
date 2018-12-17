@@ -44,7 +44,7 @@ template <typename T, int Value> struct tiff_property_base : property_base<T> {
   /// this property:
   /// http://www.remotesensing.org/libtiff/man/TIFFGetField.3tiff.html
   /// http://www.remotesensing.org/libtiff/man/TIFFSetField.3tiff.html
-  typedef mpl::vector<typename property_base<T>::type> arg_types;
+  using arg_types = mpl::vector<typename property_base<unsigned short>::type>;
 };
 
 /// baseline tags
@@ -159,9 +159,9 @@ struct tiff_host_computer
 
 /// Helper structure for reading a color mapper.
 struct tiff_color_map {
-  typedef uint16_t *red_t;
-  typedef uint16_t *green_t;
-  typedef uint16_t *blue_t;
+  using red_t = uint16_t *;
+  using green_t = uint16_t *;
+  using blue_t = uint16_t *;
 
   static const unsigned int tag = TIFFTAG_COLORMAP;
 };
@@ -169,7 +169,7 @@ struct tiff_color_map {
 /// Defines type for extra samples property.
 struct tiff_extra_samples
     : tiff_property_base<std::vector<uint16_t>, TIFFTAG_EXTRASAMPLES> {
-  typedef mpl::vector<uint16_t, uint16_t const *> arg_types;
+  using arg_types = mpl::vector<uint16_t, uint16_t const *>;
 };
 
 /// Defines type for copyright property.
@@ -199,7 +199,7 @@ struct tiff_tile_length : tiff_property_base<long, TIFFTAG_TILELENGTH> {};
 /// Defines the page to read in a multipage tiff file.
 #include <boost/mpl/integral_c.hpp>
 struct tiff_directory : property_base<tdir_t> {
-  typedef boost::mpl::integral_c<type, 0> default_value;
+  using default_value = boost::mpl::integral_c<type, 0>;
 };
 
 /// Non-baseline tags
@@ -207,7 +207,7 @@ struct tiff_directory : property_base<tdir_t> {
 /// Defines type for icc profile property.
 struct tiff_icc_profile
     : tiff_property_base<std::vector<uint8_t>, TIFFTAG_ICCPROFILE> {
-  typedef mpl::vector<uint32_t, void const *> arg_types;
+  using arg_types = mpl::vector<uint32_t, void const *>;
 };
 
 /// Read information for tiff images.

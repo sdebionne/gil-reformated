@@ -82,9 +82,9 @@ struct is_read_supported<Pixel, pnm_tag>
     : mpl::bool_<detail::pnm_read_support<
           typename channel_type<Pixel>::type,
           typename color_space_type<Pixel>::type>::is_supported> {
-  typedef detail::pnm_read_support<typename channel_type<Pixel>::type,
-                                   typename color_space_type<Pixel>::type>
-      parent_t;
+  using parent_t =
+      detail::pnm_read_support<typename channel_type<Pixel>::type,
+                               typename color_space_type<Pixel>::type>;
 
   static const pnm_image_type::type _asc_type = parent_t::_asc_type;
   static const pnm_image_type::type _bin_type = parent_t::_bin_type;

@@ -43,14 +43,14 @@ struct pnm_write_is_supported {
 template <typename Device>
 class writer<Device, pnm_tag> : public writer_backend<Device, pnm_tag> {
 private:
-  typedef writer_backend<Device, pnm_tag> backend_t;
+  using backend_t = writer_backend<Device, pnm_tag>;
 
 public:
   writer(const Device &io_dev, const image_write_info<pnm_tag> &info)
       : backend_t(io_dev, info) {}
 
   template <typename View> void apply(const View &view) {
-    typedef typename get_pixel_type<View>::type pixel_t;
+    using pixel_t = typename get_pixel_type<View>::type;
 
     std::size_t width = view.width();
     std::size_t height = view.height();
@@ -107,7 +107,7 @@ private:
 
     byte_vector_t row(pitch / 8);
 
-    typedef typename View::x_iterator x_it_t;
+    using x_it_t = typename View::x_iterator;
     x_it_t row_it = x_it_t(&(*row.begin()));
 
     detail::negate_bits<byte_vector_t, mpl::true_> neg;
@@ -132,8 +132,8 @@ private:
                       layout<typename color_space_type<View>::type>>>
         buf(src.width());
 
-    // typedef typename View::value_type pixel_t;
-    // typedef typename view_type_from_pixel< pixel_t >::type view_t;
+    // using pixel_t = typename View::value_type;
+    // using view_t = typename view_type_from_pixel< pixel_t >::type;
 
     // view_t row = interleaved_view( src.width()
     //                             , 1
@@ -165,7 +165,7 @@ private:
 ///
 template <typename Device>
 class dynamic_image_writer<Device, pnm_tag> : public writer<Device, pnm_tag> {
-  typedef writer<Device, pnm_tag> parent_t;
+  using parent_t = writer<Device, pnm_tag>;
 
 public:
   dynamic_image_writer(const Device &io_dev,

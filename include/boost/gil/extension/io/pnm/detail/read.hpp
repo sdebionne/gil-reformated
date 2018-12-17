@@ -43,14 +43,12 @@ class reader<Device, pnm_tag, ConversionPolicy>
       public reader_backend<Device, pnm_tag> {
 
 private:
-  typedef reader<Device, pnm_tag, ConversionPolicy> this_t;
-
-  typedef typename ConversionPolicy::color_converter_type cc_t;
-
-public:
-  typedef reader_backend<Device, pnm_tag> backend_t;
+  using this_t = reader<Device, pnm_tag, ConversionPolicy>;
+  using cc_t = typename ConversionPolicy::color_converter_type;
 
 public:
+  using backend_t = reader_backend<Device, pnm_tag>;
+
   reader(const Device &io_dev, const image_read_settings<pnm_tag> &settings)
       : reader_base<pnm_tag, ConversionPolicy>(), backend_t(io_dev, settings) {}
 
@@ -60,9 +58,8 @@ public:
         backend_t(io_dev, settings) {}
 
   template <typename View> void apply(const View &view) {
-    typedef
-        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type
-            is_read_and_convert_t;
+    using is_read_and_convert_t =
+        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type;
 
     io_error_if(!detail::is_allowed<View>(this->_info, is_read_and_convert_t()),
                 "Image types aren't compatible.");
@@ -119,7 +116,7 @@ public:
 private:
   template <typename View_Src, typename View_Dst>
   void read_text_data(const View_Dst &dst) {
-    typedef typename View_Dst::y_coord_t y_t;
+    using y_t = typename View_Dst::y_coord_t;
 
     byte_vector_t row(this->_scanline_length);
 
@@ -158,8 +155,8 @@ private:
         int value = atoi(buf);
 
         if (this->_info._max_value == 1) {
-          typedef typename channel_type<
-              typename get_pixel_type<View_Dst>::type>::type channel_t;
+          using channel_t = typename channel_type<
+              typename get_pixel_type<View_Dst>::type>::type;
 
           // for pnm format 0 is white
           row[x] = (value != 0)
@@ -208,11 +205,11 @@ private:
 
   template <typename View_Src, typename View_Dst>
   void read_bin_data(const View_Dst &view) {
-    typedef typename View_Dst::y_coord_t y_t;
-    typedef typename is_bit_aligned<typename View_Src::value_type>::type
-        is_bit_aligned_t;
+    using y_t = typename View_Dst::y_coord_t;
+    using is_bit_aligned_t =
+        typename is_bit_aligned<typename View_Src::value_type>::type;
 
-    typedef detail::row_buffer_helper_view<View_Src> rh_t;
+    using rh_t = detail::row_buffer_helper_view<View_Src>;
     rh_t rh(this->_scanline_length, true);
 
     typename rh_t::iterator_t beg = rh.begin() + this->_settings._top_left.x;
@@ -251,9 +248,9 @@ struct pnm_type_format_checker {
   pnm_type_format_checker(pnm_image_type::type type) : _type(type) {}
 
   template <typename Image> bool apply() {
-    typedef is_read_supported<
-        typename get_pixel_type<typename Image::view_t>::type, pnm_tag>
-        is_supported_t;
+    using is_supported_t =
+        is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
+                          pnm_tag>;
 
     return is_supported_t::_asc_type == _type ||
            is_supported_t::_bin_type == _type;
@@ -278,7 +275,7 @@ struct pnm_read_is_supported {
 template <typename Device>
 class dynamic_image_reader<Device, pnm_tag>
     : public reader<Device, pnm_tag, detail::read_and_no_convert> {
-  typedef reader<Device, pnm_tag, detail::read_and_no_convert> parent_t;
+  using parent_t = reader<Device, pnm_tag, detail::read_and_no_convert>;
 
 public:
   dynamic_image_reader(const Device &io_dev,

@@ -52,9 +52,9 @@ struct is_read_supported<Pixel, targa_tag>
     : mpl::bool_<detail::targa_read_support<
           typename channel_type<Pixel>::type,
           typename color_space_type<Pixel>::type>::is_supported> {
-  typedef detail::targa_read_support<typename channel_type<Pixel>::type,
-                                     typename color_space_type<Pixel>::type>
-      parent_t;
+  using parent_t =
+      detail::targa_read_support<typename channel_type<Pixel>::type,
+                                 typename color_space_type<Pixel>::type>;
 
   static const typename targa_depth::type bpp = parent_t::bpp;
 };
