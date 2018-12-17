@@ -291,8 +291,8 @@ struct ColorBasesCompatibleConcept {
         (is_same<typename ColorBase1::layout_t::color_space_t,
                  typename ColorBase2::layout_t::color_space_t>::value));
 
-    //        typedef typename kth_semantic_element_type<ColorBase1,0>::type e1;
-    //        typedef typename kth_semantic_element_type<ColorBase2,0>::type e2;
+    //        using e1 = typename kth_semantic_element_type<ColorBase1,0>::type;
+    //        using e2 = typename kth_semantic_element_type<ColorBase2,0>::type;
     //        "e1 is convertible to e2"
   }
 };
