@@ -106,7 +106,7 @@ template <typename Loc> struct RandomAccessNDLocatorConcept {
 
     // result of dereferencing
     using reference = typename Loc::reference;
-    ignore_unused_variable_warning(reference{});
+    // ignore_unused_variable_warning(reference{});
 
     // result of operator-(pixel_locator, pixel_locator)
     using difference_type = typename Loc::difference_type;
