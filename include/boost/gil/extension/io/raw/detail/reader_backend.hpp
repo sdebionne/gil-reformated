@@ -23,7 +23,7 @@ namespace gil {
 ///
 template <typename Device> struct reader_backend<Device, raw_tag> {
 public:
-  typedef raw_tag format_tag_t;
+  using format_tag_t = raw_tag;
 
 public:
   reader_backend(const Device &io_dev,

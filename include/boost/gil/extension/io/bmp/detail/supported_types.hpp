@@ -70,9 +70,9 @@ struct is_read_supported<Pixel, bmp_tag>
     : mpl::bool_<detail::bmp_read_support<
           typename channel_type<Pixel>::type,
           typename color_space_type<Pixel>::type>::is_supported> {
-  typedef detail::bmp_read_support<typename channel_type<Pixel>::type,
-                                   typename color_space_type<Pixel>::type>
-      parent_t;
+  using parent_t =
+      detail::bmp_read_support<typename channel_type<Pixel>::type,
+                               typename color_space_type<Pixel>::type>;
 
   static const typename bmp_bits_per_pixel::type bpp = parent_t::bpp;
 };

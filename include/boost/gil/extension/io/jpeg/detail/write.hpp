@@ -44,7 +44,7 @@ struct jpeg_write_is_supported {
 template <typename Device>
 class writer<Device, jpeg_tag> : public writer_backend<Device, jpeg_tag> {
 public:
-  typedef writer_backend<Device, jpeg_tag> backend_t;
+  using backend_t = writer_backend<Device, jpeg_tag>;
 
 public:
   writer(const Device &io_dev, const image_write_info<jpeg_tag> &info)
@@ -66,7 +66,7 @@ private:
       this->raise_error();
     }
 
-    typedef typename channel_type<typename View::value_type>::type channel_t;
+    using channel_t = typename channel_type<typename View::value_type>::type;
 
     this->get()->image_width = JDIMENSION(view.width());
     this->get()->image_height = JDIMENSION(view.height());
@@ -106,7 +106,7 @@ private:
 ///
 template <typename Device>
 class dynamic_image_writer<Device, jpeg_tag> : public writer<Device, jpeg_tag> {
-  typedef writer<Device, jpeg_tag> parent_t;
+  using parent_t = writer<Device, jpeg_tag>;
 
 public:
   dynamic_image_writer(const Device &io_dev,

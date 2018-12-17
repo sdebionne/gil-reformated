@@ -321,12 +321,12 @@ struct is_adaptable_input_device< tiff_tag, T, D > : mpl::false_{};
 
 template <typename FormatTag>
 struct is_adaptable_input_device<FormatTag, TIFF *, void> : mpl::true_ {
-  typedef file_stream_device<FormatTag> device_type;
+  using device_type = file_stream_device<FormatTag>;
 };
 
 template <typename FormatTag>
 struct is_adaptable_output_device<FormatTag, TIFF *, void> : mpl::true_ {
-  typedef file_stream_device<FormatTag> device_type;
+  using device_type = file_stream_device<FormatTag>;
 };
 
 template <typename Channel>

@@ -26,7 +26,7 @@ namespace gil {
 ///
 template <typename Device> struct writer_backend<Device, tiff_tag> {
 public:
-  typedef tiff_tag format_tag_t;
+  using format_tag_t = tiff_tag;
 
 public:
   writer_backend(const Device &io_dev, const image_write_info<tiff_tag> &info)
@@ -34,13 +34,13 @@ public:
 
 protected:
   template <typename View> void write_header(const View &view) {
-    typedef typename View::value_type pixel_t;
+    using pixel_t = typename View::value_type;
 
     // get the type of the first channel (heterogeneous pixels might be broken
     // for now!)
-    typedef typename channel_traits<
-        typename element_type<pixel_t>::type>::value_type channel_t;
-    typedef typename color_space_type<View>::type color_space_t;
+    using channel_t = typename channel_traits<
+        typename element_type<pixel_t>::type>::value_type;
+    using color_space_t = typename color_space_type<View>::type;
 
     if (!this->_info._photometric_interpretation_user_defined) {
       // write photometric interpretion - Warning: This value is rather
