@@ -9,6 +9,7 @@
 #define BOOST_GIL_EXTENSION_NUMERIC_CONVOLVE_HPP
 
 #include <boost/gil/extension/numeric/algorithm.hpp>
+#include <boost/gil/extension/numeric/kernel.hpp>
 #include <boost/gil/extension/numeric/pixel_numeric_operations.hpp>
 
 #include <boost/gil/algorithm.hpp>
@@ -19,6 +20,7 @@
 #include <cassert>
 #include <cstddef>
 #include <functional>
+#include <type_traits>
 #include <vector>
 
 namespace boost {
@@ -187,11 +189,12 @@ convolve_cols(const SrcView &src, const Kernel &ker, const DstView &dst,
 template <typename PixelAccum, typename SrcView, typename Kernel,
           typename DstView>
 BOOST_FORCEINLINE void correlate_rows_fixed(
-    const SrcView &src, const Kernel &ker, const DstView &dst,
+    const SrcView &src, const Kernel &kernel, const DstView &dst,
     convolve_boundary_option option = convolve_option_extend_zero) {
-  detail::correlate_rows_imp<PixelAccum>(
-      src, ker, dst, option,
-      detail::correlator_k<Kernel::static_size, PixelAccum>());
+  using correlator =
+      detail::correlator_k<std::extent<Kernel>::value, PixelAccum>;
+  detail::correlate_rows_imp<PixelAccum>(src, kernel, dst, option,
+                                         correlator{});
 }
 
 /// \ingroup ImageAlgorithms
