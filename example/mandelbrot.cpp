@@ -5,7 +5,7 @@
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
-#include <boost/gil/extension/io/jpeg_io.hpp>
+#include <boost/gil/extension/io/jpeg.hpp>
 #include <boost/gil/image.hpp>
 #include <boost/gil/typedefs.hpp>
 
@@ -75,7 +75,7 @@ int main() {
   my_virt_view_t mandel(dims, locator_t(point_t(0, 0), point_t(1, 1),
                                         deref_t(dims, rgb8_pixel_t(255, 0, 255),
                                                 rgb8_pixel_t(0, 255, 0))));
-  jpeg_write_view("out-mandelbrot.jpg", mandel);
+  write_view("out-mandelbrot.jpg", mandel, jpeg_tag{});
 
   return 0;
 }

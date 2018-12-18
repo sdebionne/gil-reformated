@@ -26,13 +26,13 @@ at_c(const interleaved_ref<ChannelReference, Layout> &p);
 } // namespace gil
 } // namespace boost
 
-#include <boost/gil/extension/io/jpeg_dynamic_io.hpp>
+#include <boost/gil/extension/io/jpeg.hpp>
 
 #include <iostream>
 
 #include "interleaved_ptr.hpp"
 
-int main(int argc, unsigned char *argv[]) {
+int main(int argc, char *argv[]) {
   using namespace boost::gil;
 
   typedef interleaved_ptr<unsigned char *, rgb_layout_t> rgb8_interleaved_ptr;
@@ -57,7 +57,7 @@ int main(int argc, unsigned char *argv[]) {
   boost::function_requires<ImageViewConcept<rgb8c_interleaved_view_t>>();
 
   rgb8_image_t img;
-  jpeg_read_image("test.jpg", img);
+  read_image("test.jpg", img, jpeg_tag{});
 
   // Get a raw pointer to the RGB buffer
   unsigned char *raw_ptr = &view(img)[0][0];
@@ -68,8 +68,8 @@ int main(int argc, unsigned char *argv[]) {
                        view(img).pixels().row_size());
 
   // Apply view transformations and algorithms on it
-  jpeg_write_view("out-interleaved_ptr.jpg",
-                  nth_channel_view(flipped_up_down_view(src_view), 1));
+  write_view("out-interleaved_ptr.jpg",
+             nth_channel_view(flipped_up_down_view(src_view), 1), jpeg_tag{});
 
   return 0;
 }
