@@ -30,8 +30,8 @@ namespace gil {
 /// \brief Invokes a generic mutable operation (represented as a unary function
 /// object) on a variant
 template <typename Types, typename UnaryOp>
-BOOST_FORCEINLINE typename UnaryOp::result_type
-apply_operation(variant<Types> &arg, UnaryOp op) {
+BOOST_FORCEINLINE auto apply_operation(variant<Types> &arg, UnaryOp op) ->
+    typename UnaryOp::result_type {
   return apply_operation_base<Types>(arg._bits, arg._index, op);
 }
 
@@ -39,8 +39,8 @@ apply_operation(variant<Types> &arg, UnaryOp op) {
 /// \brief Invokes a generic constant operation (represented as a unary function
 /// object) on a variant
 template <typename Types, typename UnaryOp>
-BOOST_FORCEINLINE typename UnaryOp::result_type
-apply_operation(const variant<Types> &arg, UnaryOp op) {
+BOOST_FORCEINLINE auto apply_operation(variant<Types> const &arg, UnaryOp op) ->
+    typename UnaryOp::result_type {
   return apply_operation_basec<Types>(arg._bits, arg._index, op);
 }
 
@@ -48,9 +48,9 @@ apply_operation(const variant<Types> &arg, UnaryOp op) {
 /// \brief Invokes a generic constant operation (represented as a binary
 /// function object) on two variants
 template <typename Types1, typename Types2, typename BinaryOp>
-BOOST_FORCEINLINE typename BinaryOp::result_type
-apply_operation(const variant<Types1> &arg1, const variant<Types2> &arg2,
-                BinaryOp op) {
+BOOST_FORCEINLINE auto apply_operation(variant<Types1> const &arg1,
+                                       variant<Types2> const &arg2, BinaryOp op)
+    -> typename BinaryOp::result_type {
   return apply_operation_base<Types1, Types2>(arg1._bits, arg1._index,
                                               arg2._bits, arg2._index, op);
 }
