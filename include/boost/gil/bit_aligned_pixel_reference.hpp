@@ -171,11 +171,10 @@ struct bit_aligned_pixel_reference {
 
   // Grayscale references can be constructed from the channel reference
   explicit bit_aligned_pixel_reference(
-      const typename kth_element_type<bit_aligned_pixel_reference, 0>::type
+      typename kth_element_type<bit_aligned_pixel_reference, 0>::type const
           channel0)
       : _bit_range(static_cast<data_ptr_t>(&channel0), channel0.first_bit()) {
-    BOOST_STATIC_ASSERT(
-        (num_channels<bit_aligned_pixel_reference>::value == 1));
+    static_assert(num_channels<bit_aligned_pixel_reference>::value == 1, "");
   }
 
   // Construct from another compatible pixel type
@@ -231,9 +230,9 @@ private:
 
 private:
   static void check_gray() {
-    BOOST_STATIC_ASSERT(
-        (is_same<typename Layout::color_space_t, gray_t>::value));
+    static_assert(is_same<typename Layout::color_space_t, gray_t>::value, "");
   }
+
   template <typename Channel>
   void assign(const Channel &chan, mpl::false_) const {
     check_gray();

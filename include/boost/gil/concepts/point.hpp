@@ -91,7 +91,7 @@ template <typename P> struct PointNDConcept {
 template <typename P> struct Point2DConcept {
   void constraints() {
     gil_function_requires<PointNDConcept<P>>();
-    BOOST_STATIC_ASSERT(P::num_dimensions == 2);
+    static_assert(P::num_dimensions == 2, "");
     point.x = point.y;
     point[0] = point[1];
   }

@@ -103,7 +103,7 @@ private:
   void write_data(const View &src, std::size_t pitch,
                   const mpl::true_ & // bit_aligned
   ) {
-    BOOST_STATIC_ASSERT((is_same<View, typename gray1_image_t::view_t>::value));
+    static_assert(is_same<View, typename gray1_image_t::view_t>::value, "");
 
     byte_vector_t row(pitch / 8);
 

@@ -61,7 +61,7 @@ template <typename P> struct PixelConcept {
     gil_function_requires<ColorBaseConcept<P>>();
     gil_function_requires<PixelBasedConcept<P>>();
 
-    BOOST_STATIC_ASSERT((is_pixel<P>::value));
+    static_assert(is_pixel<P>::value, "");
     static const bool is_mutable = P::is_mutable;
     ignore_unused_variable_warning(is_mutable);
 
@@ -90,7 +90,7 @@ template <typename P> struct PixelConcept {
 template <typename P> struct MutablePixelConcept {
   void constraints() {
     gil_function_requires<PixelConcept<P>>();
-    BOOST_STATIC_ASSERT(P::is_mutable);
+    static_assert(P::is_mutable, "");
   }
 };
 
@@ -168,7 +168,7 @@ template <typename P> struct HomogeneousPixelValueConcept {
   void constraints() {
     gil_function_requires<HomogeneousPixelConcept<P>>();
     gil_function_requires<Regular<P>>();
-    BOOST_STATIC_ASSERT((is_same<P, typename P::value_type>::value));
+    static_assert(is_same<P, typename P::value_type>::value, "");
   }
 };
 
@@ -214,7 +214,7 @@ struct pixels_are_compatible
 /// \endcode
 template <typename P1, typename P2> struct PixelsCompatibleConcept {
   void constraints() {
-    BOOST_STATIC_ASSERT((pixels_are_compatible<P1, P2>::value));
+    static_assert(pixels_are_compatible<P1, P2>::value, "");
   }
 };
 

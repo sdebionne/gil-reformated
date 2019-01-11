@@ -130,8 +130,9 @@ template <typename T> struct ChannelValueConcept {
 /// Example:
 ///
 /// \code
-/// BOOST_STATIC_ASSERT((channels_are_compatible<uint8_t, const
-/// uint8_t&>::value)); \endcode \ingroup ChannelAlgorithm
+/// static_assert(channels_are_compatible<uint8_t, const uint8_t&>::value, "");
+/// \endcode
+/// \ingroup ChannelAlgorithm
 template <typename T1, typename T2> // Models GIL Pixel
 struct channels_are_compatible
     : is_same<typename channel_traits<T1>::value_type,
@@ -150,7 +151,7 @@ struct channels_are_compatible
 template <typename Channel1, typename Channel2>
 struct ChannelsCompatibleConcept {
   void constraints() {
-    BOOST_STATIC_ASSERT((channels_are_compatible<Channel1, Channel2>::value));
+    static_assert(channels_are_compatible<Channel1, Channel2>::value, "");
   }
 };
 

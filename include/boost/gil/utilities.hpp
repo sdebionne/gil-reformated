@@ -15,7 +15,6 @@
 #include <boost/mpl/find.hpp>
 #include <boost/mpl/range_c.hpp>
 #include <boost/mpl/size.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 
 #include <algorithm>

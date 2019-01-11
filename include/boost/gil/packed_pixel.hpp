@@ -39,7 +39,7 @@ Example:
 \code
 using rgb565_pixel_t = packed_pixel_type<uint16_t,
 mpl::vector3_c<unsigned,5,6,5>, rgb_layout_t>::type;
-BOOST_STATIC_ASSERT((sizeof(rgb565_pixel_t)==2));
+static_assert(sizeof(rgb565_pixel_t) == 2, "");
 
 rgb565_pixel_t r565;
 get_color(r565,red_t())   = 31;
@@ -87,18 +87,18 @@ struct packed_pixel {
     boost::ignore_unused(d);
   }
   packed_pixel(int chan0, int chan1) : _bitfield(0) {
-    BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value == 2));
+    static_assert(num_channels<packed_pixel>::value == 2, "");
     gil::at_c<0>(*this) = chan0;
     gil::at_c<1>(*this) = chan1;
   }
   packed_pixel(int chan0, int chan1, int chan2) : _bitfield(0) {
-    BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value == 3));
+    static_assert(num_channels<packed_pixel>::value == 3, "");
     gil::at_c<0>(*this) = chan0;
     gil::at_c<1>(*this) = chan1;
     gil::at_c<2>(*this) = chan2;
   }
   packed_pixel(int chan0, int chan1, int chan2, int chan3) : _bitfield(0) {
-    BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value == 4));
+    static_assert(num_channels<packed_pixel>::value == 4, "");
     gil::at_c<0>(*this) = chan0;
     gil::at_c<1>(*this) = chan1;
     gil::at_c<2>(*this) = chan2;
@@ -106,7 +106,7 @@ struct packed_pixel {
   }
   packed_pixel(int chan0, int chan1, int chan2, int chan3, int chan4)
       : _bitfield(0) {
-    BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value == 5));
+    static_assert(num_channels<packed_pixel>::value == 5, "");
     gil::at_c<0>(*this) = chan0;
     gil::at_c<1>(*this) = chan1;
     gil::at_c<2>(*this) = chan2;
@@ -147,8 +147,7 @@ private:
   // Support for assignment/equality comparison of a channel with a grayscale
   // pixel
   static void check_gray() {
-    BOOST_STATIC_ASSERT(
-        (is_same<typename Layout::color_space_t, gray_t>::value));
+    static_assert(is_same<typename Layout::color_space_t, gray_t>::value, "");
   }
   template <typename Channel> void assign(const Channel &chan, mpl::false_) {
     check_gray();
