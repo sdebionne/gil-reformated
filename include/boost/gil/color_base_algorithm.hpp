@@ -36,8 +36,8 @@ base
 
 Example:
 \code
-BOOST_STATIC_ASSERT((size<rgb8_pixel_t>::value == 3));
-BOOST_STATIC_ASSERT((size<cmyk8_planar_ptr_t>::value == 4));
+static_assert(size<rgb8_pixel_t>::value == 3, "");
+static_assert(size<cmyk8_planar_ptr_t>::value == 4, "");
 \endcode
 */
 
@@ -157,7 +157,7 @@ it to 100%:
 template <typename Pixel>
 void set_red_to_max(Pixel& pixel) {
     boost::function_requires<MutablePixelConcept<Pixel> >();
-    BOOST_STATIC_ASSERT((contains_color<Pixel, red_t>::value));
+    static_assert(contains_color<Pixel, red_t>::value, "");
 
     using red_channel_t = typename color_element_type<Pixel, red_t>::type;
     get_color(pixel, red_t()) = channel_traits<red_channel_t>::max_value();
@@ -229,7 +229,7 @@ homogeneous color bases
 Example:
 \code
 using element_t = element_type<rgb8c_planar_ptr_t>::type;
-BOOST_STATIC_ASSERT((boost::is_same<element_t, const uint8_t*>::value));
+static_assert(boost::is_same<element_t, const uint8_t*>::value, "");
 \endcode
 */
 /// \brief Specifies the element type of a homogeneous color base

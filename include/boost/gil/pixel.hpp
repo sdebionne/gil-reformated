@@ -61,16 +61,15 @@ struct num_channels
 
 Example:
 \code
-BOOST_STATIC_ASSERT((num_channels<rgb8_view_t>::value==3));
-BOOST_STATIC_ASSERT((num_channels<cmyk16_planar_ptr_t>::value==4));
+static_assert(num_channels<rgb8_view_t>::value == 3, "");
+static_assert(num_channels<cmyk16_planar_ptr_t>::value == 4, "");
 
-BOOST_STATIC_ASSERT((is_planar<rgb16_planar_image_t>::value));
-BOOST_STATIC_ASSERT((is_same<color_space_type<rgb8_planar_ref_t>::type,
-rgb_t>::value));
-BOOST_STATIC_ASSERT((is_same<channel_mapping_type<cmyk8_pixel_t>::type,
-                             channel_mapping_type<rgba8_pixel_t>::type>::value));
-BOOST_STATIC_ASSERT((is_same<channel_type<bgr8_pixel_t>::type,
-uint8_t>::value)); \endcode
+static_assert(is_planar<rgb16_planar_image_t>::value));
+static_assert(is_same<color_space_type<rgb8_planar_ref_t>::type, rgb_t>::value,
+""); static_assert(is_same<channel_mapping_type<cmyk8_pixel_t>::type,
+                             channel_mapping_type<rgba8_pixel_t>::type>::value,
+""); static_assert(is_same<channel_type<bgr8_pixel_t>::type, uint8_t>::value,
+""); \endcode
 */
 
 /// \defgroup ColorBaseModelPixel pixel
@@ -193,8 +192,7 @@ private:
 
 private:
   static void check_gray() {
-    BOOST_STATIC_ASSERT(
-        (is_same<typename Layout::color_space_t, gray_t>::value));
+    static_assert(is_same<typename Layout::color_space_t, gray_t>::value, "");
   }
   template <typename Channel> void assign(const Channel &chan, mpl::false_) {
     check_gray();

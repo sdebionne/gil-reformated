@@ -51,7 +51,7 @@ struct color_spaces_are_compatible : is_same<CS1, CS2> {};
 /// \endcode
 template <typename CS1, typename CS2> struct ColorSpacesCompatibleConcept {
   void constraints() {
-    BOOST_STATIC_ASSERT((color_spaces_are_compatible<CS1, CS2>::value));
+    static_assert(color_spaces_are_compatible<CS1, CS2>::value, "");
   }
 };
 

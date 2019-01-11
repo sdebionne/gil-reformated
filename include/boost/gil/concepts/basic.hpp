@@ -140,9 +140,7 @@ template <typename T> struct Metafunction {
 /// \ingroup BasicConcepts
 ///
 template <typename T, typename U> struct SameType {
-  void constraints() {
-    BOOST_STATIC_ASSERT((boost::is_same<T, U>::value_core));
-  }
+  void constraints() { static_assert(boost::is_same<T, U>::value_core, ""); }
 };
 
 } // namespace gil
