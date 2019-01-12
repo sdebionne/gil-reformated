@@ -41,18 +41,18 @@ template <typename ChannelPtr, // Models Channel Iterator (examples: unsigned
           const interleaved_ref<
               typename std::iterator_traits<ChannelPtr>::reference, Layout>> {
 private:
-  typedef boost::iterator_facade<
+  using parent_t boost::iterator_facade<
       interleaved_ptr<ChannelPtr, Layout>,
       pixel<typename std::iterator_traits<ChannelPtr>::value_type, Layout>,
       boost::random_access_traversal_tag,
-      const interleaved_ref<
-          typename std::iterator_traits<ChannelPtr>::reference, Layout>>
-      parent_t;
-  typedef typename std::iterator_traits<ChannelPtr>::value_type channel_t;
+      interleaved_ref<typename std::iterator_traits<ChannelPtr>::reference,
+                      Layout> const>;
+
+  using channel_t = typename std::iterator_traits<ChannelPtr>::value_type;
 
 public:
-  typedef typename parent_t::reference reference;
-  typedef typename parent_t::difference_type difference_type;
+  using reference = typename parent_t::reference;
+  using difference_type = typename parent_t::difference_type;
 
   interleaved_ptr() {}
   interleaved_ptr(const interleaved_ptr &ptr) : _channels(ptr._channels) {}
@@ -124,12 +124,12 @@ private:
 template <typename ChannelPtr, typename Layout>
 struct const_iterator_type<interleaved_ptr<ChannelPtr, Layout>> {
 private:
-  typedef typename std::iterator_traits<ChannelPtr>::reference channel_ref_t;
-  typedef
-      typename channel_traits<channel_ref_t>::const_pointer channel_const_ptr_t;
+  using channel_ref_t = typename std::iterator_traits<ChannelPtr>::reference;
+  using channel_const_ptr_t =
+      typename channel_traits<channel_ref_t>::const_pointer;
 
 public:
-  typedef interleaved_ptr<channel_const_ptr_t, Layout> type;
+  using type = interleaved_ptr<channel_const_ptr_t, Layout>;
 };
 
 template <typename ChannelPtr, typename Layout>
@@ -149,12 +149,12 @@ struct is_iterator_adaptor<interleaved_ptr<ChannelPtr, Layout>>
 
 template <typename ChannelPtr, typename Layout>
 struct color_space_type<interleaved_ptr<ChannelPtr, Layout>> {
-  typedef typename Layout::color_space_t type;
+  using type = typename Layout::color_space_t;
 };
 
 template <typename ChannelPtr, typename Layout>
 struct channel_mapping_type<interleaved_ptr<ChannelPtr, Layout>> {
-  typedef typename Layout::channel_mapping_t type;
+  using type = typename Layout::channel_mapping_t;
 };
 
 template <typename ChannelPtr, typename Layout>
@@ -166,7 +166,7 @@ struct is_planar<interleaved_ptr<ChannelPtr, Layout>> : public mpl::false_ {};
 
 template <typename ChannelPtr, typename Layout>
 struct channel_type<interleaved_ptr<ChannelPtr, Layout>> {
-  typedef typename std::iterator_traits<ChannelPtr>::value_type type;
+  using type = typename std::iterator_traits<ChannelPtr>::value_type;
 };
 
 /////////////////////////////
@@ -219,7 +219,7 @@ memunit_advanced_ref(const interleaved_ptr<ChannelPtr, Layout> &p,
 
 template <typename ChannelPtr, typename Layout>
 struct dynamic_x_step_type<interleaved_ptr<ChannelPtr, Layout>> {
-  typedef memory_based_step_iterator<interleaved_ptr<ChannelPtr, Layout>> type;
+  using type = memory_based_step_iterator<interleaved_ptr<ChannelPtr, Layout>>;
 };
 } // namespace gil
 } // namespace boost
