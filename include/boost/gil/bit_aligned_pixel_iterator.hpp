@@ -92,7 +92,7 @@ public:
 
 private:
   bit_range_t _bit_range;
-  BOOST_STATIC_CONSTANT(int, bit_size = NonAlignedPixelReference::bit_size);
+  static int constexpr bit_size = NonAlignedPixelReference::bit_size;
 
   friend class boost::iterator_core_access;
   reference dereference() const { return NonAlignedPixelReference(_bit_range); }

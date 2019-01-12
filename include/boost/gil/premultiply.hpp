@@ -73,7 +73,7 @@ public:
   using const_reference = const value_type &;
   using argument_type = SrcConstRefP;
   using result_type = reference;
-  BOOST_STATIC_CONSTANT(bool, is_mutable = false);
+  static bool constexpr is_mutable = false;
 
   result_type operator()(argument_type srcP) const {
     result_type dstP;
