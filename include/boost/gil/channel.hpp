@@ -10,12 +10,12 @@
 
 #include <boost/gil/utilities.hpp>
 
+#include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/config/pragma_message.hpp>
 #include <boost/integer/integer_mask.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 
-#include <cassert>
 #include <cstdint>
 #include <limits>
 
@@ -152,27 +152,25 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   ////
   ///////////////////////////////////////////
 
-  /**
-  \defgroup ScopedChannelValue scoped_channel_value
-  \ingroup ChannelModel
-  \brief A channel adaptor that modifies the range of the source channel.
-  Models: ChannelValueConcept
-
-  Example:
-  \code
-  // Create a double channel with range [-0.5 .. 0.5]
-  struct double_minus_half  { static double apply() { return -0.5; } };
-  struct double_plus_half   { static double apply() { return  0.5; } };
-  using bits64custom_t = scoped_channel_value<double, double_minus_half,
-  double_plus_half>;
-
-  // channel_convert its maximum should map to the maximum
-  bits64custom_t x = channel_traits<bits64custom_t>::max_value();
-  assert(x == 0.5);
-  uint16_t y = channel_convert<uint16_t>(x);
-  assert(y == 65535);
-  \endcode
-  */
+  /// \defgroup ScopedChannelValue scoped_channel_value
+  /// \ingroup ChannelModel
+  /// \brief A channel adaptor that modifies the range of the source channel.
+  /// Models: ChannelValueConcept
+  ///
+  /// Example:
+  /// \code
+  /// // Create a double channel with range [-0.5 .. 0.5]
+  /// struct double_minus_half  { static double apply() { return -0.5; } };
+  /// struct double_plus_half   { static double apply() { return  0.5; } };
+  /// using bits64custom_t = scoped_channel_value<double, double_minus_half,
+  /// double_plus_half>;
+  ///
+  /// // channel_convert its maximum should map to the maximum
+  /// bits64custom_t x = channel_traits<bits64custom_t>::max_value();
+  /// assert(x == 0.5);
+  /// uint16_t y = channel_convert<uint16_t>(x);
+  /// assert(y == 65535);
+  /// \endcode
 
   /// \ingroup ScopedChannelValue
   /// \brief A channel adaptor that modifies the range of the source channel.
@@ -290,20 +288,18 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   };
   } // namespace detail
 
-  /**
-  \defgroup PackedChannelValueModel packed_channel_value
-  \ingroup ChannelModel
-  \brief Represents the value of an unsigned integral channel operating over a
-  bit range. Models: ChannelValueConcept Example: \code
-  // A 4-bit unsigned integral channel.
-  using bits4 = packed_channel_value<4>;
-
-  assert(channel_traits<bits4>::min_value()==0);
-  assert(channel_traits<bits4>::max_value()==15);
-  assert(sizeof(bits4)==1);
-  static_assert(boost::is_integral<bits4>::value, "");
-  \endcode
-  */
+  /// \defgroup PackedChannelValueModel packed_channel_value
+  /// \ingroup ChannelModel
+  /// \brief Represents the value of an unsigned integral channel operating over
+  /// a bit range. Models: ChannelValueConcept Example: \code
+  /// // A 4-bit unsigned integral channel.
+  /// using bits4 = packed_channel_value<4>;
+  ///
+  /// assert(channel_traits<bits4>::min_value()==0);
+  /// assert(channel_traits<bits4>::max_value()==15);
+  /// assert(sizeof(bits4)==1);
+  /// static_assert(boost::is_integral<bits4>::value, "");
+  /// \endcode
 
   /// \ingroup PackedChannelValueModel
   /// \brief The value of a subbyte channel. Models: ChannelValueConcept
@@ -469,20 +465,20 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   };
   } // namespace detail
 
-  /**
-  \defgroup PackedChannelReferenceModel packed_channel_reference
-  \ingroup ChannelModel
-  \brief Represents a reference proxy to a channel operating over a bit range
-  whose offset is fixed at compile time. Models ChannelConcept Example: \code
-  // Reference to a 2-bit channel starting at bit 1 (i.e. the second bit)
-  using bits2_1_ref_t = packed_channel_reference<uint16_t,1,2,true> const;
-
-  uint16_t data=0;
-  bits2_1_ref_t channel_ref(&data);
-  channel_ref = channel_traits<bits2_1_ref_t>::max_value();   // == 3
-  assert(data == 6);                                          // == 3<<1 == 6
-  \endcode
-  */
+  /// \defgroup PackedChannelReferenceModel packed_channel_reference
+  /// \ingroup ChannelModel
+  /// \brief Represents a reference proxy to a channel operating over a bit
+  /// range whose offset is fixed at compile time. Models ChannelConcept
+  /// Example:
+  /// \code
+  /// // Reference to a 2-bit channel starting at bit 1 (i.e. the second bit)
+  /// using bits2_1_ref_t = packed_channel_reference<uint16_t,1,2,true> const;
+  ///
+  /// uint16_t data=0;
+  /// bits2_1_ref_t channel_ref(&data);
+  /// channel_ref = channel_traits<bits2_1_ref_t>::max_value();   // == 3
+  /// assert(data == 6);                                          // == 3<<1 ==
+  /// 6 \endcode
 
   template <typename BitField, // A type that holds the bits of the pixel from
                                // which the channel is referenced. Typically an
@@ -566,11 +562,12 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     packed_channel_reference(const packed_channel_reference &ref)
         : parent_t(ref._data_ptr) {}
 
-    const packed_channel_reference &operator=(integer_t value) const {
-      assert(value <= parent_t::max_val);
+    packed_channel_reference const &operator=(integer_t value) const {
+      BOOST_ASSERT(value <= parent_t::max_val);
       set_unsafe(value);
       return *this;
     }
+
     const packed_channel_reference &
     operator=(const mutable_reference &ref) const {
       set_from_reference(ref.get_data());
@@ -652,24 +649,22 @@ inline void swap(const boost::gil::packed_channel_reference<BF, FB, NB, M> x,
 namespace boost {
 namespace gil {
 
-/**
-\defgroup PackedChannelDynamicReferenceModel packed_dynamic_channel_reference
-\ingroup ChannelModel
-\brief Represents a reference proxy to a channel operating over a bit range
-whose offset is specified at run time. Models ChannelConcept
-
-Example:
-\code
-// Reference to a 2-bit channel whose offset is specified at construction time
-using bits2_dynamic_ref_t = packed_dynamic_channel_reference<uint8_t,2,true>
-const;
-
-uint16_t data=0;
-bits2_dynamic_ref_t channel_ref(&data,1);
-channel_ref = channel_traits<bits2_dynamic_ref_t>::max_value();     // == 3
-assert(data == 6);                                                  // == (3<<1)
-== 6 \endcode
-*/
+/// \defgroup PackedChannelDynamicReferenceModel
+/// packed_dynamic_channel_reference \ingroup ChannelModel \brief Represents a
+/// reference proxy to a channel operating over a bit range whose offset is
+/// specified at run time. Models ChannelConcept
+///
+/// Example:
+/// \code
+/// // Reference to a 2-bit channel whose offset is specified at construction
+/// time using bits2_dynamic_ref_t =
+/// packed_dynamic_channel_reference<uint8_t,2,true> const;
+///
+/// uint16_t data=0;
+/// bits2_dynamic_ref_t channel_ref(&data,1);
+/// channel_ref = channel_traits<bits2_dynamic_ref_t>::max_value();     // == 3
+/// assert(data == 6);                                                  // ==
+/// (3<<1) == 6 \endcode
 
 /// \brief Models a constant subbyte channel reference whose bit offset is a
 /// runtime parameter. Models ChannelConcept
@@ -743,11 +738,12 @@ public:
   packed_dynamic_channel_reference(const packed_dynamic_channel_reference &ref)
       : parent_t(ref._data_ptr), _first_bit(ref._first_bit) {}
 
-  const packed_dynamic_channel_reference &operator=(integer_t value) const {
-    assert(value <= parent_t::max_val);
+  packed_dynamic_channel_reference const &operator=(integer_t value) const {
+    BOOST_ASSERT(value <= parent_t::max_val);
     set_unsafe(value);
     return *this;
   }
+
   const packed_dynamic_channel_reference &
   operator=(const mutable_reference &ref) const {
     set_unsafe(ref.get());

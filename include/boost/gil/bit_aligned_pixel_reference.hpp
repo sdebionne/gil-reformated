@@ -11,6 +11,7 @@
 #include <boost/gil/channel.hpp>
 #include <boost/gil/pixel.hpp>
 
+#include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/mpl/accumulate.hpp>
 #include <boost/mpl/at.hpp>
@@ -52,7 +53,7 @@ public:
   bit_range() : _current_byte(nullptr), _bit_offset(0) {}
   bit_range(byte_t *current_byte, int bit_offset)
       : _current_byte(current_byte), _bit_offset(bit_offset) {
-    assert(bit_offset >= 0 && bit_offset < 8);
+    BOOST_ASSERT(bit_offset >= 0 && bit_offset < 8);
   }
 
   bit_range(const bit_range &br)
@@ -102,33 +103,32 @@ public:
 /// \brief A heterogeneous color base representing pixel that may not be byte
 /// aligned, i.e. it may correspond to a bit range that does not start/end at a
 /// byte boundary. Models ColorBaseConcept.
-
-/**
-\defgroup PixelModelNonAlignedPixel bit_aligned_pixel_reference
-\ingroup PixelModel
-\brief A heterogeneous pixel reference used to represent non-byte-aligned
-pixels. Models PixelConcept
-
-Example:
-\code
-unsigned char data=0;
-
-// A mutable reference to a 6-bit BGR pixel in "123" format (1 bit for red, 2
-bits for green, 3 bits for blue) using rgb123_ref_t =
-bit_aligned_pixel_reference<unsigned char, mpl::vector3_c<int,1,2,3>,
-rgb_layout_t, true> const;
-
-// create the pixel reference at bit offset 2
-// (i.e. red = [2], green = [3,4], blue = [5,6,7] bits)
-rgb123_ref_t ref(&data, 2);
-get_color(ref, red_t()) = 1;
-assert(data == 0x04);
-get_color(ref, green_t()) = 3;
-assert(data == 0x1C);
-get_color(ref, blue_t()) = 7;
-assert(data == 0xFC);
-\endcode
-*/
+///
+/// \defgroup PixelModelNonAlignedPixel bit_aligned_pixel_reference
+/// \ingroup PixelModel
+/// \brief A heterogeneous pixel reference used to represent non-byte-aligned
+/// pixels. Models PixelConcept
+///
+/// Example:
+/// \code
+/// unsigned char data=0;
+///
+/// // A mutable reference to a 6-bit BGR pixel in "123" format (1 bit for red,
+/// 2 bits for green, 3 bits for blue) using rgb123_ref_t =
+/// bit_aligned_pixel_reference<unsigned char, mpl::vector3_c<int,1,2,3>,
+/// rgb_layout_t, true> const;
+///
+/// // create the pixel reference at bit offset 2
+/// // (i.e. red = [2], green = [3,4], blue = [5,6,7] bits)
+/// rgb123_ref_t ref(&data, 2);
+/// get_color(ref, red_t()) = 1;
+/// assert(data == 0x04);
+/// get_color(ref, green_t()) = 3;
+/// assert(data == 0x1C);
+/// get_color(ref, blue_t()) = 7;
+/// assert(data == 0xFC);
+/// \endcode
+///
 /// \ingroup ColorBaseModelNonAlignedPixel PixelModelNonAlignedPixel
 /// PixelBasedModel \brief Heterogeneous pixel reference corresponding to
 /// non-byte-aligned bit range. Models ColorBaseConcept, PixelConcept,

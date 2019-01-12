@@ -10,6 +10,7 @@
 
 #include <boost/gil/position_iterator.hpp>
 
+#include <boost/assert.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 
 namespace boost {
@@ -63,14 +64,15 @@ public:
   virtual_2d_locator(const virtual_2d_locator<D, TR> &loc, coord_t y_step)
       : _p(loc.pos(), point_t(loc.step().x, loc.step().y * y_step),
            loc.deref_fn()) {}
+
   template <typename D, bool TR>
-  virtual_2d_locator(const virtual_2d_locator<D, TR> &loc, coord_t x_step,
+  virtual_2d_locator(virtual_2d_locator<D, TR> const &loc, coord_t x_step,
                      coord_t y_step, bool transpose = false)
       : _p(loc.pos(),
            transpose ? point_t(loc.step().x * y_step, loc.step().y * x_step)
                      : point_t(loc.step().x * x_step, loc.step().y * y_step),
            loc.deref_fn()) {
-    assert(transpose == (IsTransposed != TR));
+    BOOST_ASSERT(transpose == (IsTransposed != TR));
   }
 
   template <typename D, bool TR>

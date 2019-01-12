@@ -13,9 +13,8 @@
 #include <boost/gil/pixel_iterator.hpp>
 #include <boost/gil/point.hpp>
 
+#include <boost/assert.hpp>
 #include <boost/iterator/iterator_facade.hpp>
-
-#include <cassert>
 
 namespace boost {
 namespace gil {
@@ -131,8 +130,8 @@ private:
     return (it.y_pos() - _coords.y) * _width + (it.x_pos() - _coords.x);
   }
 
-  bool equal(const iterator_from_2d &it) const {
-    assert(_width == it.width()); // they must belong to the same image
+  bool equal(iterator_from_2d const &it) const {
+    BOOST_ASSERT(_width == it.width()); // they must belong to the same image
     return _coords == it._coords && _p == it._p;
   }
 
