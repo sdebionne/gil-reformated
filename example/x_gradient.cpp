@@ -18,8 +18,8 @@ template <typename Out> struct halfdiff_cast_channels {
 };
 
 template <typename SrcView, typename DstView>
-void x_gradient(const SrcView &src, const DstView &dst) {
-  typedef typename channel_type<DstView>::type dst_channel_t;
+void x_gradient(SrcView const &src, DstView const &dst) {
+  using dst_channel_t = typename channel_type<DstView>::type;
 
   for (int y = 0; y < src.height(); ++y) {
     typename SrcView::x_iterator src_it = src.row_begin(y);
@@ -33,9 +33,9 @@ void x_gradient(const SrcView &src, const DstView &dst) {
 }
 
 template <typename SrcView, typename DstView>
-void x_luminosity_gradient(const SrcView &src, const DstView &dst) {
-  typedef pixel<typename channel_type<SrcView>::type, gray_layout_t>
-      gray_pixel_t;
+void x_luminosity_gradient(SrcView const &src, DstView const &dst) {
+  using gray_pixel_t =
+      pixel<typename channel_type<SrcView>::type, gray_layout_t>;
   x_gradient(color_converted_view<gray_pixel_t>(src), dst);
 }
 

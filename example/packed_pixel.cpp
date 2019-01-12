@@ -43,8 +43,8 @@ int main() {
   // byte-aligned, but its pixels are.
   ////////////////////////////////
 
-  typedef packed_image3_type<uint16_t, 7, 7, 2, bgr_layout_t>::type
-      bgr772_image_t;
+  using bgr772_image_t =
+      packed_image3_type<uint16_t, 7, 7, 2, bgr_layout_t>::type;
   bgr772_image_t bgr772_img(img.dimensions());
   copy_and_convert_pixels(const_view(img), view(bgr772_img));
 
@@ -60,7 +60,7 @@ int main() {
   // pixels are not byte aligned.
   ////////////////////////////////
 
-  typedef bit_aligned_image1_type<1, gray_layout_t>::type gray1_image_t;
+  using gray1_image_t = bit_aligned_image1_type<1, gray_layout_t>::type;
   gray1_image_t gray1_img(img.dimensions());
   copy_and_convert_pixels(const_view(img), view(gray1_img));
 
