@@ -250,7 +250,7 @@ void test_packed_pixel() {
   rgb565_pixel_t r565; //((uint16_t)0);
   rgb8_pixel_t rgb_full(255, 255, 255);
 
-  // Convert all channels of the unpacked pixel to the packed one & assert the
+  // Convert all channels of the unpacked pixel to the packed one & ensure the
   // packed one is full
   get_color(r565, red_t()) =
       channel_convert<kth_element_type<rgb565_pixel_t, 0>::type>(

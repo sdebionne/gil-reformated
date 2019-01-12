@@ -10,6 +10,8 @@
 
 #include <boost/gil/io/base.hpp>
 
+#include <boost/assert.hpp>
+
 namespace boost {
 namespace gil {
 
@@ -43,7 +45,7 @@ public:
   void init_image(Image &img, const image_read_settings<FormatTag> &settings) {
     // setup( backend._settings._dim );
 
-    assert(settings._dim.x && settings._dim.y);
+    BOOST_ASSERT(settings._dim.x && settings._dim.y);
 
     img.recreate(settings._dim.x, settings._dim.y);
   }

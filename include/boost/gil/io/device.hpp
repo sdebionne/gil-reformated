@@ -10,6 +10,7 @@
 
 #include <boost/gil/io/base.hpp>
 
+#include <boost/assert.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/utility/enable_if.hpp>
 
@@ -124,12 +125,12 @@ public:
 
     ///@todo: add compiler symbol to turn error checking on and off.
     if (ferror(get())) {
-      assert(false);
+      BOOST_ASSERT(false);
     }
 
     // libjpeg sometimes reads blocks in 4096 bytes even when the file is
     // smaller than that. assert( num_elements == count );
-    assert(num_elements > 0);
+    BOOST_ASSERT(num_elements > 0);
 
     return num_elements;
   }
@@ -168,8 +169,7 @@ public:
   std::size_t write(const T *buf, std::size_t count) throw() {
     std::size_t num_elements = fwrite(buf, buff_item<T>::size, count, get());
 
-    assert(num_elements == count);
-
+    BOOST_ASSERT(num_elements == count);
     return num_elements;
   }
 
@@ -226,7 +226,7 @@ public:
     std::size_t num_elements =
         fwrite(line.c_str(), sizeof(char), line.size(), get());
 
-    assert(num_elements == line.size());
+    BOOST_ASSERT(num_elements == line.size());
     boost::ignore_unused(num_elements);
   }
 

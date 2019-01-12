@@ -13,8 +13,9 @@
 #include <boost/gil/metafunctions.hpp>
 #include <boost/gil/pixel_iterator.hpp>
 
+#include <boost/assert.hpp>
+
 #include <algorithm>
-#include <cassert>
 #include <iterator>
 #include <numeric>
 
@@ -145,7 +146,7 @@ template <typename PixelAccum, typename SrcView, typename Scalar,
           typename DstView>
 inline void view_multiplies_scalar(const SrcView &src, const Scalar &scalar,
                                    const DstView &dst) {
-  assert(src.dimensions() == dst.dimensions());
+  BOOST_ASSERT(src.dimensions() == dst.dimensions());
   using PIXEL_SRC_REF =
       typename pixel_proxy<typename SrcView::value_type>::type;
   using PIXEL_DST_REF =
