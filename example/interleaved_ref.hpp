@@ -33,22 +33,20 @@ namespace gil {
 // Mutability of the reference proxy is part of its type (in this case, depends
 // on the mutability of ChannelReference)
 
-template <
-    typename ChannelReference, // Models ChannelConcept. A channel reference,
-                               // unsigned char& or const unsigned char&
-    typename Layout> // A layout (includes the color space and channel ordering)
-struct interleaved_ref {
+/// \tparam ChannelReference - Models ChannelConcept.
+///         A channel reference, unsigned char& or const unsigned char&
+/// \tparam Layout - A layout (includes the color space and channel ordering)
+template <typename ChannelReference, typename Layout> struct interleaved_ref {
 private:
-  typedef typename channel_traits<ChannelReference>::value_type channel_t;
-  typedef
-      typename channel_traits<ChannelReference>::reference channel_reference_t;
-  typedef typename channel_traits<ChannelReference>::const_reference
-      channel_const_reference_t;
-  typedef typename channel_traits<ChannelReference>::pointer channel_pointer_t;
+  using channel_t = typename channel_traits<ChannelReference>::value_type;
+  using channel_pointer_t = typename channel_traits<ChannelReference>::pointer;
+  using channel_reference_t =
+      typename channel_traits<ChannelReference>::reference;
+  using channel_const_reference_t =
+      typename channel_traits<ChannelReference>::const_reference;
 
 public:
-  // Required by ColorBaseConcept
-  typedef Layout layout_t;
+  using layout_t = Layout; // Required by ColorBaseConcept
 
   // Copy construction from a compatible type. The copy constructor of
   // references is shallow. The channels themselves are not copied.
@@ -79,9 +77,9 @@ public:
   }
 
   // Required by PixelConcept
-  typedef pixel<channel_t, layout_t> value_type;
-  typedef interleaved_ref reference;
-  typedef interleaved_ref<channel_const_reference_t, layout_t> const_reference;
+  using value_type = pixel<channel_t, layout_t>;
+  using reference = interleaved_ref;
+  using const_reference = interleaved_ref<channel_const_reference_t, layout_t>;
   static const bool is_mutable = channel_traits<ChannelReference>::is_mutable;
 
   // Required by HomogeneousPixelConcept
@@ -103,20 +101,21 @@ private:
 // Required by ColorBaseConcept
 template <typename ChannelReference, typename Layout, int K>
 struct kth_element_type<interleaved_ref<ChannelReference, Layout>, K> {
-  typedef ChannelReference type;
+  using type = ChannelReference;
 };
 
 template <typename ChannelReference, typename Layout, int K>
 struct kth_element_reference_type<interleaved_ref<ChannelReference, Layout>,
                                   K> {
-  typedef ChannelReference type;
+  using type = ChannelReference;
 };
 
 template <typename ChannelReference, typename Layout, int K>
 struct kth_element_const_reference_type<
     interleaved_ref<ChannelReference, Layout>, K> {
-  typedef ChannelReference type;
-  //    typedef typename channel_traits<ChannelReference>::const_reference type;
+  using type = ChannelReference;
+  // XXX: using type = typename
+  // channel_traits<ChannelReference>::const_reference;
 };
 
 // Required by ColorBaseConcept
@@ -159,13 +158,13 @@ struct is_pixel<interleaved_ref<ChannelReference, Layout>>
 // Required by PixelBasedConcept
 template <typename ChannelReference, typename Layout>
 struct color_space_type<interleaved_ref<ChannelReference, Layout>> {
-  typedef typename Layout::color_space_t type;
+  using type = typename Layout::color_space_t;
 };
 
 // Required by PixelBasedConcept
 template <typename ChannelReference, typename Layout>
 struct channel_mapping_type<interleaved_ref<ChannelReference, Layout>> {
-  typedef typename Layout::channel_mapping_t type;
+  using type = typename Layout::channel_mapping_t;
 };
 
 // Required by PixelBasedConcept
@@ -175,7 +174,7 @@ struct is_planar<interleaved_ref<ChannelReference, Layout>> : mpl::false_ {};
 // Required by HomogeneousPixelBasedConcept
 template <typename ChannelReference, typename Layout>
 struct channel_type<interleaved_ref<ChannelReference, Layout>> {
-  typedef typename channel_traits<ChannelReference>::value_type type;
+  using type = typename channel_traits<ChannelReference>::value_type;
 };
 
 } // namespace gil

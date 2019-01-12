@@ -35,9 +35,9 @@ at_c(const interleaved_ref<ChannelReference, Layout> &p);
 int main(int argc, char *argv[]) {
   using namespace boost::gil;
 
-  typedef interleaved_ptr<unsigned char *, rgb_layout_t> rgb8_interleaved_ptr;
-  typedef interleaved_ptr<const unsigned char *, rgb_layout_t>
-      rgb8c_interleaved_ptr;
+  using rgb8_interleaved_ptr = interleaved_ptr<unsigned char *, rgb_layout_t>;
+  using rgb8c_interleaved_ptr =
+      interleaved_ptr<unsigned char const *, rgb_layout_t>;
 
   boost::function_requires<MutablePixelIteratorConcept<rgb8_interleaved_ptr>>();
   boost::function_requires<PixelIteratorConcept<rgb8c_interleaved_ptr>>();
@@ -48,10 +48,10 @@ int main(int argc, char *argv[]) {
       MutablePixelConcept<rgb8_interleaved_ptr::value_type>>();
   boost::function_requires<PixelConcept<rgb8c_interleaved_ptr::value_type>>();
 
-  typedef type_from_x_iterator<rgb8_interleaved_ptr>::view_t
-      rgb8_interleaved_view_t;
-  typedef type_from_x_iterator<rgb8c_interleaved_ptr>::view_t
-      rgb8c_interleaved_view_t;
+  using rgb8_interleaved_view_t =
+      type_from_x_iterator<rgb8_interleaved_ptr>::view_t;
+  using rgb8c_interleaved_view_t =
+      type_from_x_iterator<rgb8c_interleaved_ptr>::view_t;
 
   boost::function_requires<MutableImageViewConcept<rgb8_interleaved_view_t>>();
   boost::function_requires<ImageViewConcept<rgb8c_interleaved_view_t>>();
