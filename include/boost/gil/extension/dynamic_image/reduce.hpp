@@ -844,11 +844,11 @@ struct reduce_views_basic<copy_and_convert_pixels_fn<CC>, V1, V2, AreBasic> {
 // resize_clobber_image_fnobj
 // image_default_construct_fnobj
 // fill_converted_pixels_fn
-// bind(gil::detail::copy_pixels_fn(), _1, dst)
-// bind(gil::detail::copy_pixels_fn(), src,_1)
+// std::bind(gil::detail::copy_pixels_fn(), std::placeholders::_1, dst)
+// std::bind(gil::detail::copy_pixels_fn(), src, std::placeholders::_1)
 
-// bind(detail::copy_and_convert_pixels_fn(), _1, dst)
-// bind(detail::copy_and_convert_pixels_fn(), src, _1)
+// std::bind(detail::copy_and_convert_pixels_fn(), std::placeholders::_1, dst)
+// std::bind(detail::copy_and_convert_pixels_fn(), src, std::placeholders::_1)
 // gil::detail::fill_pixels_fn<Value>(val)
 
 // detail::copy_construct_in_place_fn<base_t>
