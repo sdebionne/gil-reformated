@@ -21,8 +21,7 @@
 #include <boost/gil/io/scanline_read_iterator.hpp>
 #include <boost/gil/io/typedefs.hpp>
 
-#include <boost/function.hpp>
-
+#include <functional>
 #include <type_traits>
 #include <vector>
 
@@ -64,8 +63,8 @@ private:
     case pnm_image_type::gray_asc_t::value: {
       this->_scanline_length = this->_info._width;
 
-      _read_function = boost::mem_fn(&this_t::read_text_row);
-      _skip_function = boost::mem_fn(&this_t::skip_text_row);
+      _read_function = std::mem_fn(&this_t::read_text_row);
+      _skip_function = std::mem_fn(&this_t::skip_text_row);
 
       break;
     }
@@ -74,8 +73,8 @@ private:
       this->_scanline_length =
           this->_info._width * num_channels<rgb8_view_t>::value;
 
-      _read_function = boost::mem_fn(&this_t::read_text_row);
-      _skip_function = boost::mem_fn(&this_t::skip_text_row);
+      _read_function = std::mem_fn(&this_t::read_text_row);
+      _skip_function = std::mem_fn(&this_t::skip_text_row);
 
       break;
     }
@@ -84,8 +83,8 @@ private:
       // gray1_image_t
       this->_scanline_length = (this->_info._width + 7) >> 3;
 
-      _read_function = boost::mem_fn(&this_t::read_binary_bit_row);
-      _skip_function = boost::mem_fn(&this_t::skip_binary_row);
+      _read_function = std::mem_fn(&this_t::read_binary_bit_row);
+      _skip_function = std::mem_fn(&this_t::skip_binary_row);
 
       break;
     }
@@ -94,8 +93,8 @@ private:
       // gray8_image_t
       this->_scanline_length = this->_info._width;
 
-      _read_function = boost::mem_fn(&this_t::read_binary_byte_row);
-      _skip_function = boost::mem_fn(&this_t::skip_binary_row);
+      _read_function = std::mem_fn(&this_t::read_binary_byte_row);
+      _skip_function = std::mem_fn(&this_t::skip_binary_row);
 
       break;
     }
@@ -105,8 +104,8 @@ private:
       this->_scanline_length =
           this->_info._width * num_channels<rgb8_view_t>::value;
 
-      _read_function = boost::mem_fn(&this_t::read_binary_byte_row);
-      _skip_function = boost::mem_fn(&this_t::skip_binary_row);
+      _read_function = std::mem_fn(&this_t::read_binary_byte_row);
+      _skip_function = std::mem_fn(&this_t::skip_binary_row);
 
       break;
     }
@@ -183,8 +182,8 @@ private:
   detail::negate_bits<std::vector<byte_t>, std::true_type> _negate_bits;
   detail::swap_half_bytes<std::vector<byte_t>, std::true_type> _swap_half_bytes;
 
-  boost::function<void(this_t *, byte_t *)> _read_function;
-  boost::function<void(this_t *)> _skip_function;
+  std::function<void(this_t *, byte_t *)> _read_function;
+  std::function<void(this_t *)> _skip_function;
 };
 
 } // namespace gil
