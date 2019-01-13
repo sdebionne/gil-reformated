@@ -20,9 +20,8 @@
 #include <boost/gil/io/row_buffer_helper.hpp>
 #include <boost/gil/io/scanline_read_iterator.hpp>
 
-#include <boost/function.hpp>
-
 #include <algorithm>
+#include <functional>
 #include <string>
 #include <type_traits>
 #include <vector>
@@ -95,7 +94,7 @@ private:
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
                             this->_blue, sizeof(uint16_t) * num_colors);
 
-        _read_function = boost::mem_fn(&this_t::read_1_bit_index_image);
+        _read_function = std::mem_fn(&this_t::read_1_bit_index_image);
 
         break;
       }
@@ -110,7 +109,7 @@ private:
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
                             this->_blue, sizeof(uint16_t) * num_colors);
 
-        _read_function = boost::mem_fn(&this_t::read_2_bits_index_image);
+        _read_function = std::mem_fn(&this_t::read_2_bits_index_image);
 
         break;
       }
@@ -124,7 +123,7 @@ private:
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
                             this->_blue, sizeof(uint16_t) * num_colors);
 
-        _read_function = boost::mem_fn(&this_t::read_4_bits_index_image);
+        _read_function = std::mem_fn(&this_t::read_4_bits_index_image);
 
         break;
       }
@@ -139,7 +138,7 @@ private:
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
                             this->_blue, sizeof(uint16_t) * num_colors);
 
-        _read_function = boost::mem_fn(&this_t::read_8_bits_index_image);
+        _read_function = std::mem_fn(&this_t::read_8_bits_index_image);
 
         break;
       }
@@ -154,7 +153,7 @@ private:
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
                             this->_blue, sizeof(uint16_t) * num_colors);
 
-        _read_function = boost::mem_fn(&this_t::read_16_bits_index_image);
+        _read_function = std::mem_fn(&this_t::read_16_bits_index_image);
 
         break;
       }
@@ -169,7 +168,7 @@ private:
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
                             this->_blue, sizeof(uint16_t) * num_colors);
 
-        _read_function = boost::mem_fn(&this_t::read_24_bits_index_image);
+        _read_function = std::mem_fn(&this_t::read_24_bits_index_image);
 
         break;
       }
@@ -184,7 +183,7 @@ private:
             planar_rgb_view(num_colors, 1, this->_red, this->_green,
                             this->_blue, sizeof(uint16_t) * num_colors);
 
-        _read_function = boost::mem_fn(&this_t::read_32_bits_index_image);
+        _read_function = std::mem_fn(&this_t::read_32_bits_index_image);
 
         break;
       }
@@ -217,7 +216,7 @@ private:
           case 16:
           case 24:
           case 32: {
-            _read_function = boost::mem_fn(&this_t::read_row);
+            _read_function = std::mem_fn(&this_t::read_row);
             break;
           }
           default: {
@@ -241,7 +240,7 @@ private:
             case 16:
             case 24:
             case 32: {
-              _read_function = boost::mem_fn(&this_t::read_row);
+              _read_function = std::mem_fn(&this_t::read_row);
               break;
             }
             default: {
@@ -263,7 +262,7 @@ private:
             case 16:
             case 24:
             case 32: {
-              _read_function = boost::mem_fn(&this_t::read_row);
+              _read_function = std::mem_fn(&this_t::read_row);
               break;
             }
             default: {
@@ -293,7 +292,7 @@ private:
           case 16:
           case 24:
           case 32: {
-            _read_function = boost::mem_fn(&this_t::read_row);
+            _read_function = std::mem_fn(&this_t::read_row);
             break;
           }
           default: {
@@ -374,7 +373,7 @@ private:
 private:
   std::vector<byte_t> _buffer;
   detail::mirror_bits<std::vector<byte_t>, std::true_type> _mirror_bites;
-  boost::function<void(this_t *, byte_t *, int)> _read_function;
+  std::function<void(this_t *, byte_t *, int)> _read_function;
 };
 
 } // namespace gil
