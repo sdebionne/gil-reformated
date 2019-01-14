@@ -485,7 +485,7 @@ template <typename ChannelBitSizeVector, typename Layout,
           typename Alloc = std::allocator<unsigned char>>
 struct bit_aligned_image_type {
 private:
-  static int constexpr bit_size =
+  static constexpr int bit_size =
       mpl::accumulate<ChannelBitSizeVector, mpl::int_<0>,
                       mpl::plus<mpl::_1, mpl::_2>>::type::value;
 

@@ -54,7 +54,7 @@ private:
       typename channel_traits<ChannelReference>::const_reference;
 
 public:
-  static bool constexpr is_mutable =
+  static constexpr bool is_mutable =
       channel_traits<ChannelReference>::is_mutable;
   using value_type = pixel<channel_t, layout<ColorSpace>>;
   using reference = planar_pixel_reference<ChannelReference, ColorSpace>;
