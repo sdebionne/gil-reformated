@@ -73,7 +73,7 @@ public:
   using const_reference = const value_type &;
   using argument_type = SrcConstRefP;
   using result_type = reference;
-  static bool constexpr is_mutable = false;
+  static constexpr bool is_mutable = false;
 
   result_type operator()(argument_type srcP) const {
     result_type dstP;

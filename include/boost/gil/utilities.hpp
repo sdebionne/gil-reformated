@@ -79,7 +79,7 @@ struct deref_base {
   using value_type = Value;
   using reference = Reference;
   using const_reference = ConstReference;
-  static bool constexpr is_mutable = IsMutable;
+  static constexpr bool is_mutable = IsMutable;
 };
 
 /// \brief Composes two dereference function objects. Similar to

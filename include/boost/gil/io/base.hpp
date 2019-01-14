@@ -68,16 +68,16 @@ template <typename Property> struct property_base { using type = Property; };
 } // namespace detail
 
 struct read_support_true {
-  static bool constexpr is_supported = true;
+  static constexpr bool is_supported = true;
 };
 struct read_support_false {
-  static bool constexpr is_supported = false;
+  static constexpr bool is_supported = false;
 };
 struct write_support_true {
-  static bool constexpr is_supported = true;
+  static constexpr bool is_supported = true;
 };
 struct write_support_false {
-  static bool constexpr is_supported = false;
+  static constexpr bool is_supported = false;
 };
 
 class no_log {};

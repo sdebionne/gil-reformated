@@ -67,7 +67,7 @@ template <typename BitField, // A type that holds the bits of the pixel.
   using reference = value_type &;
   using const_reference = value_type const &;
 
-  static bool constexpr is_mutable =
+  static constexpr bool is_mutable =
       channel_traits<typename mpl::front<ChannelRefVec>::type>::is_mutable;
 
   packed_pixel() {}

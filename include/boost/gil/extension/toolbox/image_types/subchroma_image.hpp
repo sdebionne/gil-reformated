@@ -46,10 +46,10 @@ template <int J, int A, int B> struct scaling_factors {
           type::value,
       "");
 
-  static int constexpr ss_X =
+  static constexpr int ss_X =
       mpl::divides<mpl::int_<J>, mpl::int_<A>>::type::value;
 
-  static int constexpr ss_Y = mpl::if_<
+  static constexpr int ss_Y = mpl::if_<
       mpl::equal_to<mpl::int_<B>, mpl::int_<0>>, mpl::int_<2>,
       typename mpl::if_<mpl::equal_to<mpl::int_<A>, mpl::int_<B>>, mpl::int_<1>,
                         mpl::int_<4>>::type>::type::value;
