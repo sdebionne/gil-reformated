@@ -351,9 +351,11 @@ public:
       png_charp scale_width = nullptr;
       png_charp scale_height = nullptr;
 
-      if (this->_info._valid_scale_factors =
-              png_get_sCAL_s(get_struct(), get_info(), &this->_info._scale_unit,
-                             &scale_width, &scale_height) > 0) {
+      this->_info._valid_scale_factors =
+          png_get_sCAL_s(get_struct(), get_info(), &this->_info._scale_unit,
+                         &scale_width, &scale_height);
+
+      if (this->_info._valid_scale_factors) {
         if (scale_width) {
           this->_info._scale_width.append(scale_width,
                                           std::strlen(scale_width));
