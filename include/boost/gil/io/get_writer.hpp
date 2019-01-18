@@ -10,6 +10,10 @@
 
 #include <boost/gil/io/get_write_device.hpp>
 
+#include <boost/mpl/and.hpp>
+
+#include <type_traits>
+
 namespace boost {
 namespace gil {
 
@@ -18,19 +22,19 @@ template <typename T, typename FormatTag, class Enable = void>
 struct get_writer {};
 
 template <typename String, typename FormatTag>
-struct get_writer<
-    String, FormatTag,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type> {
+struct get_writer<String, FormatTag,
+                  typename std::enable_if<
+                      mpl::and_<detail::is_supported_path_spec<String>,
+                                is_format_tag<FormatTag>>::type::value>::type> {
   using device_t = typename get_write_device<String, FormatTag>::type;
   using type = writer<device_t, FormatTag>;
 };
 
 template <typename Device, typename FormatTag>
 struct get_writer<Device, FormatTag,
-                  typename enable_if<mpl::and_<
+                  typename std::enable_if<mpl::and_<
                       detail::is_adaptable_output_device<FormatTag, Device>,
-                      is_format_tag<FormatTag>>>::type> {
+                      is_format_tag<FormatTag>>::type::value>::type> {
   using device_t = typename get_write_device<Device, FormatTag>::type;
   using type = writer<device_t, FormatTag>;
 };
@@ -42,8 +46,9 @@ struct get_dynamic_image_writer {};
 template <typename String, typename FormatTag>
 struct get_dynamic_image_writer<
     String, FormatTag,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type> {
+    typename std::enable_if<
+        mpl::and_<detail::is_supported_path_spec<String>,
+                  is_format_tag<FormatTag>>::type::value>::type> {
   using device_t = typename get_write_device<String, FormatTag>::type;
   using type = dynamic_image_writer<device_t, FormatTag>;
 };
@@ -51,8 +56,9 @@ struct get_dynamic_image_writer<
 template <typename Device, typename FormatTag>
 struct get_dynamic_image_writer<
     Device, FormatTag,
-    typename enable_if<mpl::and_<detail::is_write_device<FormatTag, Device>,
-                                 is_format_tag<FormatTag>>>::type> {
+    typename std::enable_if<
+        mpl::and_<detail::is_write_device<FormatTag, Device>,
+                  is_format_tag<FormatTag>>::type::value>::type> {
   using device_t = typename get_write_device<Device, FormatTag>::type;
   using type = dynamic_image_writer<device_t, FormatTag>;
 };

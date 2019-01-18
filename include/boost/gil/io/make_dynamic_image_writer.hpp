@@ -10,21 +10,23 @@
 
 #include <boost/gil/io/get_writer.hpp>
 
-#include <boost/utility/enable_if.hpp>
+#include <boost/mpl/and.hpp>
+
+#include <type_traits>
 
 namespace boost {
 namespace gil {
 
 template <typename String, typename FormatTag>
-inline typename get_dynamic_image_writer<String, FormatTag>::type
-make_dynamic_image_writer(
-    const String &file_name, const image_write_info<FormatTag> &info,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
-    = nullptr) {
-  typename get_write_device<String, FormatTag>::type device(
-      detail::convert_to_native_string(file_name),
-      typename detail::file_stream_device<FormatTag>::write_tag());
+inline auto make_dynamic_image_writer(
+    String const &file_name, image_write_info<FormatTag> const &info,
+    typename std::enable_if<
+        mpl::and_<detail::is_supported_path_spec<String>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_writer<String, FormatTag>::type {
+  using deveice_t = typename get_write_device<String, FormatTag>::type;
+  deveice_t device(detail::convert_to_native_string(file_name),
+                   typename detail::file_stream_device<FormatTag>::write_tag());
 
   return
       typename get_dynamic_image_writer<String, FormatTag>::type(device, info);
@@ -39,7 +41,7 @@ make_dynamic_image_writer(const std::wstring &file_name,
   typename get_write_device<std::wstring, FormatTag>::type device(
       str, typename detail::file_stream_device<FormatTag>::write_tag());
 
-  delete[] str;
+  delete[] str; // TODO: RAII
 
   return typename get_dynamic_image_writer<std::wstring, FormatTag>::type(
       device, info);
@@ -55,15 +57,13 @@ make_dynamic_image_writer(const filesystem::path &path,
 #endif // BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 template <typename Device, typename FormatTag>
-inline typename get_dynamic_image_writer<Device, FormatTag>::type
-make_dynamic_image_writer(
-    Device &file, const image_write_info<FormatTag> &info,
-    typename enable_if<mpl::and_<
+inline auto make_dynamic_image_writer(
+    Device &file, image_write_info<FormatTag> const &info,
+    typename std::enable_if<mpl::and_<
         typename detail::is_adaptable_output_device<FormatTag, Device>::type,
-        is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+        is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_writer<Device, FormatTag>::type {
   typename get_write_device<Device, FormatTag>::type device(file);
-
   return
       typename get_dynamic_image_writer<Device, FormatTag>::type(device, info);
 }
@@ -71,12 +71,12 @@ make_dynamic_image_writer(
 // no image_write_info
 
 template <typename String, typename FormatTag>
-inline typename get_dynamic_image_writer<String, FormatTag>::type
-make_dynamic_image_writer(
-    const String &file_name, const FormatTag &,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
-    = nullptr) {
+inline auto make_dynamic_image_writer(
+    String const &file_name, FormatTag const &,
+    typename std::enable_if<
+        mpl::and_<detail::is_supported_path_spec<String>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_writer<String, FormatTag>::type {
   return make_dynamic_image_writer(file_name, image_write_info<FormatTag>());
 }
 
@@ -96,13 +96,12 @@ make_dynamic_image_writer(const filesystem::path &path, const FormatTag &) {
 #endif // BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 template <typename Device, typename FormatTag>
-inline typename get_dynamic_image_writer<Device, FormatTag>::type
-make_dynamic_image_writer(
-    Device &file, const FormatTag &,
-    typename enable_if<mpl::and_<
+inline auto make_dynamic_image_writer(
+    Device &file, FormatTag const &,
+    typename std::enable_if<mpl::and_<
         typename detail::is_adaptable_output_device<FormatTag, Device>::type,
-        is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+        is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_writer<Device, FormatTag>::type {
   return make_dynamic_image_writer(file, image_write_info<FormatTag>());
 }
 

@@ -10,36 +10,40 @@
 
 #include <boost/gil/io/get_reader.hpp>
 
-#include <boost/utility/enable_if.hpp>
+#include <boost/mpl/and.hpp>
+
+#include <type_traits>
 
 namespace boost {
 namespace gil {
 
 template <typename String, typename FormatTag>
-inline typename get_dynamic_image_reader<String, FormatTag>::type
-make_dynamic_image_reader(
-    const String &file_name, const image_read_settings<FormatTag> &settings,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
-    = nullptr) {
-  typename get_read_device<String, FormatTag>::type device(
-      detail::convert_to_native_string(file_name),
-      typename detail::file_stream_device<FormatTag>::read_tag());
+inline auto make_dynamic_image_reader(
+    String const &file_name, image_read_settings<FormatTag> const &settings,
+    typename std::enable_if<
+        mpl::and_<detail::is_supported_path_spec<String>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_reader<String, FormatTag>::type {
+  using device_t = typename get_read_device<String, FormatTag>::type;
+  device_t device(detail::convert_to_native_string(file_name),
+                  typename detail::file_stream_device<FormatTag>::read_tag());
 
   return typename get_dynamic_image_reader<String, FormatTag>::type(device,
                                                                     settings);
 }
 
 template <typename FormatTag>
-inline typename get_dynamic_image_reader<std::wstring, FormatTag>::type
-make_dynamic_image_reader(const std::wstring &file_name,
-                          const image_read_settings<FormatTag> &settings) {
-  const char *str = detail::convert_to_native_string(file_name);
+inline auto
+make_dynamic_image_reader(std::wstring const &file_name,
+                          image_read_settings<FormatTag> const &settings) ->
+    typename get_dynamic_image_reader<std::wstring, FormatTag>::type {
+  char const *str = detail::convert_to_native_string(file_name);
 
-  typename get_read_device<std::wstring, FormatTag>::type device(
-      str, typename detail::file_stream_device<FormatTag>::read_tag());
+  using device_t = typename get_read_device<std::wstring, FormatTag>::type;
+  device_t device(str,
+                  typename detail::file_stream_device<FormatTag>::read_tag());
 
-  delete[] str;
+  delete[] str; // TODO: RAII
 
   return typename get_dynamic_image_reader<std::wstring, FormatTag>::type(
       device, settings);
@@ -47,23 +51,22 @@ make_dynamic_image_reader(const std::wstring &file_name,
 
 #ifdef BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 template <typename FormatTag>
-inline typename get_dynamic_image_reader<std::wstring, FormatTag>::type
-make_dynamic_image_reader(const filesystem::path &path,
-                          const image_read_settings<FormatTag> &settings) {
+inline auto
+make_dynamic_image_reader(filesystem::path const &path,
+                          image_read_settings<FormatTag> const &settings) ->
+    typename get_dynamic_image_reader<std::wstring, FormatTag>::type {
   return make_dynamic_image_reader(path.wstring(), settings);
 }
 #endif // BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 template <typename Device, typename FormatTag>
-inline typename get_dynamic_image_reader<Device, FormatTag>::type
-make_dynamic_image_reader(
-    Device &file, const image_read_settings<FormatTag> &settings,
-    typename enable_if<
+inline auto make_dynamic_image_reader(
+    Device &file, image_read_settings<FormatTag> const &settings,
+    typename std::enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_reader<Device, FormatTag>::type {
   typename get_read_device<Device, FormatTag>::type device(file);
-
   return typename get_dynamic_image_reader<Device, FormatTag>::type(device,
                                                                     settings);
 }
@@ -71,38 +74,39 @@ make_dynamic_image_reader(
 // without image_read_settings
 
 template <typename String, typename FormatTag>
-inline typename get_dynamic_image_reader<String, FormatTag>::type
-make_dynamic_image_reader(
-    const String &file_name, const FormatTag &,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
-    = nullptr) {
+inline auto make_dynamic_image_reader(
+    String const &file_name, FormatTag const &,
+    typename std::enable_if<
+        mpl::and_<detail::is_supported_path_spec<String>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_reader<String, FormatTag>::type {
   return make_dynamic_image_reader(file_name, image_read_settings<FormatTag>());
 }
 
 template <typename FormatTag>
-inline typename get_dynamic_image_reader<std::wstring, FormatTag>::type
-make_dynamic_image_reader(const std::wstring &file_name, const FormatTag &) {
+inline auto make_dynamic_image_reader(std::wstring const &file_name,
+                                      FormatTag const &) ->
+    typename get_dynamic_image_reader<std::wstring, FormatTag>::type {
   return make_dynamic_image_reader(file_name, image_read_settings<FormatTag>());
 }
 
 #ifdef BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 template <typename FormatTag>
-inline typename get_dynamic_image_reader<std::wstring, FormatTag>::type
-make_dynamic_image_reader(const filesystem::path &path, const FormatTag &) {
+inline auto make_dynamic_image_reader(filesystem::path const &path,
+                                      FormatTag const &) ->
+    typename get_dynamic_image_reader<std::wstring, FormatTag>::type {
   return make_dynamic_image_reader(path.wstring(),
                                    image_read_settings<FormatTag>());
 }
 #endif // BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 template <typename Device, typename FormatTag>
-inline typename get_dynamic_image_reader<Device, FormatTag>::type
-make_dynamic_image_reader(
-    Device &file, const FormatTag &,
-    typename enable_if<
+inline auto make_dynamic_image_reader(
+    Device &file, FormatTag const &,
+    typename std::enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) -> typename get_dynamic_image_reader<Device, FormatTag>::type {
   return make_dynamic_image_reader(file, image_read_settings<FormatTag>());
 }
 

@@ -12,10 +12,10 @@
 
 #include <boost/assert.hpp>
 #include <boost/core/ignore_unused.hpp>
-#include <boost/utility/enable_if.hpp>
 
 #include <cstdio>
 #include <memory>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -407,8 +407,9 @@ struct is_adaptable_input_device : mpl::false_ {};
 template <typename FormatTag, typename T>
 struct is_adaptable_input_device<
     FormatTag, T,
-    typename enable_if<mpl::or_<is_base_and_derived<std::istream, T>,
-                                is_same<std::istream, T>>>::type> : mpl::true_ {
+    typename std::enable_if<
+        mpl::or_<is_base_and_derived<std::istream, T>,
+                 is_same<std::istream, T>>::type::value>::type> : mpl::true_ {
   using device_type = istream_device<FormatTag>;
 };
 
@@ -426,8 +427,9 @@ struct is_read_device : mpl::false_ {};
 template <typename FormatTag, typename T>
 struct is_read_device<
     FormatTag, T,
-    typename enable_if<mpl::or_<is_input_device<FormatTag>,
-                                is_adaptable_input_device<FormatTag, T>>>::type>
+    typename std::enable_if<
+        mpl::or_<is_input_device<FormatTag>,
+                 is_adaptable_input_device<FormatTag, T>>::type::value>::type>
     : mpl::true_ {};
 
 /**
@@ -447,8 +449,9 @@ struct is_adaptable_output_device : mpl::false_ {};
 template <typename FormatTag, typename T>
 struct is_adaptable_output_device<
     FormatTag, T,
-    typename enable_if<mpl::or_<is_base_and_derived<std::ostream, T>,
-                                is_same<std::ostream, T>>>::type> : mpl::true_ {
+    typename std::enable_if<
+        mpl::or_<is_base_and_derived<std::ostream, T>,
+                 is_same<std::ostream, T>>::type::value>::type> : mpl::true_ {
   using device_type = ostream_device<FormatTag>;
 };
 
@@ -464,10 +467,11 @@ template <typename FormatTag, typename T, typename D = void>
 struct is_write_device : mpl::false_ {};
 
 template <typename FormatTag, typename T>
-struct is_write_device<FormatTag, T,
-                       typename enable_if<mpl::or_<
-                           is_output_device<FormatTag>,
-                           is_adaptable_output_device<FormatTag, T>>>::type>
+struct is_write_device<
+    FormatTag, T,
+    typename std::enable_if<
+        mpl::or_<is_output_device<FormatTag>,
+                 is_adaptable_output_device<FormatTag, T>>::type::value>::type>
     : mpl::true_ {};
 
 } // namespace detail

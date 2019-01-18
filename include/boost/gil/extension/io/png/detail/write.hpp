@@ -19,6 +19,8 @@
 #include <boost/mpl/less.hpp>
 #include <boost/mpl/not.hpp>
 
+#include <type_traits>
+
 namespace boost {
 namespace gil {
 
@@ -121,22 +123,26 @@ private:
 
   template <typename Info>
   void
-  set_swap(typename enable_if<is_less_than_eight<Info>>::type * /* ptr */ = 0) {
+  set_swap(typename std::enable_if<is_less_than_eight<Info>::type::value>::type
+               * /*ptr*/
+           = 0) {
     png_set_packswap(this->get_struct());
   }
 
   template <typename Info>
   void
-  set_swap(typename enable_if<is_equal_to_sixteen<Info>>::type * /* ptr */ =
-               nullptr) {
+  set_swap(typename std::enable_if<is_equal_to_sixteen<Info>::type::value>::type
+               * /*ptr*/
+           = 0) {
     png_set_swap(this->get_struct());
   }
 
   template <typename Info>
   void set_swap(
-      typename enable_if<mpl::and_<mpl::not_<is_less_than_eight<Info>>,
-                                   mpl::not_<is_equal_to_sixteen<Info>>>>::type
-          * /* ptr */
+      typename std::enable_if<
+          mpl::and_<mpl::not_<is_less_than_eight<Info>>,
+                    mpl::not_<is_equal_to_sixteen<Info>>>::type::value>::type
+          * /*ptr*/
       = nullptr) {}
 };
 

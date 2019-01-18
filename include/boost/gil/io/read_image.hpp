@@ -18,7 +18,8 @@
 
 #include <boost/mpl/and.hpp>
 #include <boost/type_traits/is_base_and_derived.hpp>
-#include <boost/utility/enable_if.hpp>
+
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -32,13 +33,13 @@ namespace gil {
 template <typename Reader, typename Image>
 inline void read_image(
     Reader reader, Image &img,
-    typename enable_if<mpl::and_<
+    typename std::enable_if<mpl::and_<
         detail::is_reader<Reader>, is_format_tag<typename Reader::format_tag_t>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
-                          typename Reader::format_tag_t>>>::type * /* ptr */
+                          typename Reader::format_tag_t>>::type::value>::type
+        * /*dummy*/
     = nullptr) {
   reader.init_image(img, reader._settings);
-
   reader.apply(view(img));
 }
 
@@ -49,17 +50,16 @@ inline void read_image(
 /// depending on the image format. \throw std::ios_base::failure
 template <typename Device, typename Image, typename FormatTag>
 inline void read_image(
-    Device &file, Image &img, const image_read_settings<FormatTag> &settings,
-    typename enable_if<mpl::and_<
+    Device &file, Image &img, image_read_settings<FormatTag> const &settings,
+    typename std::enable_if<mpl::and_<
         detail::is_read_device<FormatTag, Device>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
-                          FormatTag>>>::type * /* ptr */
-    = 0) {
+                          FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) {
   using reader_t =
       typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file, settings, detail::read_and_no_convert());
-
   read_image(reader, img);
 }
 
@@ -70,17 +70,16 @@ inline void read_image(
 /// Must satisfy is_format_tag metafunction. \throw std::ios_base::failure
 template <typename Device, typename Image, typename FormatTag>
 inline void read_image(
-    Device &file, Image &img, const FormatTag &tag,
-    typename enable_if<mpl::and_<
+    Device &file, Image &img, FormatTag const &tag,
+    typename std::enable_if<mpl::and_<
         detail::is_read_device<FormatTag, Device>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
-                          FormatTag>>>::type * /* ptr */
+                          FormatTag>>::type::value>::type * /*dummy*/
     = nullptr) {
   using reader_t =
       typename get_reader<Device, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file, tag, detail::read_and_no_convert());
-
   read_image(reader, img);
 }
 
@@ -91,19 +90,18 @@ inline void read_image(
 /// settings depending on the image format. \throw std::ios_base::failure
 template <typename String, typename Image, typename FormatTag>
 inline void read_image(
-    const String &file_name, Image &img,
-    const image_read_settings<FormatTag> &settings,
-    typename enable_if<mpl::and_<
+    String const &file_name, Image &img,
+    image_read_settings<FormatTag> const &settings,
+    typename std::enable_if<mpl::and_<
         detail::is_supported_path_spec<String>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
-                          FormatTag>>>::type * /* ptr */
+                          FormatTag>>::type::value>::type * /*dummy*/
     = nullptr) {
   using reader_t =
       typename get_reader<String, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader =
       make_reader(file_name, settings, detail::read_and_no_convert());
-
   read_image(reader, img);
 }
 
@@ -115,17 +113,16 @@ inline void read_image(
 /// std::ios_base::failure
 template <typename String, typename Image, typename FormatTag>
 inline void read_image(
-    const String &file_name, Image &img, const FormatTag &tag,
-    typename enable_if<mpl::and_<
+    String const &file_name, Image &img, FormatTag const &tag,
+    typename std::enable_if<mpl::and_<
         detail::is_supported_path_spec<String>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
-                          FormatTag>>>::type * /* ptr */
+                          FormatTag>>::type::value>::type * /*dummy*/
     = nullptr) {
   using reader_t =
       typename get_reader<String, FormatTag, detail::read_and_no_convert>::type;
 
   reader_t reader = make_reader(file_name, tag, detail::read_and_no_convert());
-
   read_image(reader, img);
 }
 
@@ -134,10 +131,10 @@ inline void read_image(
 template <typename Reader, typename Images>
 inline void
 read_image(Reader &reader, any_image<Images> &images,
-           typename enable_if<
-               mpl::and_<detail::is_dynamic_image_reader<Reader>,
-                         is_format_tag<typename Reader::format_tag_t>>>::type
-               * /* ptr */
+           typename std::enable_if<mpl::and_<
+               detail::is_dynamic_image_reader<Reader>,
+               is_format_tag<typename Reader::format_tag_t>>::type::value>::type
+               * /*dummy*/
            = nullptr) {
   reader.apply(images);
 }
@@ -150,14 +147,14 @@ read_image(Reader &reader, any_image<Images> &images,
 template <typename Device, typename Images, typename FormatTag>
 inline void read_image(
     Device &file, any_image<Images> &images,
-    const image_read_settings<FormatTag> &settings,
-    typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    image_read_settings<FormatTag> const &settings,
+    typename std::enable_if<
+        mpl::and_<detail::is_read_device<FormatTag, Device>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) {
   using reader_t = typename get_dynamic_image_reader<Device, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file, settings);
-
   read_image(reader, images);
 }
 
@@ -169,14 +166,14 @@ inline void read_image(
 /// std::ios_base::failure
 template <typename Device, typename Images, typename FormatTag>
 inline void read_image(
-    Device &file, any_image<Images> &images, const FormatTag &tag,
-    typename enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    Device &file, any_image<Images> &images, FormatTag const &tag,
+    typename std::enable_if<
+        mpl::and_<detail::is_read_device<FormatTag, Device>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) {
   using reader_t = typename get_dynamic_image_reader<Device, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file, tag);
-
   read_image(reader, images);
 }
 
@@ -187,15 +184,15 @@ inline void read_image(
 /// settings depending on the image format. \throw std::ios_base::failure
 template <typename String, typename Images, typename FormatTag>
 inline void read_image(
-    const String &file_name, any_image<Images> &images,
-    const image_read_settings<FormatTag> &settings,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
-    = 0) {
+    String const &file_name, any_image<Images> &images,
+    image_read_settings<FormatTag> const &settings,
+    typename std::enable_if<
+        mpl::and_<detail::is_supported_path_spec<String>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    = nullptr) {
   using reader_t = typename get_dynamic_image_reader<String, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file_name, settings);
-
   read_image(reader, images);
 }
 
@@ -207,14 +204,14 @@ inline void read_image(
 /// std::ios_base::failure
 template <typename String, typename Images, typename FormatTag>
 inline void read_image(
-    const String &file_name, any_image<Images> &images, const FormatTag &tag,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type * /* ptr */
+    String const &file_name, any_image<Images> &images, FormatTag const &tag,
+    typename std::enable_if<
+        mpl::and_<detail::is_supported_path_spec<String>,
+                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
     = nullptr) {
   using reader_t = typename get_dynamic_image_reader<String, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file_name, tag);
-
   read_image(reader, images);
 }
 
