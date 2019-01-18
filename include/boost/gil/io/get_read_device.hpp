@@ -12,7 +12,8 @@
 #include <boost/gil/io/path_spec.hpp>
 
 #include <boost/mpl/and.hpp>
-#include <boost/utility/enable_if.hpp>
+
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -22,18 +23,18 @@ struct get_read_device {};
 
 template <typename Device, typename FormatTag>
 struct get_read_device<Device, FormatTag,
-                       typename enable_if<mpl::and_<
+                       typename std::enable_if<mpl::and_<
                            detail::is_adaptable_input_device<FormatTag, Device>,
-                           is_format_tag<FormatTag>>>::type> {
+                           is_format_tag<FormatTag>>::type::value>::type> {
   using type = typename detail::is_adaptable_input_device<FormatTag,
                                                           Device>::device_type;
 };
 
 template <typename String, typename FormatTag>
-struct get_read_device<
-    String, FormatTag,
-    typename enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                 is_format_tag<FormatTag>>>::type> {
+struct get_read_device<String, FormatTag,
+                       typename std::enable_if<mpl::and_<
+                           detail::is_supported_path_spec<String>,
+                           is_format_tag<FormatTag>>::type::value>::type> {
   using type = detail::file_stream_device<FormatTag>;
 };
 
