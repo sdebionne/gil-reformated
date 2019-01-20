@@ -483,7 +483,7 @@ BOOST_FORCEINLINE void destruct_range_impl(
 
 template <typename Iterator>
 BOOST_FORCEINLINE void destruct_range_impl(
-    Iterator first, Iterator last,
+    Iterator /*first*/, Iterator /*last*/,
     typename std::enable_if<
         mpl::or_<mpl::not_<is_pointer<Iterator>>,
                  std::is_trivially_destructible<typename std::iterator_traits<
