@@ -13,7 +13,6 @@
 #include <boost/gil/extension/io/targa.hpp>
 #include <boost/gil/extension/io/tiff.hpp>
 
-#include <boost/filesystem.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include "paths.hpp"
