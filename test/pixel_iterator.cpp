@@ -12,6 +12,7 @@
 
 #include <exception>
 #include <iostream>
+#include <type_traits>
 #include <vector>
 
 using namespace boost::gil;
@@ -48,16 +49,16 @@ void test_pixel_iterator() {
 
   // TEST dynamic_step_t
   static_assert(
-      boost::is_same<cmyk16_step_ptr_t,
-                     dynamic_x_step_type<cmyk16_step_ptr_t>::type>::value,
+      std::is_same<cmyk16_step_ptr_t,
+                   dynamic_x_step_type<cmyk16_step_ptr_t>::type>::value,
       "");
   static_assert(
-      boost::is_same<cmyk16_planar_step_ptr_t,
-                     dynamic_x_step_type<cmyk16_planar_ptr_t>::type>::value,
+      std::is_same<cmyk16_planar_step_ptr_t,
+                   dynamic_x_step_type<cmyk16_planar_ptr_t>::type>::value,
       "");
 
   static_assert(
-      boost::is_same<
+      std::is_same<
           iterator_type<uint8_t, gray_layout_t, false, false, false>::type,
           gray8c_ptr_t>::value,
       "");
@@ -78,7 +79,7 @@ void test_pixel_iterator() {
 
   using rgb2gray_step_ptr = dynamic_x_step_type<rgb2gray_ptr>::type;
   static_assert(
-      boost::is_same<
+      std::is_same<
           rgb2gray_step_ptr,
           dereference_iterator_adaptor<rgb8_step_ptr_t, ccv_rgb_g_fn>>::value,
       "");
@@ -89,16 +90,16 @@ void test_pixel_iterator() {
       dereference_iterator_adaptor<rgb8_step_ptr_t, ccv_rgb_g_fn>;
   static_assert(iterator_is_step<rgb2gray_step_ptr1>::value, "");
   static_assert(
-      boost::is_same<rgb2gray_step_ptr1,
-                     dynamic_x_step_type<rgb2gray_step_ptr1>::type>::value,
+      std::is_same<rgb2gray_step_ptr1,
+                   dynamic_x_step_type<rgb2gray_step_ptr1>::type>::value,
       "");
 
   using rgb2gray_step_ptr2 = memory_based_step_iterator<
       dereference_iterator_adaptor<rgb8_ptr_t, ccv_rgb_g_fn>>;
   static_assert(iterator_is_step<rgb2gray_step_ptr2>::value, "");
   static_assert(
-      boost::is_same<rgb2gray_step_ptr2,
-                     dynamic_x_step_type<rgb2gray_step_ptr2>::type>::value,
+      std::is_same<rgb2gray_step_ptr2,
+                   dynamic_x_step_type<rgb2gray_step_ptr2>::type>::value,
       "");
   make_step_iterator(rgb2gray_step_ptr2(), 2);
 

@@ -26,6 +26,7 @@
 #include <map>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 using namespace boost::gil;
@@ -547,20 +548,19 @@ void static_checks() {
   static_assert(!view_is_mutable<cmyk8c_planar_step_view_t>::value, "");
   static_assert(view_is_mutable<rgb8_planar_view_t>::value, "");
 
+  static_assert(std::is_same<derived_view_type<cmyk8c_planar_step_view_t>::type,
+                             cmyk8c_planar_step_view_t>::value,
+                "");
   static_assert(
-      boost::is_same<derived_view_type<cmyk8c_planar_step_view_t>::type,
-                     cmyk8c_planar_step_view_t>::value,
+      std::is_same<derived_view_type<cmyk8c_planar_step_view_t, std::uint16_t,
+                                     rgb_layout_t>::type,
+                   rgb16c_planar_step_view_t>::value,
       "");
   static_assert(
-      boost::is_same<derived_view_type<cmyk8c_planar_step_view_t, std::uint16_t,
-                                       rgb_layout_t>::type,
-                     rgb16c_planar_step_view_t>::value,
-      "");
-  static_assert(
-      boost::is_same<derived_view_type<cmyk8c_planar_step_view_t, use_default,
-                                       rgb_layout_t, mpl::false_, use_default,
-                                       mpl::false_>::type,
-                     rgb8c_step_view_t>::value,
+      std::is_same<derived_view_type<cmyk8c_planar_step_view_t, use_default,
+                                     rgb_layout_t, mpl::false_, use_default,
+                                     mpl::false_>::type,
+                   rgb8c_step_view_t>::value,
       "");
 
   // test view get raw data (mostly compile-time test)

@@ -10,6 +10,7 @@
 
 #include <boost/gil/concepts/concept_check.hpp>
 
+#include <type_traits>
 #include <utility> // std::swap
 
 #if BOOST_GCC >= 40700
@@ -140,7 +141,7 @@ template <typename T> struct Metafunction {
 /// \ingroup BasicConcepts
 ///
 template <typename T, typename U> struct SameType {
-  void constraints() { static_assert(boost::is_same<T, U>::value_core, ""); }
+  void constraints() { static_assert(std::is_same<T, U>::value, ""); }
 };
 
 } // namespace gil

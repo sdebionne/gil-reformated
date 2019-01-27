@@ -227,7 +227,7 @@ homogeneous color bases
 Example:
 \code
 using element_t = element_type<rgb8c_planar_ptr_t>::type;
-static_assert(boost::is_same<element_t, const uint8_t*>::value, "");
+static_assert(std::is_same<element_t, const uint8_t*>::value, "");
 \endcode
 */
 /// \brief Specifies the element type of a homogeneous color base

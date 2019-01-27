@@ -15,6 +15,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <fstream>
+#include <type_traits>
 
 #include "paths.hpp"
 
@@ -30,8 +31,8 @@ BOOST_AUTO_TEST_SUITE(gil_io_tests)
 BOOST_AUTO_TEST_CASE(make_reader_backend_test) {
   {
     static_assert(
-        boost::is_same<gil::detail::is_supported_path_spec<char *>::type,
-                       mpl::true_>::value,
+        std::is_same<gil::detail::is_supported_path_spec<char *>::type,
+                     mpl::true_>::value,
         "");
 
     get_reader_backend<const char *, bmp_tag>::type backend_char =
@@ -178,8 +179,8 @@ BOOST_AUTO_TEST_CASE(make_writer_test) {
   {
     using writer_t = get_writer<char const *, bmp_tag>::type;
 
-    static_assert(boost::is_same<gil::detail::is_writer<writer_t>::type,
-                                 boost::mpl::true_>::value,
+    static_assert(std::is_same<gil::detail::is_writer<writer_t>::type,
+                               boost::mpl::true_>::value,
                   "");
   }
 
