@@ -9,6 +9,7 @@
 #define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ANY_IMAGE_HPP
 
 #include <boost/gil/extension/dynamic_image/any_image_view.hpp>
+#include <boost/gil/extension/dynamic_image/apply_operation.hpp>
 
 #include <boost/gil/image.hpp>
 
@@ -79,8 +80,9 @@ struct any_image_get_const_view {
 /// return \p any_image_view, which does not fully model ImageViewConcept. See
 /// \p any_image_view for more.
 ////////////////////////////////////////////////////////////////////////////////////////
-template <typename ImageTypes> class any_image : public variant<ImageTypes> {
-  using parent_t = variant<ImageTypes>;
+template <typename ImageTypes>
+class any_image : public make_variant_over<ImageTypes>::type {
+  using parent_t = typename make_variant_over<ImageTypes>::type;
 
 public:
   using const_view_t = any_image_view<
@@ -97,7 +99,8 @@ public:
   explicit any_image(T &obj, bool do_swap) : parent_t(obj, do_swap) {}
   any_image(const any_image &v) : parent_t((const parent_t &)v) {}
   template <typename Types>
-  any_image(const any_image<Types> &v) : parent_t((const variant<Types> &)v) {}
+  any_image(const any_image<Types> &v)
+      : parent_t((const typename make_variant_over<Types>::type &)v) {}
 
   template <typename T> any_image &operator=(const T &obj) {
     parent_t::operator=(obj);
@@ -108,7 +111,7 @@ public:
     return *this;
   }
   template <typename Types> any_image &operator=(const any_image<Types> &v) {
-    parent_t::operator=((const variant<Types> &)v);
+    parent_t::operator=((const typename make_variant_over<Types>::type &)v);
     return *this;
   }
 

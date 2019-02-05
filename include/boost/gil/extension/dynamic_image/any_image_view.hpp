@@ -8,7 +8,7 @@
 #ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ANY_IMAGE_VIEW_HPP
 #define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_ANY_IMAGE_VIEW_HPP
 
-#include <boost/gil/extension/dynamic_image/variant.hpp>
+#include <boost/variant.hpp>
 
 #include <boost/gil/image.hpp>
 #include <boost/gil/image_view.hpp>
@@ -70,8 +70,8 @@ struct any_type_get_dimensions {
 /// algorithm_fn);
 ////////////////////////////////////////////////////////////////////////////////////////
 template <typename ImageViewTypes>
-class any_image_view : public variant<ImageViewTypes> {
-  using parent_t = variant<ImageViewTypes>;
+class any_image_view : public make_variant_over<ImageViewTypes>::type {
+  using parent_t = typename make_variant_over<ImageViewTypes>::type;
 
 public:
   using const_t =
@@ -85,7 +85,7 @@ public:
   any_image_view(const any_image_view &v) : parent_t((const parent_t &)v) {}
   template <typename Types>
   any_image_view(const any_image_view<Types> &v)
-      : parent_t((const variant<Types> &)v) {}
+      : parent_t((const typename make_variant_over<Types>::type &)v) {}
 
   template <typename T> any_image_view &operator=(const T &obj) {
     parent_t::operator=(obj);
@@ -97,7 +97,7 @@ public:
   }
   template <typename Types>
   any_image_view &operator=(const any_image_view<Types> &v) {
-    parent_t::operator=((const variant<Types> &)v);
+    parent_t::operator=((const typename make_variant_over<Types>::type &)v);
     return *this;
   }
 
