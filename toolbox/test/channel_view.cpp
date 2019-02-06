@@ -28,10 +28,10 @@ BOOST_AUTO_TEST_CASE(channel_view_test) {
   static_assert(std::is_same<kth_channel_view_t, channel_view_t>::value, "");
 
   kth_channel_view_t const kth0 = bg::kth_channel_view<0>(bg::const_view(img));
-  BOOST_TEST(kth0.num_channels() == 1);
+  BOOST_TEST(kth0.num_channels() == 1u);
 
   channel_view_t const red = bg::channel_view<bg::red_t>(bg::const_view(img));
-  BOOST_TEST(red.num_channels() == 1);
+  BOOST_TEST(red.num_channels() == 1u);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
