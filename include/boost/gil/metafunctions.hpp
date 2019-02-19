@@ -10,6 +10,7 @@
 
 #include <boost/gil/channel.hpp>
 #include <boost/gil/concepts.hpp>
+#include <boost/gil/dynamic_step.hpp>
 
 #include <boost/mpl/accumulate.hpp>
 #include <boost/mpl/back.hpp>
