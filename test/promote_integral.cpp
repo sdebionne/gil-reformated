@@ -19,8 +19,6 @@
 //
 #include <boost/gil/promote_integral.hpp>
 
-#include <boost/config.hpp>
-
 #include <algorithm>
 #include <climits>
 #include <cstddef>
@@ -32,7 +30,7 @@
 #ifndef BOOST_TEST_MODULE
 #define BOOST_TEST_MODULE test_promote_integral
 #endif
-#include <gil_test_common.hpp>
+#include "unit_test.hpp"
 
 // Uncomment to enable debugging output
 //#define BOOST_GIL_TEST_DEBUG 1

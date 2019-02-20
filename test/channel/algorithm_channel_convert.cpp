@@ -11,7 +11,7 @@
 
 #define BOOST_TEST_MODULE test_algorithm_channel_convert
 #include "channel_test_fixture.hpp"
-#include <gil_test_common.hpp>
+#include "unit_test.hpp"
 
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
