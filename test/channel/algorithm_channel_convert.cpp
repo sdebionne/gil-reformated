@@ -10,7 +10,7 @@
 #include <cstdint>
 
 #define BOOST_TEST_MODULE test_algorithm_channel_convert
-#include "channel_test_fixture.hpp"
+#include "test_fixture.hpp"
 #include "unit_test.hpp"
 
 namespace gil = boost::gil;
