@@ -11,6 +11,7 @@
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/mpl/begin.hpp>
+#include <boost/mpl/contains.hpp>
 #include <boost/mpl/distance.hpp>
 #include <boost/mpl/find.hpp>
 #include <boost/mpl/range_c.hpp>
@@ -197,7 +198,10 @@ template <typename T> struct dec {
 template <typename Types, typename T>
 struct type_to_index
     : public mpl::distance<typename mpl::begin<Types>::type,
-                           typename mpl::find<Types, T>::type>::type {};
+                           typename mpl::find<Types, T>::type>::type {
+  static_assert(mpl::contains<Types, T>::type::value,
+                "T should be element of Types");
+};
 } // namespace detail
 
 /// \ingroup ColorSpaceAndLayoutModel
