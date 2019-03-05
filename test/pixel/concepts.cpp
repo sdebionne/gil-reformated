@@ -21,13 +21,13 @@ namespace gil = boost::gil;
 using boost::function_requires;
 using namespace boost::mp11;
 
-template <template <typename> typename Concept> struct assert_concept {
+template <template <typename> class Concept> struct assert_concept {
   template <typename Pixel> void operator()(Pixel &&) {
     function_requires<Concept<Pixel>>();
   }
 };
 
-template <template <typename> typename Concept, typename... Pixels>
+template <template <typename> class Concept, typename... Pixels>
 void test_concept() {
   mp_for_each<Pixels...>(assert_concept<Concept>());
 }
