@@ -37,7 +37,7 @@
 
 namespace bg = boost::gil;
 
-template <typename T, bool Signed = std::is_fundamental<T>::type::value &&
+template <typename T, bool Signed = std::is_fundamental<T>::value &&
                                     !std::is_unsigned<T>::type::value>
 struct absolute_value {
   static inline T apply(T const &t) { return static_cast<T>(t < 0 ? -t : t); }
@@ -48,7 +48,7 @@ template <typename T> struct absolute_value<T, false> {
 };
 
 template <typename Integral, typename Promoted,
-          bool Signed = !std::is_unsigned<Promoted>::type::value>
+          bool Signed = !std::is_unsigned<Promoted>::value>
 struct test_max_values {
   static inline void apply() {
     // Use >= where value is guaranteed to never be greater than comparator
@@ -90,16 +90,14 @@ struct test_max_values<Integral, Promoted, false> {
 };
 
 // helper function that returns the bit size of a type
-template <typename T, bool IsFundamental = std::is_fundamental<T>::type::value>
+template <typename T, bool IsFundamental = std::is_fundamental<T>::value>
 struct bit_size_impl : std::integral_constant<std::size_t, 0> {};
 
 template <typename T>
 struct bit_size_impl<T, true>
     : bg::detail::promote_integral::bit_size<T>::type {};
 
-template <typename T> std::size_t bit_size() {
-  return bit_size_impl<T>::type::value;
-}
+template <typename T> std::size_t bit_size() { return bit_size_impl<T>::value; }
 
 template <bool PromoteUnsignedToUnsigned> struct test_promote_integral {
   template <typename Type, typename ExpectedPromotedType>
@@ -108,7 +106,7 @@ template <bool PromoteUnsignedToUnsigned> struct test_promote_integral {
         typename bg::promote_integral<Type, PromoteUnsignedToUnsigned>::type;
 
     bool const same_types =
-        std::is_same<promoted_integral_type, ExpectedPromotedType>::type::value;
+        std::is_same<promoted_integral_type, ExpectedPromotedType>::value;
 
     BOOST_CHECK_MESSAGE(
         same_types,
@@ -116,7 +114,7 @@ template <bool PromoteUnsignedToUnsigned> struct test_promote_integral {
                     << "; detected: " << typeid(promoted_integral_type).name()
                     << "; expected: " << typeid(ExpectedPromotedType).name());
 
-    if (!std::is_same<Type, promoted_integral_type>::type::value) {
+    if (!std::is_same<Type, promoted_integral_type>::value) {
       test_max_values<Type, promoted_integral_type>::apply();
     }
 
@@ -149,7 +147,7 @@ template <bool PromoteUnsignedToUnsigned> struct test_promote_integral {
 };
 
 template <typename T, bool PromoteUnsignedToUnsigned = false,
-          bool IsSigned = !std::is_unsigned<T>::type::value>
+          bool IsSigned = !std::is_unsigned<T>::value>
 struct test_promotion {
   static inline void apply(std::string case_id) {
 #ifdef BOOST_GIL_TEST_DEBUG

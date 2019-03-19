@@ -33,7 +33,7 @@ namespace detail {
 namespace promote_integral {
 
 // meta-function that returns the bit size of a type
-template <typename T, bool IsFundamental = std::is_fundamental<T>::type::value>
+template <typename T, bool IsFundamental = std::is_fundamental<T>::value>
 struct bit_size {};
 
 // for fundamental types, just return CHAR_BIT * sizeof(T)
@@ -47,7 +47,7 @@ struct promote_to_larger {
   using current_type = typename boost::mpl::deref<Iterator>::type;
 
   using type = typename std::conditional<
-      (bit_size<current_type>::type::value >= MinSize), current_type,
+      (bit_size<current_type>::value >= MinSize), current_type,
       typename promote_to_larger<T, typename boost::mpl::next<Iterator>::type,
                                  EndIterator, MinSize>::type>::type;
 };
@@ -98,10 +98,10 @@ struct promote_to_larger<T, EndIterator, EndIterator, MinSize> {
 */
 template <typename T, bool PromoteUnsignedToUnsigned = false,
           bool UseCheckedInteger = false,
-          bool IsIntegral = std::is_integral<T>::type::value>
+          bool IsIntegral = std::is_integral<T>::value>
 class promote_integral {
 private:
-  static bool const is_unsigned = std::is_unsigned<T>::type::value;
+  static bool const is_unsigned = std::is_unsigned<T>::value;
 
   using bit_size_type = detail::promote_integral::bit_size<T>;
 

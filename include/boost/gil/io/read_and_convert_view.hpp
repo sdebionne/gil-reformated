@@ -33,9 +33,9 @@ namespace gil {
 template <typename Reader, typename View>
 inline void read_and_convert_view(
     Reader &reader, View const &view,
-    typename std::enable_if<mpl::and_<
-        detail::is_reader<Reader>,
-        is_format_tag<typename Reader::format_tag_t>>::type::value>::type
+    typename std::enable_if<
+        mpl::and_<detail::is_reader<Reader>,
+                  is_format_tag<typename Reader::format_tag_t>>::value>::type
         * /*dummy*/
     = nullptr) {
   reader.check_image_size(view.dimensions());
@@ -54,9 +54,9 @@ template <typename Device, typename View, typename ColorConverter,
 inline void read_and_convert_view(
     Device &device, View const &view,
     image_read_settings<FormatTag> const &settings, ColorConverter const &cc,
-    typename std::enable_if<
-        mpl::and_<detail::is_read_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
+                                      is_format_tag<FormatTag>>::value>::type
+        * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
   using reader_t =
@@ -79,7 +79,7 @@ inline void read_and_convert_view(
     image_read_settings<FormatTag> const &settings, ColorConverter const &cc,
     typename std::enable_if<
         mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::type::value>::type
+                  detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
@@ -103,7 +103,7 @@ inline void read_and_convert_view(
     FormatTag const &tag,
     typename std::enable_if<
         mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::type::value>::type
+                  detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
@@ -125,9 +125,9 @@ template <typename Device, typename View, typename ColorConverter,
 inline void read_and_convert_view(
     Device &device, View const &view, ColorConverter const &cc,
     FormatTag const &tag,
-    typename std::enable_if<
-        mpl::and_<detail::is_read_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
+                                      is_format_tag<FormatTag>>::value>::type
+        * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
   using reader_t =
@@ -148,7 +148,7 @@ inline void read_and_convert_view(
     image_read_settings<FormatTag> const &settings,
     typename std::enable_if<
         mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::type::value>::type
+                  detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
@@ -168,9 +168,9 @@ template <typename Device, typename View, typename FormatTag>
 inline void read_and_convert_view(
     Device &device, View const &view,
     image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<
-        mpl::and_<detail::is_read_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
+                                      is_format_tag<FormatTag>>::value>::type
+        * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
   using reader_t =
@@ -190,7 +190,7 @@ inline void read_and_convert_view(
     String const &file_name, View const &view, FormatTag const &tag,
     typename std::enable_if<
         mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::type::value>::type
+                  detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
@@ -209,9 +209,9 @@ inline void read_and_convert_view(
 template <typename Device, typename View, typename FormatTag>
 inline void read_and_convert_view(
     Device &device, View const &view, FormatTag const &tag,
-    typename std::enable_if<
-        mpl::and_<detail::is_read_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
+                                      is_format_tag<FormatTag>>::value>::type
+        * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
   using reader_t =

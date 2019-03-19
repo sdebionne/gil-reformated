@@ -21,9 +21,9 @@ template <typename String, typename FormatTag, typename ConversionPolicy>
 inline auto make_reader(
     String const &file_name, image_read_settings<FormatTag> const &settings,
     ConversionPolicy const &,
-    typename std::enable_if<
-        mpl::and_<detail::is_supported_path_spec<String>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    typename std::enable_if<mpl::and_<detail::is_supported_path_spec<String>,
+                                      is_format_tag<FormatTag>>::value>::type
+        * /*dummy*/
     = nullptr) ->
     typename get_reader<String, FormatTag, ConversionPolicy>::type {
   typename get_read_device<String, FormatTag>::type device(
@@ -61,13 +61,13 @@ make_reader(const filesystem::path &path,
 #endif // BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 template <typename Device, typename FormatTag, typename ConversionPolicy>
-inline auto make_reader(
-    Device &file, image_read_settings<FormatTag> const &settings,
-    ConversionPolicy const &,
-    typename std::enable_if<
-        mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
-    = nullptr) ->
+inline auto
+make_reader(Device &file, image_read_settings<FormatTag> const &settings,
+            ConversionPolicy const &,
+            typename std::enable_if<
+                mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
+                          is_format_tag<FormatTag>>::value>::type * /*dummy*/
+            = nullptr) ->
     typename get_reader<Device, FormatTag, ConversionPolicy>::type {
   typename get_read_device<Device, FormatTag>::type device(file);
 
@@ -80,9 +80,9 @@ inline auto make_reader(
 template <typename String, typename FormatTag, typename ConversionPolicy>
 inline auto make_reader(
     String const &file_name, FormatTag const &, ConversionPolicy const &cc,
-    typename std::enable_if<
-        mpl::and_<detail::is_supported_path_spec<String>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+    typename std::enable_if<mpl::and_<detail::is_supported_path_spec<String>,
+                                      is_format_tag<FormatTag>>::value>::type
+        * /*dummy*/
     = nullptr) ->
     typename get_reader<String, FormatTag, ConversionPolicy>::type {
   return make_reader(file_name, image_read_settings<FormatTag>(), cc);
@@ -105,12 +105,12 @@ make_reader(const filesystem::path &path, const FormatTag &,
 #endif // BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 template <typename Device, typename FormatTag, typename ConversionPolicy>
-inline auto make_reader(
-    Device &file, FormatTag const &, ConversionPolicy const &cc,
-    typename std::enable_if<
-        mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
-    = nullptr) ->
+inline auto
+make_reader(Device &file, FormatTag const &, ConversionPolicy const &cc,
+            typename std::enable_if<
+                mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
+                          is_format_tag<FormatTag>>::value>::type * /*dummy*/
+            = nullptr) ->
     typename get_reader<Device, FormatTag, ConversionPolicy>::type {
   return make_reader(file, image_read_settings<FormatTag>(), cc);
 }
