@@ -33,7 +33,7 @@ inline auto read_image_info(
     Device &file, image_read_settings<FormatTag> const &settings,
     typename std::enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+                  is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) -> typename get_reader_backend<Device, FormatTag>::type {
   return make_reader_backend(file, settings);
 }
@@ -48,7 +48,7 @@ inline auto read_image_info(
     Device &file, FormatTag const &,
     typename std::enable_if<
         mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type * /*dummy*/
+                  is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) -> typename get_reader_backend<Device, FormatTag>::type {
   return read_image_info(file, image_read_settings<FormatTag>());
 }
@@ -63,7 +63,7 @@ inline auto read_image_info(
     String const &file_name, image_read_settings<FormatTag> const &settings,
     typename std::enable_if<
         mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::type::value>::type
+                  detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) -> typename get_reader_backend<String, FormatTag>::type {
   return make_reader_backend(file_name, settings);
@@ -79,7 +79,7 @@ inline auto read_image_info(
     String const &file_name, FormatTag const &,
     typename std::enable_if<
         mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::type::value>::type
+                  detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) -> typename get_reader_backend<String, FormatTag>::type {
   return read_image_info(file_name, image_read_settings<FormatTag>());

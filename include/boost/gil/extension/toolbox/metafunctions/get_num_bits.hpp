@@ -49,8 +49,8 @@ struct get_num_bits<const packed_channel_value<N>> : mpl::int_<N> {};
 
 template <typename T>
 struct get_num_bits<
-    T, typename std::enable_if<mpl::and_<
-           is_integral<T>, mpl::not_<is_class<T>>>::type::value>::type>
+    T, typename std::enable_if<
+           mpl::and_<is_integral<T>, mpl::not_<is_class<T>>>::value>::type>
     : mpl::size_t<sizeof(T) * 8> {};
 
 } // namespace gil

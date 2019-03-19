@@ -31,24 +31,23 @@ namespace gil {
 namespace detail {
 
 template <int J, int A, int B> struct scaling_factors {
-  static_assert(mpl::equal_to<mpl::int_<J>, mpl::int_<4>>::type::value, "");
-
-  static_assert(mpl::or_<mpl::equal_to<mpl::int_<A>, mpl::int_<4>>,
-                         mpl::or_<mpl::equal_to<mpl::int_<A>, mpl::int_<2>>,
-                                  mpl::equal_to<mpl::int_<A>, mpl::int_<1>>>>::
-                    type::value,
-                "");
+  static_assert(mpl::equal_to<mpl::int_<J>, mpl::int_<4>>::value, "");
 
   static_assert(
-      mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<4>>,
-               mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<2>>,
-                        mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<1>>,
-                                 mpl::equal_to<mpl::int_<B>, mpl::int_<0>>>>>::
-          type::value,
+      mpl::or_<mpl::equal_to<mpl::int_<A>, mpl::int_<4>>,
+               mpl::or_<mpl::equal_to<mpl::int_<A>, mpl::int_<2>>,
+                        mpl::equal_to<mpl::int_<A>, mpl::int_<1>>>>::value,
       "");
 
-  static constexpr int ss_X =
-      mpl::divides<mpl::int_<J>, mpl::int_<A>>::type::value;
+  static_assert(
+      mpl::or_<
+          mpl::equal_to<mpl::int_<B>, mpl::int_<4>>,
+          mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<2>>,
+                   mpl::or_<mpl::equal_to<mpl::int_<B>, mpl::int_<1>>,
+                            mpl::equal_to<mpl::int_<B>, mpl::int_<0>>>>>::value,
+      "");
+
+  static constexpr int ss_X = mpl::divides<mpl::int_<J>, mpl::int_<A>>::value;
 
   static constexpr int ss_Y = mpl::if_<
       mpl::equal_to<mpl::int_<B>, mpl::int_<0>>, mpl::int_<2>,

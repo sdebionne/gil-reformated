@@ -45,7 +45,7 @@ private:
 
 template <typename Pixel>
 struct row_buffer_helper<
-    Pixel, typename std::enable_if<is_bit_aligned<Pixel>::type::value>::type> {
+    Pixel, typename std::enable_if<is_bit_aligned<Pixel>::value>::type> {
   using element_t = byte_t;
   using buffer_t = std::vector<element_t>;
   using pixel_type = Pixel;
@@ -88,19 +88,19 @@ template <typename Pixel>
 struct row_buffer_helper<
     Pixel, typename std::enable_if<
                mpl::and_<typename is_bit_aligned<Pixel>::type,
-                         typename is_homogeneous<Pixel>::type>::type::value>> {
+                         typename is_homogeneous<Pixel>::type>::value>> {
   using element_t = byte_t;
   using buffer_t = std::vector<element_t>;
   using pixel_type = Pixel;
   using iterator_t = bit_aligned_pixel_iterator<pixel_type>;
 
   row_buffer_helper(std::size_t width, bool in_bytes)
-      : _c((width * num_channels<pixel_type>::type::value *
+      : _c((width * num_channels<pixel_type>::value *
             channel_type<pixel_type>::type::num_bits) >>
            3)
 
         ,
-        _r(width * num_channels<pixel_type>::type::value *
+        _r(width * num_channels<pixel_type>::value *
                channel_type<pixel_type>::type::num_bits -
            (_c << 3)) {
     if (in_bytes) {
@@ -142,7 +142,7 @@ struct row_buffer_helper_view : row_buffer_helper<typename View::value_type> {
 template <typename View>
 struct row_buffer_helper_view<
     View, typename std::enable_if<
-              is_bit_aligned<typename View::value_type>::type::value>::type>
+              is_bit_aligned<typename View::value_type>::value>::type>
     : row_buffer_helper<typename View::reference> {
   row_buffer_helper_view(std::size_t width, bool in_bytes)
       : row_buffer_helper<typename View::reference>(width, in_bytes) {}

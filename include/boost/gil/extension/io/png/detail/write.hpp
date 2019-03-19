@@ -122,28 +122,26 @@ private:
       : mpl::equal_to<mpl::int_<Info::_bit_depth>, mpl::int_<16>> {};
 
   template <typename Info>
-  void
-  set_swap(typename std::enable_if<is_less_than_eight<Info>::type::value>::type
-               * /*ptr*/
-           = 0) {
+  void set_swap(
+      typename std::enable_if<is_less_than_eight<Info>::value>::type * /*ptr*/ =
+          0) {
     png_set_packswap(this->get_struct());
   }
 
   template <typename Info>
-  void
-  set_swap(typename std::enable_if<is_equal_to_sixteen<Info>::type::value>::type
-               * /*ptr*/
-           = 0) {
+  void set_swap(
+      typename std::enable_if<is_equal_to_sixteen<Info>::value>::type * /*ptr*/
+      = 0) {
     png_set_swap(this->get_struct());
   }
 
   template <typename Info>
-  void set_swap(
-      typename std::enable_if<
-          mpl::and_<mpl::not_<is_less_than_eight<Info>>,
-                    mpl::not_<is_equal_to_sixteen<Info>>>::type::value>::type
-          * /*ptr*/
-      = nullptr) {}
+  void
+  set_swap(typename std::enable_if<
+               mpl::and_<mpl::not_<is_less_than_eight<Info>>,
+                         mpl::not_<is_equal_to_sixteen<Info>>>::value>::type
+               * /*ptr*/
+           = nullptr) {}
 };
 
 ///

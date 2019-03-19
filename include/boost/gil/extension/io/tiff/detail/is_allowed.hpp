@@ -26,10 +26,9 @@ struct Format_Type {};
 
 // is_bit_aligned< View >
 template <typename View, typename Channel>
-struct Format_Type<
-    View, Channel,
-    typename std::enable_if<is_bit_aligned<
-        typename get_pixel_type<View>::type>::type::value>::type> {
+struct Format_Type<View, Channel,
+                   typename std::enable_if<is_bit_aligned<
+                       typename get_pixel_type<View>::type>::value>::type> {
   static const int value = SAMPLEFORMAT_UINT;
 };
 
@@ -39,7 +38,7 @@ struct Format_Type<View, Channel,
                    typename std::enable_if<mpl::and_<
                        mpl::not_<typename is_bit_aligned<
                            typename get_pixel_type<View>::type>::type>,
-                       is_unsigned<Channel>>::type::value>::type> {
+                       is_unsigned<Channel>>::value>::type> {
   static const int value = SAMPLEFORMAT_UINT;
 };
 
@@ -49,7 +48,7 @@ struct Format_Type<View, Channel,
                    typename std::enable_if<mpl::and_<
                        mpl::not_<typename is_bit_aligned<
                            typename get_pixel_type<View>::type>::type>,
-                       is_signed<Channel>>::type::value>::type> {
+                       is_signed<Channel>>::value>::type> {
   static const int value = SAMPLEFORMAT_INT;
 };
 
@@ -59,7 +58,7 @@ struct Format_Type<View, Channel,
                    typename std::enable_if<mpl::and_<
                        mpl::not_<typename is_bit_aligned<
                            typename get_pixel_type<View>::type>::type>,
-                       is_floating_point<Channel>>::type::value>::type> {
+                       is_floating_point<Channel>>::value>::type> {
   static const int value = SAMPLEFORMAT_IEEEFP;
 };
 

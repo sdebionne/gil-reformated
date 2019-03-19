@@ -57,23 +57,23 @@ struct is_homogeneous_impl_p {};
 template <typename B, typename C, typename L>
 struct is_homogeneous<packed_pixel<B, C, L>>
     : is_homogeneous_impl_p<C, typename mpl::at_c<C, 0>::type, 1,
-                            mpl::size<C>::type::value> {};
+                            mpl::size<C>::value> {};
 
 template <typename B, typename C, typename L>
 struct is_homogeneous<const packed_pixel<B, C, L>>
     : is_homogeneous_impl_p<C, typename mpl::at_c<C, 0>::type, 1,
-                            mpl::size<C>::type::value> {};
+                            mpl::size<C>::value> {};
 
 // for bit_aligned_pixel_reference
 template <typename B, typename C, typename L, bool M>
 struct is_homogeneous<bit_aligned_pixel_reference<B, C, L, M>>
     : is_homogeneous_impl<C, typename mpl::at_c<C, 0>::type, 1,
-                          mpl::size<C>::type::value> {};
+                          mpl::size<C>::value> {};
 
 template <typename B, typename C, typename L, bool M>
 struct is_homogeneous<const bit_aligned_pixel_reference<B, C, L, M>>
     : is_homogeneous_impl<C, typename mpl::at_c<C, 0>::type, 1,
-                          mpl::size<C>::type::value> {};
+                          mpl::size<C>::value> {};
 
 } // namespace gil
 } // namespace boost

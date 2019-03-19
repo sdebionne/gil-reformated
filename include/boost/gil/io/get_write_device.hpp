@@ -26,16 +26,16 @@ struct get_write_device<
     Device, FormatTag,
     typename std::enable_if<
         mpl::and_<detail::is_adaptable_output_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::type::value>::type> {
+                  is_format_tag<FormatTag>>::value>::type> {
   using type = typename detail::is_adaptable_output_device<FormatTag,
                                                            Device>::device_type;
 };
 
 template <typename String, typename FormatTag>
-struct get_write_device<String, FormatTag,
-                        typename std::enable_if<mpl::and_<
-                            detail::is_supported_path_spec<String>,
-                            is_format_tag<FormatTag>>::type::value>::type> {
+struct get_write_device<
+    String, FormatTag,
+    typename std::enable_if<mpl::and_<detail::is_supported_path_spec<String>,
+                                      is_format_tag<FormatTag>>::value>::type> {
   using type = detail::file_stream_device<FormatTag>;
 };
 
