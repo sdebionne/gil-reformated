@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <sstream>
 
 // taken from jpegxx -
 // https://bitbucket.org/edd/jpegxx/src/ea2492a1a4a6/src/ijg_headers.hpp
