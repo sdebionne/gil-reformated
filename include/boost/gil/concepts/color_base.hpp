@@ -13,6 +13,7 @@
 #include <boost/gil/concepts/concept_check.hpp>
 #include <boost/gil/concepts/fwd.hpp>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/type_traits.hpp>
 
 #if defined(BOOST_CLANG)
@@ -232,6 +233,7 @@ template <typename ColorBase> struct HomogeneousColorBaseConcept {
 
     using R0 = typename kth_element_const_reference_type<ColorBase, 0>::type;
     R0 r = dynamic_at_c(cb, 0);
+    boost::ignore_unused(r);
   }
   ColorBase cb;
 };
@@ -252,6 +254,7 @@ template <typename ColorBase> struct MutableHomogeneousColorBaseConcept {
     gil_function_requires<HomogeneousColorBaseConcept<ColorBase>>();
     using R0 = typename kth_element_reference_type<ColorBase, 0>::type;
     R0 r = dynamic_at_c(cb, 0);
+    boost::ignore_unused(r);
     dynamic_at_c(cb, 0) = dynamic_at_c(cb, 0);
   }
   ColorBase cb;
