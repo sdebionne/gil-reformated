@@ -60,7 +60,7 @@ template <typename BitField, // A type that holds the bits of the pixel.
           typename Layout> // Layout defining the color space and ordering of
                            // the channels. Example value: rgb_layout_t
                            struct packed_pixel {
-  BitField _bitfield;
+  BitField _bitfield{0};
 
   using layout_t = Layout;
   using value_type = packed_pixel<BitField, ChannelRefVec, Layout>;
@@ -70,7 +70,7 @@ template <typename BitField, // A type that holds the bits of the pixel.
   static constexpr bool is_mutable =
       channel_traits<typename mpl::front<ChannelRefVec>::type>::is_mutable;
 
-  packed_pixel() {}
+  packed_pixel() = default;
   explicit packed_pixel(const BitField &bitfield) : _bitfield(bitfield) {}
 
   // Construct from another compatible pixel type
