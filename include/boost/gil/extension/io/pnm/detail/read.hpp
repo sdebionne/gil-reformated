@@ -58,7 +58,8 @@ public:
 
   template <typename View> void apply(const View &view) {
     using is_read_and_convert_t =
-        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type;
+        typename std::is_same<ConversionPolicy,
+                              detail::read_and_no_convert>::type;
 
     io_error_if(!detail::is_allowed<View>(this->_info, is_read_and_convert_t()),
                 "Image types aren't compatible.");
@@ -172,13 +173,13 @@ private:
       // aren't compatible. Though, read_and_no_convert::read(...) wont work.
       copy_data<View_Dst, View_Src>(
           dst, src, y,
-          typename is_same<View_Dst, gray1_image_t::view_t>::type());
+          typename std::is_same<View_Dst, gray1_image_t::view_t>::type());
     }
   }
 
   template <typename View_Dst, typename View_Src>
   void copy_data(const View_Dst &dst, const View_Src &src,
-                 typename View_Dst::y_coord_t y, mpl::true_ // is gray1_view
+                 typename View_Dst::y_coord_t y, std::true_type // is gray1_view
   ) {
     if (this->_info._max_value == 1) {
       typename View_Dst::x_iterator it = dst.row_begin(y);
@@ -187,13 +188,14 @@ private:
         it[x] = src[x];
       }
     } else {
-      copy_data(dst, src, y, mpl::false_());
+      copy_data(dst, src, y, std::false_type{});
     }
   }
 
   template <typename View_Dst, typename View_Src>
   void copy_data(const View_Dst &view, const View_Src &src,
-                 typename View_Dst::y_coord_t y, mpl::false_ // is gray1_view
+                 typename View_Dst::y_coord_t y,
+                 std::false_type // is gray1_view
   ) {
     typename View_Src::x_iterator beg =
         src.row_begin(0) + this->_settings._top_left.x;

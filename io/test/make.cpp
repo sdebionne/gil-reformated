@@ -8,8 +8,10 @@
 #define BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 #define BOOST_FILESYSTEM_VERSION 3
 
-#include <boost/gil.hpp>
 #include <boost/gil/extension/io/bmp.hpp>
+
+#include <boost/gil.hpp>
+#include <boost/gil/detail/mp11.hpp>
 
 #include <boost/test/unit_test.hpp>
 
@@ -31,7 +33,7 @@ BOOST_AUTO_TEST_CASE(make_reader_backend_test) {
   {
     static_assert(
         std::is_same<gil::detail::is_supported_path_spec<char *>::type,
-                     mpl::true_>::value,
+                     std::true_type>::value,
         "");
 
     get_reader_backend<const char *, bmp_tag>::type backend_char =
@@ -179,7 +181,7 @@ BOOST_AUTO_TEST_CASE(make_writer_test) {
     using writer_t = get_writer<char const *, bmp_tag>::type;
 
     static_assert(std::is_same<gil::detail::is_writer<writer_t>::type,
-                               boost::mpl::true_>::value,
+                               std::true_type>::value,
                   "");
   }
 

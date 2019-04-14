@@ -8,11 +8,12 @@
 #ifndef BOOST_GIL_PREMULTIPLY_HPP
 #define BOOST_GIL_PREMULTIPLY_HPP
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/rgba.hpp>
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/mpl/for_each.hpp>
-#include <boost/mpl/remove.hpp>
+
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -35,12 +36,12 @@ template <typename SrcP, typename DstP> struct channel_premultiply {
 
 namespace detail {
 template <typename SrcP, typename DstP>
-void assign_alpha_if(mpl::true_, SrcP const &src, DstP &dst) {
+void assign_alpha_if(std::true_type, SrcP const &src, DstP &dst) {
   get_color(dst, alpha_t()) = alpha_or_max(src);
 }
 
 template <typename SrcP, typename DstP>
-void assign_alpha_if(mpl::false_, SrcP const &src, DstP &dst) {
+void assign_alpha_if(std::false_type, SrcP const &src, DstP &dst) {
   // nothing to do
   boost::ignore_unused(src);
   boost::ignore_unused(dst);
@@ -52,12 +53,11 @@ struct premultiply {
   void operator()(const SrcP &src, DstP &dst) const {
     using src_colour_space_t = typename color_space_type<SrcP>::type;
     using dst_colour_space_t = typename color_space_type<DstP>::type;
-    using src_colour_channels =
-        typename mpl::remove<src_colour_space_t, alpha_t>::type;
+    using src_colour_channels = mp11::mp_remove<src_colour_space_t, alpha_t>;
 
-    using has_alpha_t =
-        mpl::bool_<mpl::contains<dst_colour_space_t, alpha_t>::value>;
-    mpl::for_each<src_colour_channels>(
+    using has_alpha_t = std::integral_constant<
+        bool, mp11::mp_contains<dst_colour_space_t, alpha_t>::value>;
+    mp11::mp_for_each<src_colour_channels>(
         channel_premultiply<SrcP, DstP>(src, dst));
     detail::assign_alpha_if(has_alpha_t(), src, dst);
   }

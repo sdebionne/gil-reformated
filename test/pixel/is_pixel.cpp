@@ -45,15 +45,13 @@ int main() {
       "is_pixel yields true for non-pixel type");
 
   using bgr121_ref_t =
-      gil::bit_aligned_pixel_reference<std::uint8_t,
-                                       boost::mpl::vector3_c<int, 1, 2, 1>,
+      gil::bit_aligned_pixel_reference<std::uint8_t, mp_list_c<int, 1, 2, 1>,
                                        gil::bgr_layout_t, true>;
   static_assert(gil::is_pixel<bgr121_ref_t>::value,
                 "is_pixel does not yield true for bit_aligned_pixel_reference");
 
   using rgb121_ref_t =
-      gil::bit_aligned_pixel_reference<std::uint8_t,
-                                       boost::mpl::vector3_c<int, 1, 2, 1>,
+      gil::bit_aligned_pixel_reference<std::uint8_t, mp_list_c<int, 1, 2, 1>,
                                        gil::rgb_layout_t, true>;
   static_assert(gil::is_pixel<bgr121_ref_t>::value,
                 "is_pixel does not yield true for bit_aligned_pixel_reference");

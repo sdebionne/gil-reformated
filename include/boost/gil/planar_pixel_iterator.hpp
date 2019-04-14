@@ -8,15 +8,18 @@
 #ifndef BOOST_GIL_PLANAR_PIXEL_ITERATOR_HPP
 #define BOOST_GIL_PLANAR_PIXEL_ITERATOR_HPP
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/pixel.hpp>
 #include <boost/gil/step_iterator.hpp>
 
 #include <boost/iterator/iterator_facade.hpp>
 
 #include <iterator>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
+
 // forward declaration (as this file is included in planar_pixel_reference.hpp)
 template <typename ChannelReference, typename ColorSpace>
 struct planar_pixel_reference;
@@ -45,27 +48,30 @@ struct planar_pixel_reference;
 /// \ingroup PixelIteratorModelPlanarPtr ColorBaseModelPlanarPtr PixelBasedModel
 template <typename ChannelPtr, typename ColorSpace>
 struct planar_pixel_iterator
-    : public iterator_facade<
+    : iterator_facade<
           planar_pixel_iterator<ChannelPtr, ColorSpace>,
           pixel<typename std::iterator_traits<ChannelPtr>::value_type,
                 layout<ColorSpace>>,
           std::random_access_iterator_tag,
-          const planar_pixel_reference<
+          planar_pixel_reference<
               typename std::iterator_traits<ChannelPtr>::reference,
-              ColorSpace>>,
-      public detail::homogeneous_color_base<ChannelPtr, layout<ColorSpace>,
-                                            mpl::size<ColorSpace>::value> {
+              ColorSpace> const>,
+      detail::homogeneous_color_base<ChannelPtr, layout<ColorSpace>,
+                                     mp11::mp_size<ColorSpace>::value> {
 private:
   using parent_t = iterator_facade<
       planar_pixel_iterator<ChannelPtr, ColorSpace>,
       pixel<typename std::iterator_traits<ChannelPtr>::value_type,
             layout<ColorSpace>>,
       std::random_access_iterator_tag,
-      const planar_pixel_reference<
-          typename std::iterator_traits<ChannelPtr>::reference, ColorSpace>>;
+      planar_pixel_reference<
+          typename std::iterator_traits<ChannelPtr>::reference,
+          ColorSpace> const>;
+
   using color_base_parent_t =
       detail::homogeneous_color_base<ChannelPtr, layout<ColorSpace>,
-                                     mpl::size<ColorSpace>::value>;
+                                     mp11::mp_size<ColorSpace>::value>;
+
   using channel_t = typename std::iterator_traits<ChannelPtr>::value_type;
 
 public:
@@ -160,10 +166,11 @@ private:
 };
 
 namespace detail {
-template <typename IC>
-struct channel_iterator_is_mutable : public mpl::true_ {};
-template <typename T>
-struct channel_iterator_is_mutable<const T *> : public mpl::false_ {};
+template <typename I> struct channel_iterator_is_mutable : std::true_type {};
+
+template <typename I>
+struct channel_iterator_is_mutable<I const *> : std::false_type {};
+
 } // namespace detail
 
 template <typename IC, typename C>
@@ -194,11 +201,11 @@ struct kth_element_type<planar_pixel_iterator<IC, C>, K> {
 
 template <typename IC, typename C, int K>
 struct kth_element_reference_type<planar_pixel_iterator<IC, C>, K>
-    : public add_reference<IC> {};
+    : std::add_lvalue_reference<IC> {};
 
 template <typename IC, typename C, int K>
 struct kth_element_const_reference_type<planar_pixel_iterator<IC, C>, K>
-    : public add_reference<typename add_const<IC>::type> {};
+    : std::add_lvalue_reference<typename std::add_const<IC>::type> {};
 
 /////////////////////////////
 //  HomogeneousPixelBasedConcept
@@ -211,11 +218,11 @@ struct color_space_type<planar_pixel_iterator<IC, C>> {
 
 template <typename IC, typename C>
 struct channel_mapping_type<planar_pixel_iterator<IC, C>>
-    : public channel_mapping_type<
-          typename planar_pixel_iterator<IC, C>::value_type> {};
+    : channel_mapping_type<typename planar_pixel_iterator<IC, C>::value_type> {
+};
 
 template <typename IC, typename C>
-struct is_planar<planar_pixel_iterator<IC, C>> : public mpl::true_ {};
+struct is_planar<planar_pixel_iterator<IC, C>> : std::true_type {};
 
 template <typename IC, typename C>
 struct channel_type<planar_pixel_iterator<IC, C>> {

@@ -8,13 +8,11 @@
 #ifndef BOOST_GIL_IO_READ_IMAGE_INFO_HPP
 #define BOOST_GIL_IO_READ_IMAGE_INFO_HPP
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/device.hpp>
 #include <boost/gil/io/get_reader.hpp>
 #include <boost/gil/io/path_spec.hpp>
-
-#include <boost/mpl/and.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
 
 #include <type_traits>
 
@@ -32,8 +30,8 @@ template <typename Device, typename FormatTag>
 inline auto read_image_info(
     Device &file, image_read_settings<FormatTag> const &settings,
     typename std::enable_if<
-        mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::value>::type * /*dummy*/
+        mp11::mp_and<detail::is_adaptable_input_device<FormatTag, Device>,
+                     is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) -> typename get_reader_backend<Device, FormatTag>::type {
   return make_reader_backend(file, settings);
 }
@@ -47,8 +45,8 @@ template <typename Device, typename FormatTag>
 inline auto read_image_info(
     Device &file, FormatTag const &,
     typename std::enable_if<
-        mpl::and_<detail::is_adaptable_input_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::value>::type * /*dummy*/
+        mp11::mp_and<detail::is_adaptable_input_device<FormatTag, Device>,
+                     is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) -> typename get_reader_backend<Device, FormatTag>::type {
   return read_image_info(file, image_read_settings<FormatTag>());
 }
@@ -62,8 +60,8 @@ template <typename String, typename FormatTag>
 inline auto read_image_info(
     String const &file_name, image_read_settings<FormatTag> const &settings,
     typename std::enable_if<
-        mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::value>::type
+        mp11::mp_and<is_format_tag<FormatTag>,
+                     detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) -> typename get_reader_backend<String, FormatTag>::type {
   return make_reader_backend(file_name, settings);
@@ -78,8 +76,8 @@ template <typename String, typename FormatTag>
 inline auto read_image_info(
     String const &file_name, FormatTag const &,
     typename std::enable_if<
-        mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::value>::type
+        mp11::mp_and<is_format_tag<FormatTag>,
+                     detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) -> typename get_reader_backend<String, FormatTag>::type {
   return read_image_info(file_name, image_read_settings<FormatTag>());

@@ -16,12 +16,10 @@
 #include <boost/gil/concepts/detail/type_traits.hpp>
 #include <boost/gil/concepts/fwd.hpp>
 #include <boost/gil/concepts/pixel_based.hpp>
-
-#include <boost/mpl/and.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits.hpp>
+#include <boost/gil/detail/mp11.hpp>
 
 #include <cstddef>
+#include <type_traits>
 
 #if defined(BOOST_CLANG)
 #pragma clang diagnostic push
@@ -173,7 +171,7 @@ template <typename P> struct HomogeneousPixelValueConcept {
   void constraints() {
     gil_function_requires<HomogeneousPixelConcept<P>>();
     gil_function_requires<Regular<P>>();
-    static_assert(is_same<P, typename P::value_type>::value, "");
+    static_assert(std::is_same<P, typename P::value_type>::value, "");
   }
 };
 
@@ -181,14 +179,14 @@ namespace detail {
 
 template <typename P1, typename P2, int K>
 struct channels_are_pairwise_compatible
-    : public mpl::and_<
+    : mp11::mp_and<
           channels_are_pairwise_compatible<P1, P2, K - 1>,
           channels_are_compatible<
               typename kth_semantic_element_reference_type<P1, K>::type,
               typename kth_semantic_element_reference_type<P2, K>::type>> {};
 
 template <typename P1, typename P2>
-struct channels_are_pairwise_compatible<P1, P2, -1> : public mpl::true_ {};
+struct channels_are_pairwise_compatible<P1, P2, -1> : std::true_type {};
 
 } // namespace detail
 
@@ -199,11 +197,11 @@ struct channels_are_pairwise_compatible<P1, P2, -1> : public mpl::true_ {};
 /// another. \tparam P1 Models PixelConcept \tparam P2 Models PixelConcept
 template <typename P1, typename P2>
 struct pixels_are_compatible
-    : public mpl::and_<typename color_spaces_are_compatible<
-                           typename color_space_type<P1>::type,
-                           typename color_space_type<P2>::type>::type,
-                       detail::channels_are_pairwise_compatible<
-                           P1, P2, num_channels<P1>::value - 1>> {};
+    : mp11::mp_and<typename color_spaces_are_compatible<
+                       typename color_space_type<P1>::type,
+                       typename color_space_type<P2>::type>::type,
+                   detail::channels_are_pairwise_compatible<
+                       P1, P2, num_channels<P1>::value - 1>> {};
 
 /// \ingroup PixelConcept
 /// \brief  Concept for pixel compatibility

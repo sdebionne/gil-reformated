@@ -12,6 +12,8 @@
 
 #include <boost/iterator/iterator_facade.hpp>
 
+#include <type_traits>
+
 namespace boost {
 namespace gil {
 
@@ -23,15 +25,13 @@ namespace gil {
 /// views.
 
 /// \brief An iterator that remembers its current X,Y position and invokes a
-/// function object with it upon dereferencing. Models PixelIteratorConcept.
-/// Used to create virtual image views.
-///    Models: StepIteratorConcept, PixelIteratorConcept, PixelBasedConcept,
-///    HasDynamicXStepTypeConcept
-/// \ingroup PixelIteratorModelVirtual PixelBasedModel
-template <typename Deref, // A function object that given a point returns a
-                          // pixel reference. Models
-                          // PixelDereferenceAdaptorConcept
-          int Dim>        // the dimension to advance along
+/// function object with it upon dereferencing. Used to create virtual image
+/// views. Models: StepIteratorConcept, PixelIteratorConcept, PixelBasedConcept,
+/// HasDynamicXStepTypeConcept \ingroup PixelIteratorModelVirtual
+/// PixelBasedModel \tparam Deref A function object that given a point returns a
+/// pixel reference. Models PixelDereferenceAdaptorConcept \tparam Dim Dimension
+/// to advance along
+template <typename Deref, int Dim>
 struct position_iterator
     : public iterator_facade<
           position_iterator<Deref, Dim>, typename Deref::value_type,
@@ -99,7 +99,7 @@ struct const_iterator_type<position_iterator<Deref, Dim>> {
 
 template <typename Deref, int Dim>
 struct iterator_is_mutable<position_iterator<Deref, Dim>>
-    : public mpl::bool_<Deref::is_mutable> {};
+    : std::integral_constant<bool, Deref::is_mutable> {};
 
 /////////////////////////////
 //  PixelBasedConcept
@@ -114,7 +114,7 @@ struct channel_mapping_type<position_iterator<Deref, Dim>>
     : public channel_mapping_type<typename Deref::value_type> {};
 
 template <typename Deref, int Dim>
-struct is_planar<position_iterator<Deref, Dim>> : public mpl::false_ {};
+struct is_planar<position_iterator<Deref, Dim>> : std::false_type {};
 
 template <typename Deref, int Dim>
 struct channel_type<position_iterator<Deref, Dim>>

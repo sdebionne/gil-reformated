@@ -14,6 +14,7 @@
 
 #include <boost/concept_check.hpp>
 
+#include <type_traits>
 #include <utility> // std::swap
 
 #if defined(BOOST_CLANG)
@@ -140,8 +141,8 @@ template <typename T> struct ChannelValueConcept {
 /// \ingroup ChannelAlgorithm
 template <typename T1, typename T2> // Models GIL Pixel
 struct channels_are_compatible
-    : is_same<typename channel_traits<T1>::value_type,
-              typename channel_traits<T2>::value_type> {};
+    : std::is_same<typename channel_traits<T1>::value_type,
+                   typename channel_traits<T2>::value_type> {};
 
 /// \brief Channels are compatible if their associated value types (ignoring
 /// constness and references) are the same

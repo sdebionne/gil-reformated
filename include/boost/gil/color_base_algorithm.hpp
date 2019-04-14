@@ -1,5 +1,6 @@
 //
 // Copyright 2005-2007 Adobe Systems Incorporated
+// Copyright 2019 Mateusz Loskot <mateusz at loskot dot net>
 //
 // Distributed under the Boost Software License, Version 1.0
 // See accompanying file LICENSE_1_0.txt or copy at
@@ -9,13 +10,10 @@
 #define BOOST_GIL_COLOR_BASE_ALGORITHM_HPP
 
 #include <boost/gil/concepts.hpp>
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/utilities.hpp>
 
 #include <boost/config.hpp>
-#include <boost/mpl/at.hpp>
-#include <boost/mpl/contains.hpp>
-#include <boost/mpl/size.hpp>
-#include <boost/type_traits.hpp>
 
 #include <algorithm>
 #include <type_traits>
@@ -24,16 +22,14 @@ namespace boost {
 namespace gil {
 
 ///////////////////////////////////////
-///
 /// size:   Semantic channel size
-///
 ///////////////////////////////////////
 
 /**
 \defgroup ColorBaseAlgorithmSize size
 \ingroup ColorBaseAlgorithm
-\brief Returns an MPL integral type specifying the number of elements in a color
-base
+\brief Returns an integral constant type specifying the number of elements in a
+color base
 
 Example:
 \code
@@ -42,15 +38,14 @@ static_assert(size<cmyk8_planar_ptr_t>::value == 4, "");
 \endcode
 */
 
-/// \brief Returns an MPL integral type specifying the number of elements in a
-/// color base \ingroup ColorBaseAlgorithmSize
+/// \brief Returns an integral constant type specifying the number of elements
+/// in a color base \ingroup ColorBaseAlgorithmSize
 template <typename ColorBase>
-struct size : public mpl::size<typename ColorBase::layout_t::color_space_t> {};
+struct size
+    : public mp11::mp_size<typename ColorBase::layout_t::color_space_t> {};
 
 ///////////////////////////////////////
-///
 /// semantic_at_c:   Semantic channel accessors
-///
 ///////////////////////////////////////
 
 /**
@@ -70,7 +65,7 @@ Example:
 \code
 // 16-bit BGR pixel, 4 bits for the blue, 3 bits for the green, 2 bits for the
 red channel and 7 unused bits using bgr432_pixel_t = packed_pixel_type<uint16_t,
-mpl::vector3_c<unsigned,4,3,2>, bgr_layout_t>::type;
+mp11::mp_list_c<unsigned,4,3,2>, bgr_layout_t>::type;
 
 // A reference to its red channel. Although the red channel is the third, its
 semantic index is 0 in the RGB color space using red_channel_reference_t =
@@ -90,11 +85,11 @@ red_channel = channel_traits<red_channel_reference_t>::max_value();
 template <typename ColorBase, int K> struct kth_semantic_element_type {
   using channel_mapping_t = typename ColorBase::layout_t::channel_mapping_t;
   static_assert(
-      K < mpl::size<channel_mapping_t>::value,
+      K < mp11::mp_size<channel_mapping_t>::value,
       "K index should be less than size of channel_mapping_t sequence");
 
   static constexpr int semantic_index =
-      mpl::at_c<channel_mapping_t, K>::type::value;
+      mp11::mp_at_c<channel_mapping_t, K>::type::value;
   using type = typename kth_element_type<ColorBase, semantic_index>::type;
 };
 
@@ -104,11 +99,11 @@ template <typename ColorBase, int K>
 struct kth_semantic_element_reference_type {
   using channel_mapping_t = typename ColorBase::layout_t::channel_mapping_t;
   static_assert(
-      K < mpl::size<channel_mapping_t>::value,
+      K < mp11::mp_size<channel_mapping_t>::value,
       "K index should be less than size of channel_mapping_t sequence");
 
   static constexpr int semantic_index =
-      mpl::at_c<channel_mapping_t, K>::type::value;
+      mp11::mp_at_c<channel_mapping_t, K>::type::value;
   using type =
       typename kth_element_reference_type<ColorBase, semantic_index>::type;
   static type get(ColorBase &cb) { return gil::at_c<semantic_index>(cb); }
@@ -120,11 +115,11 @@ template <typename ColorBase, int K>
 struct kth_semantic_element_const_reference_type {
   using channel_mapping_t = typename ColorBase::layout_t::channel_mapping_t;
   static_assert(
-      K < mpl::size<channel_mapping_t>::value,
+      K < mp11::mp_size<channel_mapping_t>::value,
       "K index should be less than size of channel_mapping_t sequence");
 
   static constexpr int semantic_index =
-      mpl::at_c<channel_mapping_t, K>::type::value;
+      mp11::mp_at_c<channel_mapping_t, K>::type::value;
   using type = typename kth_element_const_reference_type<ColorBase,
                                                          semantic_index>::type;
   static type get(const ColorBase &cb) { return gil::at_c<semantic_index>(cb); }
@@ -142,15 +137,13 @@ inline auto semantic_at_c(ColorBase &p) -> typename std::enable_if<
 /// \brief A constant accessor to the K-th semantic element of a color base
 /// \ingroup ColorBaseAlgorithmSemanticAtC
 template <int K, typename ColorBase>
-inline typename kth_semantic_element_const_reference_type<ColorBase, K>::type
-semantic_at_c(const ColorBase &p) {
+inline auto semantic_at_c(ColorBase const &p) ->
+    typename kth_semantic_element_const_reference_type<ColorBase, K>::type {
   return kth_semantic_element_const_reference_type<ColorBase, K>::get(p);
 }
 
 ///////////////////////////////////////
-///
 /// get_color:   Named channel accessors
-///
 ///////////////////////////////////////
 
 /**
@@ -178,8 +171,7 @@ void set_red_to_max(Pixel& pixel) {
 /// contains a given color \ingroup ColorBaseAlgorithmColor
 template <typename ColorBase, typename Color>
 struct contains_color
-    : public mpl::contains<typename ColorBase::layout_t::color_space_t, Color> {
-};
+    : mp11::mp_contains<typename ColorBase::layout_t::color_space_t, Color> {};
 
 template <typename ColorBase, typename Color>
 struct color_index_type
@@ -629,6 +621,7 @@ template <typename P, typename V>
 BOOST_FORCEINLINE void static_fill(P &p, const V &v) {
   detail::element_recursion<size<P>::value>::static_fill(p, v);
 }
+
 /// \}
 
 /// \defgroup ColorBaseAlgorithmGenerate static_generate

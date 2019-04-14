@@ -11,10 +11,11 @@
 #include <boost/gil/channel.hpp>
 #include <boost/gil/color_base.hpp>
 #include <boost/gil/concepts.hpp>
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/pixel.hpp>
 #include <boost/gil/planar_pixel_iterator.hpp>
 
-#include <boost/mpl/range_c.hpp>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -41,11 +42,11 @@ template <typename ChannelReference,
           typename ColorSpace> // ChannelReference is a channel reference (const
                                // or mutable)
 struct planar_pixel_reference
-    : public detail::homogeneous_color_base<
-          ChannelReference, layout<ColorSpace>, mpl::size<ColorSpace>::value> {
+    : detail::homogeneous_color_base<ChannelReference, layout<ColorSpace>,
+                                     mp11::mp_size<ColorSpace>::value> {
   using parent_t =
       detail::homogeneous_color_base<ChannelReference, layout<ColorSpace>,
-                                     mpl::size<ColorSpace>::value>;
+                                     mp11::mp_size<ColorSpace>::value>;
 
 private:
   // These three are only defined for homogeneous pixels
@@ -167,7 +168,8 @@ struct kth_element_reference_type<
 template <typename ChannelReference, typename ColorSpace, int K>
 struct kth_element_const_reference_type<
     planar_pixel_reference<ChannelReference, ColorSpace>, K>
-    : public add_reference<typename add_const<ChannelReference>::type> {
+    : std::add_lvalue_reference<
+          typename std::add_const<ChannelReference>::type> {
   //    using type = typename channel_traits<ChannelReference>::const_reference;
 };
 
@@ -179,7 +181,7 @@ struct kth_element_const_reference_type<
 /// of PixelConcept. Required by PixelConcept \ingroup PixelModelPlanarRef
 template <typename ChannelReference, typename ColorSpace>
 struct is_pixel<planar_pixel_reference<ChannelReference, ColorSpace>>
-    : public mpl::true_ {};
+    : std::true_type {};
 
 /////////////////////////////
 //  HomogeneousPixelBasedConcept
@@ -204,7 +206,7 @@ struct channel_mapping_type<
 /// Required by PixelBasedConcept \ingroup PixelModelPlanarRef
 template <typename ChannelReference, typename ColorSpace>
 struct is_planar<planar_pixel_reference<ChannelReference, ColorSpace>>
-    : mpl::true_ {};
+    : std::true_type {};
 
 /// \brief Specifies the color space type of a planar pixel reference. Required
 /// by HomogeneousPixelBasedConcept \ingroup PixelModelPlanarRef

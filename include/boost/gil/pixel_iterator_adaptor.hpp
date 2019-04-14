@@ -109,11 +109,11 @@ struct const_iterator_type<dereference_iterator_adaptor<I, DFn>> {
 
 template <typename I, typename DFn>
 struct iterator_is_mutable<dereference_iterator_adaptor<I, DFn>>
-    : public mpl::bool_<DFn::is_mutable> {};
+    : std::integral_constant<bool, DFn::is_mutable> {};
 
 template <typename I, typename DFn>
 struct is_iterator_adaptor<dereference_iterator_adaptor<I, DFn>>
-    : public mpl::true_ {};
+    : std::true_type {};
 
 template <typename I, typename DFn>
 struct iterator_adaptor_get_base<dereference_iterator_adaptor<I, DFn>> {

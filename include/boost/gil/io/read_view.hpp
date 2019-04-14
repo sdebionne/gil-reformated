@@ -8,14 +8,12 @@
 #ifndef BOOST_GIL_IO_READ_VIEW_HPP
 #define BOOST_GIL_IO_READ_VIEW_HPP
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/conversion_policies.hpp>
 #include <boost/gil/io/device.hpp>
 #include <boost/gil/io/get_reader.hpp>
 #include <boost/gil/io/path_spec.hpp>
-
-#include <boost/mpl/and.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
 
 #include <type_traits>
 
@@ -32,7 +30,7 @@ namespace gil {
 template <typename Reader, typename View>
 inline void
 read_view(Reader reader, View const &view,
-          typename std::enable_if<mpl::and_<
+          typename std::enable_if<mp11::mp_and<
               detail::is_reader<Reader>,
               typename is_format_tag<typename Reader::format_tag_t>::type,
               typename is_read_supported<typename get_pixel_type<View>::type,
@@ -53,7 +51,7 @@ template <typename Device, typename View, typename FormatTag>
 inline void read_view(
     Device &file, View const &view,
     image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         detail::is_read_device<FormatTag, Device>,
         typename is_format_tag<FormatTag>::type,
         typename is_read_supported<typename get_pixel_type<View>::type,
@@ -74,7 +72,7 @@ inline void read_view(
 template <typename Device, typename View, typename FormatTag>
 inline void read_view(
     Device &file, View const &view, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         typename is_format_tag<FormatTag>::type,
         detail::is_read_device<FormatTag, Device>,
         typename is_read_supported<typename get_pixel_type<View>::type,
@@ -96,7 +94,7 @@ template <typename String, typename View, typename FormatTag>
 inline void read_view(
     String const &file_name, View const &view,
     image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         typename detail::is_supported_path_spec<String>::type,
         typename is_format_tag<FormatTag>::type,
         typename is_read_supported<typename get_pixel_type<View>::type,
@@ -118,7 +116,7 @@ inline void read_view(
 template <typename String, typename View, typename FormatTag>
 inline void read_view(
     String const &file_name, View const &view, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         typename detail::is_supported_path_spec<String>::type,
         typename is_format_tag<FormatTag>::type,
         typename is_read_supported<typename get_pixel_type<View>::type,
