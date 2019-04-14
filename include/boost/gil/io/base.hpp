@@ -17,10 +17,9 @@
 #include <boost/gil/io/typedefs.hpp>
 #include <boost/gil/utilities.hpp>
 
-#include <boost/type_traits/is_base_of.hpp>
-
 #include <istream>
 #include <ostream>
+#include <type_traits>
 #include <vector>
 
 namespace boost {
@@ -31,7 +30,7 @@ struct format_tag {};
 template <typename Property> struct property_base { using type = Property; };
 
 template <typename FormatTag>
-struct is_format_tag : is_base_and_derived<format_tag, FormatTag> {};
+struct is_format_tag : std::is_base_of<format_tag, FormatTag> {};
 
 struct image_read_settings_base {
 protected:
@@ -52,9 +51,9 @@ public:
 };
 
 /**
- * Boolean meta function, mpl::true_ if the pixel type \a PixelType is supported
- * by the image format identified with \a FormatTag.
- * \todo the name is_supported is to generic, pick something more IO realted.
+ * Boolean meta function, std::true_type if the pixel type \a PixelType is
+ * supported by the image format identified with \a FormatTag. \todo the name
+ * is_supported is to generic, pick something more IO realted.
  */
 // Depending on image type the parameter Pixel can be a reference type
 // for bit_aligned images or a pixel for byte images.

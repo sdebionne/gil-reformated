@@ -17,6 +17,7 @@
 
 #include <cstddef>
 #include <iterator>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -213,7 +214,7 @@ struct iterator_is_mutable<memory_based_step_iterator<Iterator>>
 
 template <typename Iterator>
 struct is_iterator_adaptor<memory_based_step_iterator<Iterator>>
-    : public mpl::true_ {};
+    : std::true_type {};
 
 template <typename Iterator>
 struct iterator_adaptor_get_base<memory_based_step_iterator<Iterator>> {
@@ -324,25 +325,26 @@ namespace detail {
 // if the iterator is a plain base iterator (non-adaptor), wraps it in
 // memory_based_step_iterator
 template <typename I>
-typename dynamic_x_step_type<I>::type
-make_step_iterator_impl(const I &it, std::ptrdiff_t step, mpl::false_) {
+auto make_step_iterator_impl(I const &it, std::ptrdiff_t step, std::false_type)
+    -> typename dynamic_x_step_type<I>::type {
   return memory_based_step_iterator<I>(it, step);
 }
 
 // If the iterator is compound, put the step in its base
 template <typename I>
-typename dynamic_x_step_type<I>::type
-make_step_iterator_impl(const I &it, std::ptrdiff_t step, mpl::true_) {
+auto make_step_iterator_impl(I const &it, std::ptrdiff_t step, std::true_type)
+    -> typename dynamic_x_step_type<I>::type {
   return make_step_iterator(it.base(), step);
 }
 
 // If the iterator is memory_based_step_iterator, change the step
 template <typename BaseIt>
-memory_based_step_iterator<BaseIt>
-make_step_iterator_impl(const memory_based_step_iterator<BaseIt> &it,
-                        std::ptrdiff_t step, mpl::true_) {
+auto make_step_iterator_impl(memory_based_step_iterator<BaseIt> const &it,
+                             std::ptrdiff_t step, std::true_type)
+    -> memory_based_step_iterator<BaseIt> {
   return memory_based_step_iterator<BaseIt>(it.base(), step);
 }
+
 } // namespace detail
 
 /// \brief Constructs a step iterator from a base iterator and a step.

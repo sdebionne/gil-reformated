@@ -20,6 +20,7 @@
 
 #include <cstddef>
 #include <iterator>
+#include <type_traits>
 
 #if defined(BOOST_CLANG)
 #pragma clang diagnostic push
@@ -151,12 +152,14 @@ template <typename View> struct RandomAccessNDImageViewConcept {
     gil_function_requires<PointNDConcept<point_t>>();
     static_assert(point_t::num_dimensions == N, "");
     static_assert(
-        is_same<typename std::iterator_traits<first_it_type>::difference_type,
-                typename point_t::template axis<0>::coord_t>::value,
+        std::is_same<
+            typename std::iterator_traits<first_it_type>::difference_type,
+            typename point_t::template axis<0>::coord_t>::value,
         "");
     static_assert(
-        is_same<typename std::iterator_traits<last_it_type>::difference_type,
-                typename point_t::template axis<N - 1>::coord_t>::value,
+        std::is_same<
+            typename std::iterator_traits<last_it_type>::difference_type,
+            typename point_t::template axis<N - 1>::coord_t>::value,
         "");
 
     point_t p;
@@ -392,7 +395,8 @@ template <typename View> struct ImageViewConcept {
     gil_function_requires<PixelLocatorConcept<typename View::xy_locator>>();
 
     static_assert(
-        is_same<typename View::x_coord_t, typename View::y_coord_t>::value, "");
+        std::is_same<typename View::x_coord_t, typename View::y_coord_t>::value,
+        "");
 
     using coord_t =
         typename View::coord_t; // 1D difference type (same for all dimensions)

@@ -10,14 +10,10 @@
 
 #include <boost/gil/extension/io/png/detail/writer_backend.hpp>
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/device.hpp>
 #include <boost/gil/io/dynamic_io_new.hpp>
 #include <boost/gil/io/row_buffer_helper.hpp>
-
-#include <boost/mpl/and.hpp>
-#include <boost/mpl/equal_to.hpp>
-#include <boost/mpl/less.hpp>
-#include <boost/mpl/not.hpp>
 
 #include <type_traits>
 
@@ -63,7 +59,7 @@ public:
 
 private:
   template <typename View>
-  void write_view(const View &view, mpl::false_ // is bit aligned
+  void write_view(const View &view, std::false_type // is bit aligned
   ) {
     using pixel_t = typename get_pixel_type<View>::type;
 
@@ -90,7 +86,7 @@ private:
   }
 
   template <typename View>
-  void write_view(const View &view, mpl::true_ // is bit aligned
+  void write_view(const View &view, std::true_type // is bit aligned
   ) {
     using png_rw_info = detail::png_write_support<
         typename kth_semantic_element_type<typename View::value_type, 0>::type,
@@ -116,10 +112,13 @@ private:
 
   template <typename Info>
   struct is_less_than_eight
-      : mpl::less<mpl::int_<Info::_bit_depth>, mpl::int_<8>> {};
+      : mp11::mp_less<std::integral_constant<int, Info::_bit_depth>,
+                      std::integral_constant<int, 8>> {};
+
   template <typename Info>
   struct is_equal_to_sixteen
-      : mpl::equal_to<mpl::int_<Info::_bit_depth>, mpl::int_<16>> {};
+      : mp11::mp_less<std::integral_constant<int, Info::_bit_depth>,
+                      std::integral_constant<int, 16>> {};
 
   template <typename Info>
   void set_swap(
@@ -137,10 +136,9 @@ private:
 
   template <typename Info>
   void
-  set_swap(typename std::enable_if<
-               mpl::and_<mpl::not_<is_less_than_eight<Info>>,
-                         mpl::not_<is_equal_to_sixteen<Info>>>::value>::type
-               * /*ptr*/
+  set_swap(typename std::enable_if<mp11::mp_and<
+               mp11::mp_not<is_less_than_eight<Info>>,
+               mp11::mp_not<is_equal_to_sixteen<Info>>>::value>::type * /*ptr*/
            = nullptr) {}
 };
 

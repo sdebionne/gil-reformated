@@ -15,6 +15,7 @@
 #endif // BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 
 #include <cstddef>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -160,9 +161,10 @@ struct png_write_support<uint16_t, gray_alpha_t>
 
 template <typename Pixel>
 struct is_read_supported<Pixel, png_tag>
-    : mpl::bool_<detail::png_read_support<
-          typename channel_type<Pixel>::type,
-          typename color_space_type<Pixel>::type>::is_supported> {
+    : std::integral_constant<
+          bool, detail::png_read_support<
+                    typename channel_type<Pixel>::type,
+                    typename color_space_type<Pixel>::type>::is_supported> {
   using parent_t =
       detail::png_read_support<typename channel_type<Pixel>::type,
                                typename color_space_type<Pixel>::type>;
@@ -173,9 +175,10 @@ struct is_read_supported<Pixel, png_tag>
 
 template <typename Pixel>
 struct is_write_supported<Pixel, png_tag>
-    : mpl::bool_<detail::png_write_support<
-          typename channel_type<Pixel>::type,
-          typename color_space_type<Pixel>::type>::is_supported> {
+    : std::integral_constant<
+          bool, detail::png_write_support<
+                    typename channel_type<Pixel>::type,
+                    typename color_space_type<Pixel>::type>::is_supported> {
   using parent_t =
       detail::png_write_support<typename channel_type<Pixel>::type,
                                 typename color_space_type<Pixel>::type>;

@@ -21,6 +21,8 @@
 #include <boost/gil/io/row_buffer_helper.hpp>
 #include <boost/gil/io/typedefs.hpp>
 
+#include <type_traits>
+
 namespace boost {
 namespace gil {
 
@@ -205,7 +207,8 @@ private:
     using it_t = typename row_buffer_helper_t::iterator_t;
 
     using is_read_and_convert_t =
-        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type;
+        typename std::is_same<ConversionPolicy,
+                              detail::read_and_no_convert>::type;
 
     io_error_if(!detail::is_allowed<View>(this->_info, is_read_and_convert_t()),
                 "Image types aren't compatible.");

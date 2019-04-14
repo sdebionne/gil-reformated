@@ -8,14 +8,12 @@
 #ifndef BOOST_GIL_IO_READ_AND_CONVERT_IMAGE_HPP
 #define BOOST_GIL_IO_READ_AND_CONVERT_IMAGE_HPP
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/conversion_policies.hpp>
 #include <boost/gil/io/device.hpp>
 #include <boost/gil/io/get_reader.hpp>
 #include <boost/gil/io/path_spec.hpp>
-
-#include <boost/mpl/and.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
 
 #include <type_traits>
 
@@ -34,8 +32,8 @@ template <typename Reader, typename Image>
 inline void read_and_convert_image(
     Reader &reader, Image &img,
     typename std::enable_if<
-        mpl::and_<detail::is_reader<Reader>,
-                  is_format_tag<typename Reader::format_tag_t>>::value>::type
+        mp11::mp_and<detail::is_reader<Reader>,
+                     is_format_tag<typename Reader::format_tag_t>>::value>::type
         * /*dummy*/
     = nullptr) {
   reader.init_image(img, reader._settings);
@@ -53,9 +51,9 @@ template <typename Device, typename Image, typename ColorConverter,
 inline void read_and_convert_image(
     Device &device, Image &img, image_read_settings<FormatTag> const &settings,
     ColorConverter const &cc,
-    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                      is_format_tag<FormatTag>>::value>::type
-        * /*dummy*/
+    typename std::enable_if<
+        mp11::mp_and<detail::is_read_device<FormatTag, Device>,
+                     is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
   using reader_t =
@@ -77,8 +75,8 @@ inline void read_and_convert_image(
     String const &file_name, Image &img,
     image_read_settings<FormatTag> const &settings, ColorConverter const &cc,
     typename std::enable_if<
-        mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::value>::type
+        mp11::mp_and<is_format_tag<FormatTag>,
+                     detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
@@ -101,8 +99,8 @@ inline void read_and_convert_image(
     String const &file_name, Image &img, ColorConverter const &cc,
     FormatTag const &tag,
     typename std::enable_if<
-        mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::value>::type
+        mp11::mp_and<is_format_tag<FormatTag>,
+                     detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
@@ -123,9 +121,9 @@ template <typename Device, typename Image, typename ColorConverter,
           typename FormatTag>
 inline void read_and_convert_image(
     Device &device, Image &img, ColorConverter const &cc, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                      is_format_tag<FormatTag>>::value>::type
-        * /*dummy*/
+    typename std::enable_if<
+        mp11::mp_and<detail::is_read_device<FormatTag, Device>,
+                     is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<ColorConverter>;
   using reader_t =
@@ -145,8 +143,8 @@ inline void read_and_convert_image(
     String const &file_name, Image &img,
     image_read_settings<FormatTag> const &settings,
     typename std::enable_if<
-        mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::value>::type
+        mp11::mp_and<is_format_tag<FormatTag>,
+                     detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
@@ -165,9 +163,9 @@ inline void read_and_convert_image(
 template <typename Device, typename Image, typename FormatTag>
 inline void read_and_convert_image(
     Device &device, Image &img, image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                      is_format_tag<FormatTag>>::value>::type
-        * /*dummy*/
+    typename std::enable_if<
+        mp11::mp_and<detail::is_read_device<FormatTag, Device>,
+                     is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
   using reader_t =
@@ -186,8 +184,8 @@ template <typename String, typename Image, typename FormatTag>
 inline void read_and_convert_image(
     String const &file_name, Image &img, FormatTag const &tag,
     typename std::enable_if<
-        mpl::and_<is_format_tag<FormatTag>,
-                  detail::is_supported_path_spec<String>>::value>::type
+        mp11::mp_and<is_format_tag<FormatTag>,
+                     detail::is_supported_path_spec<String>>::value>::type
         * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
@@ -206,9 +204,9 @@ inline void read_and_convert_image(
 template <typename Device, typename Image, typename FormatTag>
 inline void read_and_convert_image(
     Device &device, Image &img, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                      is_format_tag<FormatTag>>::value>::type
-        * /*dummy*/
+    typename std::enable_if<
+        mp11::mp_and<detail::is_read_device<FormatTag, Device>,
+                     is_format_tag<FormatTag>>::value>::type * /*dummy*/
     = nullptr) {
   using read_and_convert_t = detail::read_and_convert<default_color_converter>;
   using reader_t =

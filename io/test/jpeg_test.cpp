@@ -10,9 +10,9 @@
 #define BOOST_GIL_IO_ADD_FS_PATH_SUPPORT
 
 #include <boost/gil.hpp>
-
 #include <boost/gil/extension/io/jpeg.hpp>
 
+#include <boost/mp11.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <fstream>
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(subimage_test) {
 
 BOOST_AUTO_TEST_CASE(dynamic_image_test) {
   using my_img_types =
-      mpl::vector<gray8_image_t, gray16_image_t, rgb8_image_t, rgba8_image_t>;
+      mp11::mp_list<gray8_image_t, gray16_image_t, rgb8_image_t, rgba8_image_t>;
 
   any_image<my_img_types> runtime_image;
 

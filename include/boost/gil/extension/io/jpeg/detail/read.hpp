@@ -20,6 +20,7 @@
 #include <boost/gil/io/typedefs.hpp>
 
 #include <csetjmp>
+#include <type_traits>
 #include <vector>
 
 namespace boost {
@@ -74,7 +75,8 @@ public:
     this->get()->dct_method = this->_settings._dct_method;
 
     using is_read_and_convert_t =
-        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type;
+        typename std::is_same<ConversionPolicy,
+                              detail::read_and_no_convert>::type;
 
     io_error_if(!detail::is_allowed<View>(this->_info, is_read_and_convert_t()),
                 "Image types aren't compatible.");

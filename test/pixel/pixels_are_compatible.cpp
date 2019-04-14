@@ -23,9 +23,8 @@ template <typename Pixel> struct assert_compatible {
     static_assert(result_t::value, "pixels should be compatible");
 
     // TODO: Refine after MPL -> MP11 switch
-    static_assert(
-        !std::is_same<result_t, std::true_type>::value,
-        "pixels_are_compatible result type should no be std::true_type");
+    static_assert(std::is_same<result_t, std::true_type>::value,
+                  "pixels_are_compatible result type should be std::true_type");
 
     static_assert(
         !std::is_same<result_t, std::false_type>::value,
