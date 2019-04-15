@@ -286,14 +286,4 @@ struct channel_type<pixel<ChannelValue, Layout>> {
 } // namespace gil
 } // namespace boost
 
-namespace std {
-
-// TODO: Avoid polluting std namespace
-template <typename ChannelValue, typename Layout>
-struct is_trivially_default_constructible<
-    boost::gil::pixel<ChannelValue, Layout>>
-    : ::std::is_trivially_default_constructible<ChannelValue> {};
-
-} // namespace std
-
 #endif
