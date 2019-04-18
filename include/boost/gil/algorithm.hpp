@@ -475,7 +475,8 @@ BOOST_FORCEINLINE void destruct_range_impl(
     typename std::enable_if<mp11::mp_and<
         std::is_pointer<Iterator>,
         mp11::mp_not<std::is_trivially_destructible<
-            typename std::iterator_traits<Iterator>>>>::value>::type * /*ptr*/
+            typename std::iterator_traits<Iterator>::value_type>>>::value>::type
+        * /*ptr*/
     = 0) {
   while (first != last) {
     first->~value_t();
@@ -486,10 +487,10 @@ BOOST_FORCEINLINE void destruct_range_impl(
 template <typename Iterator>
 BOOST_FORCEINLINE void destruct_range_impl(
     Iterator /*first*/, Iterator /*last*/,
-    typename std::enable_if<
-        mp11::mp_or<mp11::mp_not<std::is_pointer<Iterator>>,
-                    std::is_trivially_destructible<
-                        typename std::iterator_traits<Iterator>>>::value>::type
+    typename std::enable_if<mp11::mp_or<
+        mp11::mp_not<std::is_pointer<Iterator>>,
+        std::is_trivially_destructible<
+            typename std::iterator_traits<Iterator>::value_type>>::value>::type
         * /* ptr */
     = nullptr) {}
 
