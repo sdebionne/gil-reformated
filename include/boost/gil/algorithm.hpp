@@ -12,6 +12,7 @@
 #include <boost/gil/color_base_algorithm.hpp>
 #include <boost/gil/concepts.hpp>
 #include <boost/gil/detail/mp11.hpp>
+#include <boost/gil/detail/type_traits.hpp>
 #include <boost/gil/image_view.hpp>
 #include <boost/gil/image_view_factory.hpp>
 
@@ -474,7 +475,7 @@ BOOST_FORCEINLINE void destruct_range_impl(
     Iterator first, Iterator last,
     typename std::enable_if<mp11::mp_and<
         std::is_pointer<Iterator>,
-        mp11::mp_not<std::is_trivially_destructible<
+        mp11::mp_not<detail::is_trivially_destructible<
             typename std::iterator_traits<Iterator>::value_type>>>::value>::type
         * /*ptr*/
     = 0) {
@@ -489,7 +490,7 @@ BOOST_FORCEINLINE void destruct_range_impl(
     Iterator /*first*/, Iterator /*last*/,
     typename std::enable_if<mp11::mp_or<
         mp11::mp_not<std::is_pointer<Iterator>>,
-        std::is_trivially_destructible<
+        detail::is_trivially_destructible<
             typename std::iterator_traits<Iterator>::value_type>>::value>::type
         * /* ptr */
     = nullptr) {}
@@ -661,11 +662,11 @@ BOOST_FORCEINLINE void default_construct_aux(It first, It last,
 
 template <typename View, bool IsPlanar>
 struct has_trivial_pixel_constructor
-    : std::is_trivially_default_constructible<typename View::value_type> {};
+    : detail::is_trivially_default_constructible<typename View::value_type> {};
 
 template <typename View>
 struct has_trivial_pixel_constructor<View, true>
-    : std::is_trivially_default_constructible<
+    : detail::is_trivially_default_constructible<
           typename channel_type<View>::type> {};
 
 template <typename View, bool IsTriviallyConstructible>
