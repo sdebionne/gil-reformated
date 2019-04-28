@@ -17,7 +17,7 @@
 #pragma clang diagnostic ignored "-Wunused-local-typedefs"
 #endif
 
-#if defined(BOOST_GCC) && (BOOST_GCC >= 40600)
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
@@ -85,7 +85,7 @@ template <typename CM> struct ChannelMappingConcept {
 #pragma clang diagnostic pop
 #endif
 
-#if defined(BOOST_GCC) && (BOOST_GCC >= 40600)
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
 #pragma GCC diagnostic pop
 #endif
 
