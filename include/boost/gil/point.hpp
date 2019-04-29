@@ -148,8 +148,10 @@ BOOST_FORCEINLINE auto operator/(point<T> const &p, D d)
 
 /// \ingroup PointModel
 template <typename T, typename M>
-BOOST_FORCEINLINE auto operator*(point<T> const &p, M m)
-    -> point<typename std::common_type<T, M>::type> {
+BOOST_FORCEINLINE auto operator*(point<T> const &p, M m) ->
+    typename std::enable_if<
+        std::is_arithmetic<M>::value,
+        point<typename std::common_type<T, M>::type>>::type {
   static_assert(std::is_arithmetic<M>::value,
                 "multiplier is not arithmetic type");
   using result_type = typename std::common_type<T, M>::type;
@@ -158,8 +160,10 @@ BOOST_FORCEINLINE auto operator*(point<T> const &p, M m)
 
 /// \ingroup PointModel
 template <typename T, typename M>
-BOOST_FORCEINLINE auto operator*(M m, point<T> const &p)
-    -> point<typename std::common_type<T, M>::type> {
+BOOST_FORCEINLINE auto operator*(M m, point<T> const &p) ->
+    typename std::enable_if<
+        std::is_arithmetic<M>::value,
+        point<typename std::common_type<T, M>::type>>::type {
   static_assert(std::is_arithmetic<M>::value,
                 "multiplier is not arithmetic type");
   using result_type = typename std::common_type<T, M>::type;
