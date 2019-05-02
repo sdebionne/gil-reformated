@@ -8,6 +8,7 @@
 #ifndef BOOST_GIL_POINT_HPP
 #define BOOST_GIL_POINT_HPP
 
+#include <boost/gil/detail/std_common_type.hpp>
 #include <boost/gil/utilities.hpp>
 
 #include <boost/config.hpp>
@@ -131,11 +132,13 @@ BOOST_FORCEINLINE point<T> operator-(const point<T> &p1, const point<T> &p2) {
 
 /// \ingroup PointModel
 template <typename T, typename D>
-BOOST_FORCEINLINE auto operator/(point<T> const &p, D d)
-    -> point<typename std::common_type<T, D>::type> {
+BOOST_FORCEINLINE auto operator/(point<T> const &p, D d) ->
+    typename std::enable_if<
+        std::is_arithmetic<D>::value,
+        point<typename detail::std_common_type<T, D>::type>>::type {
   static_assert(std::is_arithmetic<D>::value,
                 "denominator is not arithmetic type");
-  using result_type = typename std::common_type<T, D>::type;
+  using result_type = typename detail::std_common_type<T, D>::type;
   if (d < 0 || 0 < d) {
     double const x = p.x / static_cast<double>(d);
     double const y = p.y / static_cast<double>(d);
@@ -151,10 +154,10 @@ template <typename T, typename M>
 BOOST_FORCEINLINE auto operator*(point<T> const &p, M m) ->
     typename std::enable_if<
         std::is_arithmetic<M>::value,
-        point<typename std::common_type<T, M>::type>>::type {
+        point<typename detail::std_common_type<T, M>::type>>::type {
   static_assert(std::is_arithmetic<M>::value,
                 "multiplier is not arithmetic type");
-  using result_type = typename std::common_type<T, M>::type;
+  using result_type = typename detail::std_common_type<T, M>::type;
   return point<result_type>{p.x * m, p.y * m};
 }
 
@@ -163,10 +166,10 @@ template <typename T, typename M>
 BOOST_FORCEINLINE auto operator*(M m, point<T> const &p) ->
     typename std::enable_if<
         std::is_arithmetic<M>::value,
-        point<typename std::common_type<T, M>::type>>::type {
+        point<typename detail::std_common_type<T, M>::type>>::type {
   static_assert(std::is_arithmetic<M>::value,
                 "multiplier is not arithmetic type");
-  using result_type = typename std::common_type<T, M>::type;
+  using result_type = typename detail::std_common_type<T, M>::type;
   return point<result_type>{p.x * m, p.y * m};
 }
 
