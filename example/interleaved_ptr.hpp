@@ -45,7 +45,7 @@ template <typename ChannelPtr, // Models Channel Iterator (examples: unsigned
           interleaved_ref<typename std::iterator_traits<ChannelPtr>::reference,
                           Layout> const> {
 private:
-  using parent_t boost::iterator_facade<
+  using parent_t = boost::iterator_facade<
       interleaved_ptr<ChannelPtr, Layout>,
       pixel<typename std::iterator_traits<ChannelPtr>::value_type, Layout>,
       boost::random_access_traversal_tag,
