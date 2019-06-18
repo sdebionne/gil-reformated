@@ -23,6 +23,7 @@
 #include <boost/gil/device_n.hpp>
 #include <boost/gil/gray.hpp>
 #include <boost/gil/image.hpp>
+#include <boost/gil/image_processing/threshold.hpp>
 #include <boost/gil/image_view.hpp>
 #include <boost/gil/image_view_factory.hpp>
 #include <boost/gil/iterator_from_2d.hpp>
