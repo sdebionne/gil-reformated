@@ -21,9 +21,13 @@ namespace gil = boost::gil;
 
 namespace {
 
+// Unknown layout is used where layout mapping is irrelevant for a test and its
+// result.
+using unknown_layout_t = gil::gray_layout_t;
+
 template <int N>
 using color_base =
-    gil::detail::homogeneous_color_base<std::uint8_t, gil::gray_layout_t, N>;
+    gil::detail::homogeneous_color_base<std::uint8_t, unknown_layout_t, N>;
 
 std::integral_constant<int, 0> e0;
 std::integral_constant<int, 1> e1;
