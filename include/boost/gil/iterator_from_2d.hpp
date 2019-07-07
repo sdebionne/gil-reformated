@@ -72,7 +72,7 @@ public:
   } // is there no gap at the end of each row?
   x_iterator &x() { return _p.x(); }
 
-  iterator_from_2d() {}
+  iterator_from_2d() = default;
   iterator_from_2d(const Loc2 &p, std::ptrdiff_t width, std::ptrdiff_t x = 0,
                    std::ptrdiff_t y = 0)
       : _coords(x, y), _width(width), _p(p) {}
@@ -81,6 +81,7 @@ public:
   template <typename Loc>
   iterator_from_2d(const iterator_from_2d<Loc> &pit)
       : _coords(pit._coords), _width(pit._width), _p(pit._p) {}
+  iterator_from_2d &operator=(iterator_from_2d const &other) = default;
 
 private:
   template <typename Loc> friend class iterator_from_2d;
