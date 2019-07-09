@@ -47,7 +47,7 @@ template <typename UnsignedIntegralChannel>
 struct unsigned_integral_max_value
     : std::integral_constant<
           UnsignedIntegralChannel,
-          std::numeric_limits<UnsignedIntegralChannel>::max()> {};
+          (std::numeric_limits<UnsignedIntegralChannel>::max)()> {};
 
 template <>
 struct unsigned_integral_max_value<uint8_t>
