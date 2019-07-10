@@ -69,13 +69,13 @@ void threshold_binary(
     detail::threshold_impl<source_channel_t, result_channel_t>(
         src_view, dst_view,
         [threshold_value, max_value](source_channel_t px) -> result_channel_t {
-          return px >= threshold_value ? max_value : 0;
+          return px > threshold_value ? max_value : 0;
         });
   } else {
     detail::threshold_impl<source_channel_t, result_channel_t>(
         src_view, dst_view,
         [threshold_value, max_value](source_channel_t px) -> result_channel_t {
-          return px >= threshold_value ? 0 : max_value;
+          return px > threshold_value ? 0 : max_value;
         });
   }
 }
@@ -128,13 +128,13 @@ void threshold_truncate(
       detail::threshold_impl<source_channel_t, result_channel_t>(
           src_view, dst_view,
           [threshold_value](source_channel_t px) -> result_channel_t {
-            return px >= threshold_value ? threshold_value : px;
+            return px > threshold_value ? threshold_value : px;
           });
     } else {
       detail::threshold_impl<source_channel_t, result_channel_t>(
           src_view, dst_view,
           [threshold_value](source_channel_t px) -> result_channel_t {
-            return px >= threshold_value ? px : threshold_value;
+            return px > threshold_value ? px : threshold_value;
           });
     }
   } else {
@@ -142,13 +142,13 @@ void threshold_truncate(
       detail::threshold_impl<source_channel_t, result_channel_t>(
           src_view, dst_view,
           [threshold_value](source_channel_t px) -> result_channel_t {
-            return px >= threshold_value ? px : 0;
+            return px > threshold_value ? px : 0;
           });
     } else {
       detail::threshold_impl<source_channel_t, result_channel_t>(
           src_view, dst_view,
           [threshold_value](source_channel_t px) -> result_channel_t {
-            return px >= threshold_value ? 0 : px;
+            return px > threshold_value ? 0 : px;
           });
     }
   }
