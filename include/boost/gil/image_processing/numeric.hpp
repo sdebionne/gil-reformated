@@ -37,7 +37,8 @@ inline double normalized_sinc(double x) {
 /// -a < x && x < a: 0
 /// otherwise: normalized_sinc(x) / normalized_sinc(x / a)
 inline double lanczos(double x, std::ptrdiff_t a) {
-  if (x == 0)
+  // means == but <= avoids compiler warning
+  if (0 <= x && x <= 0)
     return 1;
 
   if (-a < x && x < a)
