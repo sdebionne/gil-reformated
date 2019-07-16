@@ -12,6 +12,7 @@
 #include <type_traits>
 
 #define BOOST_TEST_MODULE test_ext_numeric_colvolve_cols
+#include "core/image/test_fixture.hpp"
 #include "test_fixture.hpp"
 #include "unit_test.hpp"
 

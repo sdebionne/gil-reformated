@@ -71,7 +71,16 @@ struct print_color_base {
 
 } // namespace detail
 
-// Pixel has to implement operator<< to be printable for BOOST_TEST()
+// Make `point` printable for BOOST_TEST()
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, point<T> const &p) {
+  os << "point<" << boost::core::demangled_name(typeid(T)) << ">";
+  os << "(" << p.x << ", " << p.y << ")" << std::endl;
+  return os;
+}
+
+// Make `pixel` printable for BOOST_TEST()
 template <typename ChannelValue, typename Layout>
 std::ostream &operator<<(std::ostream &os,
                          pixel<ChannelValue, Layout> const &p) {
@@ -86,4 +95,5 @@ std::ostream &operator<<(std::ostream &os,
 
 } // namespace gil
 } // namespace boost
+
 #endif
