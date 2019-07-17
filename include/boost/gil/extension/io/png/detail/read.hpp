@@ -155,8 +155,8 @@ public:
                  "and bit depth");
       }
 #else
-      io_error("gray_alpha isn't enabled. Use ENABLE_GRAY_ALPHA when building "
-               "application.");
+      io_error("gray_alpha isn't enabled. Define "
+               "BOOST_GIL_IO_ENABLE_GRAY_ALPHA when building application.");
 #endif // BOOST_GIL_IO_ENABLE_GRAY_ALPHA
 
       break;
