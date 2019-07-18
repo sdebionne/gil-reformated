@@ -10,6 +10,7 @@
 #define BOOST_TEST_MODULE test_image_view_subimage_view
 #include "core/image/test_fixture.hpp"
 #include "unit_test.hpp"
+#include "unit_test_utility.hpp"
 
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
