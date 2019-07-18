@@ -15,6 +15,7 @@
 #include "core/image/test_fixture.hpp"
 #include "test_fixture.hpp"
 #include "unit_test.hpp"
+#include "unit_test_utility.hpp"
 
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
