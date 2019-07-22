@@ -191,8 +191,15 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     static value_type max_value() { return MaxVal::apply(); }
 
     scoped_channel_value() = default;
-    scoped_channel_value(const scoped_channel_value &c) : value_(c.value_) {}
-    scoped_channel_value(BaseChannelValue val) : value_(val) {}
+    scoped_channel_value(scoped_channel_value const &other)
+        : value_(other.value_) {}
+    scoped_channel_value &
+    operator=(scoped_channel_value const &other) = default;
+    scoped_channel_value(BaseChannelValue value) : value_(value) {}
+    scoped_channel_value &operator=(BaseChannelValue value) {
+      value_ = value;
+      return *this;
+    }
 
     scoped_channel_value &operator++() {
       ++value_;
@@ -231,10 +238,6 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
       return *this;
     }
 
-    scoped_channel_value &operator=(BaseChannelValue v) {
-      value_ = v;
-      return *this;
-    }
     operator BaseChannelValue() const { return value_; }
 
   private:
