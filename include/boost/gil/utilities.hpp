@@ -10,8 +10,28 @@
 
 #include <boost/gil/detail/mp11.hpp>
 
+#include <boost/config.hpp>
+
+#if defined(BOOST_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#endif
+
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/iterator/iterator_facade.hpp>
+
+#if defined(BOOST_CLANG)
+#pragma clang diagnostic pop
+#endif
+
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
+#pragma GCC diagnostic pop
+#endif
 
 #include <algorithm>
 #include <cmath>
