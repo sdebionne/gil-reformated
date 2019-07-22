@@ -13,9 +13,12 @@
 #include <boost/gil/image_view.hpp>
 #include <boost/gil/metafunctions.hpp>
 
+#include <boost/assert.hpp>
+
 #include <cstddef>
 #include <memory>
 #include <type_traits>
+#include <utility>
 
 namespace boost {
 namespace gil {
@@ -337,6 +340,9 @@ private:
     _view = view_t(dimensions, typename view_t::locator(
                                    typename view_t::x_iterator(tmp),
                                    get_row_size_in_memunits(dimensions.x)));
+
+    BOOST_ASSERT(_view.width() == dimensions.x);
+    BOOST_ASSERT(_view.height() == dimensions.y);
   }
 
   void allocate_(point_t const &dimensions, std::true_type) {
@@ -358,6 +364,9 @@ private:
       memunit_advance(dynamic_at_c(first, i), plane_size * i);
     }
     _view = view_t(dimensions, typename view_t::locator(first, row_size));
+
+    BOOST_ASSERT(_view.width() == dimensions.x);
+    BOOST_ASSERT(_view.height() == dimensions.y);
   }
 
   void create_view(point_t const &dims, std::true_type) // is planar
@@ -378,6 +387,9 @@ private:
     }
 
     _view = view_t(dims, typename view_t::locator(first, row_size));
+
+    BOOST_ASSERT(_view.width() == dims.x);
+    BOOST_ASSERT(_view.height() == dims.y);
   }
 
   void create_view(point_t const &dims, std::false_type) // is planar
@@ -390,6 +402,9 @@ private:
     _view = view_t(dims,
                    typename view_t::locator(typename view_t::x_iterator(tmp),
                                             get_row_size_in_memunits(dims.x)));
+
+    BOOST_ASSERT(_view.width() == dims.x);
+    BOOST_ASSERT(_view.height() == dims.y);
   }
 };
 
