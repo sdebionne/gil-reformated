@@ -88,7 +88,7 @@ BOOST_FORCEINLINE T inner_product_k(InputIterator1 first1,
       first1, first2, init, binary_op1, binary_op2);
 }
 
-/// \brief 1D un-guarded correlation with a variable-size kernel
+/// \brief 1D un-guarded cross-correlation with a variable-size kernel
 template <typename PixelAccum, typename SrcIterator, typename KernelIterator,
           typename Size, typename DstIterator>
 inline auto correlate_pixels_n(SrcIterator src_begin, SrcIterator src_end,
@@ -118,7 +118,7 @@ inline auto correlate_pixels_n(SrcIterator src_begin, SrcIterator src_end,
   return dst_begin;
 }
 
-/// \brief 1D un-guarded correlation with a fixed-size kernel
+/// \brief 1D un-guarded cross-correlation with a fixed-size kernel
 template <std::size_t Size, typename PixelAccum, typename SrcIterator,
           typename KernelIterator, typename DstIterator>
 inline auto correlate_pixels_k(SrcIterator src_begin, SrcIterator src_end,
