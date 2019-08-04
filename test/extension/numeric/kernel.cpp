@@ -23,11 +23,36 @@ BOOST_AUTO_TEST_CASE(kernel_1d_default_constructor) {
   BOOST_TEST(k.size() == 0);
 }
 
+BOOST_AUTO_TEST_CASE(kernel_2d_default_constructor) {
+  gil::kernel_2d<int> k;
+  BOOST_TEST(k.center_vertical() == 0);
+  BOOST_TEST(k.center_horizontal() == 0);
+
+  // BOOST_TEST(k.left_size() == 0);
+  // BOOST_TEST(k.right_size() == -1);
+  BOOST_TEST(k.upper_size() == 0);
+  BOOST_TEST(k.lower_size() == -1);
+  // std::vector interface
+  BOOST_TEST(k.size() == 0);
+}
+
 BOOST_AUTO_TEST_CASE(kernel_1d_parameterized_constructor) {
   gil::kernel_1d<int> k(9, 4);
   BOOST_TEST(k.center() == 4);
   BOOST_TEST(k.left_size() == 4);
   BOOST_TEST(k.right_size() == 4);
+  // std::vector interface
+  BOOST_TEST(k.size() == 9);
+}
+
+BOOST_AUTO_TEST_CASE(kernel_2d_parameterized_constructor) {
+  gil::kernel_2d<int> k(9, 4, 4);
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.left_size() == 4);
+  BOOST_TEST(k.right_size() == 4);
+  BOOST_TEST(k.upper_size() == 4);
+  BOOST_TEST(k.lower_size() == 4);
   // std::vector interface
   BOOST_TEST(k.size() == 9);
 }
@@ -38,6 +63,19 @@ BOOST_AUTO_TEST_CASE(kernel_1d_parameterized_constructor_with_iterator) {
   BOOST_TEST(k.center() == 4);
   BOOST_TEST(k.left_size() == 4);
   BOOST_TEST(k.right_size() == 4);
+  // std::vector interface
+  BOOST_TEST(k.size() == 9);
+}
+
+BOOST_AUTO_TEST_CASE(kernel_2d_parameterized_constructor_with_iterator) {
+  std::vector<int> v(81);
+  gil::kernel_2d<int> k(v.cbegin(), v.size(), 4, 4);
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.left_size() == 4);
+  BOOST_TEST(k.right_size() == 4);
+  BOOST_TEST(k.upper_size() == 4);
+  BOOST_TEST(k.lower_size() == 4);
   // std::vector interface
   BOOST_TEST(k.size() == 9);
 }
@@ -53,6 +91,21 @@ BOOST_AUTO_TEST_CASE(kernel_1d_copy_constructor) {
   BOOST_TEST(k.size() == d.size());
 }
 
+BOOST_AUTO_TEST_CASE(kernel_2d_copy_constructor) {
+  gil::kernel_2d<int> d(9, 4, 4);
+  gil::kernel_2d<int> k(d);
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.center_vertical() == d.center_vertical());
+  BOOST_TEST(k.center_horizontal() == d.center_horizontal());
+  BOOST_TEST(k.left_size() == d.left_size());
+  BOOST_TEST(k.right_size() == d.right_size());
+  BOOST_TEST(k.lower_size() == d.lower_size());
+  BOOST_TEST(k.upper_size() == d.upper_size());
+  // std::vector interface
+  BOOST_TEST(k.size() == d.size());
+}
+
 BOOST_AUTO_TEST_CASE(kernel_1d_assignment_operator) {
   gil::kernel_1d<int> d(9, 4);
   gil::kernel_1d<int> k;
@@ -61,6 +114,22 @@ BOOST_AUTO_TEST_CASE(kernel_1d_assignment_operator) {
   BOOST_TEST(k.center() == d.center());
   BOOST_TEST(k.left_size() == d.left_size());
   BOOST_TEST(k.right_size() == d.right_size());
+  // std::vector interface
+  BOOST_TEST(k.size() == d.size());
+}
+
+BOOST_AUTO_TEST_CASE(kernel_2d_assignment_operator) {
+  gil::kernel_2d<int> d(9, 4, 4);
+  gil::kernel_2d<int> k;
+  k = d;
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.center_vertical() == d.center_vertical());
+  BOOST_TEST(k.center_horizontal() == d.center_horizontal());
+  BOOST_TEST(k.left_size() == d.left_size());
+  BOOST_TEST(k.right_size() == d.right_size());
+  BOOST_TEST(k.lower_size() == d.lower_size());
+  BOOST_TEST(k.upper_size() == d.upper_size());
   // std::vector interface
   BOOST_TEST(k.size() == d.size());
 }
@@ -83,11 +152,35 @@ BOOST_AUTO_TEST_CASE(kernel_1d_fixed_default_constructor) {
   BOOST_TEST(k.size() == 9);
 }
 
+BOOST_AUTO_TEST_CASE(kernel_2d_fixed_default_constructor) {
+  gil::kernel_2d_fixed<int, 9> k;
+  BOOST_TEST(k.center_horizontal() == 0);
+  BOOST_TEST(k.center_vertical() == 0);
+  BOOST_TEST(k.left_size() == 0);
+  BOOST_TEST(k.right_size() == 8); // TODO: Why not 0 or -1 if not set?
+  BOOST_TEST(k.upper_size() == 0);
+  BOOST_TEST(k.lower_size() == 8);
+  // std::array interface
+  BOOST_TEST(k.size() == 9);
+}
+
 BOOST_AUTO_TEST_CASE(kernel_1d_fixed_parameterized_constructor) {
   gil::kernel_1d_fixed<int, 9> k(4);
   BOOST_TEST(k.center() == 4);
   BOOST_TEST(k.left_size() == 4);
   BOOST_TEST(k.right_size() == 4);
+  // std::vector interface
+  BOOST_TEST(k.size() == 9);
+}
+
+BOOST_AUTO_TEST_CASE(kernel_2d_fixed_parameterized_constructor) {
+  gil::kernel_2d_fixed<int, 9> k(4, 4);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.left_size() == 4);
+  BOOST_TEST(k.right_size() == 4);
+  BOOST_TEST(k.upper_size() == 4);
+  BOOST_TEST(k.lower_size() == 4);
   // std::vector interface
   BOOST_TEST(k.size() == 9);
 }
@@ -104,6 +197,21 @@ BOOST_AUTO_TEST_CASE(kernel_1d_fixed_parameterized_constructor_with_iterator) {
   BOOST_TEST(k.size() == 9);
 }
 
+BOOST_AUTO_TEST_CASE(kernel_2d_fixed_parameterized_constructor_with_iterator) {
+  //    // FIXME: The constructor should throw if v.size() < k.size()
+  std::array<int, 81> v;
+  gil::kernel_2d_fixed<int, 9> k(v.cbegin(), 4, 4);
+  BOOST_TEST((gil::kernel_2d_fixed<int, 9>::static_size) == 9);
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.left_size() == 4);
+  BOOST_TEST(k.right_size() == 4);
+  BOOST_TEST(k.upper_size() == 4);
+  BOOST_TEST(k.lower_size() == 4);
+  // std::vector interface
+  BOOST_TEST(k.size() == 9);
+}
+
 BOOST_AUTO_TEST_CASE(kernel_1d_fixed_copy_constructor) {
   gil::kernel_1d_fixed<int, 9> d(4);
   gil::kernel_1d_fixed<int, 9> k(d);
@@ -112,6 +220,22 @@ BOOST_AUTO_TEST_CASE(kernel_1d_fixed_copy_constructor) {
   BOOST_TEST(k.center() == d.center());
   BOOST_TEST(k.left_size() == d.left_size());
   BOOST_TEST(k.right_size() == d.right_size());
+  // std::vector interface
+  BOOST_TEST(k.size() == d.size());
+}
+
+BOOST_AUTO_TEST_CASE(kernel_2d_fixed_copy_constructor) {
+  gil::kernel_2d_fixed<int, 9> d(4, 4);
+  gil::kernel_2d_fixed<int, 9> k(d);
+  BOOST_TEST((gil::kernel_2d_fixed<int, 9>::static_size) == 9);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.center_horizontal() == d.center_horizontal());
+  BOOST_TEST(k.center_vertical() == d.center_vertical());
+  BOOST_TEST(k.left_size() == d.left_size());
+  BOOST_TEST(k.right_size() == d.right_size());
+  BOOST_TEST(k.lower_size() == d.lower_size());
+  BOOST_TEST(k.upper_size() == d.upper_size());
   // std::vector interface
   BOOST_TEST(k.size() == d.size());
 }
@@ -125,6 +249,23 @@ BOOST_AUTO_TEST_CASE(kernel_1d_fixed_assignment_operator) {
   BOOST_TEST(k.center() == d.center());
   BOOST_TEST(k.left_size() == d.left_size());
   BOOST_TEST(k.right_size() == d.right_size());
+  // std::vector interface
+  BOOST_TEST(k.size() == d.size());
+}
+
+BOOST_AUTO_TEST_CASE(kernel_2d_fixed_assignment_operator) {
+  gil::kernel_2d_fixed<int, 9> d(4, 4);
+  gil::kernel_2d_fixed<int, 9> k;
+  k = d;
+  BOOST_TEST((gil::kernel_2d_fixed<int, 9>::static_size) == 9);
+  BOOST_TEST(k.center_horizontal() == 4);
+  BOOST_TEST(k.center_vertical() == 4);
+  BOOST_TEST(k.center_horizontal() == d.center_horizontal());
+  BOOST_TEST(k.center_vertical() == d.center_vertical());
+  BOOST_TEST(k.left_size() == d.left_size());
+  BOOST_TEST(k.right_size() == d.right_size());
+  BOOST_TEST(k.lower_size() == d.lower_size());
+  BOOST_TEST(k.upper_size() == d.upper_size());
   // std::vector interface
   BOOST_TEST(k.size() == d.size());
 }
