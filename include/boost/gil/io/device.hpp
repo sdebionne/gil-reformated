@@ -11,9 +11,6 @@
 #include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/base.hpp>
 
-#include <boost/assert.hpp>
-#include <boost/core/ignore_unused.hpp>
-
 #include <cstdio>
 #include <memory>
 #include <type_traits>
@@ -56,14 +53,8 @@ public:
   ///
   /// Constructor
   ///
-  file_stream_device(const std::string &file_name, read_tag = read_tag()) {
-    FILE *file = nullptr;
-
-    io_error_if((file = fopen(file_name.c_str(), "rb")) == nullptr,
-                "file_stream_device: failed to open file");
-
-    _file = file_ptr_t(file, file_deleter);
-  }
+  file_stream_device(const std::string &file_name, read_tag tag = read_tag())
+      : file_stream_device(file_name.c_str(), tag) {}
 
   ///
   /// Constructor
@@ -72,7 +63,7 @@ public:
     FILE *file = nullptr;
 
     io_error_if((file = fopen(file_name, "rb")) == nullptr,
-                "file_stream_device: failed to open file");
+                "file_stream_device: failed to open file for reading");
 
     _file = file_ptr_t(file, file_deleter);
   }
@@ -80,14 +71,8 @@ public:
   ///
   /// Constructor
   ///
-  file_stream_device(const std::string &file_name, write_tag) {
-    FILE *file = nullptr;
-
-    io_error_if((file = fopen(file_name.c_str(), "wb")) == nullptr,
-                "file_stream_device: failed to open file");
-
-    _file = file_ptr_t(file, file_deleter);
-  }
+  file_stream_device(const std::string &file_name, write_tag tag)
+      : file_stream_device(file_name.c_str(), tag) {}
 
   ///
   /// Constructor
@@ -96,7 +81,7 @@ public:
     FILE *file = nullptr;
 
     io_error_if((file = fopen(file_name, "wb")) == nullptr,
-                "file_stream_device: failed to open file");
+                "file_stream_device: failed to open file for writing");
 
     _file = file_ptr_t(file, file_deleter);
   }
@@ -114,8 +99,8 @@ public:
   char getc() {
     int ch;
 
-    if ((ch = std::getc(get())) == EOF)
-      io_error("file_stream_device: unexpected EOF");
+    io_error_if((ch = std::getc(get())) == EOF,
+                "file_stream_device: unexpected EOF");
 
     return (char)ch;
   }
@@ -125,24 +110,21 @@ public:
     std::size_t num_elements = fread(data, 1, static_cast<int>(count), get());
 
     ///@todo: add compiler symbol to turn error checking on and off.
-    if (ferror(get())) {
-      BOOST_ASSERT(false);
-    }
+    io_error_if(ferror(get()), "file_stream_device: file read error");
 
     // libjpeg sometimes reads blocks in 4096 bytes even when the file is
-    // smaller than that. assert( num_elements == count );
-    BOOST_ASSERT(num_elements > 0);
-
+    // smaller than that. return value indicates how much was actually read
+    // returning less than "count" is not an error
     return num_elements;
   }
 
   /// Reads array
-  template <typename T, int N> std::size_t read(T (&buf)[N]) {
-    return read(buf, N);
+  template <typename T, int N> void read(T (&buf)[N]) {
+    io_error_if(read(buf, N) < N, "file_stream_device: file read error");
   }
 
   /// Reads byte
-  uint8_t read_uint8() throw() {
+  uint8_t read_uint8() {
     byte_t m[1];
 
     read(m);
@@ -150,7 +132,7 @@ public:
   }
 
   /// Reads 16 bit little endian integer
-  uint16_t read_uint16() throw() {
+  uint16_t read_uint16() {
     byte_t m[2];
 
     read(m);
@@ -158,7 +140,7 @@ public:
   }
 
   /// Reads 32 bit little endian integer
-  uint32_t read_uint32() throw() {
+  uint32_t read_uint32() {
     byte_t m[4];
 
     read(m);
@@ -166,28 +148,28 @@ public:
   }
 
   /// Writes number of elements from a buffer
-  template <typename T>
-  std::size_t write(const T *buf, std::size_t count) throw() {
+  template <typename T> std::size_t write(const T *buf, std::size_t count) {
     std::size_t num_elements = fwrite(buf, buff_item<T>::size, count, get());
 
-    BOOST_ASSERT(num_elements == count);
+    // return value indicates how much was actually written
+    // returning less than "count" is not an error
     return num_elements;
   }
 
   /// Writes array
-  template <typename T, std::size_t N>
-  std::size_t write(const T (&buf)[N]) throw() {
-    return write(buf, N);
+  template <typename T, std::size_t N> void write(const T (&buf)[N]) {
+    io_error_if(write(buf, N) < N, "file_stream_device: file write error");
+    return;
   }
 
   /// Writes byte
-  void write_uint8(uint8_t x) throw() {
+  void write_uint8(uint8_t x) {
     byte_t m[1] = {x};
     write(m);
   }
 
   /// Writes 16 bit little endian integer
-  void write_uint16(uint16_t x) throw() {
+  void write_uint16(uint16_t x) {
     byte_t m[2];
 
     m[0] = byte_t(x >> 0);
@@ -197,7 +179,7 @@ public:
   }
 
   /// Writes 32 bit little endian integer
-  void write_uint32(uint32_t x) throw() {
+  void write_uint32(uint32_t x) {
     byte_t m[4];
 
     m[0] = byte_t(x >> 0);
@@ -209,13 +191,14 @@ public:
   }
 
   void seek(long count, int whence = SEEK_SET) {
-    io_error_if(fseek(get(), count, whence) != 0, "file read error");
+    io_error_if(fseek(get(), count, whence) != 0,
+                "file_stream_device: file seek error");
   }
 
   long int tell() {
     long int pos = ftell(get());
 
-    io_error_if(pos == -1L, "file read error");
+    io_error_if(pos == -1L, "file_stream_device: file position error");
 
     return pos;
   }
@@ -227,8 +210,8 @@ public:
     std::size_t num_elements =
         fwrite(line.c_str(), sizeof(char), line.size(), get());
 
-    BOOST_ASSERT(num_elements == line.size());
-    boost::ignore_unused(num_elements);
+    io_error_if(num_elements < line.size(),
+                "file_stream_device: line print error");
   }
 
   int error() { return ferror(get()); }
@@ -251,10 +234,8 @@ private:
 template <typename FormatTag> class istream_device {
 public:
   istream_device(std::istream &in) : _in(in) {
-    if (!in) {
-      // does the file exists?
-      io_error("Stream is not valid.");
-    }
+    // does the file exists?
+    io_error_if(!in, "istream_device: Stream is not valid.");
   }
 
   int getc_unchecked() { return _in.get(); }
@@ -262,8 +243,7 @@ public:
   char getc() {
     int ch;
 
-    if ((ch = _in.get()) == EOF)
-      io_error("file_stream_device: unexpected EOF");
+    io_error_if((ch = _in.get()) == EOF, "istream_device: unexpected EOF");
 
     return (char)ch;
   }
@@ -286,10 +266,10 @@ public:
   }
 
   /// Reads array
-  template <typename T, int N> size_t read(T (&buf)[N]) { return read(buf, N); }
+  template <typename T, int N> void read(T (&buf)[N]) { return read(buf, N); }
 
   /// Reads byte
-  uint8_t read_uint8() throw() {
+  uint8_t read_uint8() {
     byte_t m[1];
 
     read(m);
@@ -297,7 +277,7 @@ public:
   }
 
   /// Reads 16 bit little endian integer
-  uint16_t read_uint16() throw() {
+  uint16_t read_uint16() {
     byte_t m[2];
 
     read(m);
@@ -305,7 +285,7 @@ public:
   }
 
   /// Reads 32 bit little endian integer
-  uint32_t read_uint32() throw() {
+  uint32_t read_uint32() {
     byte_t m[4];
 
     read(m);
@@ -318,7 +298,9 @@ public:
                                                               : std::ios::end));
   }
 
-  void write(const byte_t *, std::size_t) { io_error("Bad io error."); }
+  void write(const byte_t *, std::size_t) {
+    io_error("istream_device: Bad io error.");
+  }
 
   void flush() {}
 
@@ -334,7 +316,7 @@ public:
   ostream_device(std::ostream &out) : _out(out) {}
 
   std::size_t read(byte_t *, std::size_t) {
-    io_error("Bad io error.");
+    io_error("ostream_device: Bad io error.");
     return 0;
   }
 
@@ -351,18 +333,18 @@ public:
   }
 
   /// Writes array
-  template <typename T, std::size_t N> void write(const T (&buf)[N]) throw() {
+  template <typename T, std::size_t N> void write(const T (&buf)[N]) {
     write(buf, N);
   }
 
   /// Writes byte
-  void write_uint8(uint8_t x) throw() {
+  void write_uint8(uint8_t x) {
     byte_t m[1] = {x};
     write(m);
   }
 
   /// Writes 16 bit little endian integer
-  void write_uint16(uint16_t x) throw() {
+  void write_uint16(uint16_t x) {
     byte_t m[2];
 
     m[0] = byte_t(x >> 0);
@@ -372,7 +354,7 @@ public:
   }
 
   /// Writes 32 bit little endian integer
-  void write_uint32(uint32_t x) throw() {
+  void write_uint32(uint32_t x) {
     byte_t m[4];
 
     m[0] = byte_t(x >> 0);
