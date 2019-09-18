@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <vector>
 
+#include <boost/gil/extension/numeric/algorithm.hpp>
 #include <boost/gil/extension/numeric/convolve.hpp>
 #include <boost/gil/extension/numeric/kernel.hpp>
 #include <boost/gil/image.hpp>
@@ -24,7 +25,7 @@ template <typename SrcView, typename DstView>
 void box_filter(SrcView const &src_view, DstView const &dst_view,
                 std::size_t kernel_size, long int anchor = -1,
                 bool normalize = true,
-                convolve_boundary_option option = convolve_option_extend_zero) {
+                boundary_option option = boundary_option::extend_zero) {
   gil_function_requires<ImageViewConcept<SrcView>>();
   gil_function_requires<MutableImageViewConcept<DstView>>();
   static_assert(color_spaces_are_compatible<
@@ -51,7 +52,7 @@ void box_filter(SrcView const &src_view, DstView const &dst_view,
 template <typename SrcView, typename DstView>
 void blur(SrcView const &src_view, DstView const &dst_view,
           std::size_t kernel_size, long int anchor = -1,
-          convolve_boundary_option option = convolve_option_extend_zero) {
+          boundary_option option = boundary_option::extend_zero) {
   box_filter(src_view, dst_view, kernel_size, anchor, true, option);
 }
 
