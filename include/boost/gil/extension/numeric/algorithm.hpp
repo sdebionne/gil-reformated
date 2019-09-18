@@ -186,6 +186,9 @@ inline void view_multiplies_scalar(SrcView const &src_view,
 /// \ingroup ImageAlgorithms
 /// \brief Boundary options for image boundary extension
 enum class boundary_option {
+  output_ignore,  /// do nothing to the output
+  output_zero,    /// set the output to zero
+  extend_padded,  /// assume the source boundaries to be padded already
   extend_zero,    /// assume the source boundaries to be zero
   extend_constant /// assume the source boundaries to be the boundary value
 };
