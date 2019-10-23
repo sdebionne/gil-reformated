@@ -67,8 +67,7 @@ enum class threshold_direction {
 /// \ingroup ImageProcessing
 /// \brief Method of optimal threshold value calculation.
 enum class threshold_optimal_value {
-  otsu,    ///< \todo TODO
-  triangle ///< \todo TODO
+  otsu ///< \todo TODO
 };
 
 /// \ingroup ImageProcessing
