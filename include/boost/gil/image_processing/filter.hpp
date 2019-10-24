@@ -46,7 +46,7 @@ void box_filter(SrcView const &src_view, DstView const &dst_view,
     anchor = static_cast<int>(kernel_size / 2);
   kernel_1d<float> kernel(kernel_values.begin(), kernel_size, anchor);
 
-  convolve_1d<pixel<float, typename SrcView::value_type::layout_t>>(
+  detail::convolve_1d<pixel<float, typename SrcView::value_type::layout_t>>(
       src_view, kernel, dst_view, option);
 }
 
