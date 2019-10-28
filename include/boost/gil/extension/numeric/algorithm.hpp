@@ -228,6 +228,16 @@ void extend_row_impl(SrcView src_view, RltView result_view,
         std::fill_n(result_view.row_begin(i), result_view.width(), acc_zero);
       }
     }
+  } else if (option == boundary_option::extend_padded) {
+    auto original_view =
+        subimage_view(src_view, 0, -extend_count, src_view.width(),
+                      src_view.height() + (2 * extend_count));
+    for (std::ptrdiff_t i = 0; i < result_view.height(); i++) {
+      assign_pixels(original_view.row_begin(i), original_view.row_end(i),
+                    result_view.row_begin(i));
+    }
+  } else {
+    BOOST_ASSERT_MSG(false, "Invalid boundary option");
   }
 }
 
@@ -281,6 +291,25 @@ template <typename SrcView>
 auto extend_boundary(SrcView src_view, std::size_t extend_count,
                      boundary_option option) ->
     typename gil::image<typename SrcView::value_type> {
+  if (option == boundary_option::extend_padded) {
+    typename gil::image<typename SrcView::value_type> result_img(
+        src_view.width() + (2 * extend_count),
+        src_view.height() + (2 * extend_count));
+    typename gil::image<typename SrcView::value_type>::view_t result_view =
+        view(result_img);
+
+    auto original_view = subimage_view(src_view, -extend_count, -extend_count,
+                                       src_view.width() + (2 * extend_count),
+                                       src_view.height() + (2 * extend_count));
+
+    for (std::ptrdiff_t i = 0; i < result_view.height(); i++) {
+      assign_pixels(original_view.row_begin(i), original_view.row_end(i),
+                    result_view.row_begin(i));
+    }
+
+    return result_img;
+  }
+
   auto auxilary_img = extend_col(src_view, extend_count, option);
   return extend_row(view(auxilary_img), extend_count, option);
 }
