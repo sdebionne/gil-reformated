@@ -1,6 +1,7 @@
 #ifndef BOOST_GIL_IMAGE_PROCESSING_HESSIAN_HPP
 #define BOOST_GIL_IMAGE_PROCESSING_HESSIAN_HPP
 
+#include <boost/gil/extension/numeric/kernel.hpp>
 #include <boost/gil/image_view.hpp>
 #include <boost/gil/typedefs.hpp>
 #include <stdexcept>
@@ -16,14 +17,15 @@ namespace gil {
 /// means taking two derivatives (gradients) in horizontal direction. Weights
 /// change perception of surroinding pixels. Additional filtering is strongly
 /// advised.
-template <typename GradientView, typename Weights, typename OutputView>
-inline void compute_hessian_responses(GradientView ddxx, GradientView dxdy,
-                                      GradientView ddyy, Weights weights,
-                                      OutputView dst) {
+template <typename GradientView, typename T, typename Allocator,
+          typename OutputView>
+inline void compute_hessian_responses(
+    GradientView ddxx, GradientView dxdy, GradientView ddyy,
+    const detail::kernel_2d<T, Allocator> &weights, OutputView dst) {
   if (ddxx.dimensions() != ddyy.dimensions() ||
       ddyy.dimensions() != dxdy.dimensions() ||
       dxdy.dimensions() != dst.dimensions() ||
-      weights.width() != weights.height() || weights.width() % 2 != 1) {
+      weights.center_x() != weights.center_y()) {
     throw std::invalid_argument("dimensions of views are not the same"
                                 " or weights don't have equal width and height"
                                 " or weights' dimensions are not odd");
@@ -37,26 +39,24 @@ inline void compute_hessian_responses(GradientView ddxx, GradientView dxdy,
       typename std::remove_reference<decltype(std::declval<pixel_t>().at(
           std::integral_constant<int, 0>{}))>::type;
 
-  auto half_size = weights.width() / 2;
-  for (auto y = half_size; y < dst.height() - half_size; ++y) {
-    for (auto x = half_size; x < dst.width() - half_size; ++x) {
+  auto center = weights.center_y();
+  for (auto y = center; y < dst.height() - center; ++y) {
+    for (auto x = center; x < dst.width() - center; ++x) {
       auto ddxx_i = channel_t();
       auto ddyy_i = channel_t();
       auto dxdy_i = channel_t();
-      constexpr std::integral_constant<int, 0> chosen_channel{};
-      for (typename OutputView::coord_t w_y = 0; w_y < weights.height();
-           ++w_y) {
-        for (typename OutputView::coord_t w_x = 0; w_x < weights.width();
+      for (typename OutputView::coord_t w_y = 0; w_y < weights.size(); ++w_y) {
+        for (typename OutputView::coord_t w_x = 0; w_x < weights.size();
              ++w_x) {
-          ddxx_i += ddxx(x + w_x - half_size, y + w_y - half_size)
+          ddxx_i += ddxx(x + w_x - center, y + w_y - center)
                         .at(std::integral_constant<int, 0>{}) *
-                    weights(w_x, w_y).at(std::integral_constant<int, 0>{});
-          ddyy_i += ddyy(x + w_x - half_size, y + w_y - half_size)
+                    weights.at(w_x, w_y);
+          ddyy_i += ddyy(x + w_x - center, y + w_y - center)
                         .at(std::integral_constant<int, 0>{}) *
-                    weights(w_x, w_y).at(std::integral_constant<int, 0>{});
-          dxdy_i += dxdy(x + w_x - half_size, y + w_y - half_size)
+                    weights.at(w_x, w_y);
+          dxdy_i += dxdy(x + w_x - center, y + w_y - center)
                         .at(std::integral_constant<int, 0>{}) *
-                    weights(w_x, w_y).at(std::integral_constant<int, 0>{});
+                    weights.at(w_x, w_y);
         }
       }
       auto determinant = ddxx_i * ddyy_i - dxdy_i * dxdy_i;
