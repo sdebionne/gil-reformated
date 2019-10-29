@@ -14,8 +14,7 @@
 #include <boost/gil/color_base.hpp>
 #include <boost/gil/io/base.hpp>
 
-#include <boost/mpl/not.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -49,9 +48,10 @@ template <> struct targa_write_support<uint8_t, rgba_t> : write_support_true {};
 
 template <typename Pixel>
 struct is_read_supported<Pixel, targa_tag>
-    : mpl::bool_<detail::targa_read_support<
-          typename channel_type<Pixel>::type,
-          typename color_space_type<Pixel>::type>::is_supported> {
+    : std::integral_constant<
+          bool, detail::targa_read_support<
+                    typename channel_type<Pixel>::type,
+                    typename color_space_type<Pixel>::type>::is_supported> {
   using parent_t =
       detail::targa_read_support<typename channel_type<Pixel>::type,
                                  typename color_space_type<Pixel>::type>;
@@ -61,9 +61,10 @@ struct is_read_supported<Pixel, targa_tag>
 
 template <typename Pixel>
 struct is_write_supported<Pixel, targa_tag>
-    : mpl::bool_<detail::targa_write_support<
-          typename channel_type<Pixel>::type,
-          typename color_space_type<Pixel>::type>::is_supported> {};
+    : std::integral_constant<
+          bool, detail::targa_write_support<
+                    typename channel_type<Pixel>::type,
+                    typename color_space_type<Pixel>::type>::is_supported> {};
 
 } // namespace gil
 } // namespace boost

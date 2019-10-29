@@ -14,8 +14,7 @@
 #include <boost/gil/color_base.hpp>
 #include <boost/gil/io/base.hpp>
 
-#include <boost/mpl/not.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -42,13 +41,14 @@ struct raw_write_support : write_support_false {};
 
 template <typename Pixel>
 struct is_read_supported<Pixel, raw_tag>
-    : mpl::bool_<detail::raw_read_support<
-          typename channel_type<Pixel>::type,
-          typename color_space_type<Pixel>::type>::is_supported> {};
+    : std::integral_constant<
+          bool, detail::raw_read_support<
+                    typename channel_type<Pixel>::type,
+                    typename color_space_type<Pixel>::type>::is_supported> {};
 
 template <typename Pixel>
 struct is_write_supported<Pixel, raw_tag>
-    : mpl::bool_<detail::raw_write_support::is_supported> {};
+    : std::integral_constant<bool, detail::raw_write_support::is_supported> {};
 
 } // namespace gil
 } // namespace boost

@@ -8,21 +8,37 @@
 #ifndef BOOST_GIL_UTILITIES_HPP
 #define BOOST_GIL_UTILITIES_HPP
 
+#include <boost/gil/detail/mp11.hpp>
+
+#include <boost/config.hpp>
+
+#if defined(BOOST_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#endif
+
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/iterator/iterator_facade.hpp>
-#include <boost/mpl/begin.hpp>
-#include <boost/mpl/contains.hpp>
-#include <boost/mpl/distance.hpp>
-#include <boost/mpl/find.hpp>
-#include <boost/mpl/range_c.hpp>
-#include <boost/mpl/size.hpp>
-#include <boost/type_traits.hpp>
+
+#if defined(BOOST_CLANG)
+#pragma clang diagnostic pop
+#endif
+
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
+#pragma GCC diagnostic pop
+#endif
 
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <functional>
 #include <iterator>
+#include <type_traits>
 #include <utility>
 
 namespace boost {
@@ -194,28 +210,32 @@ template <typename T> struct dec {
 
 /// \brief Returns the index corresponding to the first occurrance of a given
 /// given type in
-//         a given MPL RandomAccessSequence (or size if the type is not present)
+//         a given Boost.MP11-compatible list (or size if the type is not
+//         present)
 template <typename Types, typename T>
-struct type_to_index
-    : public mpl::distance<typename mpl::begin<Types>::type,
-                           typename mpl::find<Types, T>::type>::type {
-  static_assert(mpl::contains<Types, T>::value, "T should be element of Types");
+struct type_to_index : mp11::mp_find<Types, T> {
+  static_assert(mp11::mp_contains<Types, T>::value,
+                "T should be element of Types");
 };
+
 } // namespace detail
 
 /// \ingroup ColorSpaceAndLayoutModel
 /// \brief Represents a color space and ordering of channels in memory
 template <typename ColorSpace,
-          typename ChannelMapping =
-              mpl::range_c<int, 0, mpl::size<ColorSpace>::value>>
+          typename ChannelMapping = mp11::mp_iota<
+              std::integral_constant<int, mp11::mp_size<ColorSpace>::value>>>
 struct layout {
   using color_space_t = ColorSpace;
   using channel_mapping_t = ChannelMapping;
+
+  static_assert(mp11::mp_size<ColorSpace>::value > 0,
+                "color space should not be empty sequence");
 };
 
 /// \brief A version of swap that also works with reference proxy objects
-template <typename Value, typename T1,
-          typename T2> // where value_type<T1>  == value_type<T2> == Value
+/// Where value_type<T1>  == value_type<T2> == Value
+template <typename Value, typename T1, typename T2>
 void swap_proxy(T1 &left, T2 &right) {
   Value tmp = left;
   left = right;

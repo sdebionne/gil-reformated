@@ -9,15 +9,13 @@
 #define BOOST_GIL_GIL_CHANNEL_ALGORITHM_HPP
 
 #include <boost/gil/channel.hpp>
+#include <boost/gil/detail/is_channel_integral.hpp>
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/promote_integral.hpp>
 #include <boost/gil/typedefs.hpp>
 
-#include <boost/mpl/greater.hpp>
-#include <boost/mpl/integral_c.hpp>
-#include <boost/mpl/less.hpp>
-#include <boost/type_traits.hpp>
-
 #include <limits>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -28,53 +26,58 @@ namespace detail {
 template <typename SrcChannelV, typename DstChannelV, bool SrcIsIntegral,
           bool DstIsIntegral>
 struct channel_converter_unsigned_impl;
+
 template <typename SrcChannelV, typename DstChannelV, bool SrcIsGreater>
 struct channel_converter_unsigned_integral;
+
 template <typename SrcChannelV, typename DstChannelV, bool SrcLessThanDst,
           bool SrcDivisible>
 struct channel_converter_unsigned_integral_impl;
+
 template <typename SrcChannelV, typename DstChannelV, bool SrcLessThanDst,
           bool CannotFitInInteger>
 struct channel_converter_unsigned_integral_nondivisible;
 
 //////////////////////////////////////
 ////  unsigned_integral_max_value - given an unsigned integral channel type,
-///returns its maximum value as an MPL integral constant
+//// returns its maximum value as an integral constant
 //////////////////////////////////////
 
 template <typename UnsignedIntegralChannel>
 struct unsigned_integral_max_value
-    : public mpl::integral_c<
+    : std::integral_constant<
           UnsignedIntegralChannel,
-          std::numeric_limits<UnsignedIntegralChannel>::max()> {};
+          (std::numeric_limits<UnsignedIntegralChannel>::max)()> {};
 
 template <>
 struct unsigned_integral_max_value<uint8_t>
-    : public mpl::integral_c<uint32_t, 0xFF> {};
+    : std::integral_constant<uint32_t, 0xFF> {};
+
 template <>
 struct unsigned_integral_max_value<uint16_t>
-    : public mpl::integral_c<uint32_t, 0xFFFF> {};
+    : std::integral_constant<uint32_t, 0xFFFF> {};
+
 template <>
 struct unsigned_integral_max_value<uint32_t>
-    : public mpl::integral_c<uintmax_t, 0xFFFFFFFF> {};
+    : std::integral_constant<uintmax_t, 0xFFFFFFFF> {};
 
 template <int K>
 struct unsigned_integral_max_value<packed_channel_value<K>>
-    : public mpl::integral_c<typename packed_channel_value<K>::integer_t,
+    : std::integral_constant<typename packed_channel_value<K>::integer_t,
                              (uint64_t(1) << K) - 1> {};
 
 //////////////////////////////////////
-////  unsigned_integral_num_bits - given an unsigned integral channel type,
-///returns the minimum number of bits needed to represent it
+//// unsigned_integral_num_bits - given an unsigned integral channel type,
+//// returns the minimum number of bits needed to represent it
 //////////////////////////////////////
 
 template <typename UnsignedIntegralChannel>
 struct unsigned_integral_num_bits
-    : public mpl::int_<sizeof(UnsignedIntegralChannel) * 8> {};
+    : std::integral_constant<int, sizeof(UnsignedIntegralChannel) * 8> {};
 
 template <int K>
 struct unsigned_integral_num_bits<packed_channel_value<K>>
-    : public mpl::int_<K> {};
+    : std::integral_constant<int, K> {};
 
 } // namespace detail
 
@@ -107,13 +110,12 @@ struct unsigned_integral_num_bits<packed_channel_value<K>>
 /// assert(dst_channel == 255);     // max value goes to max value
 /// \endcode
 
-/**
-\defgroup ChannelConvertUnsignedAlgorithm channel_converter_unsigned
-\ingroup ChannelConvertAlgorithm
-\brief Convert one unsigned/floating point channel to another. Converts both the
-channel type and range
- @{
- */
+///
+/// \defgroup ChannelConvertUnsignedAlgorithm channel_converter_unsigned
+/// \ingroup ChannelConvertAlgorithm
+/// \brief Convert one unsigned/floating point channel to another. Converts both
+/// the channel type and range
+/// @{
 
 //////////////////////////////////////
 ////  channel_converter_unsigned
@@ -122,9 +124,10 @@ channel type and range
 template <typename SrcChannelV,
           typename DstChannelV> // Model ChannelValueConcept
 struct channel_converter_unsigned
-    : public detail::channel_converter_unsigned_impl<
-          SrcChannelV, DstChannelV, is_integral<SrcChannelV>::value,
-          is_integral<DstChannelV>::value> {};
+    : detail::channel_converter_unsigned_impl<
+          SrcChannelV, DstChannelV,
+          detail::is_channel_integral<SrcChannelV>::value,
+          detail::is_channel_integral<DstChannelV>::value> {};
 
 /// \brief Converting a channel to itself - identity operation
 template <typename T>
@@ -161,10 +164,10 @@ private:
 // faster conversion
 template <typename SrcChannelV, typename DstChannelV>
 struct channel_converter_unsigned_impl<SrcChannelV, DstChannelV, true, true>
-    : public channel_converter_unsigned_integral<
+    : channel_converter_unsigned_integral<
           SrcChannelV, DstChannelV,
-          mpl::less<unsigned_integral_max_value<SrcChannelV>,
-                    unsigned_integral_max_value<DstChannelV>>::value> {};
+          mp11::mp_less<unsigned_integral_max_value<SrcChannelV>,
+                        unsigned_integral_max_value<DstChannelV>>::value> {};
 
 //////////////////////////////////////
 ////  channel_converter_unsigned_integral
@@ -243,11 +246,13 @@ struct channel_converter_unsigned_integral_impl<uintmax_t, DstChannelV, false,
 template <typename SrcChannelV, typename DstChannelV, bool SrcLessThanDst>
 struct channel_converter_unsigned_integral_impl<SrcChannelV, DstChannelV,
                                                 SrcLessThanDst, false>
-    : public channel_converter_unsigned_integral_nondivisible<
+    : channel_converter_unsigned_integral_nondivisible<
           SrcChannelV, DstChannelV, SrcLessThanDst,
-          mpl::greater<mpl::plus<unsigned_integral_num_bits<SrcChannelV>,
-                                 unsigned_integral_num_bits<DstChannelV>>,
-                       unsigned_integral_num_bits<uintmax_t>>::value> {};
+          mp11::mp_less<
+              unsigned_integral_num_bits<uintmax_t>,
+              mp11::mp_plus<unsigned_integral_num_bits<SrcChannelV>,
+                            unsigned_integral_num_bits<DstChannelV>>>::value> {
+};
 
 // Both source and destination are unsigned integral channels,
 // the src max value is less than the dst max value,

@@ -9,8 +9,10 @@
 #define BOOST_GIL_IMAGE_VIEW_FACTORY_HPP
 
 #include <boost/gil/color_convert.hpp>
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/dynamic_step.hpp>
 #include <boost/gil/gray.hpp>
+#include <boost/gil/image_view.hpp>
 #include <boost/gil/metafunctions.hpp>
 #include <boost/gil/point.hpp>
 
@@ -35,6 +37,7 @@
 
 namespace boost {
 namespace gil {
+
 struct default_color_converter;
 
 template <typename T> struct transposed_type;
@@ -43,13 +46,13 @@ template <typename T> struct transposed_type;
 /// \ingroup ImageViewTransformations
 template <typename View>
 struct dynamic_xy_step_type
-    : public dynamic_y_step_type<typename dynamic_x_step_type<View>::type> {};
+    : dynamic_y_step_type<typename dynamic_x_step_type<View>::type> {};
 
 /// \brief Returns the type of a transposed view that has a dynamic step along
 /// both X and Y \ingroup ImageViewTransformations
 template <typename View>
 struct dynamic_xy_step_transposed_type
-    : public dynamic_xy_step_type<typename transposed_type<View>::type> {};
+    : dynamic_xy_step_type<typename transposed_type<View>::type> {};
 
 /// \ingroup ImageViewConstructors
 /// \brief Constructing image views from raw interleaved pixel data
@@ -288,17 +291,19 @@ rotated180_view(const View &src) {
 
 /// \ingroup ImageViewTransformationsSubimage
 template <typename View>
-inline View subimage_view(const View &src,
-                          const typename View::point_t &topleft,
-                          const typename View::point_t &dimensions) {
+inline View subimage_view(View const &src,
+                          typename View::point_t const &topleft,
+                          typename View::point_t const &dimensions) {
   return View(dimensions, src.xy_at(topleft));
 }
 
 /// \ingroup ImageViewTransformationsSubimage
 template <typename View>
-inline View subimage_view(const View &src, int xMin, int yMin, int width,
-                          int height) {
-  return View(width, height, src.xy_at(xMin, yMin));
+inline View subimage_view(View const &src, typename View::coord_t x_min,
+                          typename View::coord_t y_min,
+                          typename View::coord_t width,
+                          typename View::coord_t height) {
+  return View(width, height, src.xy_at(x_min, y_min));
 }
 
 /// \defgroup ImageViewTransformationsSubsampled subsampled_view
@@ -308,20 +313,20 @@ inline View subimage_view(const View &src, int xMin, int yMin, int width,
 
 /// \ingroup ImageViewTransformationsSubsampled
 template <typename View>
-inline typename dynamic_xy_step_type<View>::type
-subsampled_view(const View &src, typename View::coord_t xStep,
-                typename View::coord_t yStep) {
-  BOOST_ASSERT(xStep > 0 && yStep > 0);
-  using RView = typename dynamic_xy_step_type<View>::type;
-  return RView((src.width() + (xStep - 1)) / xStep,
-               (src.height() + (yStep - 1)) / yStep,
-               typename RView::xy_locator(src.xy_at(0, 0), xStep, yStep));
+inline auto subsampled_view(View const &src, typename View::coord_t x_step,
+                            typename View::coord_t y_step) ->
+    typename dynamic_xy_step_type<View>::type {
+  BOOST_ASSERT(x_step > 0 && y_step > 0);
+  using view_t = typename dynamic_xy_step_type<View>::type;
+  return view_t((src.width() + (x_step - 1)) / x_step,
+                (src.height() + (y_step - 1)) / y_step,
+                typename view_t::xy_locator(src.xy_at(0, 0), x_step, y_step));
 }
 
 /// \ingroup ImageViewTransformationsSubsampled
 template <typename View>
-inline typename dynamic_xy_step_type<View>::type
-subsampled_view(const View &src, const typename View::point_t &step) {
+inline auto subsampled_view(View const &src, typename View::point_t const &step)
+    -> typename dynamic_xy_step_type<View>::type {
   return subsampled_view(src, step.x, step.y);
 }
 
@@ -406,7 +411,7 @@ template <typename SrcP> // SrcP is a reference to PixelConcept (could be pixel
                                      pixel_reference_is_mutable<SrcP>::value;
 
 private:
-  using src_pixel_t = typename remove_reference<SrcP>::type;
+  using src_pixel_t = typename std::remove_reference<SrcP>::type;
   using channel_t = typename channel_type<src_pixel_t>::type;
   using const_ref_t = typename src_pixel_t::const_reference;
   using ref_t = typename pixel_reference_type<channel_t, gray_layout_t, false,
@@ -419,7 +424,7 @@ public:
       typename pixel_reference_type<channel_t, gray_layout_t, false,
                                     false>::type;
   using argument_type = SrcP;
-  using reference = typename mpl::if_c<is_mutable, ref_t, value_type>::type;
+  using reference = mp11::mp_if_c<is_mutable, ref_t, value_type>;
   using result_type = reference;
 
   nth_channel_deref_fn(int n = 0) : _n(n) {}
@@ -557,7 +562,7 @@ template <int K, typename SrcP> struct kth_channel_deref_fn {
                                      pixel_reference_is_mutable<SrcP>::value;
 
 private:
-  using src_pixel_t = typename remove_reference<SrcP>::type;
+  using src_pixel_t = typename std::remove_reference<SrcP>::type;
   using channel_t = typename kth_element_type<src_pixel_t, K>::type;
   using const_ref_t = typename src_pixel_t::const_reference;
   using ref_t = typename pixel_reference_type<channel_t, gray_layout_t, false,
@@ -570,7 +575,7 @@ public:
       typename pixel_reference_type<channel_t, gray_layout_t, false,
                                     false>::type;
   using argument_type = SrcP;
-  using reference = typename mpl::if_c<is_mutable, ref_t, value_type>::type;
+  using reference = mp11::mp_if_c<is_mutable, ref_t, value_type>;
   using result_type = reference;
 
   kth_channel_deref_fn() {}

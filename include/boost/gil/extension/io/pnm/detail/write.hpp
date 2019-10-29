@@ -11,6 +11,7 @@
 #include <boost/gil/extension/io/pnm/detail/writer_backend.hpp>
 #include <boost/gil/extension/io/pnm/tags.hpp>
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/bit_operations.hpp>
 #include <boost/gil/io/device.hpp>
@@ -18,6 +19,7 @@
 
 #include <cstdlib>
 #include <string>
+#include <type_traits>
 
 namespace boost {
 namespace gil {
@@ -88,22 +90,23 @@ public:
 
 private:
   template <int Channels>
-  unsigned int get_type(mpl::true_ /* is_bit_aligned */) {
-    return boost::mpl::if_c<Channels == 1, pnm_image_type::mono_bin_t,
-                            pnm_image_type::color_bin_t>::type::value;
+  unsigned int get_type(std::true_type /* is_bit_aligned */) {
+    return mp11::mp_if_c<Channels == 1, pnm_image_type::mono_bin_t,
+                         pnm_image_type::color_bin_t>::value;
   }
 
   template <int Channels>
-  unsigned int get_type(mpl::false_ /* is_bit_aligned */) {
-    return boost::mpl::if_c<Channels == 1, pnm_image_type::gray_bin_t,
-                            pnm_image_type::color_bin_t>::type::value;
+  unsigned int get_type(std::false_type /* is_bit_aligned */) {
+    return mp11::mp_if_c<Channels == 1, pnm_image_type::gray_bin_t,
+                         pnm_image_type::color_bin_t>::value;
   }
 
   template <typename View>
   void write_data(const View &src, std::size_t pitch,
-                  const mpl::true_ & // bit_aligned
+                  const std::true_type & // bit_aligned
   ) {
-    static_assert(is_same<View, typename gray1_image_t::view_t>::value, "");
+    static_assert(std::is_same<View, typename gray1_image_t::view_t>::value,
+                  "");
 
     byte_vector_t row(pitch / 8);
 
@@ -124,7 +127,7 @@ private:
 
   template <typename View>
   void write_data(const View &src, std::size_t pitch,
-                  const mpl::false_ & // bit_aligned
+                  const std::false_type & // bit_aligned
   ) {
     std::vector<pixel<typename channel_type<View>::type,
                       layout<typename color_space_type<View>::type>>>

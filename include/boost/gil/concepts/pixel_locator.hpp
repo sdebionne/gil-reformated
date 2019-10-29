@@ -12,19 +12,21 @@
 #include <boost/gil/concepts/concept_check.hpp>
 #include <boost/gil/concepts/detail/utility.hpp>
 #include <boost/gil/concepts/fwd.hpp>
+#include <boost/gil/concepts/pixel.hpp>
 #include <boost/gil/concepts/pixel_dereference.hpp>
 #include <boost/gil/concepts/pixel_iterator.hpp>
 #include <boost/gil/concepts/point.hpp>
 
 #include <cstddef>
 #include <iterator>
+#include <type_traits>
 
 #if defined(BOOST_CLANG)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-local-typedefs"
 #endif
 
-#if defined(BOOST_GCC) && (BOOST_GCC >= 40600)
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
@@ -146,12 +148,14 @@ template <typename Loc> struct RandomAccessNDLocatorConcept {
     gil_function_requires<PointNDConcept<point_t>>();
     static_assert(point_t::num_dimensions == N, "");
     static_assert(
-        is_same<typename std::iterator_traits<first_it_type>::difference_type,
-                typename point_t::template axis<0>::coord_t>::value,
+        std::is_same<
+            typename std::iterator_traits<first_it_type>::difference_type,
+            typename point_t::template axis<0>::coord_t>::value,
         "");
     static_assert(
-        is_same<typename std::iterator_traits<last_it_type>::difference_type,
-                typename point_t::template axis<N - 1>::coord_t>::value,
+        std::is_same<
+            typename std::iterator_traits<last_it_type>::difference_type,
+            typename point_t::template axis<N - 1>::coord_t>::value,
         "");
 
     difference_type d;
@@ -296,7 +300,8 @@ template <typename Loc> struct PixelLocatorConcept {
     gil_function_requires<PixelIteratorConcept<typename Loc::y_iterator>>();
     using coord_t = typename Loc::coord_t;
     static_assert(
-        is_same<typename Loc::x_coord_t, typename Loc::y_coord_t>::value, "");
+        std::is_same<typename Loc::x_coord_t, typename Loc::y_coord_t>::value,
+        "");
   }
   Loc loc;
 };
@@ -393,7 +398,7 @@ template <typename Loc> struct MutablePixelLocatorConcept {
 #pragma clang diagnostic pop
 #endif
 
-#if defined(BOOST_GCC) && (BOOST_GCC >= 40600)
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
 #pragma GCC diagnostic pop
 #endif
 

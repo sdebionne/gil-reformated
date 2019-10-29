@@ -24,6 +24,7 @@
 
 #include <cstdio>
 #include <sstream>
+#include <type_traits>
 #include <vector>
 
 namespace boost {
@@ -76,7 +77,8 @@ public:
     }
 
     using is_read_and_convert_t =
-        typename is_same<ConversionPolicy, detail::read_and_no_convert>::type;
+        typename std::is_same<ConversionPolicy,
+                              detail::read_and_no_convert>::type;
 
     io_error_if(!detail::is_allowed<View>(this->_info, is_read_and_convert_t()),
                 "Image types aren't compatible.");
@@ -135,8 +137,7 @@ struct raw_type_format_checker {
 
   template <typename Image> bool apply() {
     using view_t = typename Image::view_t;
-
-    return is_allowed<view_t>(_info, mpl::true_());
+    return is_allowed<view_t>(_info, std::true_type{});
   }
 
 private:

@@ -14,10 +14,10 @@
 #include <boost/config.hpp>
 #include <boost/config/pragma_message.hpp>
 #include <boost/integer/integer_mask.hpp>
-#include <boost/type_traits/remove_cv.hpp>
 
 #include <cstdint>
 #include <limits>
+#include <type_traits>
 
 #ifdef BOOST_GIL_DOXYGEN_ONLY
 /// \def BOOST_GIL_CONFIG_HAS_UNALIGNED_ACCESS
@@ -74,7 +74,8 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   ///////////////////////////////////////////
 
   namespace detail {
-  template <typename T, bool is_class> struct channel_traits_impl;
+
+  template <typename T, bool IsClass> struct channel_traits_impl;
 
   // channel traits for custom class
   template <typename T> struct channel_traits_impl<T, true> {
@@ -104,12 +105,12 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   // channel traits implementation for constant built-in scalar or floating
   // point type
   template <typename T>
-  struct channel_traits_impl<const T, false>
-      : public channel_traits_impl<T, false> {
-    using reference = const T &;
-    using pointer = const T *;
+  struct channel_traits_impl<T const, false> : channel_traits_impl<T, false> {
+    using reference = T const &;
+    using pointer = T const *;
     static constexpr bool is_mutable = false;
   };
+
   } // namespace detail
 
   /**
@@ -132,24 +133,20 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   */
   template <typename T>
   struct channel_traits
-      : public detail::channel_traits_impl<T, is_class<T>::value> {};
+      : detail::channel_traits_impl<T, std::is_class<T>::value> {};
 
   // Channel traits for C++ reference type - remove the reference
-  template <typename T>
-  struct channel_traits<T &> : public channel_traits<T> {};
+  template <typename T> struct channel_traits<T &> : channel_traits<T> {};
 
   // Channel traits for constant C++ reference type
-  template <typename T>
-  struct channel_traits<T const &> : public channel_traits<T> {
+  template <typename T> struct channel_traits<T const &> : channel_traits<T> {
     using reference = typename channel_traits<T>::const_reference;
     using pointer = typename channel_traits<T>::const_pointer;
     static constexpr bool is_mutable = false;
   };
 
   ///////////////////////////////////////////
-  ////
   ////  scoped_channel_value
-  ////
   ///////////////////////////////////////////
 
   /// \defgroup ScopedChannelValue scoped_channel_value
@@ -193,16 +190,23 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     static value_type min_value() { return MinVal::apply(); }
     static value_type max_value() { return MaxVal::apply(); }
 
-    scoped_channel_value() {}
-    scoped_channel_value(const scoped_channel_value &c) : _value(c._value) {}
-    scoped_channel_value(BaseChannelValue val) : _value(val) {}
+    scoped_channel_value() = default;
+    scoped_channel_value(scoped_channel_value const &other)
+        : value_(other.value_) {}
+    scoped_channel_value &
+    operator=(scoped_channel_value const &other) = default;
+    scoped_channel_value(BaseChannelValue value) : value_(value) {}
+    scoped_channel_value &operator=(BaseChannelValue value) {
+      value_ = value;
+      return *this;
+    }
 
     scoped_channel_value &operator++() {
-      ++_value;
+      ++value_;
       return *this;
     }
     scoped_channel_value &operator--() {
-      --_value;
+      --value_;
       return *this;
     }
 
@@ -218,30 +222,26 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     }
 
     template <typename Scalar2> scoped_channel_value &operator+=(Scalar2 v) {
-      _value += v;
+      value_ += v;
       return *this;
     }
     template <typename Scalar2> scoped_channel_value &operator-=(Scalar2 v) {
-      _value -= v;
+      value_ -= v;
       return *this;
     }
     template <typename Scalar2> scoped_channel_value &operator*=(Scalar2 v) {
-      _value *= v;
+      value_ *= v;
       return *this;
     }
     template <typename Scalar2> scoped_channel_value &operator/=(Scalar2 v) {
-      _value /= v;
+      value_ /= v;
       return *this;
     }
 
-    scoped_channel_value &operator=(BaseChannelValue v) {
-      _value = v;
-      return *this;
-    }
-    operator BaseChannelValue() const { return _value; }
+    operator BaseChannelValue() const { return value_; }
 
   private:
-    BaseChannelValue _value;
+    BaseChannelValue value_{};
   };
 
   template <typename T> struct float_point_zero {
@@ -253,10 +253,8 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   };
 
   ///////////////////////////////////////////
-  ////
   ////  Support for sub-byte channels. These are integral channels whose value
   ///is contained in a range of bits inside an integral type
-  ////
   ///////////////////////////////////////////
 
   // It is necessary for packed channels to have their own value type. They
@@ -269,22 +267,26 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   // That means that a packed channel is incorrectly declared compatible with an
   // integral type
   namespace detail {
+
   // returns the smallest fast unsigned integral type that has at least NumBits
   // bits
   template <int NumBits>
   struct min_fast_uint
-      : public mpl::if_c<(NumBits <= 8), uint_least8_t,
-                         typename mpl::if_c<
-                             (NumBits <= 16), uint_least16_t,
-                             typename mpl::if_c<(NumBits <= 32), uint_least32_t,
-                                                uintmax_t>::type>::type> {};
+      : std::conditional<
+            NumBits <= 8, std::uint_least8_t,
+            typename std::conditional<
+                NumBits <= 16, std::uint_least16_t,
+                typename std::conditional<NumBits <= 32, std::uint_least32_t,
+                                          std::uintmax_t>::type>::type> {};
 
   template <int NumBits>
-  struct num_value_fn : public mpl::if_c<(NumBits < 32), uint32_t, uint64_t> {};
+      struct num_value_fn
+      : std::conditional < NumBits<32, std::uint32_t, std::uint64_t> {};
 
   template <int NumBits>
-  struct max_value_fn : public mpl::if_c<(NumBits <= 32), uint32_t, uint64_t> {
-  };
+  struct max_value_fn
+      : std::conditional<NumBits <= 32, std::uint32_t, std::uint64_t> {};
+
   } // namespace detail
 
   /// \defgroup PackedChannelValueModel packed_channel_value
@@ -297,13 +299,12 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   /// assert(channel_traits<bits4>::min_value()==0);
   /// assert(channel_traits<bits4>::max_value()==15);
   /// assert(sizeof(bits4)==1);
-  /// static_assert(boost::is_integral<bits4>::value, "");
+  /// static_assert(gil::is_channel_integral<bits4>::value, "");
   /// \endcode
 
   /// \ingroup PackedChannelValueModel
   /// \brief The value of a subbyte channel. Models: ChannelValueConcept
   template <int NumBits> class packed_channel_value {
-
   public:
     using integer_t = typename detail::min_fast_uint<NumBits>::type;
 
@@ -317,40 +318,42 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     static value_type min_value() { return 0; }
     static value_type max_value() { return low_bits_mask_t<NumBits>::sig_bits; }
 
-    packed_channel_value() {}
+    packed_channel_value() = default;
     packed_channel_value(integer_t v) {
-      _value =
+      value_ =
           static_cast<integer_t>(v & low_bits_mask_t<NumBits>::sig_bits_fast);
     }
+
     template <typename Scalar> packed_channel_value(Scalar v) {
-      _value = packed_channel_value(static_cast<integer_t>(v));
+      value_ = packed_channel_value(static_cast<integer_t>(v));
     }
 
     static unsigned int num_bits() { return NumBits; }
 
-    operator integer_t() const { return _value; }
+    operator integer_t() const { return value_; }
 
   private:
-    integer_t _value;
+    integer_t value_{};
   };
 
   namespace detail {
 
   template <std::size_t K> struct static_copy_bytes {
-    void operator()(const unsigned char *from, unsigned char *to) const {
+    void operator()(unsigned char const *from, unsigned char *to) const {
       *to = *from;
       static_copy_bytes<K - 1>()(++from, ++to);
     }
   };
 
   template <> struct static_copy_bytes<0> {
-    void operator()(const unsigned char *, unsigned char *) const {}
+    void operator()(unsigned char const *, unsigned char *) const {}
   };
 
-  template <typename Derived, typename BitField, int NumBits, bool Mutable>
+  template <typename Derived, typename BitField, int NumBits, bool IsMutable>
   class packed_channel_reference_base {
   protected:
-    using data_ptr_t = typename mpl::if_c<Mutable, void *, const void *>::type;
+    using data_ptr_t =
+        typename std::conditional<IsMutable, void *, void const *>::type;
 
   public:
     data_ptr_t _data_ptr; // void* pointer to the first byte of the bit range
@@ -360,7 +363,7 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     using pointer = value_type *;
     using const_pointer = const value_type *;
     static constexpr int num_bits = NumBits;
-    static constexpr bool is_mutable = Mutable;
+    static constexpr bool is_mutable = IsMutable;
 
     static value_type min_value() {
       return channel_traits<value_type>::min_value();
@@ -477,20 +480,18 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
   /// assert(data == 6);                                          // == 3<<1 ==
   /// 6 \endcode
 
-  template <typename BitField, // A type that holds the bits of the pixel from
-                               // which the channel is referenced. Typically an
-                               // integral type, like std::uint16_t
-            int FirstBit, int NumBits, // Defines the sequence of bits in the
-                                       // data value that contain the channel
-            bool Mutable>              // true if the reference is mutable
+  /// \tparam BitField A type that holds the bits of the pixel from which the
+  /// channel is referenced. Typically an integral type, like std::uint16_t
+  /// \tparam Defines the sequence of bits in the data value that contain the
+  /// channel \tparam true if the reference is mutable
+  template <typename BitField, int FirstBit, int NumBits, bool IsMutable>
   class packed_channel_reference;
 
-  template <typename BitField, // A type that holds the bits of the pixel from
-                               // which the channel is referenced. Typically an
-                               // integral type, like std::uint16_t
-            int NumBits,  // Defines the sequence of bits in the data value that
-                          // contain the channel
-            bool Mutable> // true if the reference is mutable
+  /// \tparam A type that holds the bits of the pixel from which the channel is
+  /// referenced. Typically an integral type, like std::uint16_t \tparam Defines
+  /// the sequence of bits in the data value that contain the channel \tparam
+  /// true if the reference is mutable
+  template <typename BitField, int NumBits, bool IsMutable>
   class packed_dynamic_channel_reference;
 
   /// \ingroup PackedChannelReferenceModel
@@ -504,12 +505,13 @@ BOOST_PRAGMA_MESSAGE("CAUTION: Unaligned access tolerated on little-endian may "
     using parent_t = detail::packed_channel_reference_base<
         packed_channel_reference<BitField, FirstBit, NumBits, false>, BitField,
         NumBits, false>;
+
     friend class packed_channel_reference<BitField, FirstBit, NumBits, true>;
 
     static const BitField channel_mask =
         static_cast<BitField>(parent_t::max_val) << FirstBit;
 
-    void operator=(const packed_channel_reference &);
+    void operator=(packed_channel_reference const &);
 
   public:
     using const_reference =
@@ -614,7 +616,7 @@ namespace std {
 /// \ingroup PackedChannelReferenceModel
 /// \brief swap for packed_channel_reference
 template <typename BF, int FB, int NB, bool M, typename R>
-inline void swap(const boost::gil::packed_channel_reference<BF, FB, NB, M> x,
+inline void swap(boost::gil::packed_channel_reference<BF, FB, NB, M> const x,
                  R &y) {
   boost::gil::swap_proxy<
       typename boost::gil::packed_channel_reference<BF, FB, NB, M>::value_type>(
@@ -626,7 +628,7 @@ inline void swap(const boost::gil::packed_channel_reference<BF, FB, NB, M> x,
 template <typename BF, int FB, int NB, bool M>
 inline void swap(
     typename boost::gil::packed_channel_reference<BF, FB, NB, M>::value_type &x,
-    const boost::gil::packed_channel_reference<BF, FB, NB, M> y) {
+    boost::gil::packed_channel_reference<BF, FB, NB, M> const y) {
   boost::gil::swap_proxy<
       typename boost::gil::packed_channel_reference<BF, FB, NB, M>::value_type>(
       x, y);
@@ -635,12 +637,13 @@ inline void swap(
 /// \ingroup PackedChannelReferenceModel
 /// \brief swap for packed_channel_reference
 template <typename BF, int FB, int NB, bool M>
-inline void swap(const boost::gil::packed_channel_reference<BF, FB, NB, M> x,
-                 const boost::gil::packed_channel_reference<BF, FB, NB, M> y) {
+inline void swap(boost::gil::packed_channel_reference<BF, FB, NB, M> const x,
+                 boost::gil::packed_channel_reference<BF, FB, NB, M> const y) {
   boost::gil::swap_proxy<
       typename boost::gil::packed_channel_reference<BF, FB, NB, M>::value_type>(
       x, y);
 }
+
 } // namespace std
 
 namespace boost {
@@ -816,27 +819,6 @@ swap(const boost::gil::packed_dynamic_channel_reference<BF, NB, M> x,
 }
 } // namespace std
 
-namespace boost {
-
-template <int NumBits>
-struct is_integral<gil::packed_channel_value<NumBits>> : public mpl::true_ {};
-
-template <typename BitField, int FirstBit, int NumBits, bool IsMutable>
-struct is_integral<
-    gil::packed_channel_reference<BitField, FirstBit, NumBits, IsMutable>>
-    : public mpl::true_ {};
-
-template <typename BitField, int NumBits, bool IsMutable>
-struct is_integral<
-    gil::packed_dynamic_channel_reference<BitField, NumBits, IsMutable>>
-    : public mpl::true_ {};
-
-template <typename BaseChannelValue, typename MinVal, typename MaxVal>
-struct is_integral<gil::scoped_channel_value<BaseChannelValue, MinVal, MaxVal>>
-    : public is_integral<BaseChannelValue> {};
-
-} // namespace boost
-
 // \brief Determines the fundamental type which may be used, e.g., to cast from
 // larger to smaller channel types.
 namespace boost {
@@ -863,8 +845,8 @@ struct base_channel_type_impl<scoped_channel_value<ChannelValue, MinV, MaxV>> {
 };
 
 template <typename T>
-struct base_channel_type : base_channel_type_impl<typename remove_cv<T>::type> {
-};
+struct base_channel_type
+    : base_channel_type_impl<typename std::remove_cv<T>::type> {};
 
 } // namespace gil
 } // namespace boost

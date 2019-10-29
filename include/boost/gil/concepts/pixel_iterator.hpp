@@ -16,17 +16,17 @@
 #include <boost/gil/concepts/pixel_based.hpp>
 
 #include <boost/iterator/iterator_concepts.hpp>
-#include <boost/mpl/bool.hpp>
 
 #include <cstddef>
 #include <iterator>
+#include <type_traits>
 
 #if defined(BOOST_CLANG)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-local-typedefs"
 #endif
 
-#if defined(BOOST_GCC) && (BOOST_GCC >= 40600)
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #endif
@@ -101,7 +101,7 @@ template <typename Iterator> struct PixelIteratorIsMutableConcept {
     gil_function_requires<
         detail::RandomAccessIteratorIsMutableConcept<Iterator>>();
 
-    using ref_t = typename remove_reference<
+    using ref_t = typename std::remove_reference<
         typename std::iterator_traits<Iterator>::reference>::type;
     using channel_t = typename element_type<ref_t>::type;
     gil_function_requires<detail::ChannelIsMutableConcept<channel_t>>();
@@ -175,9 +175,9 @@ template <typename Iterator> struct PixelIteratorConcept {
     check_base(typename is_iterator_adaptor<Iterator>::type());
   }
 
-  void check_base(mpl::false_) {}
+  void check_base(std::false_type) {}
 
-  void check_base(mpl::true_) {
+  void check_base(std::true_type) {
     using base_t = typename iterator_adaptor_get_base<Iterator>::type;
     gil_function_requires<PixelIteratorConcept<base_t>>();
   }
@@ -271,7 +271,7 @@ template <typename Iterator> struct MutableStepIteratorConcept {
 ///
 /// In addition to GIL iterator requirements,
 /// GIL iterator adaptors must provide the following metafunctions:
-///  - \p is_iterator_adaptor<Iterator>:             Returns \p mpl::true_
+///  - \p is_iterator_adaptor<Iterator>:             Returns \p std::true_type
 ///  - \p iterator_adaptor_get_base<Iterator>:       Returns the base iterator
 ///  type
 ///  - \p iterator_adaptor_rebind<Iterator,NewBase>: Replaces the base iterator
@@ -283,7 +283,7 @@ template <typename Iterator> struct MutableStepIteratorConcept {
 /// concept IteratorAdaptorConcept<boost_concepts::ForwardTraversalConcept
 /// Iterator>
 /// {
-///     where SameType<is_iterator_adaptor<Iterator>::type, mpl::true_>;
+///     where SameType<is_iterator_adaptor<Iterator>::type, std::true_type>;
 ///
 ///     typename iterator_adaptor_get_base<Iterator>;
 ///         where Metafunction<iterator_adaptor_get_base<Iterator> >;
@@ -336,7 +336,7 @@ template <typename Iterator> struct MutableIteratorAdaptorConcept {
 #pragma clang diagnostic pop
 #endif
 
-#if defined(BOOST_GCC) && (BOOST_GCC >= 40600)
+#if defined(BOOST_GCC) && (BOOST_GCC >= 40900)
 #pragma GCC diagnostic pop
 #endif
 

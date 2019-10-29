@@ -10,14 +10,12 @@
 
 #include <boost/gil/extension/toolbox/dynamic_images.hpp>
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/base.hpp>
 #include <boost/gil/io/conversion_policies.hpp>
 #include <boost/gil/io/device.hpp>
 #include <boost/gil/io/get_reader.hpp>
 #include <boost/gil/io/path_spec.hpp>
-
-#include <boost/mpl/and.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
 
 #include <type_traits>
 
@@ -33,7 +31,7 @@ namespace gil {
 template <typename Reader, typename Image>
 inline void read_image(
     Reader reader, Image &img,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         detail::is_reader<Reader>, is_format_tag<typename Reader::format_tag_t>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           typename Reader::format_tag_t>>::value>::type
@@ -51,7 +49,7 @@ inline void read_image(
 template <typename Device, typename Image, typename FormatTag>
 inline void read_image(
     Device &file, Image &img, image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         detail::is_read_device<FormatTag, Device>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>::value>::type * /*dummy*/
@@ -71,7 +69,7 @@ inline void read_image(
 template <typename Device, typename Image, typename FormatTag>
 inline void read_image(
     Device &file, Image &img, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         detail::is_read_device<FormatTag, Device>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>::value>::type * /*dummy*/
@@ -92,7 +90,7 @@ template <typename String, typename Image, typename FormatTag>
 inline void read_image(
     String const &file_name, Image &img,
     image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         detail::is_supported_path_spec<String>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>::value>::type * /*dummy*/
@@ -114,7 +112,7 @@ inline void read_image(
 template <typename String, typename Image, typename FormatTag>
 inline void read_image(
     String const &file_name, Image &img, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<
+    typename std::enable_if<mp11::mp_and<
         detail::is_supported_path_spec<String>, is_format_tag<FormatTag>,
         is_read_supported<typename get_pixel_type<typename Image::view_t>::type,
                           FormatTag>>::value>::type * /*dummy*/
@@ -132,8 +130,8 @@ template <typename Reader, typename Images>
 inline void read_image(
     Reader &reader, any_image<Images> &images,
     typename std::enable_if<
-        mpl::and_<detail::is_dynamic_image_reader<Reader>,
-                  is_format_tag<typename Reader::format_tag_t>>::value>::type
+        mp11::mp_and<detail::is_dynamic_image_reader<Reader>,
+                     is_format_tag<typename Reader::format_tag_t>>::value>::type
         * /*dummy*/
     = nullptr) {
   reader.apply(images);
@@ -141,17 +139,17 @@ inline void read_image(
 
 /// \brief Reads an image without conversion. Image memory is allocated.
 /// \param file      It's a device. Must satisfy is_adaptable_input_device
-/// metafunction. \param images    Dynamic image ( mpl::vector ). See
+/// metafunction. \param images    Dynamic image (mp11::mp_list). See
 /// boost::gil::dynamic_image extension. \param settings  Specifies read
 /// settings depending on the image format. \throw std::ios_base::failure
 template <typename Device, typename Images, typename FormatTag>
-inline void read_image(
-    Device &file, any_image<Images> &images,
-    image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                      is_format_tag<FormatTag>>::value>::type
-        * /*dummy*/
-    = nullptr) {
+inline void
+read_image(Device &file, any_image<Images> &images,
+           image_read_settings<FormatTag> const &settings,
+           typename std::enable_if<
+               mp11::mp_and<detail::is_read_device<FormatTag, Device>,
+                            is_format_tag<FormatTag>>::value>::type * /*dummy*/
+           = nullptr) {
   using reader_t = typename get_dynamic_image_reader<Device, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file, settings);
@@ -160,17 +158,17 @@ inline void read_image(
 
 /// \brief Reads an image without conversion. Image memory is allocated.
 /// \param file      It's a device. Must satisfy is_adaptable_input_device
-/// metafunction. \param images    Dynamic image ( mpl::vector ). See
+/// metafunction. \param images    Dynamic image (mp11::mp_list). See
 /// boost::gil::dynamic_image extension. \param tag       Defines the image
 /// format. Must satisfy is_format_tag metafunction. \throw
 /// std::ios_base::failure
 template <typename Device, typename Images, typename FormatTag>
-inline void read_image(
-    Device &file, any_image<Images> &images, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<detail::is_read_device<FormatTag, Device>,
-                                      is_format_tag<FormatTag>>::value>::type
-        * /*dummy*/
-    = nullptr) {
+inline void
+read_image(Device &file, any_image<Images> &images, FormatTag const &tag,
+           typename std::enable_if<
+               mp11::mp_and<detail::is_read_device<FormatTag, Device>,
+                            is_format_tag<FormatTag>>::value>::type * /*dummy*/
+           = nullptr) {
   using reader_t = typename get_dynamic_image_reader<Device, FormatTag>::type;
 
   reader_t reader = make_dynamic_image_reader(file, tag);
@@ -179,15 +177,15 @@ inline void read_image(
 
 /// \brief Reads an image without conversion. Image memory is allocated.
 /// \param file_name File name. Must satisfy is_supported_path_spec
-/// metafunction. \param images    Dynamic image ( mpl::vector ). See
+/// metafunction. \param images    Dynamic image (mp11::mp_list). See
 /// boost::gil::dynamic_image extension. \param settings  Specifies read
 /// settings depending on the image format. \throw std::ios_base::failure
 template <typename String, typename Images, typename FormatTag>
 inline void read_image(
     String const &file_name, any_image<Images> &images,
     image_read_settings<FormatTag> const &settings,
-    typename std::enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                      is_format_tag<FormatTag>>::value>::type
+    typename std::enable_if<mp11::mp_and<detail::is_supported_path_spec<String>,
+                                         is_format_tag<FormatTag>>::value>::type
         * /*dummy*/
     = nullptr) {
   using reader_t = typename get_dynamic_image_reader<String, FormatTag>::type;
@@ -198,15 +196,15 @@ inline void read_image(
 
 /// \brief Reads an image without conversion. Image memory is allocated.
 /// \param file_name File name. Must satisfy is_supported_path_spec
-/// metafunction. \param images    Dynamic image ( mpl::vector ). See
+/// metafunction. \param images    Dynamic image (mp11::mp_list). See
 /// boost::gil::dynamic_image extension. \param tag       Defines the image
 /// format. Must satisfy is_format_tag metafunction. \throw
 /// std::ios_base::failure
 template <typename String, typename Images, typename FormatTag>
 inline void read_image(
     String const &file_name, any_image<Images> &images, FormatTag const &tag,
-    typename std::enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                      is_format_tag<FormatTag>>::value>::type
+    typename std::enable_if<mp11::mp_and<detail::is_supported_path_spec<String>,
+                                         is_format_tag<FormatTag>>::value>::type
         * /*dummy*/
     = nullptr) {
   using reader_t = typename get_dynamic_image_reader<String, FormatTag>::type;

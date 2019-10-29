@@ -8,10 +8,9 @@
 #ifndef BOOST_GIL_IO_GET_WRITE_DEVICE_HPP
 #define BOOST_GIL_IO_GET_WRITE_DEVICE_HPP
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/io/device.hpp>
 #include <boost/gil/io/path_spec.hpp>
-
-#include <boost/mpl/and.hpp>
 
 #include <type_traits>
 
@@ -25,17 +24,17 @@ template <typename Device, typename FormatTag>
 struct get_write_device<
     Device, FormatTag,
     typename std::enable_if<
-        mpl::and_<detail::is_adaptable_output_device<FormatTag, Device>,
-                  is_format_tag<FormatTag>>::value>::type> {
+        mp11::mp_and<detail::is_adaptable_output_device<FormatTag, Device>,
+                     is_format_tag<FormatTag>>::value>::type> {
   using type = typename detail::is_adaptable_output_device<FormatTag,
                                                            Device>::device_type;
 };
 
 template <typename String, typename FormatTag>
-struct get_write_device<
-    String, FormatTag,
-    typename std::enable_if<mpl::and_<detail::is_supported_path_spec<String>,
-                                      is_format_tag<FormatTag>>::value>::type> {
+struct get_write_device<String, FormatTag,
+                        typename std::enable_if<mp11::mp_and<
+                            detail::is_supported_path_spec<String>,
+                            is_format_tag<FormatTag>>::value>::type> {
   using type = detail::file_stream_device<FormatTag>;
 };
 

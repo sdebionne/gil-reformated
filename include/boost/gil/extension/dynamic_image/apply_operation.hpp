@@ -8,6 +8,8 @@
 #ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_APPLY_OPERATION_HPP
 #define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_APPLY_OPERATION_HPP
 
+#include <boost/gil/detail/mp11.hpp>
+
 #include <boost/variant/apply_visitor.hpp>
 
 #ifdef BOOST_GIL_DOXYGEN_ONLY

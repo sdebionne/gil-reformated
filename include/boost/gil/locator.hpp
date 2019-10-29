@@ -358,6 +358,8 @@ public:
   template <typename X>
   memory_based_2d_locator(const memory_based_2d_locator<X> &pl) : _p(pl._p) {}
   memory_based_2d_locator(const memory_based_2d_locator &pl) : _p(pl._p) {}
+  memory_based_2d_locator &
+  operator=(memory_based_2d_locator const &other) = default;
 
   bool operator==(const this_t &p) const { return _p == p._p; }
 

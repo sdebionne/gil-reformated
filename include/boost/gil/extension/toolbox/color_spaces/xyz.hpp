@@ -9,9 +9,8 @@
 #define BOOST_GIL_EXTENSION_TOOLBOX_COLOR_SPACES_XYZ_HPP
 
 #include <boost/gil/color_convert.hpp>
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/typedefs.hpp>
-
-#include <boost/mpl/vector.hpp>
 
 namespace boost {
 namespace gil {
@@ -29,8 +28,8 @@ struct z_t {};
 /// \}
 
 /// \ingroup ColorSpaceModel
-using xyz_t = mpl::vector3<xyz_color_space::x_t, xyz_color_space::y_t,
-                           xyz_color_space::z_t>;
+using xyz_t = mp11::mp_list<xyz_color_space::x_t, xyz_color_space::y_t,
+                            xyz_color_space::z_t>;
 
 /// \ingroup LayoutModel
 using xyz_layout_t = layout<xyz_t>;

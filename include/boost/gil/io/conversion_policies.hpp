@@ -8,6 +8,7 @@
 #ifndef BOOST_GIL_IO_CONVERSION_POLICIES_HPP
 #define BOOST_GIL_IO_CONVERSION_POLICIES_HPP
 
+#include <boost/gil/detail/mp11.hpp>
 #include <boost/gil/image_view_factory.hpp>
 #include <boost/gil/io/error.hpp>
 
@@ -27,7 +28,7 @@ public:
   void read(
       InIterator const & /*begin*/, InIterator const & /*end*/,
       OutIterator /*out*/,
-      typename std::enable_if<mpl::not_<pixels_are_compatible<
+      typename std::enable_if<mp11::mp_not<pixels_are_compatible<
           typename std::iterator_traits<InIterator>::value_type,
           typename std::iterator_traits<OutIterator>::value_type>>::value>::type
           * /*dummy*/
@@ -70,9 +71,10 @@ public:
 
 /// is_read_only metafunction
 /// \brief Determines if reader type is read only ( no conversion ).
-template <typename Conversion_Policy> struct is_read_only : mpl::false_ {};
+template <typename Conversion_Policy> struct is_read_only : std::false_type {};
 
-template <> struct is_read_only<detail::read_and_no_convert> : mpl::true_ {};
+template <>
+struct is_read_only<detail::read_and_no_convert> : std::true_type {};
 
 } // namespace detail
 } // namespace gil

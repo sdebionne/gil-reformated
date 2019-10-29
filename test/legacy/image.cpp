@@ -12,13 +12,16 @@
                     // realize that the two types are the same)
 #pragma warning(                                                               \
     disable : 4503) // decorated name length exceeded, name was truncated
+#pragma warning(disable : 4701) // potentially uninitialized local variable
+                                // 'result' used in boost/crc.hpp
 #endif
 
+#include <boost/gil.hpp>
 #include <boost/gil/extension/dynamic_image/dynamic_image_all.hpp>
 
 #include <boost/core/ignore_unused.hpp>
 #include <boost/crc.hpp>
-#include <boost/mpl/vector.hpp>
+#include <boost/mp11.hpp>
 
 #include <fstream>
 #include <ios>
@@ -150,10 +153,11 @@ template <typename T> void x_gradient(const T &src, const gray8s_view_t &dst) {
 
 // A quick test whether a view is homogeneous
 
-template <typename Pixel> struct pixel_is_homogeneous : public mpl::true_ {};
+template <typename Pixel>
+struct pixel_is_homogeneous : public std::true_type {};
 
 template <typename P, typename C, typename L>
-struct pixel_is_homogeneous<packed_pixel<P, C, L>> : public mpl::false_ {};
+struct pixel_is_homogeneous<packed_pixel<P, C, L>> : public std::false_type {};
 
 template <typename View>
 struct view_is_homogeneous
@@ -188,11 +192,12 @@ private:
   void view_transformations_test(const View &img_view, const string &prefix);
   template <typename View>
   void homogeneous_view_transformations_test(const View &img_view,
-                                             const string &prefix, mpl::true_);
+                                             const string &prefix,
+                                             std::true_type);
   template <typename View>
   void homogeneous_view_transformations_test(const View &img_view,
                                              const string &prefix,
-                                             mpl::false_) {
+                                             std::false_type) {
     boost::ignore_unused(img_view);
     boost::ignore_unused(prefix);
   }
@@ -303,7 +308,7 @@ void image_test::view_transformations_test(const View &img_view,
 template <typename View>
 void image_test::homogeneous_view_transformations_test(const View &img_view,
                                                        const string &prefix,
-                                                       mpl::true_) {
+                                                       std::true_type) {
   check_view(nth_channel_view(img_view, 0), prefix + "0th_n_channel");
 }
 
@@ -352,8 +357,8 @@ void image_test::packed_image_test() {
 
 void image_test::dynamic_image_test() {
   using any_image_t =
-      any_image<mpl::vector<gray8_image_t, bgr8_image_t, argb8_image_t,
-                            rgb8_image_t, rgb8_planar_image_t>>;
+      any_image<mp11::mp_list<gray8_image_t, bgr8_image_t, argb8_image_t,
+                              rgb8_image_t, rgb8_planar_image_t>>;
   rgb8_planar_image_t img(sample_view.dimensions());
   copy_pixels(sample_view, view(img));
   any_image_t any_img = any_image_t(img);
@@ -390,7 +395,7 @@ void image_test::run() {
   image_all_test<gray8_image_t>("gray8_");
 
   using bgr121_ref_t =
-      bit_aligned_pixel_reference<boost::uint8_t, mpl::vector3_c<int, 1, 2, 1>,
+      bit_aligned_pixel_reference<boost::uint8_t, mp11::mp_list_c<int, 1, 2, 1>,
                                   bgr_layout_t, true> const;
   using bgr121_image_t = image<bgr121_ref_t, false>;
   image_all_test<bgr121_image_t>("bgr121_");
@@ -558,8 +563,8 @@ void static_checks() {
       "");
   static_assert(
       std::is_same<derived_view_type<cmyk8c_planar_step_view_t, use_default,
-                                     rgb_layout_t, mpl::false_, use_default,
-                                     mpl::false_>::type,
+                                     rgb_layout_t, std::false_type, use_default,
+                                     std::false_type>::type,
                    rgb8c_step_view_t>::value,
       "");
 
