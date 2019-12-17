@@ -33,7 +33,7 @@
 
 // Max number of cases in the cross-expension of binary operation for it to be
 // reduced as unary
-#define GIL_BINARY_REDUCE_LIMIT 226
+#define BOOST_GIL_BINARY_REDUCE_LIMIT 226
 
 namespace boost {
 namespace mpl {
@@ -186,8 +186,8 @@ struct unary_reduce<Types, Op, true> : public unary_reduce_impl<Types, Op> {
 ///
 /// Given two sets of types, Types1 and Types2, first performs unary reduction
 /// on each. Then checks if the product of their sizes is above the
-/// GIL_BINARY_REDUCE_LIMIT limit. If so, the operation is too complex to be
-/// binary-reduced and uses a specialization of binary_reduce_impl to simply
+/// BOOST_GIL_BINARY_REDUCE_LIMIT limit. If so, the operation is too complex to
+/// be binary-reduced and uses a specialization of binary_reduce_impl to simply
 /// call the binary apply_operation_base (which performs two nested 1D apply
 /// operations) If the operation is not too complex, uses the other
 /// specialization of binary_reduce_impl to create a cross-product of the input
@@ -264,7 +264,7 @@ template <typename Types1, typename Types2, typename Op> struct binary_reduce {
 
   using impl =
       detail::binary_reduce_impl<unary1_t, unary2_t, Op,
-                                 (CROSS_SIZE > GIL_BINARY_REDUCE_LIMIT)>;
+                                 (CROSS_SIZE > BOOST_GIL_BINARY_REDUCE_LIMIT)>;
 
 public:
   template <typename Bits1, typename Bits2>
@@ -298,7 +298,7 @@ apply_operation(const variant<Types1> &arg1, const variant<Types2> &arg2,
       arg1._bits, arg1._index, arg2._bits, arg2._index, op);
 }
 
-#undef GIL_BINARY_REDUCE_LIMIT
+#undef BOOST_GIL_BINARY_REDUCE_LIMIT
 
 } // namespace gil
 } // namespace boost
