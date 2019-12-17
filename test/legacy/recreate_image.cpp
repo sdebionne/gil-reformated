@@ -75,7 +75,7 @@ total_allocated_size_in_bytes(const typename View::point_t &dimensions) {
   return (size_in_units + btm - 1) / btm;
 }
 
-BOOST_AUTO_TEST_SUITE(GIL_Tests)
+BOOST_AUTO_TEST_SUITE(gil_legacy_tests)
 
 BOOST_AUTO_TEST_CASE(recreate_image_test) {
   auto tasib_1 = total_allocated_size_in_bytes<rgb8_view_t, false>({640, 480});

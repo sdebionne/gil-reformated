@@ -35,7 +35,7 @@ using hsl_t =
 /// \ingroup LayoutModel
 using hsl_layout_t = layout<hsl_t>;
 
-GIL_DEFINE_ALL_TYPEDEFS(32f, float32_t, hsl)
+BOOST_GIL_DEFINE_ALL_TYPEDEFS(32f, float32_t, hsl)
 
 /// \ingroup ColorConvert
 /// \brief RGB to HSL

@@ -183,8 +183,9 @@ template <typename SrcView, typename DstP,
 struct color_converted_view_type
     : public detail::_color_converted_view_type<SrcView, CC, DstP,
                                                 typename SrcView::value_type> {
-  GIL_CLASS_REQUIRE(DstP, boost::gil,
-                    MutablePixelConcept) // why does it have to be mutable???
+  BOOST_GIL_CLASS_REQUIRE(
+      DstP, boost::gil,
+      MutablePixelConcept) // why does it have to be mutable???
 };
 
 /// \ingroup ImageViewTransformationsColorConvert
@@ -459,7 +460,7 @@ public:
 /// and/or step view) then the return view is a single-channel step view.
 template <typename View> struct nth_channel_view_type {
 private:
-  GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept)
+  BOOST_GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept)
   using VB = detail::__nth_channel_view<View, view_is_basic<View>::value>;
 
 public:
@@ -608,7 +609,7 @@ public:
 /// and/or step view) then the return view is a single-channel step view.
 template <int K, typename View> struct kth_channel_view_type {
 private:
-  GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept)
+  BOOST_GIL_CLASS_REQUIRE(View, boost::gil, ImageViewConcept)
   using VB = detail::__kth_channel_view<K, View, view_is_basic<View>::value>;
 
 public:

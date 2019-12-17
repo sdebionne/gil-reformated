@@ -206,7 +206,7 @@ struct dynamic_x_step_type<dereference_iterator_adaptor<Iterator, DFn>> {
 /// invokes the given dereference adaptor upon dereferencing \ingroup
 /// PixelIteratorModelDerefPtr
 template <typename Iterator, typename Deref> struct iterator_add_deref {
-  GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
+  BOOST_GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
 
   using type = dereference_iterator_adaptor<Iterator, Deref>;
 
@@ -219,7 +219,8 @@ template <typename Iterator, typename Deref> struct iterator_add_deref {
 template <typename Iterator, typename PREV_DEREF, typename Deref>
 struct iterator_add_deref<dereference_iterator_adaptor<Iterator, PREV_DEREF>,
                           Deref> {
-  //    GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
+  //    BOOST_GIL_CLASS_REQUIRE(Deref, boost::gil,
+  //    PixelDereferenceAdaptorConcept)
 
   using type =
       dereference_iterator_adaptor<Iterator, deref_compose<Deref, PREV_DEREF>>;

@@ -456,7 +456,7 @@ void test_transform(std::size_t trials) {
   // << std::endl;
 }
 
-BOOST_AUTO_TEST_SUITE(GIL_Tests)
+BOOST_AUTO_TEST_SUITE(gil_legacy_tests)
 
 BOOST_AUTO_TEST_CASE(performance_test) {
 #ifdef NDEBUG

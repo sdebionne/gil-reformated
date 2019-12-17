@@ -312,7 +312,7 @@ class memory_based_2d_locator
           typename iterator_adaptor_get_base<StepIterator>::type,
           StepIterator> {
   using this_t = memory_based_2d_locator<StepIterator>;
-  GIL_CLASS_REQUIRE(StepIterator, boost::gil, StepIteratorConcept)
+  BOOST_GIL_CLASS_REQUIRE(StepIterator, boost::gil, StepIteratorConcept)
 public:
   using parent_t = pixel_2d_locator_base<
       memory_based_2d_locator<StepIterator>,
