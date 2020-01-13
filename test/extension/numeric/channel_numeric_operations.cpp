@@ -16,7 +16,6 @@
 #include <type_traits>
 
 #include "core/channel/test_fixture.hpp"
-#include "unit_test_utility.hpp"
 
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
