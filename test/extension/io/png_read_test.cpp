@@ -704,4 +704,31 @@ BOOST_AUTO_TEST_CASE(gamma_test) {
 
 #endif // BOOST_GIL_IO_USE_PNG_TEST_SUITE_IMAGES
 
+BOOST_AUTO_TEST_CASE(corrupted_png_read_test) {
+  // taken from https://github.com/boostorg/gil/issues/401#issue-518615480
+  // author: https://github.com/misos1
+
+  std::initializer_list<unsigned char> corrupt_png = {
+      0x89, 'P',  'N',  'G',  0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
+      'I',  'H',  'D',  'R',  0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0xA9,
+      0x08, 0x02, 0x00, 0x00, 0x00, 0x68, 0x1B, 0xF7, 0x46, 0x00, 0x00, 0x00,
+      0x00, 'I',  'D',  'A',  'T',  0x35, 0xAF, 0x06, 0x1E, 0x00, 0x00, 0x00,
+      0x00, 'I',  'E',  'N',  'D',  0xAE, 0x42, 0x60, 0x82};
+  std::stringstream ss(std::string(corrupt_png.begin(), corrupt_png.end()),
+                       std::ios_base::in | std::ios_base::binary);
+  boost::gil::rgb8_image_t img;
+  try {
+    boost::gil::read_image(ss, img, boost::gil::png_tag{});
+  } catch (std::ios_base::failure &exception) {
+    // the exception message is "png is invalid: iostream error"
+    // is the error portable throughout stdlib implementations,
+    // or is it native to this one?
+    // the description passd is "png_is_invalid"
+    // the exact error message is thus not checked
+    return;
+  }
+
+  BOOST_FAIL("no exception was thrown, which is an error");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
