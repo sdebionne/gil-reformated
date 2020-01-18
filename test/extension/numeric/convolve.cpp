@@ -15,6 +15,7 @@
 #include <type_traits>
 
 #include "core/image/test_fixture.hpp"
+#include "core/test_fixture.hpp"
 #include "test_fixture.hpp"
 
 namespace gil = boost::gil;

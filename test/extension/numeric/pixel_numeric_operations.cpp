@@ -15,8 +15,8 @@
 #include <tuple>
 #include <type_traits>
 
-#include "core/image/test_fixture.hpp" // random_value
 #include "core/pixel/test_fixture.hpp"
+#include "core/test_fixture.hpp" // random_value
 
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
