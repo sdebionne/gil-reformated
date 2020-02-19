@@ -98,6 +98,8 @@ private:
 
       jpeg_write_scanlines(this->get(), &row_addr, 1);
     }
+
+    jpeg_finish_compress(this->get());
   }
 };
 
