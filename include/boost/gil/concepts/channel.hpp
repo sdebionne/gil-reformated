@@ -70,7 +70,7 @@ auto channel_convert(SrcT const &val) ->
 ///
 ///     static T min_value();                // use channel_traits<T>::min_value
 ///     to access it static T max_value();                // use
-///     channel_traits<T>::min_value to access it
+///     channel_traits<T>::max_value to access it
 /// };
 /// \endcode
 template <typename T> struct ChannelConcept {
