@@ -40,7 +40,7 @@ void threshold_impl(SrcView const &src_view, DstView const &dst_view,
                 "Source and destination views must have pixels with the same "
                 "color space");
 
-  // iterate over the image chaecking each pixel value for the threshold
+  // iterate over the image checking each pixel value for the threshold
   for (std::ptrdiff_t y = 0; y < src_view.height(); y++) {
     typename SrcView::x_iterator src_it = src_view.row_begin(y);
     typename DstView::x_iterator dst_it = dst_view.row_begin(y);
@@ -57,7 +57,7 @@ void threshold_impl(SrcView const &src_view, DstView const &dst_view,
 /// @{
 ///
 /// \brief Direction of image segmentation.
-/// The direction specifieds which pixels are considered as corresponding to
+/// The direction specifies which pixels are considered as corresponding to
 /// object and which pixels correspond to background.
 enum class threshold_direction {
   regular, ///< Consider values greater than threshold value
@@ -138,14 +138,14 @@ void threshold_binary(
 
 /// \ingroup ImageProcessing
 /// \brief Applies truncating threshold to each pixel of image view.
-/// Takes an image view and performes truncating threshold operation on each
+/// Takes an image view and performs truncating threshold operation on each
 /// chennel. If mode is threshold and direction is regular: values greater than
 /// threshold_value will be set to threshold_value else no change If mode is
-/// threshold and direction is inverse: values less than threshold_value will be
-/// set to threshold_value else no change If mode is zero and direction is
-/// regular: values less than threshold_value will be set to 0 else no change If
-/// mode is zero and direction is inverse: values more than threshold_value will
-/// be set to 0 else no change
+/// threshold and direction is inverse: values less than or equal to
+/// threshold_value will be set to threshold_value else no change If mode is
+/// zero and direction is regular: values less than or equal to threshold_value
+/// will be set to 0 else no change If mode is zero and direction is inverse:
+/// values more than threshold_value will be set to 0 else no change
 template <typename SrcView, typename DstView>
 void threshold_truncate(
     SrcView const &src_view, DstView const &dst_view,
@@ -318,7 +318,7 @@ void adaptive_impl(SrcView const &src_view, SrcView const &convolved_view,
                 "Source and destination views must have pixels with the same "
                 "color space");
 
-  // iterate over the image chaecking each pixel value for the threshold
+  // iterate over the image checking each pixel value for the threshold
   for (std::ptrdiff_t y = 0; y < src_view.height(); y++) {
     typename SrcView::x_iterator src_it = src_view.row_begin(y);
     typename SrcView::x_iterator convolved_it = convolved_view.row_begin(y);
