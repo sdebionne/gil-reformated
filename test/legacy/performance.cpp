@@ -7,7 +7,7 @@
 //
 #include <boost/gil.hpp>
 
-#include <boost/test/unit_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #include <cstddef>
 #include <ctime>
@@ -456,9 +456,7 @@ void test_transform(std::size_t trials) {
   // << std::endl;
 }
 
-BOOST_AUTO_TEST_SUITE(gil_legacy_tests)
-
-BOOST_AUTO_TEST_CASE(performance_test) {
+void test_performance() {
 #ifdef NDEBUG
   std::size_t num_trials = 1000;
 #else
@@ -555,4 +553,9 @@ BOOST_AUTO_TEST_CASE(performance_test) {
   std::cout << std::endl;
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+int main() {
+
+  test_performance();
+
+  return ::boost::report_errors();
+}

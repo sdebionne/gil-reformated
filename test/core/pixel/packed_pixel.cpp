@@ -1,18 +1,16 @@
 //
-// Copyright 2019 Mateusz Loskot <mateusz at loskot dot net>
+// Copyright 2019-2020 Mateusz Loskot <mateusz at loskot dot net>
 //
 // Distributed under the Boost Software License, Version 1.0
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
-#define BOOST_TEST_MODULE gil / test / core / pixel / packed_pixel
-#include "unit_test.hpp"
-
 #include <boost/gil/channel.hpp>
 #include <boost/gil/gray.hpp>
 #include <boost/gil/packed_pixel.hpp>
 #include <boost/gil/rgb.hpp>
 
+#include <boost/core/lightweight_test.hpp>
 #include <boost/core/typeinfo.hpp>
 #include <boost/mp11.hpp>
 
@@ -22,7 +20,7 @@ namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
 namespace mp11 = boost::mp11;
 
-BOOST_AUTO_TEST_CASE(packed_pixel_gray3_definition) {
+void test_packed_pixel_gray3_definition() {
   // Verify packed_pixel members
 
   static_assert(std::is_same<fixture::packed_pixel_gray3::layout_t,
@@ -79,14 +77,14 @@ BOOST_AUTO_TEST_CASE(packed_pixel_gray3_definition) {
       "packed_channel_reference_type should return packed_channel_reference");
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_gray3_assignment) {
+void test_packed_pixel_gray3_assignment() {
   fixture::packed_pixel_gray3 p1{int{5}};
   fixture::packed_pixel_gray3 p2;
   p2 = p1;
   BOOST_TEST(p1._bitfield == p2._bitfield);
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_gray_equality) {
+void test_packed_pixel_gray3_equality() {
   fixture::packed_pixel_gray3 p1{int{5}};
   fixture::packed_pixel_gray3 p2{int{5}};
   BOOST_TEST(p1 == p2);
@@ -95,7 +93,7 @@ BOOST_AUTO_TEST_CASE(packed_pixel_gray_equality) {
   BOOST_TEST(p2 != p3);
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_gray3_assignment_gray_channel) {
+void test_packed_pixel_gray3_assignment_gray_channel() {
   {
     fixture::packed_pixel_gray3 p1; // default-initialized
     p1 = int{5};
@@ -109,12 +107,12 @@ BOOST_AUTO_TEST_CASE(packed_pixel_gray3_assignment_gray_channel) {
   }
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_gray_equality_gray_channel) {
+void test_packed_pixel_gray3_equality_gray_channel() {
   fixture::packed_pixel_gray3 p1{int{3}};
   BOOST_TEST(p1 == int{3});
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_bgr121_definition) {
+void test_packed_pixel_bgr121_definition() {
   // Verify packed_pixel members
 
   static_assert(std::is_same<fixture::packed_pixel_bgr121::layout_t,
@@ -193,14 +191,14 @@ BOOST_AUTO_TEST_CASE(packed_pixel_bgr121_definition) {
       "packed_channel_reference_type should return packed_channel_reference");
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_bgr121_assignment) {
+void test_packed_pixel_bgr121_assignment() {
   fixture::packed_pixel_bgr121 p1{0, 3, 1};
   fixture::packed_pixel_bgr121 p2;
   p2 = p1;
   BOOST_TEST(p1._bitfield == p2._bitfield);
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_bgr121_equality) {
+void test_packed_pixel_bgr121_equality() {
   fixture::packed_pixel_bgr121 p1{1, 3, 0};
   fixture::packed_pixel_bgr121 p2{1, 3, 0};
   BOOST_TEST(p1 == p2);
@@ -209,7 +207,7 @@ BOOST_AUTO_TEST_CASE(packed_pixel_bgr121_equality) {
   BOOST_TEST(p2 != p3);
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_rgb535_definition) {
+void test_packed_pixel_rgb535_definition() {
   // Verify packed_pixel members
 
   static_assert(std::is_same<fixture::packed_pixel_rgb535::layout_t,
@@ -290,18 +288,34 @@ BOOST_AUTO_TEST_CASE(packed_pixel_rgb535_definition) {
       "packed_channel_reference_type should return packed_channel_reference");
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_rgb535_assignment) {
+void test_packed_pixel_rgb535_assignment() {
   fixture::packed_pixel_rgb535 p1{31, 7, 31};
   fixture::packed_pixel_rgb535 p2;
   p2 = p1;
   BOOST_TEST(p1._bitfield == p2._bitfield);
 }
 
-BOOST_AUTO_TEST_CASE(packed_pixel_rgb535_equality) {
+void test_packed_pixel_rgb535_equality() {
   fixture::packed_pixel_rgb535 p1{7, 3, 7};
   fixture::packed_pixel_rgb535 p2{7, 3, 7};
   BOOST_TEST(p1 == p2);
 
   fixture::packed_pixel_rgb535 p3{7, 7, 7};
   BOOST_TEST(p2 != p3);
+}
+
+int main() {
+  test_packed_pixel_gray3_definition();
+  test_packed_pixel_gray3_assignment();
+  test_packed_pixel_gray3_equality();
+  test_packed_pixel_gray3_assignment_gray_channel();
+  test_packed_pixel_gray3_equality_gray_channel();
+  test_packed_pixel_bgr121_definition();
+  test_packed_pixel_bgr121_assignment();
+  test_packed_pixel_bgr121_equality();
+  test_packed_pixel_rgb535_definition();
+  test_packed_pixel_rgb535_assignment();
+  test_packed_pixel_rgb535_equality();
+
+  return boost::report_errors();
 }

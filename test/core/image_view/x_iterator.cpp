@@ -5,11 +5,14 @@
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
-#include "test_fixture.hpp"
-#include <boost/core/lightweight_test.hpp>
 #include <boost/gil/image.hpp>
 #include <boost/gil/image_view.hpp>
 #include <boost/gil/typedefs.hpp>
+
+#include <boost/core/ignore_unused.hpp>
+#include <boost/core/lightweight_test.hpp>
+
+#include "test_fixture.hpp"
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
 
@@ -66,6 +69,8 @@ void test_row_end() {
 #ifdef NDEBUG // skip assertion on y < height(), see TODO comment in
               // image_view.hpp
     BOOST_TEST(view.row_begin(0) == view.row_end(0));
+#else
+    boost::ignore_unused(view);
 #endif
   }
   {
@@ -74,6 +79,8 @@ void test_row_end() {
 #ifdef NDEBUG // skip assertion on y < height(), see TODO comment in
               // image_view.hpp
     BOOST_TEST(view.row_begin(0) == view.row_end(0));
+#else
+    boost::ignore_unused(view);
 #endif
   }
 }
