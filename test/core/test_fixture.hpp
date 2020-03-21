@@ -30,7 +30,8 @@ template <typename T> struct consecutive_value {
 
   T operator()() {
     BOOST_ASSERT(static_cast<int>(current_) + 1 > 0);
-    return current_++;
+    current_++;
+    return current_;
   }
 
   T current_;
@@ -43,7 +44,8 @@ template <typename T> struct reverse_consecutive_value {
 
   T operator()() {
     BOOST_ASSERT(static_cast<int>(current_) + 1 >= 0);
-    return current_--;
+    current_--;
+    return current_;
   }
 
   T current_;

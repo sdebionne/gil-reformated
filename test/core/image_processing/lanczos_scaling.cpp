@@ -10,8 +10,6 @@
 
 #include <boost/core/lightweight_test.hpp>
 
-#include <iostream>
-
 namespace gil = boost::gil;
 
 bool are_equal(gil::rgb8_view_t expected, gil::rgb8_view_t actual) {
@@ -20,9 +18,8 @@ bool are_equal(gil::rgb8_view_t expected, gil::rgb8_view_t actual) {
 
   for (long int y = 0; y < expected.height(); ++y) {
     for (long int x = 0; x < expected.width(); ++x) {
-      if (expected(x, y) != actual(x, y)) {
+      if (expected(x, y) != actual(x, y))
         return false;
-      }
     }
   }
 
@@ -30,7 +27,6 @@ bool are_equal(gil::rgb8_view_t expected, gil::rgb8_view_t actual) {
 }
 
 void test_lanczos_black_image() {
-
   const gil::point_t input_dimensions(20, 20);
   const gil::point_t output_dimensions(input_dimensions.x / 2,
                                        input_dimensions.y / 2);

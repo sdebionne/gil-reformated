@@ -1,14 +1,13 @@
 //
-// Copyright 2018 Mateusz Loskot <mateusz at loskot dot net>
+// Copyright 2018-2020 Mateusz Loskot <mateusz at loskot dot net>
 //
 // Distributed under the Boost Software License, Version 1.0
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
-#define BOOST_TEST_MODULE gil / test / core / image_view / planar_rgba_view
-#include "unit_test.hpp"
-
 #include <boost/gil.hpp>
+
+#include <boost/core/lightweight_test.hpp>
 
 #include <cstdint>
 
@@ -31,11 +30,7 @@ std::uint8_t a[] = {251, 252, 253, 254};
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
 
-using dont_print_log_value_planar_pixel_reference =
-    boost::gil::planar_pixel_reference<std::uint8_t &, boost::gil::rgba_t>;
-BOOST_TEST_DONT_PRINT_LOG_VALUE(dont_print_log_value_planar_pixel_reference)
-
-BOOST_AUTO_TEST_CASE(dimensions) {
+void test_dimensions() {
   auto v =
       gil::planar_rgba_view(fixture::d.x, fixture::d.y, fixture::r, fixture::g,
                             fixture::b, fixture::a, sizeof(std::uint8_t) * 2);
@@ -45,7 +40,7 @@ BOOST_AUTO_TEST_CASE(dimensions) {
   BOOST_TEST(v.size() == static_cast<std::size_t>(fixture::d.x * fixture::d.y));
 }
 
-BOOST_AUTO_TEST_CASE(front) {
+void test_front() {
   auto v =
       gil::planar_rgba_view(fixture::d.x, fixture::d.y, fixture::r, fixture::g,
                             fixture::b, fixture::a, sizeof(std::uint8_t) * 2);
@@ -53,7 +48,7 @@ BOOST_AUTO_TEST_CASE(front) {
   BOOST_TEST(v.front() == pf);
 }
 
-BOOST_AUTO_TEST_CASE(back) {
+void test_back() {
   auto v =
       gil::planar_rgba_view(fixture::d.x, fixture::d.y, fixture::r, fixture::g,
                             fixture::b, fixture::a, sizeof(std::uint8_t) * 2);
@@ -61,7 +56,7 @@ BOOST_AUTO_TEST_CASE(back) {
   BOOST_TEST(v.back() == pb);
 }
 
-BOOST_AUTO_TEST_CASE(pixel_equal_to_operator) {
+void test_pixel_equal_to_operator() {
   auto v =
       gil::planar_rgba_view(fixture::d.x, fixture::d.y, fixture::r, fixture::g,
                             fixture::b, fixture::a, sizeof(std::uint8_t) * 2);
@@ -70,4 +65,13 @@ BOOST_AUTO_TEST_CASE(pixel_equal_to_operator) {
                                fixture::a[i]};
     BOOST_TEST(v[i] == p);
   }
+}
+
+int main() {
+  test_dimensions();
+  test_front();
+  test_back();
+  test_pixel_equal_to_operator();
+
+  return ::boost::report_errors();
 }

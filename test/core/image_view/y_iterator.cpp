@@ -5,12 +5,16 @@
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
-#include "test_fixture.hpp"
-#include <boost/core/lightweight_test.hpp>
 #include <boost/gil/image.hpp>
 #include <boost/gil/image_view.hpp>
 #include <boost/gil/typedefs.hpp>
+
+#include <boost/core/ignore_unused.hpp>
+#include <boost/core/lightweight_test.hpp>
+
 #include <vector>
+
+#include "test_fixture.hpp"
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
 
@@ -66,6 +70,8 @@ void test_col_end() {
 #ifdef NDEBUG // skip assertion on x < width(), see TODO comment in
               // image_view.hpp
     BOOST_TEST(view.col_begin(0) == view.col_end(0));
+#else
+    boost::ignore_unused(view);
 #endif
   }
   {
@@ -74,6 +80,8 @@ void test_col_end() {
 #ifdef NDEBUG // skip assertion on x < width(), see TODO comment in
               // image_view.hpp
     BOOST_TEST(view.col_begin(0) == view.col_end(0));
+#else
+    boost::ignore_unused(view);
 #endif
   }
 }
@@ -93,6 +101,7 @@ void test_issue_432() {
     auto view = boost::gil::interleaved_view(10, 5, v.data(),
                                              10 * sizeof(gil::rgb8_pixel_t));
     auto it = view.row_end(0); // BUG: Boost 1.72 always asserts
+    boost::ignore_unused(it);
   }
 }
 
