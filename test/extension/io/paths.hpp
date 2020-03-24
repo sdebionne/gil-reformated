@@ -31,6 +31,8 @@
 #pragma GCC diagnostic pop
 #endif
 
+#include <string>
+
 // `base` holds the path to ../.., i.e. the directory containing `images`
 static const std::string base =
     (boost::filesystem::absolute(boost::filesystem::path(__FILE__))
