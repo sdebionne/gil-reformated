@@ -36,53 +36,50 @@ private:
 
 public:
   scanline_read_iterator(Reader &reader, int pos = 0)
-      : _pos(pos), _read_scanline(true), _skip_scanline(true), _reader(reader) {
-    _buffer = std::make_shared<buffer_t>(buffer_t(_reader._scanline_length));
-    _buffer_start = &_buffer->front();
+      : reader_(reader), pos_(pos) {
+    buffer_ = std::make_shared<buffer_t>(buffer_t(reader_._scanline_length));
+    buffer_start_ = &buffer_->front();
   }
 
 private:
   friend class boost::iterator_core_access;
 
   void increment() {
-    if (_skip_scanline == true) {
-      _reader.skip(_buffer_start, _pos);
+    if (skip_scanline_) {
+      reader_.skip(buffer_start_, pos_);
     }
 
-    ++_pos;
+    ++pos_;
 
-    _skip_scanline = true;
-    _read_scanline = true;
+    skip_scanline_ = true;
+    read_scanline_ = true;
   }
 
-  bool equal(const scanline_read_iterator &rhs) const {
-    return _pos == rhs._pos;
+  bool equal(scanline_read_iterator const &rhs) const {
+    return pos_ == rhs.pos_;
   }
 
   typename base_t::reference dereference() const {
-    if (_read_scanline == true) {
-      _reader.read(_buffer_start, _pos);
+    if (read_scanline_) {
+      reader_.read(buffer_start_, pos_);
     }
+    skip_scanline_ = false;
+    read_scanline_ = false;
 
-    _skip_scanline = false;
-    _read_scanline = false;
-
-    return _buffer_start;
+    return buffer_start_;
   }
 
 private:
-  Reader &_reader;
+  Reader &reader_;
 
-  mutable int _pos;
-
-  mutable bool _read_scanline;
-  mutable bool _skip_scanline;
+  mutable int pos_ = 0;
+  mutable bool read_scanline_ = true;
+  mutable bool skip_scanline_ = true;
 
   using buffer_t = std::vector<byte_t>;
   using buffer_ptr_t = std::shared_ptr<buffer_t>;
-
-  buffer_ptr_t _buffer;
-  mutable byte_t *_buffer_start;
+  buffer_ptr_t buffer_;
+  mutable byte_t *buffer_start_ = nullptr;
 };
 
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
