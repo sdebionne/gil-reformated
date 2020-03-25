@@ -301,12 +301,15 @@ void test_make_dynamic_image_writer() {
   }
 }
 
-int main() {
-  test_make_reader_backend();
-  test_make_reader();
-  test_make_dynamic_image_reader();
-  test_make_writer();
-  test_make_dynamic_image_writer();
-
+int main(int argc, char *argv[]) {
+  try {
+    test_make_reader_backend();
+    test_make_reader();
+    test_make_dynamic_image_reader();
+    test_make_writer();
+    test_make_dynamic_image_writer();
+  } catch (std::exception const &e) {
+    BOOST_ERROR(e.what());
+  }
   return boost::report_errors();
 }

@@ -251,17 +251,20 @@ void test_dynamic_image() {
                   gil::bmp_tag());
 }
 
-int main() {
-  test_read_image_info_using_string();
-  test_read_image();
-  test_read_and_convert_image();
-  test_read_view();
-  test_read_and_convert_view();
-  test_write_view();
-  test_stream();
-  test_stream_2();
-  test_subimage();
-  test_dynamic_image();
-
+int main(int argc, char *argv[]) {
+  try {
+    test_read_image_info_using_string();
+    test_read_image();
+    test_read_and_convert_image();
+    test_read_view();
+    test_read_and_convert_view();
+    test_write_view();
+    test_stream();
+    test_stream_2();
+    test_subimage();
+    test_dynamic_image();
+  } catch (std::exception const &e) {
+    BOOST_ERROR(e.what());
+  }
   return boost::report_errors();
 }

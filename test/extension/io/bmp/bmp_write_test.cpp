@@ -37,10 +37,13 @@ void test_rgb_color_space_write() {
                                        bmp_out + "bgr_color_space_test.bmp");
 }
 
-int main() {
-  test_write_rgb8();
-  test_write_rgba8();
-  test_rgb_color_space_write();
-
+int main(int argc, char *argv[]) {
+  try {
+    test_write_rgb8();
+    test_write_rgba8();
+    test_rgb_color_space_write();
+  } catch (std::exception const &e) {
+    BOOST_ERROR(e.what());
+  }
   return boost::report_errors();
 }
