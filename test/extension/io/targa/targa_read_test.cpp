@@ -15,8 +15,6 @@
 
 namespace gil = boost::gil;
 
-#ifdef BOOST_GIL_IO_USE_TARGA_FILEFORMAT_TEST_SUITE_IMAGES
-
 template <typename Image>
 void test_targa_scanline_reader(std::string filename) {
   test_scanline_reader<Image, gil::targa_tag>(
@@ -24,9 +22,7 @@ void test_targa_scanline_reader(std::string filename) {
 }
 
 template <typename Image> void write(Image &img, std::string const &file_name) {
-#ifdef BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
   gil::write_view(targa_out + file_name, gil::view(img), gil::targa_tag());
-#endif // BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
 }
 
 void test_read_header() {
@@ -216,10 +212,8 @@ void test_partial_image() {
                   gil::image_read_settings<gil::targa_tag>(
                       gil::point_t(0, 0), gil::point_t(50, 50)));
 
-#ifdef BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
   gil::write_view(targa_out + "targa_partial.tga", gil::view(img),
                   gil::targa_tag());
-#endif // BOOST_GIL_IO_TEST_ALLOW_WRITING_IMAGES
 }
 
 int main() {
@@ -228,6 +222,3 @@ int main() {
 
   return boost::report_errors();
 }
-#else
-int main() {}
-#endif // BOOST_GIL_IO_USE_PNM_TEST_SUITE_IMAGES
