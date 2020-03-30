@@ -5,14 +5,11 @@
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
-
-#define BOOST_TEST_MODULE test_ext_numeric_extend_boundary
-#include "unit_test.hpp"
-#include "unit_test_utility.hpp"
-
 #include <boost/gil.hpp>
 #include <boost/gil/extension/numeric/algorithm.hpp>
 #include <boost/gil/extension/numeric/convolve.hpp>
+
+#include <boost/core/lightweight_test.hpp>
 
 namespace gil = boost::gil;
 
@@ -84,9 +81,7 @@ std::uint8_t boundary_output_zero[] = {
     21, 22, 23,  24, 25,  0,   0,   0,  0,  0,   0,   0,   0,  0,   0,  0,  0,
     0,  0,  0,   0,  0,   0,   0,   0,  0,  0,   0,   0,   0,  0,   0,  0};
 
-BOOST_AUTO_TEST_SUITE(boundary_extension)
-
-BOOST_AUTO_TEST_CASE(extend_row_with_constant) {
+void test_extend_row_with_constant() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -100,7 +95,7 @@ BOOST_AUTO_TEST_CASE(extend_row_with_constant) {
   BOOST_TEST(gil::equal_pixels(out_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_row_with_zero) {
+void test_extend_row_with_zero() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -112,7 +107,7 @@ BOOST_AUTO_TEST_CASE(extend_row_with_zero) {
   BOOST_TEST(gil::equal_pixels(out_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_row_with_padded) {
+void test_extend_row_with_padded() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -124,7 +119,7 @@ BOOST_AUTO_TEST_CASE(extend_row_with_padded) {
   BOOST_TEST(gil::equal_pixels(src_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_col_with_constant) {
+void test_extend_col_with_constant() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -138,7 +133,7 @@ BOOST_AUTO_TEST_CASE(extend_col_with_constant) {
   BOOST_TEST(gil::equal_pixels(out_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_col_with_zero) {
+void test_extend_col_with_zero() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -150,7 +145,7 @@ BOOST_AUTO_TEST_CASE(extend_col_with_zero) {
   BOOST_TEST(gil::equal_pixels(out_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_col_with_padded) {
+void test_extend_col_with_padded() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -162,7 +157,7 @@ BOOST_AUTO_TEST_CASE(extend_col_with_padded) {
   BOOST_TEST(gil::equal_pixels(src_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_img_with_constant) {
+void test_extend_img_with_constant() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -177,7 +172,7 @@ BOOST_AUTO_TEST_CASE(extend_img_with_constant) {
   BOOST_TEST(gil::equal_pixels(out_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_img_with_zero) {
+void test_extend_img_with_zero() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -191,7 +186,7 @@ BOOST_AUTO_TEST_CASE(extend_img_with_zero) {
   BOOST_TEST(gil::equal_pixels(out_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_CASE(extend_img_with_padded) {
+void test_extend_img_with_padded() {
   gil::gray8c_view_t src_view = gil::interleaved_view(
       9, 9, reinterpret_cast<const gil::gray8_pixel_t *>(img), 9);
 
@@ -203,4 +198,16 @@ BOOST_AUTO_TEST_CASE(extend_img_with_padded) {
   BOOST_TEST(gil::equal_pixels(src_view, gil::view(output)));
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+int main() {
+  test_extend_row_with_constant();
+  test_extend_row_with_zero();
+  test_extend_row_with_padded();
+  test_extend_col_with_constant();
+  test_extend_col_with_zero();
+  test_extend_col_with_padded();
+  test_extend_img_with_constant();
+  test_extend_img_with_zero();
+  test_extend_img_with_padded();
+
+  return ::boost::report_errors();
+}

@@ -115,13 +115,10 @@ bool compare_channel_sizes(const channel_sizes_t &channel_sizes // in bits
                            std::true_type // is_homogeneous
 ) {
   using ref_t = typename View::reference;
-
   using channel_t =
       typename channel_traits<typename element_type<ref_t>::type>::value_type;
-  channel_t c;
 
   unsigned int s = detail::unsigned_integral_num_bits<channel_t>::value;
-
   return (s == channel_sizes[0]);
 }
 
