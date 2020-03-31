@@ -17,7 +17,7 @@
 #include <type_traits>
 
 #include "core/pixel/test_fixture.hpp"
-#include "test_utility.hpp"
+#include "test_utility_output_stream.hpp"
 
 namespace gil = boost::gil;
 namespace mp11 = boost::mp11;
@@ -32,7 +32,7 @@ template <class T> std::string name() {
 } // namespace
 #endif
 
-template <typename ColorSpaces> struct test_roundtrip {
+template <typename ColorSpaces> struct test_roundtrip_convertible {
   template <typename Src, typename Dst>
   void operator()(mp11::mp_list<Src, Dst> const &) const {
 #ifdef BOOST_GIL_TEST_DEBUG
@@ -58,11 +58,11 @@ template <typename ColorSpaces> struct test_roundtrip {
   static void run() {
     boost::mp11::mp_for_each<
         mp11::mp_product<mp11::mp_list, ColorSpaces, ColorSpaces>>(
-        test_roundtrip{});
+        test_roundtrip_convertible{});
   }
 };
 
-template <typename ColorSpaces> struct test_all {
+template <typename ColorSpaces> struct test_convertible {
   template <typename Src, typename Dst>
   void operator()(mp11::mp_list<Src, Dst> const &) const {
 #ifdef BOOST_GIL_TEST_DEBUG
@@ -81,18 +81,19 @@ template <typename ColorSpaces> struct test_all {
   }
   static void run() {
     boost::mp11::mp_for_each<
-        mp11::mp_product<mp11::mp_list, ColorSpaces, ColorSpaces>>(test_all{});
+        mp11::mp_product<mp11::mp_list, ColorSpaces, ColorSpaces>>(
+        test_convertible{});
   }
 };
 
 int main() {
-  using lossless_roundtrip_conversions = mp11::mp_list<gil::gray_t, gil::rgb_t>;
-  test_roundtrip<lossless_roundtrip_conversions>::run();
+  test_convertible<
+      mp11::mp_list<gil::cmyk_t, gil::gray_t, gil::rgb_t, gil::rgba_t>>::run();
 
-  using all_conversions =
-      mp11::mp_list<gil::cmyk_t, gil::gray_t, gil::rgb_t, gil::rgba_t>;
+  test_roundtrip_convertible<mp11::mp_list<gil::gray_t, gil::rgb_t>>::run();
 
-  test_all<all_conversions>::run();
-
+  test_roundtrip_convertible<mp11::mp_list<gil::cmyk_t>>::run();
+  test_roundtrip_convertible<mp11::mp_list<gil::gray_t>>::run();
+  test_roundtrip_convertible<mp11::mp_list<gil::rgba_t>>::run();
   return ::boost::report_errors();
 }

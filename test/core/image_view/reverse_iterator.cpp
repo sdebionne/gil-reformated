@@ -5,11 +5,15 @@
 // See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt
 //
-#include "test_fixture.hpp"
-#include <boost/core/lightweight_test.hpp>
 #include <boost/gil/image.hpp>
 #include <boost/gil/image_view.hpp>
 #include <boost/gil/typedefs.hpp>
+
+#include <boost/core/lightweight_test.hpp>
+
+#include "test_fixture.hpp"
+#include "test_utility_output_stream.hpp"
+
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
 
@@ -17,12 +21,12 @@ void test_rbegin() {
   {
     gil::gray8_image_t image = fixture::make_image_gray8();
     auto view = gil::view(image);
-    BOOST_TEST(*view.rbegin() == fixture::gray8_draw_pixel);
+    BOOST_TEST_EQ(*view.rbegin(), fixture::gray8_draw_pixel);
   }
   {
     gil::rgb8_image_t image = fixture::make_image_rgb8();
     auto view = gil::view(image);
-    BOOST_TEST(*view.rbegin() == fixture::rgb8_draw_pixel);
+    BOOST_TEST_EQ(*view.rbegin(), fixture::rgb8_draw_pixel);
   }
 }
 

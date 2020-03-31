@@ -18,14 +18,14 @@ void test_normalized_mean_generation() {
   auto kernel = gil::generate_normalized_mean(5);
   for (const auto &cell : kernel) {
     const auto expected_value = static_cast<float>(1 / 25.f);
-    BOOST_TEST(cell == expected_value);
+    BOOST_TEST_EQ(cell, expected_value);
   }
 }
 
 void test_unnormalized_mean_generation() {
   auto kernel = gil::generate_unnormalized_mean(5);
   for (const auto &cell : kernel) {
-    BOOST_TEST(cell == 1.0f);
+    BOOST_TEST_EQ(cell, 1.0f);
   }
 }
 
@@ -56,7 +56,7 @@ void test_gaussian_kernel_generation() {
       auto expected = expected_values[y][x];
       auto percent_difference =
           std::ceil(std::abs(expected - output) / expected);
-      BOOST_TEST(percent_difference < 5);
+      BOOST_TEST_LT(percent_difference, 5);
     }
   }
 }

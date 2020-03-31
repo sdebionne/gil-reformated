@@ -14,6 +14,7 @@
 #include <type_traits>
 
 #include "core/channel/test_fixture.hpp"
+#include "test_utility_output_stream.hpp"
 
 namespace gil = boost::gil;
 namespace fixture = boost::gil::test::fixture;
@@ -22,8 +23,8 @@ struct test_plus_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_plus_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(0, 0) == channel_t(0));
-    BOOST_TEST(f(100, 27) == channel_t(127));
+    BOOST_TEST_EQ(f(0, 0), channel_t(0));
+    BOOST_TEST_EQ(f(100, 27), channel_t(127));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -39,16 +40,16 @@ struct test_plus_integer_mixed_types {
       using channel2_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       gil::channel_plus_t<channel1_t, channel2_t, channel1_t> f;
-      BOOST_TEST(f(0, 0) == channel1_t(0));
-      BOOST_TEST(f(100, 27) == channel_t(127));
+      BOOST_TEST_EQ(f(0, 0), channel1_t(0));
+      BOOST_TEST_EQ(f(100, 27), channel_t(127));
     }
     {
       using channel1_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       using channel2_t = channel_t;
       gil::channel_plus_t<channel1_t, channel2_t, channel2_t> f;
-      BOOST_TEST(f(0, 0) == channel2_t(0));
-      BOOST_TEST(f(100, 27) == channel_t(127));
+      BOOST_TEST_EQ(f(0, 0), channel2_t(0));
+      BOOST_TEST_EQ(f(100, 27), channel_t(127));
     }
   }
   static void run() {
@@ -66,8 +67,8 @@ struct test_plus_integer_signed_types_with_overflow {
 
     auto const max_value = gil::channel_traits<channel_t>::max_value();
     gil::channel_plus_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(max_value, 1) != std::int64_t(max_value) + 1);
-    BOOST_TEST(f(max_value, max_value) != std::int64_t(max_value) + max_value);
+    BOOST_TEST_NE(f(max_value, 1), std::int64_t(max_value) + 1);
+    BOOST_TEST_NE(f(max_value, max_value), std::int64_t(max_value) + max_value);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_signed_types>(
@@ -87,8 +88,8 @@ struct test_plus_integer_unsigned_types_with_wraparound {
     auto const max_value = gil::channel_traits<channel_t>::max_value();
     auto const min_value = gil::channel_traits<channel_t>::min_value();
     gil::channel_plus_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(max_value, 1) == min_value);
-    BOOST_TEST(f(max_value, max_value) == max_value - 1);
+    BOOST_TEST_EQ(f(max_value, 1), min_value);
+    BOOST_TEST_EQ(f(max_value, max_value), max_value - 1);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_unsigned_types>(
@@ -100,8 +101,8 @@ struct test_minus_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_minus_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(0, 0) == channel_t(0));
-    BOOST_TEST(f(100, 27) == channel_t(73));
+    BOOST_TEST_EQ(f(0, 0), channel_t(0));
+    BOOST_TEST_EQ(f(100, 27), channel_t(73));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -117,16 +118,16 @@ struct test_minus_integer_mixed_types {
       using channel2_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       gil::channel_minus_t<channel1_t, channel2_t, channel1_t> f;
-      BOOST_TEST(f(0, 0) == channel1_t(0));
-      BOOST_TEST(f(100, 27) == channel_t(73));
+      BOOST_TEST_EQ(f(0, 0), channel1_t(0));
+      BOOST_TEST_EQ(f(100, 27), channel_t(73));
     }
     {
       using channel1_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       using channel2_t = channel_t;
       gil::channel_minus_t<channel1_t, channel2_t, channel2_t> f;
-      BOOST_TEST(f(0, 0) == channel2_t(0));
-      BOOST_TEST(f(100, 27) == channel_t(73));
+      BOOST_TEST_EQ(f(0, 0), channel2_t(0));
+      BOOST_TEST_EQ(f(100, 27), channel_t(73));
     }
   }
   static void run() {
@@ -139,9 +140,9 @@ struct test_multiplies_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_multiplies_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(0, 0) == channel_t(0));
-    BOOST_TEST(f(1, 1) == channel_t(1));
-    BOOST_TEST(f(4, 2) == channel_t(8));
+    BOOST_TEST_EQ(f(0, 0), channel_t(0));
+    BOOST_TEST_EQ(f(1, 1), channel_t(1));
+    BOOST_TEST_EQ(f(4, 2), channel_t(8));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -157,16 +158,16 @@ struct test_multiplies_integer_mixed_types {
       using channel2_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       gil::channel_multiplies_t<channel1_t, channel2_t, channel1_t> f;
-      BOOST_TEST(f(0, 0) == channel1_t(0));
-      BOOST_TEST(f(4, 2) == channel_t(8));
+      BOOST_TEST_EQ(f(0, 0), channel1_t(0));
+      BOOST_TEST_EQ(f(4, 2), channel_t(8));
     }
     {
       using channel1_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       using channel2_t = channel_t;
       gil::channel_multiplies_t<channel1_t, channel2_t, channel2_t> f;
-      BOOST_TEST(f(0, 0) == channel2_t(0));
-      BOOST_TEST(f(4, 2) == channel_t(8));
+      BOOST_TEST_EQ(f(0, 0), channel2_t(0));
+      BOOST_TEST_EQ(f(4, 2), channel_t(8));
     }
   }
   static void run() {
@@ -179,9 +180,9 @@ struct test_divides_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_divides_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(0, 1) == channel_t(0));
-    BOOST_TEST(f(1, 1) == channel_t(1));
-    BOOST_TEST(f(4, 2) == channel_t(2));
+    BOOST_TEST_EQ(f(0, 1), channel_t(0));
+    BOOST_TEST_EQ(f(1, 1), channel_t(1));
+    BOOST_TEST_EQ(f(4, 2), channel_t(2));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -197,16 +198,16 @@ struct test_divides_integer_mixed_types {
       using channel2_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       gil::channel_divides_t<channel1_t, channel2_t, channel1_t> f;
-      BOOST_TEST(f(0, 1) == channel1_t(0));
-      BOOST_TEST(f(4, 2) == channel_t(2));
+      BOOST_TEST_EQ(f(0, 1), channel1_t(0));
+      BOOST_TEST_EQ(f(4, 2), channel_t(2));
     }
     {
       using channel1_t =
           std::uint8_t; // duplicates only one of fixture::channel_integer_types
       using channel2_t = channel_t;
       gil::channel_divides_t<channel1_t, channel2_t, channel2_t> f;
-      BOOST_TEST(f(0, 1) == channel2_t(0));
-      BOOST_TEST(f(4, 2) == channel_t(2));
+      BOOST_TEST_EQ(f(0, 1), channel2_t(0));
+      BOOST_TEST_EQ(f(4, 2), channel_t(2));
     }
   }
   static void run() {
@@ -219,8 +220,8 @@ struct test_plus_scalar_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_plus_scalar_t<channel_t, int, channel_t> f;
-    BOOST_TEST(f(0, 0) == channel_t(0));
-    BOOST_TEST(f(100, 27) == channel_t(127));
+    BOOST_TEST_EQ(f(0, 0), channel_t(0));
+    BOOST_TEST_EQ(f(100, 27), channel_t(127));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -233,8 +234,8 @@ struct test_plus_scalar_integer_mixed_types {
     using channel_t = Channel;
     using channel_result_t = std::uint8_t;
     gil::channel_plus_scalar_t<channel_t, int, channel_result_t> f;
-    BOOST_TEST(f(0, 0) == channel_result_t(0));
-    BOOST_TEST(f(100, 27) == channel_result_t(127));
+    BOOST_TEST_EQ(f(0, 0), channel_result_t(0));
+    BOOST_TEST_EQ(f(100, 27), channel_result_t(127));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -246,8 +247,8 @@ struct test_minus_scalar_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_minus_scalar_t<channel_t, int, channel_t> f;
-    BOOST_TEST(f(0, 0) == channel_t(0));
-    BOOST_TEST(f(100, 27) == channel_t(73));
+    BOOST_TEST_EQ(f(0, 0), channel_t(0));
+    BOOST_TEST_EQ(f(100, 27), channel_t(73));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -260,8 +261,8 @@ struct test_minus_scalar_integer_mixed_types {
     using channel_t = Channel;
     using channel_result_t = std::uint8_t;
     gil::channel_minus_scalar_t<channel_t, int, std::uint8_t> f;
-    BOOST_TEST(f(0, 0) == channel_result_t(0));
-    BOOST_TEST(f(100, 27) == channel_result_t(73));
+    BOOST_TEST_EQ(f(0, 0), channel_result_t(0));
+    BOOST_TEST_EQ(f(100, 27), channel_result_t(73));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -273,9 +274,9 @@ struct test_multiplies_scalar_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_multiplies_scalar_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(0, 0) == channel_t(0));
-    BOOST_TEST(f(1, 1) == channel_t(1));
-    BOOST_TEST(f(4, 2) == channel_t(8));
+    BOOST_TEST_EQ(f(0, 0), channel_t(0));
+    BOOST_TEST_EQ(f(1, 1), channel_t(1));
+    BOOST_TEST_EQ(f(4, 2), channel_t(8));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -288,8 +289,8 @@ struct test_multiplies_scalar_integer_mixed_types {
     using channel_t = Channel;
     using channel_result_t = std::uint8_t;
     gil::channel_multiplies_scalar_t<channel_t, int, channel_result_t> f;
-    BOOST_TEST(f(0, 0) == channel_result_t(0));
-    BOOST_TEST(f(4, 2) == channel_result_t(8));
+    BOOST_TEST_EQ(f(0, 0), channel_result_t(0));
+    BOOST_TEST_EQ(f(4, 2), channel_result_t(8));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -301,9 +302,9 @@ struct test_divides_scalar_integer_same_types {
   template <typename Channel> void operator()(Channel const &) {
     using channel_t = Channel;
     gil::channel_divides_scalar_t<channel_t, channel_t, channel_t> f;
-    BOOST_TEST(f(0, 1) == channel_t(0));
-    BOOST_TEST(f(1, 1) == channel_t(1));
-    BOOST_TEST(f(4, 2) == channel_t(2));
+    BOOST_TEST_EQ(f(0, 1), channel_t(0));
+    BOOST_TEST_EQ(f(1, 1), channel_t(1));
+    BOOST_TEST_EQ(f(4, 2), channel_t(2));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -317,8 +318,8 @@ struct test_divides_scalar_integer_mixed_types {
     using channel_result_t =
         std::uint8_t; // duplicates only one of fixture::channel_integer_types
     gil::channel_divides_scalar_t<channel_t, int, channel_result_t> f;
-    BOOST_TEST(f(0, 1) == channel_t(0));
-    BOOST_TEST(f(4, 2) == channel_t(2));
+    BOOST_TEST_EQ(f(0, 1), channel_t(0));
+    BOOST_TEST_EQ(f(4, 2), channel_t(2));
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_integer_types>(
@@ -333,17 +334,17 @@ struct test_halves_integer_same_types {
     {
       channel_t c(0);
       f(c);
-      BOOST_TEST(c == channel_t(0));
+      BOOST_TEST_EQ(c, channel_t(0));
     }
     {
       channel_t c(2);
       f(c);
-      BOOST_TEST(c == channel_t(1));
+      BOOST_TEST_EQ(c, channel_t(1));
     }
     {
       channel_t c(4);
       f(c);
-      BOOST_TEST(c == channel_t(2));
+      BOOST_TEST_EQ(c, channel_t(2));
     }
   }
   static void run() {
@@ -359,17 +360,17 @@ struct test_zeros_integer_same_types {
     {
       channel_t c(0);
       f(c);
-      BOOST_TEST(c == channel_t(0));
+      BOOST_TEST_EQ(c, channel_t(0));
     }
     {
       channel_t c(2);
       f(c);
-      BOOST_TEST(c == channel_t(0));
+      BOOST_TEST_EQ(c, channel_t(0));
     }
     {
       channel_t c(4);
       f(c);
-      BOOST_TEST(c == channel_t(0));
+      BOOST_TEST_EQ(c, channel_t(0));
     }
   }
   static void run() {
@@ -386,7 +387,7 @@ struct test_assigns_integer_same_types {
       channel_t c1(10);
       channel_t c2(20);
       f(c1, c2);
-      BOOST_TEST(c2 == c1);
+      BOOST_TEST_EQ(c2, c1);
     }
   }
   static void run() {

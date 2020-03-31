@@ -21,7 +21,7 @@ void test_single_source_gray8_to_gray8() {
   gil::static_transform(src, dst, [](std::uint8_t src_channel) {
     return src_channel; // copy
   });
-  BOOST_TEST(gil::at_c<0>(src) == gil::at_c<0>(dst));
+  BOOST_TEST_EQ(gil::at_c<0>(src), gil::at_c<0>(dst));
 }
 
 void test_single_source_rgb8_to_rgb8() {
@@ -30,9 +30,9 @@ void test_single_source_rgb8_to_rgb8() {
   gil::static_transform(src, dst, [](std::uint8_t src_channel) {
     return src_channel; // copy
   });
-  BOOST_TEST(gil::at_c<0>(src) == gil::at_c<0>(dst));
-  BOOST_TEST(gil::at_c<1>(src) == gil::at_c<1>(dst));
-  BOOST_TEST(gil::at_c<2>(src) == gil::at_c<2>(dst));
+  BOOST_TEST_EQ(gil::at_c<0>(src), gil::at_c<0>(dst));
+  BOOST_TEST_EQ(gil::at_c<1>(src), gil::at_c<1>(dst));
+  BOOST_TEST_EQ(gil::at_c<2>(src), gil::at_c<2>(dst));
 }
 
 void test_single_source_rgb8_to_gray8() {
@@ -42,7 +42,7 @@ void test_single_source_rgb8_to_gray8() {
   gil::static_transform(src, dst, [](std::uint8_t src_channel) {
     return src_channel; // copy
   });
-  BOOST_TEST(gil::at_c<0>(dst) == std::uint8_t{32});
+  BOOST_TEST_EQ(gil::at_c<0>(dst), std::uint8_t{32});
 }
 
 void test_single_source_cmyk8_to_rgb8() {
@@ -52,9 +52,9 @@ void test_single_source_cmyk8_to_rgb8() {
   gil::static_transform(src, dst, [](std::uint8_t src_channel) {
     return src_channel; // copy
   });
-  BOOST_TEST(gil::at_c<0>(dst) == std::uint8_t{16});
-  BOOST_TEST(gil::at_c<1>(dst) == std::uint8_t{32});
-  BOOST_TEST(gil::at_c<2>(dst) == std::uint8_t{64});
+  BOOST_TEST_EQ(gil::at_c<0>(dst), std::uint8_t{16});
+  BOOST_TEST_EQ(gil::at_c<1>(dst), std::uint8_t{32});
+  BOOST_TEST_EQ(gil::at_c<2>(dst), std::uint8_t{64});
 }
 
 int main() {
