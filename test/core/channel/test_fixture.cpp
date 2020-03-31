@@ -18,8 +18,8 @@ struct test_channel_minmax_value_float {
     using channel_t = Channel;
     fixture::channel_minmax_value<channel_t> fix;
     fixture::channel_minmax_value<channel_t> exp;
-    BOOST_TEST(fix.min_v_ == exp.min_v_);
-    BOOST_TEST(fix.max_v_ == exp.max_v_);
+    BOOST_TEST_EQ(fix.min_v_, exp.min_v_);
+    BOOST_TEST_EQ(fix.max_v_, exp.max_v_);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_bitfield_types>(
@@ -32,8 +32,8 @@ struct test_channel_value {
     using channel_t = Channel;
     fixture::channel_value<channel_t> fix;
     fixture::channel_minmax_value<channel_t> exp;
-    BOOST_TEST(fix.min_v_ == exp.min_v_);
-    BOOST_TEST(fix.max_v_ == exp.max_v_);
+    BOOST_TEST_EQ(fix.min_v_, exp.min_v_);
+    BOOST_TEST_EQ(fix.max_v_, exp.max_v_);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_byte_types>(test_channel_value{});
@@ -45,8 +45,8 @@ struct test_channel_reference {
     using channel_t = Channel;
     fixture::channel_reference<channel_t &> fix;
     fixture::channel_minmax_value<channel_t> exp;
-    BOOST_TEST(fix.min_v_ == exp.min_v_);
-    BOOST_TEST(fix.max_v_ == exp.max_v_);
+    BOOST_TEST_EQ(fix.min_v_, exp.min_v_);
+    BOOST_TEST_EQ(fix.max_v_, exp.max_v_);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_byte_types>(
@@ -59,8 +59,8 @@ struct test_channel_reference_const {
     using channel_t = Channel;
     fixture::channel_reference<channel_t const &> fix;
     fixture::channel_minmax_value<channel_t> exp;
-    BOOST_TEST(fix.min_v_ == exp.min_v_);
-    BOOST_TEST(fix.max_v_ == exp.max_v_);
+    BOOST_TEST_EQ(fix.min_v_, exp.min_v_);
+    BOOST_TEST_EQ(fix.max_v_, exp.max_v_);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_byte_types>(
@@ -78,7 +78,7 @@ struct test_packed_channels565 {
     // with max value that fits into 5+6+5 bit integer
     fixture::packed_channels565<bitfield_t> fix;
     fixture::channel_minmax_value<std::uint16_t> exp;
-    BOOST_TEST(fix.data_ == exp.max_v_);
+    BOOST_TEST_EQ(fix.data_, exp.max_v_);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_bitfield_types>(
@@ -96,7 +96,7 @@ struct test_packed_dynamic_channels565 {
     // with max value that fits into 5+6+5 bit integer
     fixture::packed_dynamic_channels565<bitfield_t> fix;
     fixture::channel_minmax_value<std::uint16_t> exp;
-    BOOST_TEST(fix.data_ == exp.max_v_);
+    BOOST_TEST_EQ(fix.data_, exp.max_v_);
   }
   static void run() {
     boost::mp11::mp_for_each<fixture::channel_bitfield_types>(
