@@ -13,6 +13,7 @@
 
 namespace boost {
 namespace gil {
+namespace detail {
 
 static constexpr double pi = 3.14159265358979323846;
 
@@ -31,6 +32,7 @@ inline detail::kernel_2d<T, Allocator> get_identity_kernel() {
   return kernel;
 }
 
+} // namespace detail
 } // namespace gil
 } // namespace boost
 
