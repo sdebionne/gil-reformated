@@ -12,6 +12,7 @@
 
 #include <boost/core/lightweight_test.hpp>
 
+#include <cmath>
 #include <cstdint>
 #include <limits>
 
@@ -19,7 +20,7 @@ namespace gil = boost::gil;
 
 // FIXME: Remove when https://github.com/boostorg/core/issues/38 happens
 #define BOOST_GIL_TEST_IS_CLOSE(a, b, epsilon)                                 \
-  BOOST_TEST_LT(std::abs((a) - (b)), (epsilon))
+  BOOST_TEST_LT(std::fabs((a) - (b)), (epsilon))
 
 struct int_minus_value {
   static std::int8_t apply() { return -64; }
