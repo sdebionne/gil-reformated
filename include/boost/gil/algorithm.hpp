@@ -549,7 +549,7 @@ namespace detail {
 template <typename It, typename P>
 BOOST_FORCEINLINE void uninitialized_fill_aux(It first, It last, P const &p,
                                               std::true_type) {
-  int channel = 0;
+  std::size_t channel = 0;
   try {
     using pixel_t = typename std::iterator_traits<It>::value_type;
     while (channel < num_channels<pixel_t>::value) {
@@ -560,7 +560,7 @@ BOOST_FORCEINLINE void uninitialized_fill_aux(It first, It last, P const &p,
       ++channel;
     }
   } catch (...) {
-    for (int c = 0; c < channel; ++c)
+    for (std::size_t c = 0; c < channel; ++c)
       destruct_range(dynamic_at_c(first, c), dynamic_at_c(last, c));
     throw;
   }
@@ -638,7 +638,7 @@ BOOST_FORCEINLINE void default_construct_range(It first, It last) {
 template <typename It>
 BOOST_FORCEINLINE void default_construct_aux(It first, It last,
                                              std::true_type) {
-  int channel = 0;
+  std::size_t channel = 0;
   try {
     using pixel_t = typename std::iterator_traits<It>::value_type;
     while (channel < num_channels<pixel_t>::value) {
@@ -647,7 +647,7 @@ BOOST_FORCEINLINE void default_construct_aux(It first, It last,
       ++channel;
     }
   } catch (...) {
-    for (int c = 0; c < channel; ++c)
+    for (std::size_t c = 0; c < channel; ++c)
       destruct_range(dynamic_at_c(first, c), dynamic_at_c(last, c));
     throw;
   }
@@ -718,7 +718,7 @@ namespace detail {
 template <typename It1, typename It2>
 BOOST_FORCEINLINE void uninitialized_copy_aux(It1 first1, It1 last1, It2 first2,
                                               std::true_type) {
-  int channel = 0;
+  std::size_t channel = 0;
   try {
     using pixel_t = typename std::iterator_traits<It1>::value_type;
     while (channel < num_channels<pixel_t>::value) {
@@ -730,7 +730,7 @@ BOOST_FORCEINLINE void uninitialized_copy_aux(It1 first1, It1 last1, It2 first2,
   } catch (...) {
     It2 last2 = first2;
     std::advance(last2, std::distance(first1, last1));
-    for (int c = 0; c < channel; ++c)
+    for (std::size_t c = 0; c < channel; ++c)
       destruct_range(dynamic_at_c(first2, c), dynamic_at_c(last2, c));
     throw;
   }
