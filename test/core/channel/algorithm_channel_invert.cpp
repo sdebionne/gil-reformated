@@ -19,8 +19,8 @@ namespace fixture = boost::gil::test::fixture;
 
 template <typename ChannelFixtureBase> void test_channel_invert() {
   fixture::channel<ChannelFixtureBase> f;
-  BOOST_TEST(gil::channel_invert(f.min_v_) == f.max_v_);
-  BOOST_TEST(gil::channel_invert(f.max_v_) == f.min_v_);
+  BOOST_TEST_EQ(gil::channel_invert(f.min_v_), f.max_v_);
+  BOOST_TEST_EQ(gil::channel_invert(f.max_v_), f.min_v_);
 }
 
 struct test_channel_value {

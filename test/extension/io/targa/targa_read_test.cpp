@@ -12,6 +12,7 @@
 
 #include "paths.hpp"
 #include "scanline_read_test.hpp"
+#include "test_utility_output_stream.hpp"
 
 namespace gil = boost::gil;
 
@@ -56,11 +57,11 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgb8_pixel_t(248, 0, 248));
-    BOOST_TEST(gil::view(img)(width - 1, 0) == gil::rgb8_pixel_t(0, 0, 248));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgb8_pixel_t(248, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0), gil::rgb8_pixel_t(0, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1), gil::rgb8_pixel_t(248, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgb8_pixel_t(248, 0, 248));
 
     write(img, "24BPP_compressed_out.tga");
   }
@@ -74,15 +75,15 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgb8_pixel_t(248, 0, 248));
-    BOOST_TEST(gil::view(img)(width - 1, 0) == gil::rgb8_pixel_t(0, 0, 248));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgb8_pixel_t(248, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0), gil::rgb8_pixel_t(0, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1), gil::rgb8_pixel_t(248, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgb8_pixel_t(248, 0, 248));
 
     write(img, "24BPP_uncompressed_out.tga");
 
-    test_targa_scanline_reader<bgr8_image_t>("24BPP_uncompressed.tga");
+    test_targa_scanline_reader<gil::bgr8_image_t>("24BPP_uncompressed.tga");
   }
   // 32BPP_compressed.tga
   {
@@ -94,12 +95,13 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgba8_pixel_t(248, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(width - 1, 0) ==
-               gil::rgba8_pixel_t(0, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgba8_pixel_t(0, 0, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0),
+                  gil::rgba8_pixel_t(0, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1),
+                  gil::rgba8_pixel_t(0, 0, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgba8_pixel_t(248, 0, 248, 255));
 
     write(img, "32BPP_compressed_out.tga");
   }
@@ -113,16 +115,17 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgba8_pixel_t(248, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(width - 1, 0) ==
-               gil::rgba8_pixel_t(0, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgba8_pixel_t(0, 0, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0),
+                  gil::rgba8_pixel_t(0, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1),
+                  gil::rgba8_pixel_t(0, 0, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgba8_pixel_t(248, 0, 248, 255));
 
     write(img, "32BPP_uncompressed_out.tga");
 
-    test_targa_scanline_reader<bgra8_image_t>("32BPP_uncompressed.tga");
+    test_targa_scanline_reader<gil::bgra8_image_t>("32BPP_uncompressed.tga");
   }
   // 24BPP_compressed_ul_origin.tga
   {
@@ -135,11 +138,11 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgb8_pixel_t(248, 0, 248));
-    BOOST_TEST(gil::view(img)(width - 1, 0) == gil::rgb8_pixel_t(0, 0, 248));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgb8_pixel_t(248, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0), gil::rgb8_pixel_t(0, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1), gil::rgb8_pixel_t(248, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgb8_pixel_t(248, 0, 248));
 
     write(img, "24BPP_compressed_ul_origin_out.tga");
   }
@@ -154,11 +157,11 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgb8_pixel_t(248, 0, 248));
-    BOOST_TEST(gil::view(img)(width - 1, 0) == gil::rgb8_pixel_t(0, 0, 248));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgb8_pixel_t(248, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgb8_pixel_t(248, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0), gil::rgb8_pixel_t(0, 0, 248));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1), gil::rgb8_pixel_t(248, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgb8_pixel_t(248, 0, 248));
 
     write(img, "24BPP_uncompressed_ul_origin_out.tga");
   }
@@ -173,12 +176,13 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgba8_pixel_t(248, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(width - 1, 0) ==
-               gil::rgba8_pixel_t(0, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgba8_pixel_t(0, 0, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0),
+                  gil::rgba8_pixel_t(0, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1),
+                  gil::rgba8_pixel_t(0, 0, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgba8_pixel_t(248, 0, 248, 255));
 
     write(img, "32BPP_compressed_ul_origin_out.tga");
   }
@@ -193,12 +197,13 @@ void test_read_reference_images() {
 
     BOOST_TEST_EQ(width, 124);
     BOOST_TEST_EQ(height, 124);
-    BOOST_TEST(gil::view(img)(0, 0) == gil::rgba8_pixel_t(248, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(width - 1, 0) ==
-               gil::rgba8_pixel_t(0, 0, 248, 255));
-    BOOST_TEST(gil::view(img)(0, height - 1) == gil::rgba8_pixel_t(0, 0, 0, 0));
-    BOOST_TEST(gil::view(img)(width - 1, height - 1) ==
-               gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, 0), gil::rgba8_pixel_t(248, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, 0),
+                  gil::rgba8_pixel_t(0, 0, 248, 255));
+    BOOST_TEST_EQ(gil::view(img)(0, height - 1),
+                  gil::rgba8_pixel_t(0, 0, 0, 0));
+    BOOST_TEST_EQ(gil::view(img)(width - 1, height - 1),
+                  gil::rgba8_pixel_t(248, 0, 248, 255));
 
     write(img, "32BPP_uncompressed_ul_origin_out.tga");
   }

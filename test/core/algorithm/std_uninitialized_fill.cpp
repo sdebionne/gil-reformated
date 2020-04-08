@@ -18,6 +18,7 @@
 #include "core/channel/test_fixture.hpp"
 #include "core/image/test_fixture.hpp"
 #include "core/pixel/test_fixture.hpp"
+#include "test_utility_output_stream.hpp"
 
 namespace boost {
 namespace gil {
@@ -67,7 +68,7 @@ struct fill_with_pixel_integer_types {
       std::uninitialized_fill(pixels.begin(), pixels.end(), fill_pixel);
 
       for (pixel_t const &p : pixels)
-        BOOST_TEST(p == fill_pixel);
+        BOOST_TEST_EQ(p, fill_pixel);
     }
   }
   static void run() {
@@ -87,7 +88,7 @@ struct fill_with_pixel_float_types {
       std::uninitialized_fill(pixels.begin(), pixels.end(), fill_pixel);
 
       for (Pixel const &p : pixels)
-        BOOST_TEST(p == fill_pixel);
+        BOOST_TEST_EQ(p, fill_pixel);
     }
   }
   static void run() {
@@ -106,9 +107,9 @@ void test_fill_with_packed_pixel_gray3() {
     std::uninitialized_fill(pixels.begin(), pixels.end(), fill_pixel);
 
     for (fixture::packed_pixel_gray3 const &p : pixels) {
-      BOOST_TEST(p == fill_pixel);
-      BOOST_TEST((int)get_color(p, gil::gray_color_t()) ==
-                 (int)get_color(fill_pixel, gil::gray_color_t()));
+      BOOST_TEST_EQ(p, fill_pixel);
+      BOOST_TEST_EQ((int)get_color(p, gil::gray_color_t()),
+                    (int)get_color(fill_pixel, gil::gray_color_t()));
     }
   }
 }
@@ -123,13 +124,13 @@ void test_fill_with_packed_pixel_bgr121() {
     std::uninitialized_fill(pixels.begin(), pixels.end(), fill_pixel);
 
     for (fixture::packed_pixel_bgr121 const &p : pixels) {
-      BOOST_TEST(p == fill_pixel);
-      BOOST_TEST((int)get_color(p, gil::red_t()) ==
-                 (int)get_color(fill_pixel, gil::red_t()));
-      BOOST_TEST((int)get_color(p, gil::green_t()) ==
-                 (int)get_color(fill_pixel, gil::green_t()));
-      BOOST_TEST((int)get_color(p, gil::blue_t()) ==
-                 (int)get_color(fill_pixel, gil::blue_t()));
+      BOOST_TEST_EQ(p, fill_pixel);
+      BOOST_TEST_EQ((int)get_color(p, gil::red_t()),
+                    (int)get_color(fill_pixel, gil::red_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::green_t()),
+                    (int)get_color(fill_pixel, gil::green_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::blue_t()),
+                    (int)get_color(fill_pixel, gil::blue_t()));
     }
   }
 }
@@ -144,13 +145,13 @@ void test_fill_with_packed_pixel_rgb535() {
     std::uninitialized_fill(pixels.begin(), pixels.end(), fill_pixel);
 
     for (fixture::packed_pixel_rgb535 const &p : pixels) {
-      BOOST_TEST(p == fill_pixel);
-      BOOST_TEST((int)get_color(p, gil::red_t()) ==
-                 (int)get_color(fill_pixel, gil::red_t()));
-      BOOST_TEST((int)get_color(p, gil::green_t()) ==
-                 (int)get_color(fill_pixel, gil::green_t()));
-      BOOST_TEST((int)get_color(p, gil::blue_t()) ==
-                 (int)get_color(fill_pixel, gil::blue_t()));
+      BOOST_TEST_EQ(p, fill_pixel);
+      BOOST_TEST_EQ((int)get_color(p, gil::red_t()),
+                    (int)get_color(fill_pixel, gil::red_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::green_t()),
+                    (int)get_color(fill_pixel, gil::green_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::blue_t()),
+                    (int)get_color(fill_pixel, gil::blue_t()));
     }
   }
 }
@@ -165,13 +166,13 @@ void test_bit_aligned_pixel_bgr232() {
     std::uninitialized_fill(pixels.begin(), pixels.end(), fill_pixel);
 
     for (fixture::bit_aligned_pixel_bgr232 const &p : pixels) {
-      BOOST_TEST(p == fill_pixel);
-      BOOST_TEST((int)get_color(p, gil::red_t()) ==
-                 (int)get_color(fill_pixel, gil::red_t()));
-      BOOST_TEST((int)get_color(p, gil::green_t()) ==
-                 (int)get_color(fill_pixel, gil::green_t()));
-      BOOST_TEST((int)get_color(p, gil::blue_t()) ==
-                 (int)get_color(fill_pixel, gil::blue_t()));
+      BOOST_TEST_EQ(p, fill_pixel);
+      BOOST_TEST_EQ((int)get_color(p, gil::red_t()),
+                    (int)get_color(fill_pixel, gil::red_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::green_t()),
+                    (int)get_color(fill_pixel, gil::green_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::blue_t()),
+                    (int)get_color(fill_pixel, gil::blue_t()));
     }
   }
 }
@@ -186,13 +187,13 @@ void test_bit_aligned_pixel_rgb567() {
     std::uninitialized_fill(pixels.begin(), pixels.end(), fill_pixel);
 
     for (fixture::bit_aligned_pixel_rgb567 const &p : pixels) {
-      BOOST_TEST(p == fill_pixel);
-      BOOST_TEST((int)get_color(p, gil::red_t()) ==
-                 (int)get_color(fill_pixel, gil::red_t()));
-      BOOST_TEST((int)get_color(p, gil::green_t()) ==
-                 (int)get_color(fill_pixel, gil::green_t()));
-      BOOST_TEST((int)get_color(p, gil::blue_t()) ==
-                 (int)get_color(fill_pixel, gil::blue_t()));
+      BOOST_TEST_EQ(p, fill_pixel);
+      BOOST_TEST_EQ((int)get_color(p, gil::red_t()),
+                    (int)get_color(fill_pixel, gil::red_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::green_t()),
+                    (int)get_color(fill_pixel, gil::green_t()));
+      BOOST_TEST_EQ((int)get_color(p, gil::blue_t()),
+                    (int)get_color(fill_pixel, gil::blue_t()));
     }
   }
 }

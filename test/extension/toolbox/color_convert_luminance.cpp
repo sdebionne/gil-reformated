@@ -12,6 +12,8 @@
 
 #include <boost/core/lightweight_test.hpp>
 
+#include "test_utility_output_stream.hpp"
+
 namespace gil = boost::gil;
 
 struct double_zero {
@@ -28,7 +30,7 @@ void test_rgb_to_luminance() {
   rgb64f_pixel_t a(10, 20, 30);
   gray64f_pixel_t b;
   gil::color_convert(a, b);
-  BOOST_TEST(b == b);
+  BOOST_TEST_EQ(b, b);
 }
 
 int main() {
