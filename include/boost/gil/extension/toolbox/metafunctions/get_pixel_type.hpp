@@ -25,7 +25,7 @@ template <typename View> struct get_pixel_type {
                            typename View::reference, typename View::value_type>;
 };
 
-template <typename Views> struct get_pixel_type<any_image_view<Views>> {
+template <typename... Views> struct get_pixel_type<any_image_view<Views...>> {
   using type = any_image_pixel_t;
 };
 

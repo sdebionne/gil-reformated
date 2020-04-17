@@ -7,7 +7,6 @@
 //
 #include <boost/gil.hpp>
 #include <boost/gil/extension/dynamic_image/any_image.hpp>
-#include <boost/mp11.hpp>
 
 #include <tuple>
 
@@ -17,11 +16,12 @@ namespace gil {
 namespace test {
 namespace fixture {
 
-using dynamic_image = gil::any_image<boost::mp11::mp_list<
-    gil::gray8_image_t, gil::gray16_image_t, gil::gray32_image_t,
-    gil::bgr8_image_t, gil::bgr16_image_t, gil::bgr32_image_t,
-    gil::rgb8_image_t, gil::rgb16_image_t, gil::rgb32_image_t,
-    gil::rgba8_image_t, gil::rgba16_image_t, gil::rgba32_image_t>>;
+using dynamic_image =
+    gil::any_image<gil::gray8_image_t, gil::gray16_image_t, gil::gray32_image_t,
+                   gil::bgr8_image_t, gil::bgr16_image_t, gil::bgr32_image_t,
+                   gil::rgb8_image_t, gil::rgb16_image_t, gil::rgb32_image_t,
+                   gil::rgba8_image_t, gil::rgba16_image_t,
+                   gil::rgba32_image_t>;
 
 template <typename Image> struct fill_any_view {
   using result_type = void;
