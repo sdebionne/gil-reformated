@@ -294,7 +294,7 @@ public:
                        const image_read_settings<pnm_tag> &settings)
       : parent_t(io_dev, settings) {}
 
-  template <typename Images> void apply(any_image<Images> &images) {
+  template <typename... Images> void apply(any_image<Images...> &images) {
     detail::pnm_type_format_checker format_checker(this->_info._type);
 
     if (!construct_matched(images, format_checker)) {

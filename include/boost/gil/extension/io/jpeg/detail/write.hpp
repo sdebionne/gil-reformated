@@ -115,7 +115,8 @@ public:
                        const image_write_info<jpeg_tag> &info)
       : parent_t(io_dev, info) {}
 
-  template <typename Views> void apply(const any_image_view<Views> &views) {
+  template <typename... Views>
+  void apply(const any_image_view<Views...> &views) {
     detail::dynamic_io_fnobj<detail::jpeg_write_is_supported, parent_t> op(
         this);
 

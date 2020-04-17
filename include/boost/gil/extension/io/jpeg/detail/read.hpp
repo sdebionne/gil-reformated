@@ -203,7 +203,7 @@ public:
                        const image_read_settings<jpeg_tag> &settings)
       : parent_t(io_dev, settings) {}
 
-  template <typename Images> void apply(any_image<Images> &images) {
+  template <typename... Images> void apply(any_image<Images...> &images) {
     detail::jpeg_type_format_checker format_checker(
         this->_info._color_space != JCS_YCbCr ? this->_info._color_space
                                               : JCS_RGB);
