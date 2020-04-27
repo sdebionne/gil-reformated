@@ -196,7 +196,7 @@ enum class boundary_option {
 namespace detail {
 
 template <typename SrcView, typename RltView>
-void extend_row_impl(SrcView src_view, RltView result_view,
+void extend_row_impl(SrcView const &src_view, RltView result_view,
                      std::size_t extend_count, boundary_option option) {
   std::ptrdiff_t extend_count_ = static_cast<std::ptrdiff_t>(extend_count);
 
@@ -250,7 +250,7 @@ void extend_row_impl(SrcView src_view, RltView result_view,
 /// \tparam extend_count number of rows to be added each side
 /// \tparam option - TODO
 template <typename SrcView>
-auto extend_row(SrcView src_view, std::size_t extend_count,
+auto extend_row(SrcView const &src_view, std::size_t extend_count,
                 boundary_option option) ->
     typename gil::image<typename SrcView::value_type> {
   typename gil::image<typename SrcView::value_type> result_img(
@@ -268,7 +268,7 @@ auto extend_row(SrcView src_view, std::size_t extend_count,
 /// \tparam extend_count number of columns to be added each side
 /// \tparam option - TODO
 template <typename SrcView>
-auto extend_col(SrcView src_view, std::size_t extend_count,
+auto extend_col(SrcView const &src_view, std::size_t extend_count,
                 boundary_option option) ->
     typename gil::image<typename SrcView::value_type> {
   auto src_view_rotate = rotated90cw_view(src_view);
@@ -288,7 +288,7 @@ auto extend_col(SrcView src_view, std::size_t extend_count,
 /// \tparam extend_count number of rows/column to be added each side
 /// \tparam option - TODO
 template <typename SrcView>
-auto extend_boundary(SrcView src_view, std::size_t extend_count,
+auto extend_boundary(SrcView const &src_view, std::size_t extend_count,
                      boundary_option option) ->
     typename gil::image<typename SrcView::value_type> {
   if (option == boundary_option::extend_padded) {
