@@ -20,6 +20,7 @@
 #include <cmath>
 #include <cstddef>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 namespace boost {
