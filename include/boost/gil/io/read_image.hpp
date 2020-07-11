@@ -126,9 +126,9 @@ inline void read_image(
 
 ///
 
-template <typename Reader, typename Images>
+template <typename Reader, typename... Images>
 inline void read_image(
-    Reader &reader, any_image<Images> &images,
+    Reader &reader, any_image<Images...> &images,
     typename std::enable_if<
         mp11::mp_and<detail::is_dynamic_image_reader<Reader>,
                      is_format_tag<typename Reader::format_tag_t>>::value>::type
@@ -142,9 +142,9 @@ inline void read_image(
 /// metafunction. \param images    Dynamic image (mp11::mp_list). See
 /// boost::gil::dynamic_image extension. \param settings  Specifies read
 /// settings depending on the image format. \throw std::ios_base::failure
-template <typename Device, typename Images, typename FormatTag>
+template <typename Device, typename... Images, typename FormatTag>
 inline void
-read_image(Device &file, any_image<Images> &images,
+read_image(Device &file, any_image<Images...> &images,
            image_read_settings<FormatTag> const &settings,
            typename std::enable_if<
                mp11::mp_and<detail::is_read_device<FormatTag, Device>,
@@ -162,9 +162,9 @@ read_image(Device &file, any_image<Images> &images,
 /// boost::gil::dynamic_image extension. \param tag       Defines the image
 /// format. Must satisfy is_format_tag metafunction. \throw
 /// std::ios_base::failure
-template <typename Device, typename Images, typename FormatTag>
+template <typename Device, typename... Images, typename FormatTag>
 inline void
-read_image(Device &file, any_image<Images> &images, FormatTag const &tag,
+read_image(Device &file, any_image<Images...> &images, FormatTag const &tag,
            typename std::enable_if<
                mp11::mp_and<detail::is_read_device<FormatTag, Device>,
                             is_format_tag<FormatTag>>::value>::type * /*dummy*/
@@ -180,9 +180,9 @@ read_image(Device &file, any_image<Images> &images, FormatTag const &tag,
 /// metafunction. \param images    Dynamic image (mp11::mp_list). See
 /// boost::gil::dynamic_image extension. \param settings  Specifies read
 /// settings depending on the image format. \throw std::ios_base::failure
-template <typename String, typename Images, typename FormatTag>
+template <typename String, typename... Images, typename FormatTag>
 inline void read_image(
-    String const &file_name, any_image<Images> &images,
+    String const &file_name, any_image<Images...> &images,
     image_read_settings<FormatTag> const &settings,
     typename std::enable_if<mp11::mp_and<detail::is_supported_path_spec<String>,
                                          is_format_tag<FormatTag>>::value>::type
@@ -200,9 +200,9 @@ inline void read_image(
 /// boost::gil::dynamic_image extension. \param tag       Defines the image
 /// format. Must satisfy is_format_tag metafunction. \throw
 /// std::ios_base::failure
-template <typename String, typename Images, typename FormatTag>
+template <typename String, typename... Images, typename FormatTag>
 inline void read_image(
-    String const &file_name, any_image<Images> &images, FormatTag const &tag,
+    String const &file_name, any_image<Images...> &images, FormatTag const &tag,
     typename std::enable_if<mp11::mp_and<detail::is_supported_path_spec<String>,
                                          is_format_tag<FormatTag>>::value>::type
         * /*dummy*/

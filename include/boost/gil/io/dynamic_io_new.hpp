@@ -21,10 +21,10 @@ namespace gil {
 namespace detail {
 
 template <long N> struct construct_matched_t {
-  template <typename Images, typename Pred>
-  static bool apply(any_image<Images> &img, Pred pred) {
-    if (pred.template apply<mp11::mp_at_c<Images, N - 1>>()) {
-      using image_t = mp11::mp_at_c<Images, N - 1>;
+  template <typename... Images, typename Pred>
+  static bool apply(any_image<Images...> &img, Pred pred) {
+    if (pred.template apply<mp11::mp_at_c<any_image<Images...>, N - 1>>()) {
+      using image_t = mp11::mp_at_c<any_image<Images...>, N - 1>;
       image_t x;
       img = std::move(x);
       return true;
@@ -33,8 +33,8 @@ template <long N> struct construct_matched_t {
   }
 };
 template <> struct construct_matched_t<0> {
-  template <typename Images, typename Pred>
-  static bool apply(any_image<Images> &, Pred) {
+  template <typename... Images, typename Pred>
+  static bool apply(any_image<Images...> &, Pred) {
     return false;
   }
 };
@@ -86,9 +86,9 @@ public:
 
 /// \brief Within the any_image, constructs an image with the given dimensions
 ///        and a type that satisfies the given predicate
-template <typename Images, typename Pred>
-inline bool construct_matched(any_image<Images> &img, Pred pred) {
-  constexpr auto size = mp11::mp_size<Images>::value;
+template <typename... Images, typename Pred>
+inline bool construct_matched(any_image<Images...> &img, Pred pred) {
+  constexpr auto size = mp11::mp_size<any_image<Images...>>::value;
   return detail::construct_matched_t<size>::apply(img, pred);
 }
 

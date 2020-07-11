@@ -310,7 +310,7 @@ public:
                        const image_read_settings<png_tag> &settings)
       : parent_t(io_dev, settings) {}
 
-  template <typename Images> void apply(any_image<Images> &images) {
+  template <typename... Images> void apply(any_image<Images...> &images) {
     detail::png_type_format_checker format_checker(this->_info._bit_depth,
                                                    this->_info._color_type);
 

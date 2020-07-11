@@ -438,25 +438,26 @@ subchroma_view(std::size_t y_width, std::size_t y_height,
       u_base + (y_width / scaling_factors_t::ss_X) * u_channel_size;
 
   using plane_view_t = typename subchroma_image<Pixel, Factors>::plane_view_t;
+  using plane_value_t = typename plane_view_t::value_type;
 
-  plane_view_t y_plane = interleaved_view(
-      y_width, y_height, (typename plane_view_t::value_type *)y_base // pixels
-      ,
-      y_width // rowsize_in_bytes
+  plane_view_t y_plane =
+      interleaved_view(y_width, y_height, (plane_value_t *)y_base // pixels
+                       ,
+                       y_width // rowsize_in_bytes
+      );
+
+  plane_view_t v_plane = interleaved_view(y_width / scaling_factors_t::ss_X,
+                                          y_height / scaling_factors_t::ss_Y,
+                                          (plane_value_t *)v_base // pixels
+                                          ,
+                                          y_width // rowsize_in_bytes
   );
 
-  plane_view_t v_plane = interleaved_view(
-      y_width / scaling_factors_t::ss_X, y_height / scaling_factors_t::ss_Y,
-      (typename plane_view_t::value_type *)v_base // pixels
-      ,
-      y_width // rowsize_in_bytes
-  );
-
-  plane_view_t u_plane = interleaved_view(
-      y_width / scaling_factors_t::ss_X, y_height / scaling_factors_t::ss_Y,
-      (typename plane_view_t::value_type *)u_base // pixels
-      ,
-      y_width // rowsize_in_bytes
+  plane_view_t u_plane = interleaved_view(y_width / scaling_factors_t::ss_X,
+                                          y_height / scaling_factors_t::ss_Y,
+                                          (plane_value_t *)u_base // pixels
+                                          ,
+                                          y_width // rowsize_in_bytes
   );
 
   using defer_fn_t = subchroma_image_deref_fn<

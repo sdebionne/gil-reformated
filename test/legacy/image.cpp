@@ -356,9 +356,8 @@ void image_test::packed_image_test() {
 }
 
 void image_test::dynamic_image_test() {
-  using any_image_t =
-      any_image<mp11::mp_list<gray8_image_t, bgr8_image_t, argb8_image_t,
-                              rgb8_image_t, rgb8_planar_image_t>>;
+  using any_image_t = any_image<gray8_image_t, bgr8_image_t, argb8_image_t,
+                                rgb8_image_t, rgb8_planar_image_t>;
   rgb8_planar_image_t img(sample_view.dimensions());
   copy_pixels(sample_view, view(img));
   any_image_t any_img = any_image_t(img);
