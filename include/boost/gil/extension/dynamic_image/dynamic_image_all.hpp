@@ -8,7 +8,6 @@
 #ifndef BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_DYNAMIC_IMAGE_ALL_HPP
 #define BOOST_GIL_EXTENSION_DYNAMIC_IMAGE_DYNAMIC_IMAGE_ALL_HPP
 
-#include <boost/gil.hpp> // FIXME: Include what you use!
 #include <boost/gil/extension/dynamic_image/algorithm.hpp>
 #include <boost/gil/extension/dynamic_image/any_image.hpp>
 #include <boost/gil/extension/dynamic_image/apply_operation.hpp>

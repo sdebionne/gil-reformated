@@ -10,6 +10,7 @@
 
 #include <boost/gil/channel.hpp>
 #include <boost/gil/detail/is_channel_integral.hpp>
+#include <boost/gil/packed_pixel.hpp>
 
 #include <type_traits>
 
