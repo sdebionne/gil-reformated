@@ -53,18 +53,20 @@ template <typename T> struct reverse_consecutive_value {
 
 template <typename T> struct random_value {
   static_assert(std::is_integral<T>::value, "T must be integral type");
-  static constexpr auto range_min = std::numeric_limits<T>::min();
-  static constexpr auto range_max = std::numeric_limits<T>::max();
 
-  random_value() : rng_(rd_()), uid_(range_min, range_max) {}
+  random_value(T range_min = std::numeric_limits<T>::min(),
+               T range_max = std::numeric_limits<T>::max())
+      : uid_(range_min, range_max) {}
 
-  T operator()() {
-    auto value = uid_(rng_);
-    BOOST_ASSERT(range_min <= value && value <= range_max);
-    return static_cast<T>(value);
-  }
+  random_value(std::uint32_t seed, T minimum, T maximum)
+      : rng_(seed), uid_(minimum, maximum) {}
 
-  std::random_device rd_;
+  T operator()() { return uid_(rng_); }
+
+  T range_min() const noexcept { return uid_.a(); }
+
+  T range_max() const noexcept { return uid_.b(); }
+
   std::mt19937 rng_;
   std::uniform_int_distribution<typename gil::promote_integral<T>::type> uid_;
 };
