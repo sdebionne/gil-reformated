@@ -78,8 +78,11 @@ template <typename Element, typename Layout>
 struct homogeneous_color_base<Element, Layout, 1> {
   using layout_t = Layout;
 
-  homogeneous_color_base() = default;
-  homogeneous_color_base(Element v) : v0_(v) {}
+  template <typename U = Element, typename = typename std::enable_if<
+                                      !std::is_reference<U>::value>::type>
+  homogeneous_color_base() : v0_{} {};
+
+  explicit homogeneous_color_base(Element v) : v0_(v) {}
 
   template <typename E2, typename L2>
   homogeneous_color_base(homogeneous_color_base<E2, L2, 1> const &c)
@@ -100,7 +103,7 @@ struct homogeneous_color_base<Element, Layout, 1> {
   operator Element() const { return v0_; }
 
 private:
-  Element v0_{};
+  Element v0_;
 };
 
 /// \brief A homogeneous color base holding two color elements
@@ -110,8 +113,12 @@ template <typename Element, typename Layout>
 struct homogeneous_color_base<Element, Layout, 2> {
   using layout_t = Layout;
 
-  homogeneous_color_base() = default;
+  template <typename U = Element, typename = typename std::enable_if<
+                                      !std::is_reference<U>::value>::type>
+  homogeneous_color_base() : v0_{}, v1_{} {}
+
   explicit homogeneous_color_base(Element v) : v0_(v), v1_(v) {}
+
   homogeneous_color_base(Element v0, Element v1) : v0_(v0), v1_(v1) {}
 
   template <typename E2, typename L2>
@@ -169,8 +176,8 @@ struct homogeneous_color_base<Element, Layout, 2> {
   }
 
 private:
-  Element v0_{};
-  Element v1_{};
+  Element v0_;
+  Element v1_;
 };
 
 /// \brief A homogeneous color base holding three color elements.
@@ -180,8 +187,12 @@ template <typename Element, typename Layout>
 struct homogeneous_color_base<Element, Layout, 3> {
   using layout_t = Layout;
 
-  homogeneous_color_base() = default;
+  template <typename U = Element, typename = typename std::enable_if<
+                                      !std::is_reference<U>::value>::type>
+  homogeneous_color_base() : v0_{}, v1_{}, v2_{} {}
+
   explicit homogeneous_color_base(Element v) : v0_(v), v1_(v), v2_(v) {}
+
   homogeneous_color_base(Element v0, Element v1, Element v2)
       : v0_(v0), v1_(v1), v2_(v2) {}
 
@@ -258,9 +269,9 @@ struct homogeneous_color_base<Element, Layout, 3> {
   }
 
 private:
-  Element v0_{};
-  Element v1_{};
-  Element v2_{};
+  Element v0_;
+  Element v1_;
+  Element v2_;
 };
 
 /// \brief A homogeneous color base holding four color elements.
@@ -270,8 +281,12 @@ template <typename Element, typename Layout>
 struct homogeneous_color_base<Element, Layout, 4> {
   using layout_t = Layout;
 
-  homogeneous_color_base() = default;
+  template <typename U = Element, typename = typename std::enable_if<
+                                      !std::is_reference<U>::value>::type>
+  homogeneous_color_base() : v0_{}, v1_{}, v2_{}, v3_{} {}
+
   explicit homogeneous_color_base(Element v) : v0_(v), v1_(v), v2_(v), v3_(v) {}
+
   homogeneous_color_base(Element v0, Element v1, Element v2, Element v3)
       : v0_(v0), v1_(v1), v2_(v2), v3_(v3) {}
 
@@ -363,10 +378,10 @@ struct homogeneous_color_base<Element, Layout, 4> {
   }
 
 private:
-  Element v0_{};
-  Element v1_{};
-  Element v2_{};
-  Element v3_{};
+  Element v0_;
+  Element v1_;
+  Element v2_;
+  Element v3_;
 };
 
 /// \brief A homogeneous color base holding five color elements.
@@ -376,7 +391,10 @@ template <typename Element, typename Layout>
 struct homogeneous_color_base<Element, Layout, 5> {
   using layout_t = Layout;
 
-  homogeneous_color_base() = default;
+  template <typename U = Element, typename = typename std::enable_if<
+                                      !std::is_reference<U>::value>::type>
+  homogeneous_color_base() : v0_{}, v1_{}, v2_{}, v3_{}, v4_{} {}
+
   explicit homogeneous_color_base(Element v)
       : v0_(v), v1_(v), v2_(v), v3_(v), v4_(v) {}
 
@@ -489,11 +507,11 @@ struct homogeneous_color_base<Element, Layout, 5> {
   }
 
 private:
-  Element v0_{};
-  Element v1_{};
-  Element v2_{};
-  Element v3_{};
-  Element v4_{};
+  Element v0_;
+  Element v1_;
+  Element v2_;
+  Element v3_;
+  Element v4_;
 };
 
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
