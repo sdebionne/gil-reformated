@@ -11,6 +11,10 @@
 #include <boost/gil/image_processing/harris.hpp>
 #include <boost/gil/image_processing/numeric.hpp>
 #include <boost/gil/image_view.hpp>
+#include <boost/gil/typedefs.hpp>
+
+#include "hvstack.hpp"
+
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -147,7 +151,8 @@ int main(int argc, char *argv[]) {
   gil::rgb8_image_t input_image;
 
   gil::read_image(argv[1], input_image, gil::png_tag{});
-
+  auto original_image = input_image;
+  auto original_view = gil::view(original_image);
   auto input_view = gil::view(input_image);
   auto grayscaled = to_grayscale(input_view);
   gil::gray8_image_t smoothed_image(grayscaled.dimensions());
@@ -181,5 +186,8 @@ int main(int argc, char *argv[]) {
     input_view(point) = gil::rgb8_pixel_t(0, 0, 0);
     input_view(point).at(std::integral_constant<int, 1>{}) = 255;
   }
-  gil::write_view(argv[5], input_view, gil::png_tag{});
+  auto stacked =
+      gil::hstack(std::vector<gil::rgb8_view_t>{original_view, input_view});
+
+  gil::write_view(argv[5], gil::view(stacked), gil::png_tag{});
 }
