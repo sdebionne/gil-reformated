@@ -102,10 +102,10 @@ histogram_matching(histogram<SrcKeyType> const &src_hist,
     while (cumltv_refhist[ref_keys[start]] > src_val && start > 0) {
       start--;
     }
-    if (abs(cumltv_refhist[ref_keys[start]] - src_val) >
-        abs(cumltv_refhist(std::min<RefKeyType>(
-                ref_max, std::get<0>(ref_keys[start + 1]))) -
-            src_val)) {
+    if (std::abs(cumltv_refhist[ref_keys[start]] - src_val) >
+        std::abs(cumltv_refhist(std::min<RefKeyType>(
+                     ref_max, std::get<0>(ref_keys[start + 1]))) -
+                 src_val)) {
       inverse_mapping[std::get<0>(src_keys[j])] =
           std::min<RefKeyType>(ref_max, std::get<0>(ref_keys[start + 1]));
     } else {
