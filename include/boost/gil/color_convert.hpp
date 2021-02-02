@@ -180,12 +180,12 @@ template <> struct default_color_converter_impl<rgb_t, cmyk_t> {
     // s = 1 / (1 - k) for k < 1, where 1 denotes dst_t max, otherwise s = 1
     // (literal).
     uint_t const dst_max = channel_traits<uint_t>::max_value();
-    uint_t const s_div = dst_max - k;
+    uint_t const s_div = static_cast<uint_t>(dst_max - k);
     if (s_div != 0) {
       double const s = dst_max / static_cast<double>(s_div);
-      c = (c - k) * s;
-      m = (m - k) * s;
-      y = (y - k) * s;
+      c = static_cast<uint_t>((c - k) * s);
+      m = static_cast<uint_t>((m - k) * s);
+      y = static_cast<uint_t>((y - k) * s);
     } else {
       // Black only for k = 1 (max of dst_t)
       c = channel_traits<uint_t>::min_value();
