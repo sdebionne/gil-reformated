@@ -248,10 +248,10 @@ void test_subimage() {
 }
 
 void test_dynamic_image() {
-  using my_img_types = mp11::mp_list<gil::gray8_image_t, gil::gray16_image_t,
-                                     gil::rgb8_image_t, gil::rgba8_image_t>;
+  gil::any_image<gil::gray8_image_t, gil::gray16_image_t, gil::rgb8_image_t,
+                 gil::rgba8_image_t>
+      image;
 
-  gil::any_image<my_img_types> image;
   gil::read_image(targa_filename.c_str(), image, gil::targa_tag());
   gil::write_view(targa_out + "dynamic_image_test.tga", gil::view(image),
                   gil::targa_tag());

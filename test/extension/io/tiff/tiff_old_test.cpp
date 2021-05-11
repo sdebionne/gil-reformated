@@ -54,9 +54,9 @@ void test_old_read_and_convert_view() {
 }
 
 void test_old_dynamic_image() {
-  using my_img_types = mp11::mp_list<gil::gray8_image_t, gil::gray16_image_t,
-                                     gil::rgba8_image_t, gil::gray1_image_t>;
-  gil::any_image<my_img_types> image;
+  gil::any_image<gil::gray8_image_t, gil::gray16_image_t, gil::rgba8_image_t,
+                 gil::gray1_image_t>
+      image;
 
   gil::tiff_read_image(tiff_filename.c_str(), image);
 
