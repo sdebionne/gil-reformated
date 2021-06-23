@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
     <meta name="generator" content="Doxygen 1.8.17"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Generic Image Library: kth_semantic_element_type, kth_semantic_element_reference_type, kth_semantic_element_const_reference_type, semantic_at_c</title>
+    <title>Generic Image Library: kth_semantic_element_type,</title>
     <link href="tabs.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="dynsections.js"></script>
@@ -43,7 +43,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">kth_semantic_element_type, kth_semantic_element_reference_type, kth_semantic_element_const_reference_type, semantic_at_c<div class="ingroups"><a class="el" href="group___color_base.html">ColorBase</a> &raquo; <a class="el" href="group___color_base_algorithm.html">Algorithms and Utility Functions</a></div></div>  </div>
+<div class="title">kth_semantic_element_type,<div class="ingroups"><a class="el" href="group___color_base.html">ColorBase</a> &raquo; <a class="el" href="group___color_base_algorithm.html">Algorithms and Utility Functions</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -75,13 +75,15 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>semantic_at_c: Semantic channel accessors </p>
-<p>Support for accessing the elements of a color base by semantic index</p>
+<p><a class="el" href="structboost_1_1gil_1_1kth__semantic__element__reference__type.html" title="Specifies the return type of the mutable semantic_at_c&lt;K&gt;(color_base);.">kth_semantic_element_reference_type</a>, <a class="el" href="structboost_1_1gil_1_1kth__semantic__element__const__reference__type.html" title="Specifies the return type of the constant semantic_at_c&lt;K&gt;(color_base);.">kth_semantic_element_const_reference_type</a>, semantic_at_c \ elements of a color base by semantic index</p>
 <p>The semantic index of an element is the index of its color in the color space. Semantic indexing allows for proper pairing of elements of color bases independent on their layout. For example, red is the first semantic element of a color base regardless of whether it has an RGB layout or a BGR layout. All GIL color base algorithms taking multiple color bases use semantic indexing to access their elements.</p>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// 16-bit BGR pixel, 4 bits for the blue, 3 bits for the green, 2 bits for the red channel and 7 unused bits</span></div>
-<div class="line"><span class="keyword">using</span> bgr432_pixel_t = packed_pixel_type&lt;uint16_t, mp11::mp_list_c&lt;unsigned,4,3,2&gt;, <a class="code" href="group___layout_model.html#ga8bbe34c605612caa8d358a9b374b4020">bgr_layout_t</a>&gt;::type;</div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// 16-bit BGR pixel, 4 bits for the blue, 3 bits for the green, 2 bits for the</span></div>
+<div class="line">red channel and 7 unused bits <span class="keyword">using</span> bgr432_pixel_t = packed_pixel_type&lt;uint16_t,</div>
+<div class="line">mp11::mp_list_c&lt;unsigned,4,3,2&gt;, <a class="code" href="group___layout_model.html#ga8bbe34c605612caa8d358a9b374b4020">bgr_layout_t</a>&gt;::type;</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// A reference to its red channel. Although the red channel is the third, its semantic index is 0 in the RGB color space</span></div>
-<div class="line"><span class="keyword">using</span> red_channel_reference_t = kth_semantic_element_reference_type&lt;bgr432_pixel_t, 0&gt;::type;</div>
+<div class="line"><span class="comment">// A reference to its red channel. Although the red channel is the third, its</span></div>
+<div class="line">semantic index is 0 in the RGB color space <span class="keyword">using</span> red_channel_reference_t =</div>
+<div class="line">kth_semantic_element_reference_type&lt;bgr432_pixel_t, 0&gt;::type;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Initialize the pixel to black</span></div>
 <div class="line">bgr432_pixel_t red_pixel(0,0,0);</div>
@@ -147,7 +149,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
-<div class="ttc" id="agroup___layout_model_html_ga8bbe34c605612caa8d358a9b374b4020"><div class="ttname"><a href="group___layout_model.html#ga8bbe34c605612caa8d358a9b374b4020">boost::gil::bgr_layout_t</a></div><div class="ttdeci">layout&lt; rgb_t, mp11::mp_list_c&lt; int, 2, 1, 0 &gt; &gt; bgr_layout_t</div><div class="ttdef"><b>Definition:</b> rgb.hpp:40</div></div>
+<div class="ttc" id="agroup___layout_model_html_ga8bbe34c605612caa8d358a9b374b4020"><div class="ttname"><a href="group___layout_model.html#ga8bbe34c605612caa8d358a9b374b4020">boost::gil::bgr_layout_t</a></div><div class="ttdeci">layout&lt; rgb_t, mp11::mp_list_c&lt; int, 2, 1, 0 &gt; &gt; bgr_layout_t</div><div class="ttdef"><b>Definition:</b> rgb.hpp:41</div></div>
      <!-- HTML footer for doxygen 1.8.13-->
      <!-- start footer part -->
      <hr class="footer"/>

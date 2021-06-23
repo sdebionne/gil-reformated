@@ -64,12 +64,12 @@ Public Types</h2></td></tr>
 <tr class="memitem:ad3751297e256e20c0daba12032dfbd1a"><td class="memItemLeft" align="right" valign="top"><a id="ad3751297e256e20c0daba12032dfbd1a"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_t</b> = <a class="el" href="structboost_1_1gil_1_1detail_1_1nth__channel__deref__fn.html">nth_channel_deref_fn</a>&lt; const_ref_t &gt;</td></tr>
 <tr class="separator:ad3751297e256e20c0daba12032dfbd1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af13bb156678a77ca4776c2c8711a8e42"><td class="memItemLeft" align="right" valign="top"><a id="af13bb156678a77ca4776c2c8711a8e42"></a>
+<tr class="memitem:ae6628514a74c9afe9d1ca3062765d34c"><td class="memItemLeft" align="right" valign="top"><a id="ae6628514a74c9afe9d1ca3062765d34c"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename <a class="el" href="structboost_1_1gil_1_1pixel__value__type.html">pixel_value_type</a>&lt; channel_t, <a class="el" href="group___layout_model.html#gab5ca7b8c394e1f014dd076cd96a26bc4">gray_layout_t</a> &gt;::type</td></tr>
-<tr class="separator:af13bb156678a77ca4776c2c8711a8e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33e39d505543dbfd49f764d84e3a016c"><td class="memItemLeft" align="right" valign="top"><a id="a33e39d505543dbfd49f764d84e3a016c"></a>
+<tr class="separator:ae6628514a74c9afe9d1ca3062765d34c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a902439711b8419af9ffae622e4695"><td class="memItemLeft" align="right" valign="top"><a id="ac3a902439711b8419af9ffae622e4695"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_reference</b> = typename <a class="el" href="structboost_1_1gil_1_1pixel__reference__type.html">pixel_reference_type</a>&lt; channel_t, <a class="el" href="group___layout_model.html#gab5ca7b8c394e1f014dd076cd96a26bc4">gray_layout_t</a>, false, false &gt;::type</td></tr>
-<tr class="separator:a33e39d505543dbfd49f764d84e3a016c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ac3a902439711b8419af9ffae622e4695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14a98eaf38a5a767e5262a3f3786c551"><td class="memItemLeft" align="right" valign="top"><a id="a14a98eaf38a5a767e5262a3f3786c551"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>argument_type</b> = SrcP</td></tr>
 <tr class="separator:a14a98eaf38a5a767e5262a3f3786c551"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,8 +130,8 @@ struct boost::gil::detail::nth_channel_deref_fn&lt; SrcP &gt;</h3>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">            pixel_is_reference&lt;SrcP&gt;::value &amp;&amp; pixel_reference_is_mutable&lt;SrcP&gt;::value</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= pixel_is_reference&lt;SrcP&gt;::value &amp;&amp;</div>
+<div class="line">                                     pixel_reference_is_mutable&lt;SrcP&gt;::value</div>
 </div><!-- fragment -->
 </div>
 </div>

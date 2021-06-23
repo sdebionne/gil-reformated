@@ -58,7 +58,7 @@ template&lt;typename P1 , typename Op &gt; </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Equivalent to std::generate. </p>
-<p>Example: Set each channel of a pixel to its semantic index. The channels must be assignable from an integer. </p><div class="fragment"><div class="line"><span class="keyword">struct </span>consecutive_fn {</div>
+<p>Example: Set each channel of a pixel to its semantic index. The channels must be assignable from an integer.</p><div class="fragment"><div class="line"> <span class="keyword">struct </span>consecutive_fn {</div>
 <div class="line">    <span class="keywordtype">int</span>&amp; _current;</div>
 <div class="line">    consecutive_fn(<span class="keywordtype">int</span>&amp; start) : _current(start) {}</div>
 <div class="line">    <span class="keywordtype">int</span> operator()() { <span class="keywordflow">return</span> _current++; }</div>

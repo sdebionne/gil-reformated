@@ -52,6 +52,8 @@ Modules</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>defines properties of channels, such as their range and associated types</p>
+<p>range of the type. For classes, the default traits forward the associated types / and range to the class.</p>
 <p>Traits for channels. Contains the following members: </p><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Channel&gt;</div>
 <div class="line"><span class="keyword">struct </span>channel_traits {</div>
 <div class="line">    <span class="keyword">using</span> value_type = ...;</div>
@@ -68,7 +70,8 @@ Modules</h2></td></tr>
 <p>Example: </p><div class="fragment"><div class="line"><span class="comment">// Create a double channel with range [-0.5 .. 0.5]</span></div>
 <div class="line"><span class="keyword">struct </span>double_minus_half  { <span class="keyword">static</span> <span class="keywordtype">double</span> apply() { <span class="keywordflow">return</span> -0.5; } };</div>
 <div class="line"><span class="keyword">struct </span>double_plus_half   { <span class="keyword">static</span> <span class="keywordtype">double</span> apply() { <span class="keywordflow">return</span>  0.5; } };</div>
-<div class="line"><span class="keyword">using</span> bits64custom_t = scoped_channel_value&lt;double, double_minus_half, double_plus_half&gt;;</div>
+<div class="line"><span class="keyword">using</span> bits64custom_t = scoped_channel_value&lt;double, double_minus_half,</div>
+<div class="line">double_plus_half&gt;;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// channel_convert its maximum should map to the maximum</span></div>
 <div class="line">bits64custom_t x = channel_traits&lt;bits64custom_t&gt;::max_value();</div>

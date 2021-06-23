@@ -79,14 +79,16 @@ struct boost::gil::RandomAccess2DImageConcept&lt; Image &gt;</h3>
 <div class="line">    <span class="keyword">typename</span> x_coord_t = const_view_t::x_coord_t;</div>
 <div class="line">    <span class="keyword">typename</span> y_coord_t = const_view_t::y_coord_t;</div>
 <div class="line"> </div>
-<div class="line">    Image::Image(x_coord_t width, y_coord_t height, std::size_t alignment=1);</div>
-<div class="line">    Image::Image(x_coord_t width, y_coord_t height, value_type fill_value, std::size_t alignment);</div>
+<div class="line">    Image::Image(x_coord_t width, y_coord_t height, std::size_t</div>
+<div class="line">    alignment=1); Image::Image(x_coord_t width, y_coord_t height, value_type</div>
+<div class="line">    fill_value, std::size_t alignment);</div>
 <div class="line"> </div>
 <div class="line">    x_coord_t Image::width() <span class="keyword">const</span>;</div>
 <div class="line">    y_coord_t Image::height() <span class="keyword">const</span>;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordtype">void</span> Image::recreate(x_coord_t width, y_coord_t height, std::size_t alignment=1);</div>
-<div class="line">    <span class="keywordtype">void</span> Image::recreate(x_coord_t width, y_coord_t height, value_type fill_value, std::size_t alignment);</div>
+<div class="line">    <span class="keywordtype">void</span> Image::recreate(x_coord_t width, y_coord_t height, std::size_t</div>
+<div class="line">    alignment=1); <span class="keywordtype">void</span> Image::recreate(x_coord_t width, y_coord_t height,</div>
+<div class="line">    value_type fill_value, std::size_t alignment);</div>
 <div class="line">};</div>
 </div><!-- fragment --> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="concepts_2image_8hpp_source.html">concepts/image.hpp</a></li>

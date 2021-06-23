@@ -67,14 +67,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>constraints</b> ()</t
 struct boost::gil::MemoryBasedIteratorConcept&lt; Iterator &gt;</h3>
 
 <p>Concept of a random-access iterator that can be advanced in memory units (bytes or bits) </p>
-<div class="fragment"><div class="line">concept MemoryBasedIteratorConcept&lt;boost_concepts::RandomAccessTraversalConcept Iterator&gt;</div>
+<div class="fragment"><div class="line"> concept</div>
+<div class="line">MemoryBasedIteratorConcept&lt;boost_concepts::RandomAccessTraversalConcept</div>
+<div class="line">Iterator&gt;</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">typename</span> byte_to_memunit&lt;Iterator&gt;; where metafunction&lt;byte_to_memunit&lt;Iterator&gt; &gt;;</div>
-<div class="line">    std::ptrdiff_t      memunit_step(<span class="keyword">const</span> Iterator&amp;);</div>
-<div class="line">    std::ptrdiff_t      memunit_distance(<span class="keyword">const</span> Iterator&amp; , <span class="keyword">const</span> Iterator&amp;);</div>
-<div class="line">    <span class="keywordtype">void</span>                memunit_advance(Iterator&amp;, std::ptrdiff_t diff);</div>
-<div class="line">    Iterator            memunit_advanced(<span class="keyword">const</span> Iterator&amp; p, std::ptrdiff_t diff) { Iterator tmp; memunit_advance(tmp,diff); <span class="keywordflow">return</span> tmp; }</div>
-<div class="line">    Iterator::reference memunit_advanced_ref(<span class="keyword">const</span> Iterator&amp; p, std::ptrdiff_t diff) { <span class="keywordflow">return</span> *memunit_advanced(p,diff); }</div>
+<div class="line">    <span class="keyword">typename</span> byte_to_memunit&lt;Iterator&gt;; where</div>
+<div class="line">    metafunction&lt;byte_to_memunit&lt;Iterator&gt; &gt;; std::ptrdiff_t</div>
+<div class="line">    memunit_step(<span class="keyword">const</span> Iterator&amp;); std::ptrdiff_t memunit_distance(<span class="keyword">const</span></div>
+<div class="line">    Iterator&amp; , <span class="keyword">const</span> Iterator&amp;); <span class="keywordtype">void</span> memunit_advance(Iterator&amp;,</div>
+<div class="line">    std::ptrdiff_t diff); Iterator            memunit_advanced(<span class="keyword">const</span></div>
+<div class="line">    Iterator&amp; p, std::ptrdiff_t diff) { Iterator tmp;</div>
+<div class="line">    memunit_advance(tmp,diff); <span class="keywordflow">return</span> tmp; } Iterator::reference</div>
+<div class="line">    memunit_advanced_ref(<span class="keyword">const</span> Iterator&amp; p, std::ptrdiff_t diff) { <span class="keywordflow">return</span></div>
+<div class="line">    *memunit_advanced(p,diff); }</div>
 <div class="line">};</div>
 </div><!-- fragment --> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="concepts_2pixel__iterator_8hpp_source.html">concepts/pixel_iterator.hpp</a></li>

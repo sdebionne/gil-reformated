@@ -60,7 +60,8 @@ Modules</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p>Represents the value of an unsigned integral channel operating over a bit range. Models: ChannelValueConcept Example: </p><div class="fragment"><div class="line"><span class="comment">// A 4-bit unsigned integral channel.</span></div>
+<p>Support for sub-byte channels. These are integral channels whose value is contained in a range of bits inside an integral type</p>
+<p>Represents the value of an unsigned integral channel operating over a bit range. Models: ChannelValueConcept Example:</p><div class="fragment"><div class="line"><span class="comment">// A 4-bit unsigned integral channel.</span></div>
 <div class="line"><span class="keyword">using</span> bits4 = packed_channel_value&lt;4&gt;;</div>
 <div class="line"> </div>
 <div class="line">assert(channel_traits&lt;bits4&gt;::min_value()==0);</div>

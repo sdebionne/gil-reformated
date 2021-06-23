@@ -77,8 +77,10 @@ struct boost::gil::HomogeneousColorBaseConcept&lt; ColorBase &gt;</h3>
 <div class="fragment"><div class="line">concept HomogeneousColorBaseConcept&lt;ColorBaseConcept CB&gt;</div>
 <div class="line">{</div>
 <div class="line">    <span class="comment">// For all K in [0 ... size&lt;C1&gt;::value-1):</span></div>
-<div class="line">    <span class="comment">//     where SameType&lt;kth_element_type&lt;CB,K&gt;::type, kth_element_type&lt;CB,K+1&gt;::type&gt;;</span></div>
-<div class="line">    kth_element_const_reference_type&lt;CB,0&gt;::type dynamic_at_c(CB <span class="keyword">const</span>&amp;, std::size_t n) <span class="keyword">const</span>;</div>
+<div class="line">    <span class="comment">//     where SameType&lt;kth_element_type&lt;CB,K&gt;::type,</span></div>
+<div class="line">    kth_element_type&lt;CB,K+1&gt;::type&gt;;</div>
+<div class="line">    kth_element_const_reference_type&lt;CB,0&gt;::type dynamic_at_c(CB <span class="keyword">const</span>&amp;,</div>
+<div class="line">    std::size_t n) <span class="keyword">const</span>;</div>
 <div class="line">};</div>
 </div><!-- fragment --> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="concepts_2color__base_8hpp_source.html">concepts/color_base.hpp</a></li>

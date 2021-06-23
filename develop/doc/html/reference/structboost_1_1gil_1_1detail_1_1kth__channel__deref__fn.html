@@ -60,15 +60,15 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:af21131141b1bfa3e3fa13e76ff809a33"><td class="memItemLeft" align="right" valign="top"><a id="af21131141b1bfa3e3fa13e76ff809a33"></a>
+<tr class="memitem:ac99ad71345eb61e5e229fe09851fb049"><td class="memItemLeft" align="right" valign="top"><a id="ac99ad71345eb61e5e229fe09851fb049"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_t</b> = <a class="el" href="structboost_1_1gil_1_1detail_1_1kth__channel__deref__fn.html">kth_channel_deref_fn</a>&lt; K, const_ref_t &gt;</td></tr>
-<tr class="separator:af21131141b1bfa3e3fa13e76ff809a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af13bb156678a77ca4776c2c8711a8e42"><td class="memItemLeft" align="right" valign="top"><a id="af13bb156678a77ca4776c2c8711a8e42"></a>
+<tr class="separator:ac99ad71345eb61e5e229fe09851fb049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6628514a74c9afe9d1ca3062765d34c"><td class="memItemLeft" align="right" valign="top"><a id="ae6628514a74c9afe9d1ca3062765d34c"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typename <a class="el" href="structboost_1_1gil_1_1pixel__value__type.html">pixel_value_type</a>&lt; channel_t, <a class="el" href="group___layout_model.html#gab5ca7b8c394e1f014dd076cd96a26bc4">gray_layout_t</a> &gt;::type</td></tr>
-<tr class="separator:af13bb156678a77ca4776c2c8711a8e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33e39d505543dbfd49f764d84e3a016c"><td class="memItemLeft" align="right" valign="top"><a id="a33e39d505543dbfd49f764d84e3a016c"></a>
+<tr class="separator:ae6628514a74c9afe9d1ca3062765d34c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a902439711b8419af9ffae622e4695"><td class="memItemLeft" align="right" valign="top"><a id="ac3a902439711b8419af9ffae622e4695"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>const_reference</b> = typename <a class="el" href="structboost_1_1gil_1_1pixel__reference__type.html">pixel_reference_type</a>&lt; channel_t, <a class="el" href="group___layout_model.html#gab5ca7b8c394e1f014dd076cd96a26bc4">gray_layout_t</a>, false, false &gt;::type</td></tr>
-<tr class="separator:a33e39d505543dbfd49f764d84e3a016c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ac3a902439711b8419af9ffae622e4695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14a98eaf38a5a767e5262a3f3786c551"><td class="memItemLeft" align="right" valign="top"><a id="a14a98eaf38a5a767e5262a3f3786c551"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>argument_type</b> = SrcP</td></tr>
 <tr class="separator:a14a98eaf38a5a767e5262a3f3786c551"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,7 +101,7 @@ struct boost::gil::detail::kth_channel_deref_fn&lt; K, SrcP &gt;</h3>
 <p>Function object that returns a grayscale reference of the K-th channel (specified as a template parameter) of a given reference. Models: <a class="el" href="structboost_1_1gil_1_1_pixel_dereference_adaptor_concept.html" title="Represents a unary function object that can be invoked upon dereferencing a pixel iterator.">PixelDereferenceAdaptorConcept</a>. </p>
 <p>If the input is a pixel value or constant reference, the function object is immutable. Otherwise it is mutable (and returns non-const reference to the k-th channel) </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">SrcP</td><td>reference to <a class="el" href="structboost_1_1gil_1_1_pixel_concept.html" title="Pixel concept - A color base whose elements are channels.">PixelConcept</a> (could be pixel value or const/non-const reference) Examples: pixel&lt;T,L&gt;, pixel&lt;T,L&gt;&amp;, const pixel&lt;T,L&gt;&amp;, planar_pixel_reference&lt;T&amp;,L&gt;, planar_pixel_reference&lt;const T&amp;,L&gt; </td></tr>
+    <tr><td class="paramname">SrcP</td><td>reference to <a class="el" href="structboost_1_1gil_1_1_pixel_concept.html" title="Pixel concept - A color base whose elements are channels.">PixelConcept</a> (could be pixel value or const/non-const reference) Examples: pixel&lt;T,L&gt;, pixel&lt;T,L&gt;&amp;, const pixel&lt;T,L&gt;&amp;, planar_pixel_reference&lt;T&amp;,L&gt;, <a class="el" href="structboost_1_1gil_1_1planar__pixel__reference.html" title="A reference proxy to a planar pixel.">planar_pixel_reference</a>&lt;const T&amp;,L&gt; </td></tr>
   </table>
   </dd>
 </dl>
@@ -125,8 +125,8 @@ struct boost::gil::detail::kth_channel_deref_fn&lt; K, SrcP &gt;</h3>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">            pixel_is_reference&lt;SrcP&gt;::value &amp;&amp; pixel_reference_is_mutable&lt;SrcP&gt;::value</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= pixel_is_reference&lt;SrcP&gt;::value &amp;&amp;</div>
+<div class="line">                                     pixel_reference_is_mutable&lt;SrcP&gt;::value</div>
 </div><!-- fragment -->
 </div>
 </div>

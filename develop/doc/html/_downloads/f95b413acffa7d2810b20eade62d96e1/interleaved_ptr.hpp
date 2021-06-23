@@ -37,7 +37,7 @@ template <typename ChannelPtr, // Models Channel Iterator (examples: unsigned
                                // char* or const unsigned char*)
           typename Layout>     // A layout (includes the color space and channel
                                // ordering)
-                           struct interleaved_ptr
+struct interleaved_ptr
     : boost::iterator_facade<
           interleaved_ptr<ChannelPtr, Layout>,
           pixel<typename std::iterator_traits<ChannelPtr>::value_type, Layout>,

@@ -74,8 +74,10 @@ D&#160;</td><td class="memItemRight" valign="bottom"><b>d</b></td></tr>
 struct boost::gil::PixelDereferenceAdaptorConcept&lt; D &gt;</h3>
 
 <p>Represents a unary function object that can be invoked upon dereferencing a pixel iterator. </p>
-<p>This can perform an arbitrary computation, such as color conversion or table lookup. </p><div class="fragment"><div class="line">concept PixelDereferenceAdaptorConcept&lt;boost::UnaryFunctionConcept D&gt;</div>
-<div class="line">    : DefaultConstructibleConcept&lt;D&gt;, CopyConstructibleConcept&lt;D&gt;, AssignableConcept&lt;D&gt;</div>
+<p>This can perform an arbitrary computation, such as color conversion or table lookup.</p><div class="fragment"><div class="line"> concept</div>
+<div class="line">PixelDereferenceAdaptorConcept&lt;boost::UnaryFunctionConcept D&gt;</div>
+<div class="line">    : DefaultConstructibleConcept&lt;D&gt;, CopyConstructibleConcept&lt;D&gt;,</div>
+<div class="line">    AssignableConcept&lt;D&gt;</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">typename</span> const_t; where PixelDereferenceAdaptorConcept&lt;const_t&gt;;</div>
 <div class="line">    <span class="keyword">typename</span> value_type; where PixelValueConcept&lt;value_type&gt;;</div>

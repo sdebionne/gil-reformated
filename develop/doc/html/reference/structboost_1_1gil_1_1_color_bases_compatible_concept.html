@@ -67,12 +67,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>constraints</b> ()</t
 struct boost::gil::ColorBasesCompatibleConcept&lt; ColorBase1, ColorBase2 &gt;</h3>
 
 <p>Two color bases are compatible if they have the same color space and their elements are compatible, semantic-pairwise. </p>
-<div class="fragment"><div class="line">concept ColorBasesCompatibleConcept&lt;ColorBaseConcept C1, ColorBaseConcept C2&gt;</div>
+<div class="fragment"><div class="line"> concept</div>
+<div class="line">ColorBasesCompatibleConcept&lt;ColorBaseConcept C1, ColorBaseConcept C2&gt;</div>
 <div class="line">{</div>
-<div class="line">    where SameType&lt;C1::layout_t::color_space_t, C2::layout_t::color_space_t&gt;;</div>
+<div class="line">    where SameType&lt;C1::layout_t::color_space_t,</div>
+<div class="line">    C2::layout_t::color_space_t&gt;;</div>
 <div class="line">    <span class="comment">// also, for all K in [0 ... size&lt;C1&gt;::value):</span></div>
-<div class="line">    <span class="comment">//     where Convertible&lt;kth_semantic_element_type&lt;C1,K&gt;::type, kth_semantic_element_type&lt;C2,K&gt;::type&gt;;</span></div>
-<div class="line">    <span class="comment">//     where Convertible&lt;kth_semantic_element_type&lt;C2,K&gt;::type, kth_semantic_element_type&lt;C1,K&gt;::type&gt;;</span></div>
+<div class="line">    <span class="comment">//     where Convertible&lt;kth_semantic_element_type&lt;C1,K&gt;::type,</span></div>
+<div class="line">    kth_semantic_element_type&lt;C2,K&gt;::type&gt;;</div>
+<div class="line">    <span class="comment">//     where Convertible&lt;kth_semantic_element_type&lt;C2,K&gt;::type,</span></div>
+<div class="line">    kth_semantic_element_type&lt;C1,K&gt;::type&gt;;</div>
 <div class="line">};</div>
 </div><!-- fragment --> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="concepts_2color__base_8hpp_source.html">concepts/color_base.hpp</a></li>

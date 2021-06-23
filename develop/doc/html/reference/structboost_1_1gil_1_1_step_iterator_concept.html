@@ -74,7 +74,8 @@ Iterator&#160;</td><td class="memItemRight" valign="bottom"><b>it</b></td></tr>
 struct boost::gil::StepIteratorConcept&lt; Iterator &gt;</h3>
 
 <p>Step iterator concept. </p>
-<p>Step iterators are iterators that have a set_step method </p><div class="fragment"><div class="line">concept StepIteratorConcept&lt;boost_concepts::ForwardTraversalConcept Iterator&gt;</div>
+<p>Step iterators are iterators that have a set_step method </p><div class="fragment"><div class="line">concept StepIteratorConcept&lt;boost_concepts::ForwardTraversalConcept</div>
+<div class="line">Iterator&gt;</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">template</span> &lt;Integral D&gt;</div>
 <div class="line">    <span class="keywordtype">void</span> Iterator::set_step(D step);</div>

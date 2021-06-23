@@ -57,25 +57,26 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef BOOST_GIL_GRAY_HPP</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define BOOST_GIL_GRAY_HPP</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;boost/gil/utilities.hpp&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;boost/gil/detail/mp11.hpp&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;boost/gil/detail/mp11.hpp&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;boost/gil/utilities.hpp&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>boost { <span class="keyword">namespace </span>gil {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1gray__color__t.html">   18</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1gray__color__t.html">gray_color_t</a> {};</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="group___color_space_model.html#ga4479d2869cef98ab52f2b5f925e91c49">   21</a></span>&#160;<span class="keyword">using</span> <a class="code" href="group___color_space_model.html#ga4479d2869cef98ab52f2b5f925e91c49">gray_t</a> = mp11::mp_list&lt;gray_color_t&gt;;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="group___layout_model.html#gab5ca7b8c394e1f014dd076cd96a26bc4">   24</a></span>&#160;<span class="keyword">using</span> <a class="code" href="structboost_1_1gil_1_1layout.html">gray_layout_t</a> = <a class="code" href="structboost_1_1gil_1_1layout.html">layout&lt;gray_t&gt;</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}}  <span class="comment">// namespace boost::gil</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>boost {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>gil {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1gray__color__t.html">   19</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1gray__color__t.html">gray_color_t</a> {};</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="group___color_space_model.html#ga4479d2869cef98ab52f2b5f925e91c49">   22</a></span>&#160;<span class="keyword">using</span> <a class="code" href="group___color_space_model.html#ga4479d2869cef98ab52f2b5f925e91c49">gray_t</a> = mp11::mp_list&lt;gray_color_t&gt;;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="group___layout_model.html#gab5ca7b8c394e1f014dd076cd96a26bc4">   25</a></span>&#160;<span class="keyword">using</span> <a class="code" href="structboost_1_1gil_1_1layout.html">gray_layout_t</a> = <a class="code" href="structboost_1_1gil_1_1layout.html">layout&lt;gray_t&gt;</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;} <span class="comment">// namespace gil</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace boost</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructboost_1_1gil_1_1layout_html"><div class="ttname"><a href="structboost_1_1gil_1_1layout.html">boost::gil::layout</a></div><div class="ttdoc">Represents a color space and ordering of channels in memory.</div><div class="ttdef"><b>Definition:</b> utilities.hpp:266</div></div>
-<div class="ttc" id="astructboost_1_1gil_1_1gray__color__t_html"><div class="ttname"><a href="structboost_1_1gil_1_1gray__color__t.html">boost::gil::gray_color_t</a></div><div class="ttdoc">Gray.</div><div class="ttdef"><b>Definition:</b> gray.hpp:18</div></div>
-<div class="ttc" id="agroup___color_space_model_html_ga4479d2869cef98ab52f2b5f925e91c49"><div class="ttname"><a href="group___color_space_model.html#ga4479d2869cef98ab52f2b5f925e91c49">boost::gil::gray_t</a></div><div class="ttdeci">mp11::mp_list&lt; gray_color_t &gt; gray_t</div><div class="ttdef"><b>Definition:</b> gray.hpp:21</div></div>
+<div class="ttc" id="astructboost_1_1gil_1_1layout_html"><div class="ttname"><a href="structboost_1_1gil_1_1layout.html">boost::gil::layout</a></div><div class="ttdoc">Represents a color space and ordering of channels in memory.</div><div class="ttdef"><b>Definition:</b> utilities.hpp:228</div></div>
+<div class="ttc" id="astructboost_1_1gil_1_1gray__color__t_html"><div class="ttname"><a href="structboost_1_1gil_1_1gray__color__t.html">boost::gil::gray_color_t</a></div><div class="ttdoc">Gray.</div><div class="ttdef"><b>Definition:</b> gray.hpp:19</div></div>
+<div class="ttc" id="agroup___color_space_model_html_ga4479d2869cef98ab52f2b5f925e91c49"><div class="ttname"><a href="group___color_space_model.html#ga4479d2869cef98ab52f2b5f925e91c49">boost::gil::gray_t</a></div><div class="ttdeci">mp11::mp_list&lt; gray_color_t &gt; gray_t</div><div class="ttdef"><b>Definition:</b> gray.hpp:22</div></div>
      <!-- HTML footer for doxygen 1.8.13-->
      <!-- start footer part -->
      <hr class="footer"/>

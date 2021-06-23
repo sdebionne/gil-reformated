@@ -80,7 +80,8 @@ struct boost::gil::MutableHomogeneousPixelConcept&lt; P &gt;</h3>
 <div class="fragment"><div class="line">concept MutableHomogeneousPixelConcept&lt;HomogeneousPixelConcept P&gt;</div>
 <div class="line">    : MutableHomogeneousColorBaseConcept&lt;P&gt;</div>
 <div class="line">{</div>
-<div class="line">    P::template element_reference_type&lt;P&gt;::type operator[](P p, std::size_t i)</div>
+<div class="line">    P::template element_reference_type&lt;P&gt;::type operator[](P p, std::size_t</div>
+<div class="line">    i)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="keywordflow">return</span> dynamic_at_c(p, i);</div>
 <div class="line">    }</div>

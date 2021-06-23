@@ -77,7 +77,8 @@ struct boost::gil::HomogeneousPixelConcept&lt; P &gt;</h3>
 <div class="fragment"><div class="line">concept HomogeneousPixelConcept&lt;PixelConcept P&gt;</div>
 <div class="line">    : HomogeneousColorBaseConcept&lt;P&gt;, HomogeneousPixelBasedConcept&lt;P&gt;</div>
 <div class="line">{</div>
-<div class="line">    P::template element_const_reference_type&lt;P&gt;::type operator[](P p, std::size_t i)<span class="keyword"> const</span></div>
+<div class="line">    P::template element_const_reference_type&lt;P&gt;::type operator[](P p,</div>
+<div class="line">    std::size_t i)<span class="keyword"> const</span></div>
 <div class="line"><span class="keyword">    </span>{</div>
 <div class="line">        <span class="keywordflow">return</span> dynamic_at_c(p,i);</div>
 <div class="line">}</div>

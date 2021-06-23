@@ -79,15 +79,19 @@ struct boost::gil::ChannelConcept&lt; T &gt;</h3>
 <p>Channels have a traits class, <code>channel_traits</code>, which defines their associated types as well as their operating ranges.</p>
 <div class="fragment"><div class="line">concept ChannelConcept&lt;typename T&gt; : EqualityComparable&lt;T&gt;</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">typename</span> value_type      = T;        <span class="comment">// use channel_traits&lt;T&gt;::value_type to access it</span></div>
-<div class="line">    <span class="keyword">typename</span> reference       = T&amp;;       <span class="comment">// use channel_traits&lt;T&gt;::reference to access it</span></div>
-<div class="line">    <span class="keyword">typename</span> pointer         = T*;       <span class="comment">// use channel_traits&lt;T&gt;::pointer to access it</span></div>
-<div class="line">    <span class="keyword">typename</span> const_reference = <span class="keyword">const</span> T&amp;; <span class="comment">// use channel_traits&lt;T&gt;::const_reference to access it</span></div>
-<div class="line">    <span class="keyword">typename</span> const_pointer   = <span class="keyword">const</span> T*; <span class="comment">// use channel_traits&lt;T&gt;::const_pointer to access it</span></div>
-<div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> is_mutable;        <span class="comment">// use channel_traits&lt;T&gt;::is_mutable to access it</span></div>
+<div class="line">    <span class="keyword">typename</span> value_type      = T;        <span class="comment">// use</span></div>
+<div class="line">    channel_traits&lt;T&gt;::value_type to access it <span class="keyword">typename</span> reference       =</div>
+<div class="line">    T&amp;;       <span class="comment">// use channel_traits&lt;T&gt;::reference to access it typename</span></div>
+<div class="line">    pointer         = T*;       <span class="comment">// use channel_traits&lt;T&gt;::pointer to access</span></div>
+<div class="line">    it <span class="keyword">typename</span> const_reference = <span class="keyword">const</span> T&amp;; <span class="comment">// use</span></div>
+<div class="line">    channel_traits&lt;T&gt;::const_reference to access it <span class="keyword">typename</span> const_pointer</div>
+<div class="line">    = <span class="keyword">const</span> T*; <span class="comment">// use channel_traits&lt;T&gt;::const_pointer to access it static</span></div>
+<div class="line">    <span class="keyword">const</span> <span class="keywordtype">bool</span> is_mutable;        <span class="comment">// use channel_traits&lt;T&gt;::is_mutable to</span></div>
+<div class="line">    access it</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">static</span> T min_value();                <span class="comment">// use channel_traits&lt;T&gt;::min_value to access it</span></div>
-<div class="line">    <span class="keyword">static</span> T max_value();                <span class="comment">// use channel_traits&lt;T&gt;::max_value to access it</span></div>
+<div class="line">    <span class="keyword">static</span> T min_value();                <span class="comment">// use channel_traits&lt;T&gt;::min_value</span></div>
+<div class="line">    to access it <span class="keyword">static</span> T max_value();                <span class="comment">// use</span></div>
+<div class="line">    channel_traits&lt;T&gt;::max_value to access it</div>
 <div class="line">};</div>
 </div><!-- fragment --> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="concepts_2channel_8hpp_source.html">concepts/channel.hpp</a></li>

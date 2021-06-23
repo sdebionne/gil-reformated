@@ -59,24 +59,23 @@ $(function() {
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;boost/gil/concepts/dynamic_step.hpp&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>boost { <span class="keyword">namespace </span>gil {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> IteratorOrLocatorOrView&gt;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1dynamic__x__step__type.html">   17</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1dynamic__x__step__type.html">dynamic_x_step_type</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>boost {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>gil {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1dynamic__x__step__type.html">   17</a></span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> IteratorOrLocatorOrView&gt; <span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1dynamic__x__step__type.html">dynamic_x_step_type</a>;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> LocatorOrView&gt;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1dynamic__y__step__type.html">   21</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1dynamic__y__step__type.html">dynamic_y_step_type</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> View&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1dynamic__xy__step__type.html">   27</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1dynamic__xy__step__type.html">dynamic_xy_step_type</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}}  <span class="comment">// namespace boost::gil</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1dynamic__y__step__type.html">   20</a></span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> LocatorOrView&gt; <span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1dynamic__y__step__type.html">dynamic_y_step_type</a>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structboost_1_1gil_1_1dynamic__xy__step__type.html">   26</a></span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> View&gt; <span class="keyword">struct </span><a class="code" href="structboost_1_1gil_1_1dynamic__xy__step__type.html">dynamic_xy_step_type</a>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace gil</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;} <span class="comment">// namespace boost</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astructboost_1_1gil_1_1dynamic__x__step__type_html"><div class="ttname"><a href="structboost_1_1gil_1_1dynamic__x__step__type.html">boost::gil::dynamic_x_step_type</a></div><div class="ttdoc">Base template for types that model HasDynamicXStepTypeConcept.</div><div class="ttdef"><b>Definition:</b> dynamic_step.hpp:17</div></div>
-<div class="ttc" id="astructboost_1_1gil_1_1dynamic__xy__step__type_html"><div class="ttname"><a href="structboost_1_1gil_1_1dynamic__xy__step__type.html">boost::gil::dynamic_xy_step_type</a></div><div class="ttdoc">Returns the type of a view that has a dynamic step along both X and Y.</div><div class="ttdef"><b>Definition:</b> dynamic_step.hpp:27</div></div>
-<div class="ttc" id="astructboost_1_1gil_1_1dynamic__y__step__type_html"><div class="ttname"><a href="structboost_1_1gil_1_1dynamic__y__step__type.html">boost::gil::dynamic_y_step_type</a></div><div class="ttdoc">Base template for types that model HasDynamicYStepTypeConcept.</div><div class="ttdef"><b>Definition:</b> dynamic_step.hpp:21</div></div>
+<div class="ttc" id="astructboost_1_1gil_1_1dynamic__xy__step__type_html"><div class="ttname"><a href="structboost_1_1gil_1_1dynamic__xy__step__type.html">boost::gil::dynamic_xy_step_type</a></div><div class="ttdoc">Returns the type of a view that has a dynamic step along both X and Y.</div><div class="ttdef"><b>Definition:</b> dynamic_step.hpp:26</div></div>
+<div class="ttc" id="astructboost_1_1gil_1_1dynamic__y__step__type_html"><div class="ttname"><a href="structboost_1_1gil_1_1dynamic__y__step__type.html">boost::gil::dynamic_y_step_type</a></div><div class="ttdoc">Base template for types that model HasDynamicYStepTypeConcept.</div><div class="ttdef"><b>Definition:</b> dynamic_step.hpp:20</div></div>
      <!-- HTML footer for doxygen 1.8.13-->
      <!-- start footer part -->
      <hr class="footer"/>

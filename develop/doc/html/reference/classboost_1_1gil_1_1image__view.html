@@ -182,7 +182,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_1d_traversable</b>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:acf81c27b3fffa67d66b47f46979b607e"><td class="memItemLeft" align="right" valign="top"><a id="acf81c27b3fffa67d66b47f46979b607e"></a>
-static const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>num_dimensions</b> =2</td></tr>
+static const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>num_dimensions</b> = 2</td></tr>
 <tr class="separator:acf81c27b3fffa67d66b47f46979b607e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -283,7 +283,7 @@ class boost::gil::image_view&lt; Loc &gt;</h3>
 <p>Image view consists of a pixel 2D locator (defining the mechanism for navigating in 2D) and the image dimensions.</p>
 <p>Image views to images are what ranges are to STL containers. They are lightweight objects, that don't own the pixels. It is the user's responsibility that the underlying data remains valid for the lifetime of the image view.</p>
 <p>Similar to iterators and ranges, constness of views does not extend to constness of pixels. A const <code><a class="el" href="classboost_1_1gil_1_1image__view.html" title="A lightweight object that interprets memory as a 2D array of pixels. Models ImageViewConcept,...">image_view</a></code> does not allow changing its location in memory (resizing, moving) but does not prevent one from changing the pixels. The latter requires an image view whose value_type is const.</p>
-<p>Images have interfaces consistent with STL 1D random access containers, so they can be used directly in STL algorithms like: </p><div class="fragment"><div class="line"><a class="code" href="group___s_t_l_optimizations.html#gaab999be608ae006f1127b8bb5145a227">std::fill</a>(img.begin(), img.end(), red_pixel);</div>
+<p>Images have interfaces consistent with STL 1D random access containers, so they can be used directly in STL algorithms like:</p><div class="fragment"><div class="line"><a class="code" href="group___s_t_l_optimizations.html#gaab999be608ae006f1127b8bb5145a227">std::fill</a>(img.begin(), img.end(), red_pixel);</div>
 </div><!-- fragment --><p>In addition, horizontal, vertical and 2D random access iterators are provided.</p>
 <p>Note also that <code><a class="el" href="classboost_1_1gil_1_1image__view.html" title="A lightweight object that interprets memory as a 2D array of pixels. Models ImageViewConcept,...">image_view</a></code> does not require that its element type be a pixel. It could be instantiated with a locator whose <code>value_type</code> models only <code><a class="el" href="structboost_1_1gil_1_1_regular.html" title="Concept for type regularity requirement.">Regular</a></code>. In this case the image view models the weaker <a class="el" href="structboost_1_1gil_1_1_random_access2_d_image_view_concept.html" title="2-dimensional view over immutable values">RandomAccess2DImageViewConcept</a>, and does not model <a class="el" href="structboost_1_1gil_1_1_pixel_based_concept.html" title="Concept for all pixel-based GIL constructs.">PixelBasedConcept</a>. Many generic algorithms don't require the elements to be pixels. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -300,8 +300,7 @@ class boost::gil::image_view&lt; Loc &gt;</h3>
           <td class="memname">auto back </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; reference
-    </td>
+          <td> const -&gt; reference </td>
         </tr>
       </table>
   </td>
@@ -359,8 +358,7 @@ class boost::gil::image_view&lt; Loc &gt;</h3>
           <td class="memname">auto front </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const -&gt; reference
-    </td>
+          <td> const -&gt; reference </td>
         </tr>
       </table>
   </td>
@@ -410,7 +408,7 @@ class boost::gil::image_view&lt; Loc &gt;</h3>
 <li><a class="el" href="image__view_8hpp_source.html">image_view.hpp</a></li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="agroup___s_t_l_optimizations_html_gaab999be608ae006f1127b8bb5145a227"><div class="ttname"><a href="group___s_t_l_optimizations.html#gaab999be608ae006f1127b8bb5145a227">std::fill</a></div><div class="ttdeci">void fill(boost::gil::iterator_from_2d&lt; IL &gt; first, boost::gil::iterator_from_2d&lt; IL &gt; last, const V &amp;val)</div><div class="ttdoc">std::fill(I,I,V) with I being a iterator_from_2d</div><div class="ttdef"><b>Definition:</b> algorithm.hpp:359</div></div>
+<div class="ttc" id="agroup___s_t_l_optimizations_html_gaab999be608ae006f1127b8bb5145a227"><div class="ttname"><a href="group___s_t_l_optimizations.html#gaab999be608ae006f1127b8bb5145a227">std::fill</a></div><div class="ttdeci">void fill(boost::gil::iterator_from_2d&lt; IL &gt; first, boost::gil::iterator_from_2d&lt; IL &gt; last, const V &amp;val)</div><div class="ttdoc">std::fill(I,I,V) with I being a iterator_from_2d</div><div class="ttdef"><b>Definition:</b> algorithm.hpp:402</div></div>
      <!-- HTML footer for doxygen 1.8.13-->
      <!-- start footer part -->
      <hr class="footer"/>

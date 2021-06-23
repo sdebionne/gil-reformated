@@ -78,24 +78,29 @@ struct boost::gil::RandomAccessNDImageViewConcept&lt; View &gt;</h3>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">typename</span> value_type;</div>
 <div class="line">    <span class="keyword">typename</span> reference;       <span class="comment">// result of dereferencing</span></div>
-<div class="line">    <span class="keyword">typename</span> difference_type; <span class="comment">// result of operator-(iterator,iterator) (1-dimensional!)</span></div>
-<div class="line">    <span class="keyword">typename</span> const_t;  where RandomAccessNDImageViewConcept&lt;View&gt;; <span class="comment">// same as View, but over immutable values</span></div>
-<div class="line">    <span class="keyword">typename</span> point_t;  where PointNDConcept&lt;point_t&gt;; <span class="comment">// N-dimensional point</span></div>
-<div class="line">    <span class="keyword">typename</span> locator;  where RandomAccessNDLocatorConcept&lt;locator&gt;; <span class="comment">// N-dimensional locator.</span></div>
-<div class="line">    <span class="keyword">typename</span> iterator; where RandomAccessTraversalConcept&lt;iterator&gt;; <span class="comment">// 1-dimensional iterator over all values</span></div>
-<div class="line">    <span class="keyword">typename</span> reverse_iterator; where RandomAccessTraversalConcept&lt;reverse_iterator&gt;;</div>
-<div class="line">    <span class="keyword">typename</span> size_type;       <span class="comment">// the return value of size()</span></div>
+<div class="line">    <span class="keyword">typename</span> difference_type; <span class="comment">// result of operator-(iterator,iterator)</span></div>
+<div class="line">    (1-dimensional!) <span class="keyword">typename</span> const_t;  where</div>
+<div class="line">    RandomAccessNDImageViewConcept&lt;View&gt;; <span class="comment">// same as View, but over</span></div>
+<div class="line">    immutable values <span class="keyword">typename</span> point_t;  where PointNDConcept&lt;point_t&gt;; <span class="comment">//</span></div>
+<div class="line">    N-dimensional point <span class="keyword">typename</span> locator;  where</div>
+<div class="line">    RandomAccessNDLocatorConcept&lt;locator&gt;; <span class="comment">// N-dimensional locator.</span></div>
+<div class="line">    <span class="keyword">typename</span> iterator; where RandomAccessTraversalConcept&lt;iterator&gt;; <span class="comment">//</span></div>
+<div class="line">    1-dimensional iterator over all values <span class="keyword">typename</span> reverse_iterator; where</div>
+<div class="line">    RandomAccessTraversalConcept&lt;reverse_iterator&gt;; <span class="keyword">typename</span> size_type; <span class="comment">//</span></div>
+<div class="line">    the <span class="keywordflow">return</span> value of size()</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Equivalent to RandomAccessNDLocatorConcept::axis</span></div>
-<div class="line">    <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> D&gt; <span class="keyword">struct </span>axis {</div>
+<div class="line">    template &lt;<span class="keywordtype">size_t</span> D&gt; struct axis {</div>
 <div class="line">        <span class="keyword">typename</span> coord_t = point_t::axis&lt;D&gt;::coord_t;</div>
-<div class="line">        <span class="keyword">typename</span> iterator; where RandomAccessTraversalConcept&lt;iterator&gt;;   <span class="comment">// iterator along D-th axis.</span></div>
-<div class="line">        where SameType&lt;coord_t, iterator::difference_type&gt;;</div>
-<div class="line">        where SameType&lt;iterator::value_type,value_type&gt;;</div>
+<div class="line">        <span class="keyword">typename</span> iterator; where RandomAccessTraversalConcept&lt;iterator&gt;; <span class="comment">//</span></div>
+<div class="line">        iterator along D-th axis. where SameType&lt;coord_t,</div>
+<div class="line">        iterator::difference_type&gt;; where</div>
+<div class="line">        SameType&lt;iterator::value_type,value_type&gt;;</div>
 <div class="line">    };</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// Defines the type of a view similar to this type, except it invokes Deref upon dereferencing</span></div>
-<div class="line">    <span class="keyword">template</span> &lt;PixelDereferenceAdaptorConcept Deref&gt; <span class="keyword">struct </span>add_deref {</div>
+<div class="line">    <span class="comment">// Defines the type of a view similar to this type, except it invokes</span></div>
+<div class="line">    Deref upon dereferencing <span class="keyword">template</span> &lt;PixelDereferenceAdaptorConcept Deref&gt;</div>
+<div class="line">    <span class="keyword">struct </span>add_deref {</div>
 <div class="line">        <span class="keyword">typename</span> type;        where RandomAccessNDImageViewConcept&lt;type&gt;;</div>
 <div class="line">        <span class="keyword">static</span> type make(<span class="keyword">const</span> View&amp; v, <span class="keyword">const</span> Deref&amp; deref);</div>
 <div class="line">    };</div>
@@ -106,17 +111,20 @@ struct boost::gil::RandomAccessNDImageViewConcept&lt; View &gt;</h3>
 <div class="line">    View::View(<span class="keyword">const</span> locator&amp;, <span class="keyword">const</span> point_type&amp;);</div>
 <div class="line"> </div>
 <div class="line">    size_type        View::size()       <span class="keyword">const</span>; <span class="comment">// total number of elements</span></div>
-<div class="line">    reference        operator[](View, <span class="keyword">const</span> difference_type&amp;) <span class="keyword">const</span>; <span class="comment">// 1-dimensional reference</span></div>
-<div class="line">    iterator         View::begin()      <span class="keyword">const</span>;</div>
+<div class="line">    reference        operator[](View, <span class="keyword">const</span> difference_type&amp;) <span class="keyword">const</span>; <span class="comment">//</span></div>
+<div class="line">    1-dimensional reference iterator         View::begin()      <span class="keyword">const</span>;</div>
 <div class="line">    iterator         View::end()        <span class="keyword">const</span>;</div>
 <div class="line">    reverse_iterator View::rbegin()     <span class="keyword">const</span>;</div>
 <div class="line">    reverse_iterator View::rend()       <span class="keyword">const</span>;</div>
 <div class="line">    iterator         View::at(<span class="keyword">const</span> point_t&amp;);</div>
-<div class="line">    point_t          View::dimensions() <span class="keyword">const</span>; <span class="comment">// number of elements along each dimension</span></div>
-<div class="line">    <span class="keywordtype">bool</span>             View::is_1d_traversable() <span class="keyword">const</span>;   <span class="comment">// can an iterator over the first dimension visit each value? I.e. are there gaps between values?</span></div>
+<div class="line">    point_t          View::dimensions() <span class="keyword">const</span>; <span class="comment">// number of elements along</span></div>
+<div class="line">    each dimension <span class="keywordtype">bool</span>             View::is_1d_traversable() <span class="keyword">const</span>;   <span class="comment">//</span></div>
+<div class="line">    can an iterator over the first dimension visit each value? I.e. are</div>
+<div class="line">    there gaps between values?</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// iterator along a given dimension starting at a given point</span></div>
-<div class="line">    <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> D&gt; View::axis&lt;D&gt;::iterator View::axis_iterator(<span class="keyword">const</span> point_t&amp;) <span class="keyword">const</span>;</div>
+<div class="line">    <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> D&gt; View::axis&lt;D&gt;::iterator View::axis_iterator(<span class="keyword">const</span></div>
+<div class="line">    point_t&amp;) <span class="keyword">const</span>;</div>
 <div class="line"> </div>
 <div class="line">    reference operator()(View,<span class="keyword">const</span> point_t&amp;) <span class="keyword">const</span>;</div>
 <div class="line">};</div>

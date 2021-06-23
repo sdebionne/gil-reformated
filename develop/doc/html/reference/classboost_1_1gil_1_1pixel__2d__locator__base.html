@@ -73,9 +73,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = typ
 <tr class="memitem:ae4866d87dad1cbb5ec690604b6d7e4c9"><td class="memItemLeft" align="right" valign="top"><a id="ae4866d87dad1cbb5ec690604b6d7e4c9"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = typename std::iterator_traits&lt; x_iterator &gt;::reference</td></tr>
 <tr class="separator:ae4866d87dad1cbb5ec690604b6d7e4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b1fc581762647c48e112deb1b043ab5"><td class="memItemLeft" align="right" valign="top"><a id="a6b1fc581762647c48e112deb1b043ab5"></a>
+<tr class="memitem:a9f6acb5c56592c81404c5afe94772821"><td class="memItemLeft" align="right" valign="top"><a id="a9f6acb5c56592c81404c5afe94772821"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>coord_t</b> = typename std::iterator_traits&lt; x_iterator &gt;::<a class="el" href="classboost_1_1gil_1_1point.html">difference_type</a></td></tr>
-<tr class="separator:a6b1fc581762647c48e112deb1b043ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a9f6acb5c56592c81404c5afe94772821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb01b687e5fb83d62030e97956f78df8"><td class="memItemLeft" align="right" valign="top"><a id="afb01b687e5fb83d62030e97956f78df8"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>difference_type</b> = <a class="el" href="classboost_1_1gil_1_1point.html">point</a>&lt; coord_t &gt;</td></tr>
 <tr class="separator:afb01b687e5fb83d62030e97956f78df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,10 +119,10 @@ Loc&#160;</td><td class="memItemRight" valign="bottom"><b>xy_at</b> (const <a cl
 template&lt;std::size_t D&gt; </td></tr>
 <tr class="memitem:a99149c579785498e03160ecb1a41609d"><td class="memTemplItemLeft" align="right" valign="top">axis&lt; D &gt;::iterator &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>axis_iterator</b> ()</td></tr>
 <tr class="separator:a99149c579785498e03160ecb1a41609d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbe31de642fbd6534226beb9eaeeba17"><td class="memTemplParams" colspan="2"><a id="afbe31de642fbd6534226beb9eaeeba17"></a>
+<tr class="memitem:ad36170fc539ac47545ac830f50d76290"><td class="memTemplParams" colspan="2"><a id="ad36170fc539ac47545ac830f50d76290"></a>
 template&lt;std::size_t D&gt; </td></tr>
-<tr class="memitem:afbe31de642fbd6534226beb9eaeeba17"><td class="memTemplItemLeft" align="right" valign="top">axis&lt; D &gt;::iterator const  &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>axis_iterator</b> () const</td></tr>
-<tr class="separator:afbe31de642fbd6534226beb9eaeeba17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad36170fc539ac47545ac830f50d76290"><td class="memTemplItemLeft" align="right" valign="top">const axis&lt; D &gt;::iterator &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>axis_iterator</b> () const</td></tr>
+<tr class="separator:ad36170fc539ac47545ac830f50d76290"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a149f9c63d1806d859360960fb66f7e71"><td class="memTemplParams" colspan="2"><a id="a149f9c63d1806d859360960fb66f7e71"></a>
 template&lt;std::size_t D&gt; </td></tr>
 <tr class="memitem:a149f9c63d1806d859360960fb66f7e71"><td class="memTemplItemLeft" align="right" valign="top">axis&lt; D &gt;::iterator&#160;</td><td class="memTemplItemRight" valign="bottom"><b>axis_iterator</b> (const <a class="el" href="classboost_1_1gil_1_1point.html">point_t</a> &amp;p) const</td></tr>
@@ -158,7 +158,7 @@ Loc&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const <
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:acf81c27b3fffa67d66b47f46979b607e"><td class="memItemLeft" align="right" valign="top"><a id="acf81c27b3fffa67d66b47f46979b607e"></a>
-static const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>num_dimensions</b> =2</td></tr>
+static const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><b>num_dimensions</b> = 2</td></tr>
 <tr class="separator:acf81c27b3fffa67d66b47f46979b607e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -173,47 +173,53 @@ template&lt;typename X &gt; </td></tr>
 class boost::gil::pixel_2d_locator_base&lt; Loc, XIterator, YIterator &gt;</h3>
 
 <p>base class for models of <a class="el" href="structboost_1_1gil_1_1_pixel_locator_concept.html" title="GIL&#39;s 2-dimensional locator over immutable GIL pixels.">PixelLocatorConcept</a> </p>
-<p>Pixel locator is similar to a pixel iterator, but allows for 2D navigation of pixels within an image view. It has a 2D difference_type and supports random access operations like: </p><div class="fragment"><div class="line">difference_type offset2(2,3);</div>
+<p>Pixel locator is similar to a pixel iterator, but allows for 2D navigation of pixels within an image view. It has a 2D difference_type and supports random access operations like:</p><div class="fragment"><div class="line">difference_type offset2(2,3);</div>
 <div class="line">locator+=offset2;</div>
 <div class="line">locator[offset2]=my_pixel;</div>
 </div><!-- fragment --><p>In addition, each coordinate acts as a random-access iterator that can be modified separately: "++locator.x()" or "locator.y()+=10" thereby moving the locator horizontally or vertically.</p>
 <p>It is called a locator because it doesn't implement the complete interface of a random access iterator. For example, increment and decrement operations don't make sense (no way to specify dimension). Also 2D difference between two locators cannot be computed without knowledge of the X position within the image.</p>
-<p>This base class provides most of the methods and type aliases needed to create a model of a locator. GIL provides two locator models as subclasses of <code><a class="el" href="classboost_1_1gil_1_1pixel__2d__locator__base.html" title="base class for models of PixelLocatorConcept">pixel_2d_locator_base</a></code>. A memory-based locator, <code><a class="el" href="classboost_1_1gil_1_1memory__based__2d__locator.html" title="Memory-based pixel locator. Models: PixelLocatorConcept,HasDynamicXStepTypeConcept,...">memory_based_2d_locator</a></code> and a virtual locator, <code><a class="el" href="classboost_1_1gil_1_1virtual__2d__locator.html" title="A 2D locator over a virtual image Upon dereferencing, invokes a given function object passing it its ...">virtual_2d_locator</a></code>. The minimum functionality a subclass must provide is this: </p><div class="fragment"><div class="line"><span class="keyword">class </span>my_locator : <span class="keyword">public</span> pixel_2d_locator_base&lt;my_locator, ..., ...&gt; {  <span class="comment">// supply the types for x-iterator and y-iterator</span></div>
+<p>This base class provides most of the methods and type aliases needed to create a model of a locator. GIL provides two locator models as subclasses of <code><a class="el" href="classboost_1_1gil_1_1pixel__2d__locator__base.html" title="base class for models of PixelLocatorConcept">pixel_2d_locator_base</a></code>. A memory-based locator, <code><a class="el" href="classboost_1_1gil_1_1memory__based__2d__locator.html" title="Memory-based pixel locator. Models: PixelLocatorConcept,HasDynamicXStepTypeConcept,...">memory_based_2d_locator</a></code> and a virtual locator, <code><a class="el" href="classboost_1_1gil_1_1virtual__2d__locator.html" title="A 2D locator over a virtual image Upon dereferencing, invokes a given function object passing it its ...">virtual_2d_locator</a></code>. The minimum functionality a subclass must provide is this:</p><div class="fragment"><div class="line"> <span class="keyword">class</span></div>
+<div class="line">my_locator : <span class="keyword">public</span> pixel_2d_locator_base&lt;my_locator, ..., ...&gt; {  <span class="comment">// supply</span></div>
+<div class="line">the types <span class="keywordflow">for</span> x-iterator and y-iterator</div>
 <div class="line">       <span class="keyword">using</span> const_t = ...;                      <span class="comment">// read-only locator</span></div>
 <div class="line"> </div>
 <div class="line">       <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Deref&gt; <span class="keyword">struct </span>add_deref {</div>
-<div class="line">           <span class="keyword">using</span> type = ...;                     <span class="comment">// locator that invokes the Deref dereference object upon pixel access</span></div>
-<div class="line">           <span class="keyword">static</span> type make(<span class="keyword">const</span> my_locator&amp; loc, <span class="keyword">const</span> Deref&amp; d);</div>
+<div class="line">           <span class="keyword">using</span> type = ...;                     <span class="comment">// locator that invokes the</span></div>
+<div class="line">           Deref dereference <span class="keywordtype">object</span> upon pixel access <span class="keyword">static</span> type make(<span class="keyword">const</span></div>
+<div class="line">           my_locator&amp; loc, <span class="keyword">const</span> Deref&amp; d);</div>
 <div class="line">       };</div>
 <div class="line"> </div>
 <div class="line">       my_locator();</div>
 <div class="line">       my_locator(<span class="keyword">const</span> my_locator&amp; pl);</div>
 <div class="line"> </div>
-<div class="line">       <span class="comment">// constructors with dynamic step in y (and x). Only valid for locators with dynamic steps</span></div>
-<div class="line">       my_locator(<span class="keyword">const</span> my_locator&amp; loc, coord_t y_step);</div>
-<div class="line">       my_locator(<span class="keyword">const</span> my_locator&amp; loc, coord_t x_step, coord_t y_step, <span class="keywordtype">bool</span> transpose);</div>
+<div class="line">       <span class="comment">// constructors with dynamic step in y (and x). Only valid for</span></div>
+<div class="line">       locators with dynamic steps my_locator(<span class="keyword">const</span> my_locator&amp; loc, coord_t</div>
+<div class="line">       y_step); my_locator(<span class="keyword">const</span> my_locator&amp; loc, coord_t x_step, coord_t</div>
+<div class="line">       y_step, <span class="keywordtype">bool</span> transpose);</div>
 <div class="line"> </div>
 <div class="line">       <span class="keywordtype">bool</span>              <a class="code" href="group___point_model.html#gae356b2c478035165f5c8576197295c36">operator==</a>(<span class="keyword">const</span> my_locator&amp; p) <span class="keyword">const</span>;</div>
 <div class="line"> </div>
-<div class="line">       <span class="comment">// return _references_ to horizontal/vertical iterators. Advancing them moves this locator</span></div>
-<div class="line">       x_iterator&amp;       x();</div>
-<div class="line">       y_iterator&amp;       y();</div>
+<div class="line">       <span class="comment">// return _references_ to horizontal/vertical iterators. Advancing</span></div>
+<div class="line">       them moves <span class="keyword">this</span> locator x_iterator&amp;       x(); y_iterator&amp;       y();</div>
 <div class="line">       x_iterator <span class="keyword">const</span>&amp; x() <span class="keyword">const</span>;</div>
 <div class="line">       y_iterator <span class="keyword">const</span>&amp; y() <span class="keyword">const</span>;</div>
 <div class="line"> </div>
-<div class="line">       <span class="comment">// return the vertical distance to another locator. Some models need the horizontal distance to compute it</span></div>
-<div class="line">       y_coord_t         y_distance_to(<span class="keyword">const</span> my_locator&amp; loc2, x_coord_t xDiff) <span class="keyword">const</span>;</div>
+<div class="line">       <span class="comment">// return the vertical distance to another locator. Some models need</span></div>
+<div class="line">       the horizontal distance to compute it y_coord_t y_distance_to(<span class="keyword">const</span></div>
+<div class="line">       my_locator&amp; loc2, x_coord_t xDiff) <span class="keyword">const</span>;</div>
 <div class="line"> </div>
-<div class="line">       <span class="comment">// return true iff incrementing an x-iterator located at the last column will position it at the first</span></div>
-<div class="line">       <span class="comment">// column of the next row. Some models need the image width to determine that.</span></div>
-<div class="line">       <span class="keywordtype">bool</span>              is_1d_traversable(x_coord_t width) <span class="keyword">const</span>;</div>
+<div class="line">       <span class="comment">// return true iff incrementing an x-iterator located at the last</span></div>
+<div class="line">       column will position it at the first</div>
+<div class="line">       <span class="comment">// column of the next row. Some models need the image width to</span></div>
+<div class="line">       determine that. <span class="keywordtype">bool</span>              is_1d_traversable(x_coord_t width)</div>
+<div class="line">       <span class="keyword">const</span>;</div>
 <div class="line">};</div>
 </div><!-- fragment --><p>Models may choose to override some of the functions in the base class with more efficient versions. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="locator_8hpp_source.html">locator.hpp</a></li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="agroup___point_model_html_gae356b2c478035165f5c8576197295c36"><div class="ttname"><a href="group___point_model.html#gae356b2c478035165f5c8576197295c36">boost::gil::operator==</a></div><div class="ttdeci">BOOST_FORCEINLINE bool operator==(const point&lt; T &gt; &amp;p1, const point&lt; T &gt; &amp;p2)</div><div class="ttdef"><b>Definition:</b> point.hpp:129</div></div>
+<div class="ttc" id="agroup___point_model_html_gae356b2c478035165f5c8576197295c36"><div class="ttname"><a href="group___point_model.html#gae356b2c478035165f5c8576197295c36">boost::gil::operator==</a></div><div class="ttdeci">BOOST_FORCEINLINE bool operator==(const point&lt; T &gt; &amp;p1, const point&lt; T &gt; &amp;p2)</div><div class="ttdef"><b>Definition:</b> point.hpp:106</div></div>
      <!-- HTML footer for doxygen 1.8.13-->
      <!-- start footer part -->
      <hr class="footer"/>
